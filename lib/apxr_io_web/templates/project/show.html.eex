@@ -1,0 +1,121 @@
+<%
+description = @project.meta.description
+licenses = @project.meta.licenses || []
+links = Enum.to_list(@project.meta.links || [])
+build_tool = @current_release && @current_release.meta.build_tool
+%>
+
+<h2 class="project-title"><%= @project.name %>
+  <%= if @current_release do %>
+    <%= if @current_release.retirement do %>
+      <span class="version retired"><%= @current_release.version %> (retired)</span>
+    <% else %>
+      <span class="version"><%= @current_release.version %></span>
+    <% end %>
+  <% end %>
+</h2>
+
+<%= if retirement = @current_release && @current_release.retirement do %>
+  <div class="alert alert-danger" style="margin-top: 40px" role="alert">
+    <%= retirement_html(retirement) %>
+  </div>
+<% end %>
+
+<%= if description do %>
+  <div class="description">
+    <%= text_length(description, 300) |> text_to_html(insert_brs: false) %>
+  </div>
+<% end %>
+
+<div class="row">
+  <div class="col-md-4">
+    <%= if links != [] do %>
+      <h3>Links</h3>
+      <ul class="links">
+        <%= for {name, link} <- links do %>
+          <li><a href="<%= link %>" rel="nofollow"><%= name %></a></li>
+        <% end %>
+      </ul>
+    <% end %>
+
+    <%= if licenses != [] do %>
+      <h3>License</h3>
+      <span class="license"><%= Enum.join(licenses, ", ") %></span>
+    <% end %>
+
+    <%= if build_tool do %>
+      <h3>Build Tool</h3>
+      <div class="build-tools-box">
+        <span class="build-tool <%= build_tool %>"><%= build_tool %> <%= @current_release.meta.build_tool_version %></span>
+      </div>
+    <% end %>
+
+    <h3>Owners</h3>
+    <ul class="owners-list list-inline">
+      <%= for owner <- @owners do %>
+        <li><%= owner.user.username %></li>
+      <% end %>
+    </ul>
+  </div>
+
+  <div class="col-md-4">
+    <div class="row">
+      <div class="col-md-12">
+        <h3>Versions (<%= Enum.count(@releases) %>)</h3>
+        <ul id="versions" class="version-dependency-list">
+          <% show_latest_versions = 5 %>
+          <%= render "versions.html", [project: @project, releases: Enum.take(@releases, show_latest_versions)] %>
+        </ul>
+
+        <%= if length(@releases)> show_latest_versions do %>
+          <ul id="older-versions" class="collapse version-dependency-list">
+            <%= render "versions.html", [project: @project, releases: Enum.drop(@releases, show_latest_versions)] %>
+          </ul>
+          <p class="show-versions">
+            <span class="toggle-text" role="button" data-toggle="collapse" data-target="#older-versions" aria-expanded="false" aria-controls="versions">
+              <a>Show All Versions</a>
+              <a class="invisible">Show Recent Versions</a>
+            </span>
+          </p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="row">
+      <div class="col-md-12">
+        <a href="<%= Routes.experiment_path(Endpoint, :index, @project) %>" style="float: left;"><h3>Experiments (<%= Experiments.count(@project) %>)</h3></a>
+        <span style="float: right;"><%= icon(:octicon, :beaker, style: "height: 25px; margin: 14px 0; padding-right: 10px;") %></span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <a href="<%= Routes.artifact_path(Endpoint, :index, @project) %>" style="float: left;"><h3>Artifacts (<%= Artifacts.count(@project) %>)</h3></a>
+        <span style="float: right;"><%= icon(:octicon, :"file-directory", style: "height: 25px; margin: 14px 0; padding-right: 10px;") %></span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <h3>Checksum</h3>
+        <div class="config-input">
+          <div class="input-group">
+            <input type="text" class="form-control snippet"
+              value="<%= String.downcase(@current_release.checksum) %>"
+              onfocus="this.select();"
+              readonly="readonly" id="checksum-snippet" />
+            <span class="input-group-btn">
+              <button class="btn btn-default btn-no-hover copy-button" type="button" data-input-id="checksum-snippet">
+                <%= icon(:glyphicon, :copy) %>
+                <%= icon(:glyphicon, :remove, style: "display: none") %>
+                <%= icon(:glyphicon, :ok, style: "display: none; color: green") %>
+              </button>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

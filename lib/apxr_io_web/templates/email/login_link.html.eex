@@ -1,0 +1,16 @@
+<%
+login_url = Routes.login_url(Endpoint, :login, @auth_token)
+%>
+
+<p>
+  <a href="<%= raw login_url %>">Click here</a> or copy and paste the following link into your web browser: <%= raw login_url %>
+</p>
+
+<p>
+  Valid for 30 minutes.
+</p>
+
+<p>
+  --<br>
+  approximatereality.com
+</p>

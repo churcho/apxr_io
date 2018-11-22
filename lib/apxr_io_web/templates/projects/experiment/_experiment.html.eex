@@ -1,0 +1,8 @@
+<tr>
+  <td><a href="<%= path_for_experiment(@project, @experiment)%>"><%= @experiment.release.version %></a></td>
+  <td><%= @experiment.meta.started %></td>
+  <td><%= @experiment.meta.stopped %></td>
+  <td><%= @experiment.meta.duration %></td>
+  <td><%= @experiment.meta.status %></td>
+  <td><%= @experiment.meta.total_runs %></td>
+</tr>

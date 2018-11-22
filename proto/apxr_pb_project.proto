@@ -1,0 +1,28 @@
+syntax = "proto2";
+
+message Project {
+  // All releases of the project
+  repeated Release releases = 1;
+}
+
+message Release {
+  // Release version
+  required string version = 1;
+  // sha256 checksum of project tarball
+  required bytes checksum = 2;
+  // Retirement status
+  optional RetirementStatus retired = 3;
+}
+
+message RetirementStatus {
+  required RetirementReason reason = 1;
+  optional string message = 2;
+}
+
+enum RetirementReason {
+  RETIRED_OTHER = 0;
+  RETIRED_INVALID = 1;
+  RETIRED_SECURITY = 2;
+  RETIRED_DEPRECATED = 3;
+  RETIRED_RENAMED = 4;
+}

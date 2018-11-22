@@ -1,0 +1,7 @@
+<div class="container">
+  <%= render ApxrIoWeb.LayoutView, "_flash.html", conn: @conn %>
+</div>
+<div class="stats home-stats">
+</div>
+
+

@@ -1,0 +1,14 @@
+<h2>Log in</h2>
+<%= form_tag(Routes.login_path(Endpoint, :create)) do %>
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input type="text" autofocus class="form-control" name="email">
+  </div>
+  <input type="hidden" name="return" value="<%= @return %>">
+  <button type="submit" class="btn btn-primary btn-black">Log in</button>
+  <br><br>
+  <p>
+    <a href="<%= Routes.signup_path(Endpoint, :show) %>">Don't have an account?</a> |
+    <a href="<%= Routes.email_verification_path(Endpoint, :show) %>">Resend verification email</a>
+  </p>
+<% end %>

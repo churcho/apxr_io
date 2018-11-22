@@ -1,0 +1,9 @@
+**/node_modules
+_build/
+deps/
+.git/
+.gitignore
+Dockerfile
+README*
+test/
+priv/static/

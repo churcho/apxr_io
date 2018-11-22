@@ -1,0 +1,24 @@
+@mixin font-size($size-value, $line-height: 14) {
+  font: {
+    size: ($size-value / $base-font-size) + rem;
+  };
+
+  @if $line-height != 14 {
+    line-height: ($line-height / $base-line-height) + rem;
+  }
+}
+
+@mixin line-height($size-value) {
+  line-height: ($size-value / $base-line-height) + rem;
+}
+
+@mixin clear-fix() {
+  ::after {
+    content: " "; // Older browser do not support empty content
+    display: block;
+    height: 0;
+    clear: both;
+
+    visibility: hidden;
+  }
+}

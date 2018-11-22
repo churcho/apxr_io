@@ -1,0 +1,6 @@
+<p>Experiment <%= @name %> <%= @version %> complete.</p>
+
+<p>
+  --<br>
+  approximatereality.com
+</p>

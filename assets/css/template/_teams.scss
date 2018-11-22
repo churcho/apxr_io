@@ -1,0 +1,166 @@
+.list-group-item {
+  margin: 0 0 -1px !important;
+}
+
+.list-group-item:last-child {
+  margin-bottom: 0 !important;
+}
+
+.teams > .row {
+  margin-top: 20px;
+}
+
+.teams .sidebar .list-group-item {
+  font-weight: 400;
+
+  &:hover {
+    background-color: $color-grey-one;
+  }
+
+  &.selected {
+    background-color: $color-white;
+
+    a {
+      font-weight: bold;
+      color: $color-black;
+      cursor: default;
+    }
+
+    ::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 2px;
+      background-color: $color-magenta;
+    }
+  }
+}
+
+.teams .sidebar .list-group {
+  a {
+    text-decoration: none;
+  }
+}
+
+.teams p {
+  margin: 5px 0 0 !important;
+}
+
+.teams small {
+  font-weight: 300;
+  color: $color-black;
+  font-size: 90%;
+}
+
+.teams .email .panel .label {
+  margin-left: 4px;
+  font-size: .7em;
+}
+
+.teams .email .address {
+  font-weight: 400;
+}
+
+.teams .email {
+  float: right;
+
+  svg {
+    width: .9em;
+    fill: $color-red;
+  }
+
+  button:disabled svg {
+    fill: #999;
+  }
+
+  .btn-svg {
+    margin-top: 3px;
+  }
+
+  .btn-link {
+    padding: 0;
+  }
+
+  .action {
+    float: right;
+    margin-top: -1px;
+    margin-left: 4px;
+    font-size: .7em;
+  }
+
+  .form-inline input#email_email {
+    width: 300px;
+  }
+}
+
+.teams .team {
+  float: right;
+
+  form.remove-role,
+  form.cancel-billing {
+    display: inline-block;
+  }
+
+  form.add-member {
+    margin-bottom: .5em;
+  }
+
+  input.change-seats,
+  select.change-seats, {
+    display: inline-block;
+    width: 50px;
+    vertical-align: middle;
+  }
+
+  .billing-button {
+    display: block;
+  }
+
+  .member-username {
+    margin-left: 10px;
+    font-size: 1.2em;
+    line-height: 1.7em;
+    vertical-align: middle;
+  }
+}
+
+.teams .role-dropdown .dropdown-menu-right {
+  right: 78px;
+}
+
+.teams .team-project-list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+
+  li {
+    margin-bottom: 5px;
+  }
+}
+
+.teams .monthly-cost-calc {
+  color: $color-grey-three;
+  font-style: italic;
+}
+
+.teams .tab-pane {
+  padding: 10px 0 0;
+}
+
+.panel>.list-group .list-group-item,
+.panel>.panel-collapse>.list-group .list-group-item {
+  border-width: 1px 0;
+  border-radius: 0;
+}
+
+.list-group-item:first-child {
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
+}
+
+.teams li,
+.teams ol {
+  font-weight: normal;
+}

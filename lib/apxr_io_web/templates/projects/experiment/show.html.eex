@@ -1,0 +1,71 @@
+<nav>
+  <div class="pagination-info">
+    <h4 class="projects-title"><%= @version %> <small>(<%= @status %>)</small></h4>
+  </div>
+  <div class="navbar-right pagination-sort">
+    <div>
+      <a href="<%= Routes.experiment_path(Endpoint, :index, @project) %>">
+        <button class="btn btn-default">
+          Back to experiments
+        </button>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<div class="clearfix"></div>
+
+<div>
+  <%= if @experiment.description do %>
+    </p><%= @experiment.description %></p>
+  <% end %>
+</div>
+
+<br />
+
+<ul class="nav nav-tabs nav-justified">
+  <li class="active"><a data-toggle="tab" href="#config">CONFIGURATION</a></li>
+  <li><a data-toggle="tab" href="#params">PARAMETERS</a></li>
+  <li><a data-toggle="tab" href="#trace">TRACE</a></li>
+  <li><a data-toggle="tab" href="#graphs">GRAPHS</a></li>
+</ul>
+
+<div class="tab-content">
+  <div id="config" class="tab-pane fade in active">
+<pre><code>identifier: <%= @experiment.meta.identifier %>
+started: <%= @experiment.meta.started %>
+stopped: <%= @experiment.meta.stopped %>
+duration: <%= @experiment.meta.duration %>
+status: <%= @experiment.meta.status %>
+interruptions: <%= @experiment.meta.interruptions %>
+total_runs: <%= @experiment.meta.total_runs %>
+initial_constraints: <%= Poison.encode_to_iodata!(@experiment.meta.init_constraints, pretty: true) %>
+</code></pre>
+  </div>
+  <div id="params" class="tab-pane fade">
+<pre><code>parameters: <%= Poison.encode_to_iodata!(@experiment.meta.pm_parameters, pretty: true) %></code></pre>
+  </div>
+  <div id="trace" class="tab-pane fade">
+<pre><code><%= if @experiment.trace do %><%= Poison.encode_to_iodata!(@experiment.trace.trace_acc, pretty: true) %><% end %>
+</code></pre>
+  </div>
+  <div id="graphs" class="tab-pane fade">
+    <%= if @experiment.graph do %>
+      <%= charts(@experiment.graph) %>
+    <% end %>
+    <div id="fitness_vs_evals" style="min-width: 310px; max-width: 800px; height: 400px; margin: 0 auto">
+    </div>
+    <div id="val_fitness_vs_evals" style="min-width: 310px; max-width: 800px; height: 400px; margin: 0 auto">
+    </div>
+    <div id="specie_pop_turnover_vs_evals" style="min-width: 310px; max-width: 800px; height: 400px; margin: 0 auto">
+    </div>
+    <div id="avg_fitness_vs_evals_std" style="min-width: 310px; height: 400px; margin: 0 auto">
+    </div>
+    <div id="avg_val_fitness_vs_evals_std" style="min-width: 310px; height: 400px; margin: 0 auto">
+    </div>
+    <div id="avg_neurons_vs_evals_std" style="min-width: 310px; height: 400px; margin: 0 auto">
+    </div>
+    <div id="avg_diversity_vs_evals_std" style="min-width: 310px; height: 400px; margin: 0 auto">
+    </div>
+  </div>
+</div>

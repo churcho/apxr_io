@@ -1,0 +1,106 @@
+defmodule ApxrIo.Learn.Experiments do
+  use ApxrIoWeb, :context
+
+  @timeout 60_000
+
+  def all(project, page, count, sort) do
+    Experiment.all(project, page, count, sort)
+    |> Repo.all()
+  end
+
+  def count(project) do
+    Repo.one(Experiment.count(project))
+  end
+
+  def get(release, id) do
+    Repo.get_by(assoc(release, :experiment), id: id)
+    |> Repo.preload([:release])
+  end
+
+  def get(project, version, id) do
+    Repo.one(Experiment.get(project, version, id))
+  end
+
+  def get_by_id(id) do
+    Repo.get_by(Experiment, id: id)
+    |> Repo.preload(:release)
+  end
+
+  def start(project, release, params, audit: audit_data) do
+    result =
+      Multi.new()
+      |> Multi.insert(:experiment, Experiment.build(release, params))
+      |> audit_start(audit_data, project, release)
+      |> Repo.transaction(timeout: @timeout)
+
+    case result do
+      {:error, :experiment, changeset, _} ->
+        {:error, changeset}
+
+      {:ok, %{experiment: experiment}} ->
+        start_experiment(experiment)
+    end
+  end
+
+  def update(project, release, experiment, params, audit: audit_data) do
+    Multi.new()
+    |> Multi.update(:experiment, Experiment.update(experiment, params))
+    |> maybe_send_notification_email(experiment.meta.status, project, release)
+    |> audit_update(audit_data, project, release)
+    |> Repo.transaction(timeout: @timeout)
+  end
+
+  def delete(project, release, experiment, audit: audit_data) do
+    result =
+      Multi.new()
+      |> Multi.delete(:experiment, Experiment.delete(experiment))
+      |> audit_delete(audit_data, project, release)
+      |> Repo.transaction(timeout: @timeout)
+
+    case result do
+      {:error, :experiment, changeset, _} ->
+        {:error, changeset}
+
+      {:ok, %{experiment: experiment}} ->
+        delete_experiment(experiment)
+    end
+  end
+
+  defp start_experiment(experiment) do
+    Runner.run(experiment)
+    {:ok, %{experiment: experiment}}
+  end
+
+  defp delete_experiment(_experiment) do
+    :ok
+  end
+
+  defp audit_start(multi, audit_data, project, release) do
+    audit(multi, audit_data, "experiment.start", fn %{experiment: exp} ->
+      {project, release, exp}
+    end)
+  end
+
+  defp audit_update(multi, audit_data, project, release) do
+    audit(multi, audit_data, "experiment.update", fn %{experiment: exp} ->
+      {project, release, exp}
+    end)
+  end
+
+  defp audit_delete(multi, audit_data, project, release) do
+    audit(multi, audit_data, "experiment.delete", fn %{experiment: exp} ->
+      {project, release, exp}
+    end)
+  end
+
+  defp maybe_send_notification_email(multi, "complete", project, release) do
+    owners = Enum.map(Owners.all(project, user: :emails), & &1.user)
+
+    Emails.experiment_complete(project.name, release.version, owners)
+    |> Mailer.deliver_now_throttled()
+
+    multi
+  end
+
+  defp maybe_send_notification_email(multi, _status, _project, _release), do: multi
+end

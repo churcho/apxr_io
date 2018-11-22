@@ -1,0 +1,40 @@
+<%= changeset_error(@changeset) %>
+<h2>Sign up</h2>
+
+<%= form_for @changeset, Routes.signup_path(Endpoint, :create), fn f -> %>
+  <div class="form-group">
+    <%= label f, :username %>
+    <%= text_input f, :username %>
+    <%= error_tag f, :username %>
+  </div>
+
+  <%= inputs_for f, :emails, [append: [%Email{}]], fn f -> %>
+    <div class="form-group">
+      <%= label f, :email %>
+      <%= email_input f, :email %>
+      <%= error_tag f, :email %>
+    </div>
+
+    <div class="form-group">
+      <%= label f, :email_confirmation %>
+      <%= email_input f, :email_confirmation %>
+      <%= error_tag f, :email_confirmation %>
+    </div>
+  <% end %>
+
+  <div class="checkbox">
+    <label>
+      <input type="checkbox" id="checkboxSuccess" required value="consent">
+      I confirm that I have read and agree to ApproximateReality's <a href="<%= Routes.policy_path(Endpoint, :tos) %>">Terms of Service</a> and <a href="<%= Routes.policy_path(Endpoint, :privacy) %>">Privacy Policy</a>.
+    </label>
+  </div>
+
+  <button type="submit" class="btn btn-primary btn-black">Sign up</button>
+
+  <br><br>
+
+  <p>
+    <a href="<%= Routes.login_path(Endpoint, :new) %>">Already have an account?</a> |
+    <a href="<%= Routes.email_verification_path(Endpoint, :show) %>">Resend verification email</a>
+  </p>
+<% end %>

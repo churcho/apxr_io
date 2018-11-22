@@ -1,0 +1,10 @@
+<p>You have been added as a member to the <strong><%= @team %></strong> team.</p>
+
+<p>Go check out the <a href="<%= raw Routes.team_url(Endpoint, :members, @team) %>">team</a>, if you do not want to join the team you can leave it from the settings. You need to be logged in as <strong><%= @username %></strong> to access it.</p>
+
+<p>Authenticate to the team by running <pre>apxr.team auth <%= @team %></pre> in your shell.</a>.
+
+<p>
+  --<br>
+  approximatereality.com
+</p>

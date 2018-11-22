@@ -1,0 +1,6 @@
+<tr>
+  <td><a href="<%= Routes.artifact_path(Endpoint, :show, @project, @artifact, [])%>"><%= @artifact.name %></a></td>
+  <td><%= @artifact.inserted_at %></td>
+  <td><%= @artifact.updated_at %></td>
+  <td><%= @artifact.status %></td>
+</tr>

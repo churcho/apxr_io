@@ -1,0 +1,111 @@
+# ApxrIo
+
+### Quick Start
+
+1. Run `mix setup` to install dependencies, create and seed database etc
+2. Run `mix test`
+3. Run `iex -S mix phx.server` and visit [http://localhost:4000/](http://localhost:4000/)
+
+After this succeeds you should be good to go!
+
+See [`setup` alias in mix.exs](./mix.exs) and sections below for more information or when you run into issues.
+
+### PostgreSQL Modules And Version
+
+PostgreSQL version should be >= 9.4, as ApxrIo uses the `jsonb` type, that is available from PostgreSQL 9.4 onward.
+
+ApxrIo requires the PostgreSQL modules [pg_trgm](http://www.postgresql.org/docs/9.4/static/pgtrgm.html) and [pgcrypto](http://www.postgresql.org/docs/9.4/static/pgcrypto.html) to be available.
+
+This is located in the "postgresql-contrib" project, however the project name can vary depending on your operating system. If the module is not installed the ecto migrations will fail.
+
+### Database
+
+By default, ApxrIo connects to a localhost PostgreSQL database `apxr_io_dev` using the username `postgres` with the password `postgres`.
+
+Create the database and user 'postgres' if not already done:
+
+```sql
+CREATE USER postgres;
+ALTER USER postgres PASSWORD 'postgres';
+CREATE DATABASE apxr_io_dev;
+GRANT ALL PRIVILEGES ON DATABASE apxr_io_dev TO postgres;
+ALTER USER postgres WITH SUPERUSER;
+
+-- if you also want to setup the test database
+CREATE DATABASE apxr_io_test;
+GRANT ALL PRIVILEGES ON DATABASE apxr_io_test TO postgres;
+```
+
+Now you are fine to run the ecto migrations:
+
+```shell
+mix ecto.migrate
+```
+
+### Sample Data
+
+Using the following command you can seed your local ApxrIo instance with some sample data:
+
+```shell
+mix run priv/repo/seeds.exs
+```
+
+### Node Dependencies
+
+For assets compilation we need to install Node dependencies:
+
+```shell
+cd assets && yarn install
+```
+
+If you don't have yarn installed, run `brew install yarn --without-node` (if you use nvm or similar, you should exclude installing Node.js so that nvm’s version of Node.js is used) or `cd assets && npm install` will work too.
+
+### Running ApxrIo
+
+Once the database is set up you can start ApxrIo:
+
+```shell
+# with console
+iex -S mix phx.server
+
+# without console
+mix phx.server
+```
+
+ApxrIo will be available at [http://localhost:4000/](http://localhost:4000/).
+
+### Additional Checks
+
+1. Run `mix format`
+2. Run `mix xref unreachable`
+3. Run `mix credo`
+4. Run `mix app.tree`
+5. Run `mix hex.outdated`
+
+### NOTE:
+
+You need a CLOAK_KEY environment variable containing a key in Base64 encoding.
+
+For example:
+
+`export APXR_CLOAK_KEY="A7x+qcFD9yeRfl3GohiOFZM5bNCdHNu27B0Ozv8X4dE="`
+
+### Original License
+
+   Copyright 2015 Six Colors AB
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+### License
+
+Modified Copyright (C) 2018 ApproximateReality

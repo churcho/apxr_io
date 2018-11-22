@@ -1,0 +1,55 @@
+<nav>
+  <div class="pagination-info">
+    <h4 class="projects-title"><%= @artifact.name %></h4>
+  </div>
+  <%= if @artifact.experiment do %>
+    <div class="navbar-right pagination-sort">
+      <div>
+        <a href="<%= path_for_experiment(@project, @artifact.experiment) %>">
+          <button class="btn btn-default">View experiment</button>
+        </a>
+      </div>
+    </div>
+  <% end %>
+  <div class="navbar-right pagination-sort">
+    <div>
+      <a href="<%= Routes.artifact_path(Endpoint, :index, @project) %>">
+        <button class="btn btn-default">
+          Back to artifacts
+        </button>
+      </a>
+    </div>
+  </div> 
+</nav>
+
+<div class="clearfix"></div>
+
+<div>
+  <kbd>
+    <%= @status %>
+  </kbd>
+</div>
+
+<br />
+
+<ul class="nav nav-tabs nav-justified">
+  <li class="active"><a data-toggle="tab" href="#config">CONFIGURATION</a></li>
+  <li><a data-toggle="tab" href="#graphs">GRAPHS</a></li>
+</ul>
+
+<div class="tab-content">
+    <div id="config" class="tab-pane fade in active">
+<pre><code>location: <%= @artifact.meta.location %>
+scale_min: <%= @artifact.meta.scale_min %>
+scale_max: <%= @artifact.meta.scale_max %>
+scale_factor: <%= @artifact.meta.scale_factor %>
+</code></pre>
+  </div>
+  <div id="graphs" class="tab-pane fade">
+    <%= if @artifact.stats do %>
+      <%= charts(@artifact.stats, @artifact.name) %>
+    <% end %>
+    <div id="artifact_stats" style="min-width: 310px; height: 400px; margin: 0 auto">
+    </div>
+  </div>
+</div>

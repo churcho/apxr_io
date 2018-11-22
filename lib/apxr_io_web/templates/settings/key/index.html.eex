@@ -1,0 +1,10 @@
+<%= changeset_error(@key_changeset) %>
+
+<div class="row">
+  <div class="col-sm-3">
+    <%= render ApxrIoWeb.SettingsView, "_sidebar.html", assigns %>
+  </div>
+  <div class="col-sm-9 keys">
+    <%= render ApxrIoWeb.SettingsView, "_keys.html", assigns %>
+  </div>
+</div>

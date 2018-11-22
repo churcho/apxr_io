@@ -1,0 +1,104 @@
+.project-title {
+  @include font-size(50);
+  color: $color-black;
+  word-wrap: break-word;
+
+  a {
+    line-height: 50px;
+  }
+
+  .version {
+    @include font-size(20, $base-line-height);
+    padding: 0 0 0 4px;
+    color: $color-grey-three;
+
+    &.retired {
+      color: $color-red;
+    }
+  }
+}
+
+.project-view {
+  h3 {
+    @include font-size(20, $base-line-height);
+    margin-bottom: 15px;
+    font-weight: bold;
+    color: $color-black;
+  }
+
+  .description {
+    padding: 15px 0 15px;
+    font-weight: 300;
+    line-height: 20px;
+    border-bottom: $color-grey-two 1px solid;
+  }
+}
+
+.links {
+  padding: 0;
+  list-style: none;
+
+  li {
+    margin-bottom: 5px;
+  }
+}
+
+.build-tool {
+  display: inline-block;
+  padding: 4px 6px;
+  color: $color-white;
+  border-radius: 2px;
+
+  &.elixir {
+    background: #4e2a8e;
+  }
+
+  &.python {
+    background: #224869;
+  }
+}
+
+.config-tool {
+  @include font-size(18, $base-line-height);
+  display: inline-block;
+  margin-bottom: 8px;
+  font-weight: 300;
+}
+
+.config-input {
+  margin-bottom: 10px;
+
+  input {
+    border: 1px $color-grey-two solid;
+    border-radius: 2px;
+  }
+}
+
+.version-dependency-list {
+  padding: 0;
+  list-style: none;
+
+  li {
+    @include font-size(18);
+    margin: 0 0 10px;
+    overflow: hidden;
+    font-weight: 300;
+    line-height: 1.06;  // Just enough for e.g. the bottom of a "g" not to be cut off.
+    color: $color-black;
+    text-overflow: ellipsis;
+  }
+}
+
+.owners-list {
+  padding: 0;
+  list-style: none;
+
+  li {
+    margin: 5px 0;
+  }
+}
+
+.version-retirement {
+  font-weight: normal;
+  color: $color-red;
+}

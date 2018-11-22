@@ -1,0 +1,17 @@
+syntax = "proto2";
+
+message Versions {
+  // All projects in the repository
+  repeated Project projects = 1;
+}
+
+message Project {
+  // Project name
+  required string name = 1;
+  // All released versions of the project
+  repeated string versions = 2;
+  // Zero-based indexes of retired versions in the versions field, see project.proto
+  repeated int32 retired = 3 [packed=true];
+  // If set, the name of the project repository
+  optional string repository = 4;
+}

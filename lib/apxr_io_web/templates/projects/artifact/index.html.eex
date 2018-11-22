@@ -1,0 +1,112 @@
+<%= if @artifact_count == 0 do %>
+  <div class="project-list no-results">
+    <h4>No Results Found</h4>
+  </div>
+<% else %>
+  <%
+  shown_artifacts = length(@artifacts)
+  paginate = paginate(@page, @artifact_count, items_per_page: @per_page, page_links: 5)
+
+  range_start = (@page - 1) * @per_page + 1
+  range_end = range_start + shown_artifacts - 1
+  page = if @page == 1, do: nil, else: @page
+
+  sort_name_params = params(page: page, sort: "name")
+  sort_status_params = params(page: page, sort: "status")
+  sort_created_params = params(page: page, sort: "inserted_at")
+  sort_updated_params = params(page: page, sort: "updated_at")
+  prev_page_params = params(page: @page-1, sort: @sort)
+  next_page_params = params(page: @page+1, sort: @sort)
+  %>
+
+<nav>
+  <div class="pagination-info">
+    <h4 class="projects-title">Artifacts (<%= @artifact_count %>)</h4>
+  </div>
+  <div class="navbar-right pagination-sort">
+    <div class="dropdown">
+      <button class="btn btn-default dropdown-toggle" type="button" id="sort_dropdown" data-toggle="dropdown">
+        <%= show_sort_info(@sort) %>
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-right" role="menu">
+        <li role="presentation">
+          <a role="menuitem" tabindex="-1" href="<%= Routes.artifact_path(Endpoint, :index, @project, sort_name_params) %>">Name</a>
+        </li>
+        <li role="presentation">
+          <a role="menuitem" tabindex="-1" href="<%= Routes.artifact_path(Endpoint, :index, @project, sort_status_params) %>">Status</a>
+        </li>
+        <li role="presentation">
+          <a role="menuitem" tabindex="-1" href="<%= Routes.artifact_path(Endpoint, :index, @project, sort_created_params) %>">Recently created</a>
+        </li>
+        <li role="presentation">
+          <a role="menuitem" tabindex="-1" href="<%= Routes.artifact_path(Endpoint, :index, @project, sort_updated_params) %>">Recently updated</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="navbar-right pagination-sort">
+    <div>
+      <a href="<%= Routes.project_path(Endpoint, :show, @project) %>">
+        <button class="btn btn-default">
+          Back to project
+        </button>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<div class="clearfix"></div>
+
+<div class="table-responsive">
+  <table class="table table-condensed table-striped">
+    <tr>
+      <td>Name</td>
+      <td>Created</td>
+      <td>Updated</td>
+      <td>Status</td>
+    </tr>
+    <%= for artifact <- @artifacts do %>
+      <%= render "_artifact.html", project: @project, artifact: artifact, view: @sort %>
+    <% end %>
+  </table>
+</div>
+
+<div class="pagination-wrapper">
+  <div class="pagination-info">
+    <%= if shown_artifacts == 1 do %>
+      Showing last artifact of <%= @artifact_count %> total
+    <% else %>
+      Showing <%= range_start %>&ndash;<%= range_end %> artifacts of <%= @artifact_count %> total
+    <% end %>
+  </div>
+  <nav class="pagination-widget">
+    <ul class="pagination pagination-sm">
+      <%= if paginate[:prev] do %>
+        <li><a href="<%= Routes.artifact_path(Endpoint, :index, @artifact.project, prev_page_params) %>" aria-label="Previous">&laquo;</a></li>
+      <% else %>
+        <li class="disabled"><span>&laquo;</span></li>
+      <% end %>
+      <%= for counter <- paginate[:page_links] do %>
+        <%= if counter == @page do %>
+          <li class="active">
+            <span><%= counter %></span>
+          </li>
+        <% else %>
+          <li>
+            <a href="<%= Routes.artifact_path(Endpoint, :index, @artifact.project, params(page: counter, sort: @sort)) %>">
+              <%= counter %>
+            </a>
+          </li>
+        <% end %>
+      <% end %>
+      <%= if paginate[:next] do %>
+        <li><a href="<%= Routes.artifact_path(Endpoint, :index, @artifact.project, next_page_params) %>" aria-label="Next" >&raquo;</a></li>
+      <% else %>
+        <li class="disabled"><span>&raquo;</span></li>
+      <% end %>
+    </ul>
+  </nav>
+</div>
+
+<% end %>

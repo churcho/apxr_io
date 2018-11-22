@@ -1,0 +1,17 @@
+<div class="panel panel-default sidebar">
+  <div class="panel-heading"><%= @team.name %></div>
+  <ul class="list-group">
+    <%= for {id, {name, path}} <- settings(@team) do %>
+      <a href="<%= path %>">
+        <li class="list-group-item <%= selected_setting(@conn, id) %>">
+          <span><%= name %></span>
+        </li>  
+      </a>
+    <% end %>
+    <a href="<%= Routes.team_path(Endpoint, :index) %>">
+      <li class="list-group-item">
+        <small>Back to teams <span style="float: right;"><</span></small>
+      </li>
+    </a>
+  </ul>
+</div>

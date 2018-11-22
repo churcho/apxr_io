@@ -1,0 +1,12 @@
+<div class="panel panel-default sidebar">
+  <div class="panel-heading">Menu</div>
+  <ul class="list-group">
+    <%= for {id, {name, path}} <- settings() do %>
+      <a href="<%= path %>">
+        <li class="list-group-item <%= selected_setting(@conn, id) %>">
+          <span><%= name %></span>
+        </li>  
+      </a>
+    <% end %>
+  </ul>
+</div>

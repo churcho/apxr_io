@@ -1,0 +1,18 @@
+<h2>About ApxrIo</h2>
+
+<p>
+  ApxrIo is a project manager for the BEAM ecosystem, any language that compiles to run on the BEAM VM, such as <a href="https://elixir-lang.org/">Elixir</a> and <a href="http://www.erlang.org/">Erlang</a>, can be used to build ApxrIo projects.
+  ApxrIo consists of the <a href="https://github.com/apxr_io/specifications/blob/master/http_api.md">HTTP API</a>, <a href="/">this website</a>, the repository serving projects and indexes, <a href="https://hexdocs.pm">hexdocs</a>, the <a href="https://github.com/apxr_io/apxr_io">Mix build-tool integration</a>, and <a href="https://github.com/apxr_io">other services</a>.
+  Many build tools support ApxrIo projects including <a href="https://hexdocs.pm/mix">Mix</a> for Elixir projects, <a href="https://www.rebar3.org/">Rebar</a> and <a href="https://erlang.mk/">erlang.mk</a> for Erlang projects.
+</p>
+
+<h3>About Six Colors AB</h3>
+
+<p>
+  ApxrIo was started as an open-source project early 2014, it is still an open-source project but today it is operated by the Swedish limited company "Six Colors AB".
+  The company was founded in 2018 by the creator of ApxrIo, Eric Meadows-Jönsson, Six Colors supports the development of ApxrIo and operates all services required to run ApxrIo.
+</p>
+
+<p>
+  By charging for private projects we can fund free open-source development and run reliable services for both paying customers and the open-source community.
+</p>

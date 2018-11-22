@@ -1,0 +1,5 @@
+<li>
+  <a href="<%= path_for_project(@project) %>"><%= project_name(@project) %></a>
+  <span class="version"><%= @project.latest_version %></span>
+  <p><%= text_length(@project.meta.description, 280) %></p>
+</li>

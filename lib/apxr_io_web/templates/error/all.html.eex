@@ -1,0 +1,6 @@
+<%= render(ApxrIoWeb.LayoutView, "simple_header.html", assigns) %>
+  <div class="error-view">
+    <span class="call-to-action">Whoops!</span>
+    <br />
+    <span class="message"><%= @status %> - <%= @message %></span>
+  </div>

@@ -1,0 +1,17 @@
+<div class="row">
+  <div class="col-sm-3">
+    <ul class="sidebar">
+      <li class="sidebar-header">Mix</li>
+      <li class="sidebar-item <%= selected_docs(@conn, :usage) %>"><a href="<%= Routes.docs_path(Endpoint, :usage) %>">Usage</a></li>
+      <li class="sidebar-item <%= selected_docs(@conn, :publish) %>"><a href="<%= Routes.docs_path(Endpoint, :publish) %>">Publishing projects</a></li>
+      <li class="sidebar-item <%= selected_docs(@conn, :tasks) %>"><a href="<%= Routes.docs_path(Endpoint, :tasks) %>">Tasks</a></li>
+      <li class="sidebar-header">ApxrIo</li>
+      <li class="sidebar-item <%= selected_docs(@conn, :faq) %>"><a href="<%= Routes.docs_path(Endpoint, :faq) %>">FAQ</a></li>
+      <li class="sidebar-item <%= selected_docs(@conn, :private) %>"><a href="<%= Routes.docs_path(Endpoint, :private) %>">Private projects</a></li>
+    </ul>
+  </div>
+
+  <div class="col-sm-9">
+    <%= render DocsView, @view, assigns %>
+  </div>
+</div>
