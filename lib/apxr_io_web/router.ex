@@ -78,6 +78,8 @@ defmodule ApxrIoWeb.Router do
     get "/policies/privacy", PolicyController, :privacy
     get "/policies/termsofservice", PolicyController, :tos
 
+    get "/projects/:name/versions", VersionController, :index
+
     get "/projects", ProjectController, :index
     get "/projects/:name", ProjectController, :show
     get "/projects/:name/:version", ProjectController, :show

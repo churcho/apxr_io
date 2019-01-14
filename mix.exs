@@ -65,6 +65,8 @@ defmodule ApxrIo.MixProject do
       {:jason, "~> 1.1"},
       # Automatic Erlang cluster formation and management for - Apache 2.0
       {:libcluster, "~> 3.0"},
+      # Easily parsable single line, plain text and JSON logger - MIT
+      {:logster, "~> 0.10.0"},
       # Mocks and explicit contracts for Elixir - Apache 2.0
       {:mox, "~> 0.3.1", only: :test},
       # Integration between Phoenix & Ecto - Apache 2.0

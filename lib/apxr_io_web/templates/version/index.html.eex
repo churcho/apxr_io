@@ -1,0 +1,11 @@
+<h2 class="versions-title">
+  All available versions of <%= link project_name(@project), to: path_for_project(@project), class: "version-project-title" %>
+</h2>
+<div class="clearfix"></div>
+<div class="version-list">
+  <ul>
+    <%= for release <- @releases do %>
+      <%= render "_version.html", release: release, project: @project %>
+    <% end %>
+  </ul>
+</div>

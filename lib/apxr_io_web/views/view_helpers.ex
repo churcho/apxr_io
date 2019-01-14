@@ -24,6 +24,10 @@ defmodule ApxrIoWeb.ViewHelpers do
     Routes.project_path(Endpoint, :show, project, release, [])
   end
 
+  def path_for_releases(project) do
+    Routes.version_path(Endpoint, :index, project)
+  end
+
   def path_for_experiment(project, experiment) do
     Routes.experiment_path(Endpoint, :show, project, experiment.release, experiment, [])
   end

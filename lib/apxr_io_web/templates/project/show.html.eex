@@ -68,14 +68,8 @@ build_tool = @current_release && @current_release.meta.build_tool
         </ul>
 
         <%= if length(@releases)> show_latest_versions do %>
-          <ul id="older-versions" class="collapse version-dependency-list">
-            <%= render "versions.html", [project: @project, releases: Enum.drop(@releases, show_latest_versions)] %>
-          </ul>
           <p class="show-versions">
-            <span class="toggle-text" role="button" data-toggle="collapse" data-target="#older-versions" aria-expanded="false" aria-controls="versions">
-              <a>Show All Versions</a>
-              <a class="invisible">Show Recent Versions</a>
-            </span>
+            <a href="<%= path_for_releases(@project) %>">Show all versions</a>
           </p>
         <% end %>
       </div>
