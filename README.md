@@ -88,6 +88,17 @@ emails will be available at [http://localhost:4000/sent_emails](http://localhost
 5. Run `mix hex.outdated`
 
 
+### Proto
+
+The files under `/src` can be generated with the following library https://github.com/tomas-abrahamsson/gpb
+
+For example:
+   
+`../gpb/bin/protoc-erl -I. ./proto/*`
+
+The generated `.erl`and `.hrl` files should then moved to the `/src` directory.
+
+
 ### NOTE:
 
 You need a CLOAK_KEY environment variable containing a key in Base64 encoding.

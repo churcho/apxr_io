@@ -52,8 +52,10 @@ defmodule ApxrIo.Team.RegistryBuilderTest do
       RegistryBuilder.full_build(team)
 
       project2 = vmap("repos/#{team.name}/projects/#{p2.name}")
+      
+      assert project2.name == p2.name
+      assert project2.repository == team.name
       assert length(project2.releases) == 2
-
       assert List.first(project2.releases) == %{
                version: "0.0.1",
                checksum: Base.decode16!(@checksum)
@@ -85,9 +87,15 @@ defmodule ApxrIo.Team.RegistryBuilderTest do
       refute open_table(team.name)
 
       names = vmap("repos/#{team.name}/names")
+      assert names.repository == team.name
       assert length(names.projects) == 1
 
-      assert vmap("repos/#{team.name}/projects/#{project.name}")
+      versions = vmap("repos/#{team.name}/versions")
+      assert versions.repository == team.name
+
+      project = v2_map("repos/#{team.name}/projects/#{project.name}")
+      assert project.name == project.name
+      assert project.repository == team.name
     end
   end
 

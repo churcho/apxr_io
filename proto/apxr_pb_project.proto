@@ -3,6 +3,10 @@ syntax = "proto2";
 message Project {
   // All releases of the project
   repeated Release releases = 1;
+  // Name of project
+  required string name = 2;
+  // Name of repository
+  required string repository = 3;
 }
 
 message Release {

@@ -13,33 +13,30 @@ defmodule ApxrIo.Repository.RegistryBuilder do
   alias ApxrIo.Repo
   alias ApxrIo.Repository.{Project, Release}
 
-  @lock_timeout 30_000
-  @transaction_timeout 60_000
-
   def full_build(team) do
-    locked_build(fn -> full(team) end)
+    locked_build(fn -> full(team) end, 300_000, 600_000)
   end
 
   def partial_build(action) do
-    locked_build(fn -> partial(action) end)
+    locked_build(fn -> partial(action) end, 30_000, 60_000)
   end
 
-  defp locked_build(fun) do
+  defp locked_build(fun, lock_timeout, transaction_timeout) do
     Repo.transaction(
       fn ->
-        Repo.advisory_lock(:registry, timeout: @lock_timeout)
+        Repo.advisory_lock(:registry, timeout: lock_timeout)
         fun.()
         Repo.advisory_unlock(:registry)
       end,
-      timeout: @transaction_timeout
+      timeout: transaction_timeout
     )
   end
 
-  defp full(team) do
+  def full(team) do
     log(:full, fn ->
       {projects, releases} = tuples(team)
 
-      new = build_new(projects, releases)
+      new = build_new(team, projects, releases)
       upload_files(team, new)
 
       {_, _, projects} = new
@@ -56,19 +53,19 @@ defmodule ApxrIo.Repository.RegistryBuilder do
     end)
   end
 
-  defp partial({:publish, project}) do
+  def partial({:publish, project}) do
     log(:publish, fn ->
       project_name = project.name
       team = project.team
       {projects, releases} = tuples(team)
       release_map = Map.new(releases)
 
-      names = build_names(projects)
-      versions = build_versions(projects, release_map)
+      names = build_names(team, projects)
+      versions = build_versions(team, projects, release_map)
 
       case Enum.find(projects, &match?({^project_name, _}, &1)) do
         {^project_name, [project_versions]} ->
-          project_object = build_project(project_name, project_versions, release_map)
+          project_object = build_project(team, project_name, project_versions, release_map)
 
           upload_files(team, {names, versions, [{project_name, project_object}]})
 
@@ -108,26 +105,26 @@ defmodule ApxrIo.Repository.RegistryBuilder do
     :apxr_registry.sign_protobuf(contents, private_key)
   end
 
-  defp build_new(projects, releases) do
+  defp build_new(team, projects, releases) do
     release_map = Map.new(releases)
 
     {
-      build_names(projects),
-      build_versions(projects, release_map),
-      build_projects(projects, release_map)
+      build_names(team, projects),
+      build_versions(team, projects, release_map),
+      build_projects(team, projects, release_map)
     }
   end
 
-  defp build_names(projects) do
+  defp build_names(team, projects) do
     projects = Enum.map(projects, fn {name, _versions} -> %{name: name} end)
 
-    %{projects: projects}
+    %{projects: projects, repository: team.name}
     |> :apxr_registry.encode_names()
     |> sign_protobuf()
     |> :zlib.gzip()
   end
 
-  defp build_versions(projects, release_map) do
+  defp build_versions(team, projects, release_map) do
     projects =
       Enum.map(projects, fn {name, [versions]} ->
         %{
@@ -137,7 +134,7 @@ defmodule ApxrIo.Repository.RegistryBuilder do
         }
       end)
 
-    %{projects: projects}
+    %{projects: projects, repository: team.name}
     |> :apxr_registry.encode_versions()
     |> sign_protobuf()
     |> :zlib.gzip()
@@ -152,14 +149,14 @@ defmodule ApxrIo.Repository.RegistryBuilder do
     end)
   end
 
-  defp build_projects(projects, release_map) do
+  defp build_projects(team, projects, release_map) do
     Enum.map(projects, fn {name, [versions]} ->
-      contents = build_project(name, versions, release_map)
+      contents = build_project(team, name, versions, release_map)
       {name, contents}
     end)
   end
 
-  defp build_project(name, versions, release_map) do
+  defp build_project(team, name, versions, release_map) do
     releases =
       Enum.map(versions, fn version ->
         [checksum, _tool, retirement] = release_map[{name, version}]
@@ -181,7 +178,11 @@ defmodule ApxrIo.Repository.RegistryBuilder do
         end
       end)
 
-    %{releases: releases}
+    %{
+      name: name,
+      repository: team.name,
+      releases: releases
+    }
     |> :apxr_registry.encode_project()
     |> sign_protobuf()
     |> :zlib.gzip()

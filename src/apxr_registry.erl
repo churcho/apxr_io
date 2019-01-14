@@ -1,11 +1,11 @@
 -module(apxr_registry).
 -export([
 	encode_names/1,
-	decode_names/1,
+	decode_names/2,
 	encode_versions/1,
-	decode_versions/1,
+	decode_versions/2,
 	encode_project/1,
-	decode_project/1,
+	decode_project/3,
 	sign_protobuf/2,
 	decode_signed/1,
 	decode_and_verify_signed/2,
@@ -28,8 +28,13 @@ encode_names(Names) ->
 
 %% @doc
 %% Decode message created with encode_names/1.
-decode_names(Payload) ->
-	apxr_pb_names:decode_msg(Payload, 'Names').
+decode_names(Payload, Repository) ->
+	case apxr_pb_names:decode_msg(Payload, 'Names') of
+		#{repository := Repository, projects := Projects} ->
+			{ok, Projects};
+		_ ->
+			{error, unverified}
+	end.
 
 %% @doc
 %% Encode Versions message.
@@ -38,8 +43,13 @@ encode_versions(Versions) ->
 
 %% @doc
 %% Decode message created with encode_versions/1.
-decode_versions(Payload) ->
-	apxr_pb_versions:decode_msg(Payload, 'Versions').
+decode_versions(Payload, Repository) ->
+	case apxr_pb_versions:decode_msg(Payload, 'Versions') of
+		#{repository := Repository, projects := Projects} ->
+			{ok, Projects};
+		_ ->
+			{error, unverified}
+	end.
 
 %% @doc
 %% Encode Project message.
@@ -48,8 +58,13 @@ encode_project(Project) ->
 
 %% @doc
 %% Decode message created with encode_project/1.
-decode_project(Payload) ->
-	apxr_pb_project:decode_msg(Payload, 'Project').
+decode_project(Payload, Repository, Project) ->
+	case apxr_pb_project:decode_msg(Payload, 'Project') of
+		#{repository := Repository, name := Project, releases := Releases} ->
+    	{ok, Releases};
+    _ ->
+      {error, unverified}
+   end.
 
 %% @doc
 %% Encode Signed message.
