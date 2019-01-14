@@ -40,11 +40,29 @@ defmodule ApxrIoWeb.Teams.BillingControllerTest do
       |> post("/teams/#{team.name}/cancel-billing")
 
     message =
-      "Your subscription is cancelled, you will have access to the team until " <>
+      "Your subscription is canceled, you will have access until " <>
         "the end of your billing period at Dec 12, 2017"
 
     assert redirected_to(conn) == "/teams/#{team.name}/billing"
     assert get_flash(conn, :info) == message
+  end
+
+  # This can happen when the subscription is canceled before the trial is over
+  test "cancel billing without subscription", %{user: user, team: team} do
+    Mox.stub(ApxrIo.Billing.Mock, :cancel, fn token, _user, _audit_data ->
+      assert team.name == token.name
+      %{}
+    end)
+
+    insert(:team_user, team: team, user: user, role: "admin")
+
+    conn =
+      build_conn()
+      |> test_login(user)
+      |> post("/teams/#{team.name}/cancel-billing")
+
+    assert redirected_to(conn) == "/teams/#{team.name}/billing"
+    assert get_flash(conn, :info) == "Your subscription is canceled"
   end
 
   test "show invoice", %{user: user, team: team} do

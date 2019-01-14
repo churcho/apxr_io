@@ -66,13 +66,7 @@ defmodule ApxrIoWeb.Teams.BillingController do
     TeamController.access_team(conn, team, "admin", fn team ->
       billing = ApxrIo.Billing.cancel(team, user, audit: audit_data(conn))
 
-      cancel_date =
-        billing["subscription"]["current_period_end"]
-        |> ApxrIoWeb.Teams.BillingView.payment_date()
-
-      message =
-        "Your subscription is cancelled, you will have access to the team until " <>
-          "the end of your billing period at #{cancel_date}"
+      message = cancel_message(billing["subscription"]["current_period_end"])
 
       conn
       |> put_flash(:info, message)
@@ -221,6 +215,17 @@ defmodule ApxrIoWeb.Teams.BillingController do
 
     assigns = Keyword.merge(assigns, billing_assigns(billing, team))
     render(conn, "index.html", assigns)
+  end
+
+  defp cancel_message(nil = _cancel_date) do
+    "Your subscription is canceled"
+  end
+
+  defp cancel_message(cancel_date) do
+    date = ApxrIoWeb.Teams.BillingView.payment_date(cancel_date)
+
+    "Your subscription is canceled, you will have access until " <>
+      "the end of your billing period at #{date}"
   end
 
   defp billing_assigns(nil, _team) do

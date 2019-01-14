@@ -101,24 +101,36 @@ defmodule ApxrIo.Repository.Releases do
   defp create_release(multi, project, checksum, meta) do
     version = meta["version"]
 
-    params = %{
-      "app" => meta["app"],
-      "version" => version,
-      "meta" => meta
-    }
+    # Validate version manually to avoid an Ecto.Query.CastError exception
+    # which would return an opaque 400 HTTP status
+    case Version.parse(version) do
+      {:ok, version} ->
+        params = %{
+          "app" => meta["app"],
+          "version" => version,
+          "meta" => meta
+        }
 
-    release = project && Repo.get_by(assoc(project, :releases), version: version)
+        release = project && Repo.get_by(assoc(project, :releases), version: version)
 
-    multi
-    |> Multi.insert_or_update(:release, fn %{project: project} ->
-      if release do
-        %{release | project: project}
-        |> Release.update(params, checksum)
-      else
-        Release.build(project, params, checksum)
-      end
-    end)
-    |> Multi.run(:action, fn _, _ -> {:ok, if(release, do: :update, else: :insert)} end)
+        multi
+        |> Multi.insert_or_update(:release, fn changes ->
+          %{project: project} = changes
+
+          if release do
+            %{release | project: project}
+            |> Release.update(params, checksum)
+          else
+            Release.build(project, params, checksum)
+          end
+        end)
+        |> Multi.run(:action, fn _, _ -> {:ok, if(release, do: :update, else: :insert)} end)
+
+      :error ->
+        params = %{version: ApxrIo.Version}
+        change = Ecto.Changeset.cast({%{}, params}, %{version: version}, ~w(version)a)
+        Ecto.Multi.error(multi, :version, change)
+    end
   end
 
   defp project_without_releases(project) do

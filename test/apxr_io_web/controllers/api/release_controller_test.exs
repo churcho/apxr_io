@@ -102,6 +102,24 @@ defmodule ApxrIoWeb.API.ReleaseControllerTest do
       assert ApxrIo.Repo.get_by(Project, name: project.name).meta.description == "awesomeness"
     end
 
+    test "update project fails when version is invalid",
+         %{user: user, project: project, team: team} do
+      insert(:team_user, team: team, user: user)
+
+      meta = %{name: project.name, version: "1.0-dev", description: "not-so-awesome"}
+
+      conn =
+        build_conn()
+        |> put_req_header("content-type", "application/octet-stream")
+        |> put_req_header("authorization", key_for(user))
+        |> post("api/repos/#{team.name}/projects/#{project.name}/releases", create_tar(meta, []))
+
+      assert conn.status == 422
+      result = json_response(conn, 422)
+      assert result["message"] =~ "Validation error"
+      assert result["errors"] == %{"version" => "is invalid SemVer"}
+    end
+
     test "create release checks if project name is correct", %{
       user: user,
       project: project,

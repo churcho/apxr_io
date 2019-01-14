@@ -19,7 +19,7 @@ defmodule ApxrIoWeb.API.ReleaseController do
        when action in [:delete]
 
   def publish(conn, %{"body" => body}) do
-    request_id = List.first(get_req_header(conn, "x-request-id"))
+    request_id = List.first(get_resp_header(conn, "x-request-id"))
 
     log_tarball(
       conn.assigns.team.name,
@@ -110,7 +110,7 @@ defmodule ApxrIoWeb.API.ReleaseController do
   defp handle_tarball(conn, team, project, user, body) do
     case release_metadata(body) do
       {:ok, meta, checksum} ->
-        request_id = List.first(get_req_header(conn, "x-request-id"))
+        request_id = List.first(get_resp_header(conn, "x-request-id"))
         log_tarball(team.name, meta["name"], meta["version"], request_id, body)
 
         # TODO: pass around and store in DB as binary instead

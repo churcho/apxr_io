@@ -18,7 +18,7 @@ sure you clear your browser cache to ensure you are viewing the latest version.
 
 The ApxrIo repository is immutable, this means that in general you cannot remove or change an already
 published project. This restriction exists to ensure a stable and reliable ecosystem where
-depended on projects suddenly disappear.
+depended on projects can't suddenly disappear.
 
 There are exceptions to the immutability rule, a project can be changed or unpublished within 60
 minutes of the project version release or within 24 hours of initial release of the project.

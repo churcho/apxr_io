@@ -41,7 +41,8 @@ defmodule ApxrIoWeb.ControllerHelpers do
     conn
     |> put_status(status)
     |> put_layout(false)
-    |> render(ApxrIoWeb.ErrorView, :"#{status}", assigns)
+    |> put_view(ApxrIoWeb.ErrorView)
+    |> render(:"#{status}", assigns)
     |> halt()
   end
 
@@ -74,7 +75,6 @@ defmodule ApxrIoWeb.ControllerHelpers do
     end)
   end
 
-  defp type_error(ApxrIo.Version), do: "is invalid SemVer"
   defp type_error(type), do: "expected type #{pretty_type(type)}"
 
   defp pretty_type({:array, type}), do: "list(#{pretty_type(type)})"

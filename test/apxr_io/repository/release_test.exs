@@ -55,6 +55,17 @@ defmodule ApxrIo.Repository.ReleaseTest do
     |> ApxrIo.Repo.get_by!(version: "0.0.1")
   end
 
+  test "update release fails with invalid version", %{projects: [_, project2, project3]} do
+    insert(:release, project: project3, version: "0.0.1")
+
+    release = insert(:release, project: project2, version: "0.0.1")
+
+    params = params(%{version: "1.0"})
+
+    changeset = Release.update(%{release | project: project2}, params, "")
+    assert [version: {"is invalid SemVer", _}] = changeset.errors
+  end
+
   test "delete release", %{projects: [_, project2, _]} do
     release =
       Release.build(project2, rel_meta(%{version: "0.0.1", build_tool: "elixir"}), "")

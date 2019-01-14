@@ -23,28 +23,30 @@ defmodule ApxrIoWeb.Endpoint do
   end
 
   plug Plug.RequestId
-  plug Logster.Plugs.Logger, excludes: [
-    :password,
-    :password_confirmation,
-    :secret,
-    :secret_first,
-    :secret_second,
-    :email,
-    :email_hash,
-    :email_confirmation,
-    :username,
-    :from,
-    :to,
-    :bcc,
-    :cc,
-    :auth_token,
-    :token,
-    :key,
-    :ip,
-    :last_use,
-    :verification_key,
-    :name
-  ]
+
+  plug Logster.Plugs.Logger,
+    excludes: [
+      :password,
+      :password_confirmation,
+      :secret,
+      :secret_first,
+      :secret_second,
+      :email,
+      :email_hash,
+      :email_confirmation,
+      :username,
+      :from,
+      :to,
+      :bcc,
+      :cc,
+      :auth_token,
+      :token,
+      :key,
+      :ip,
+      :last_use,
+      :verification_key,
+      :name
+    ]
 
   plug Plug.Parsers,
     parsers: [:urlencoded, :json, ApxrIoWeb.PlugParser],

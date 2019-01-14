@@ -67,7 +67,7 @@ build_tool = @current_release && @current_release.meta.build_tool
           <%= render "versions.html", [project: @project, releases: Enum.take(@releases, show_latest_versions)] %>
         </ul>
 
-        <%= if length(@releases)> show_latest_versions do %>
+        <%= if length(@releases) > show_latest_versions do %>
           <p class="show-versions">
             <a href="<%= path_for_releases(@project) %>">Show all versions</a>
           </p>
