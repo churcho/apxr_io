@@ -33,36 +33,36 @@ defmodule ApxrIo.Team.RegistryBuilderTest do
     end
   end
 
-  defp vmap(path) do
+  defp vmap(path, args) when is_list(args) do
     nonrepo_path = Regex.replace(~r"^repos/\w+/", path, "")
 
     if contents = ApxrIo.Store.get(nil, :s3_bucket, path, []) do
       public_key = Application.fetch_env!(:apxr_io, :public_key)
       {:ok, payload} = :apxr_registry.decode_and_verify_signed(:zlib.gunzip(contents), public_key)
-      path_to_decoder(nonrepo_path).(payload)
+      fun = path_to_decoder(nonrepo_path)
+      {:ok, decoded} = apply(fun, [payload | args])
+      decoded
     end
   end
 
-  defp path_to_decoder("names"), do: &:apxr_registry.decode_names/1
-  defp path_to_decoder("versions"), do: &:apxr_registry.decode_versions/1
-  defp path_to_decoder("projects/" <> _), do: &:apxr_registry.decode_project/1
+  defp path_to_decoder("names"), do: &:apxr_registry.decode_names/2
+  defp path_to_decoder("versions"), do: &:apxr_registry.decode_versions/2
+  defp path_to_decoder("projects/" <> _), do: &:apxr_registry.decode_project/3
 
   describe "full_build/0" do
     test "registry is in correct format", %{team: team, projects: [_p1, p2, p3]} do
       RegistryBuilder.full_build(team)
 
-      project2 = vmap("repos/#{team.name}/projects/#{p2.name}")
-      
-      assert project2.name == p2.name
-      assert project2.repository == team.name
-      assert length(project2.releases) == 2
-      assert List.first(project2.releases) == %{
+      project2_releases = vmap("repos/#{team.name}/projects/#{p2.name}", [team.name, p2.name])
+      assert length(project2_releases) == 2
+
+      assert List.first(project2_releases) == %{
                version: "0.0.1",
                checksum: Base.decode16!(@checksum)
              }
 
-      project3 = vmap("repos/#{team.name}/projects/#{p3.name}")
-      assert [%{version: "0.0.2"}] = project3.releases
+      project3 = vmap("repos/#{team.name}/projects/#{p3.name}", [team.name, p3.name])
+      assert [%{version: "0.0.2"}] = project3
     end
 
     test "remove project", %{team: team, projects: [p1, p2, p3], releases: [_, _, _, r4]} do
@@ -72,10 +72,10 @@ defmodule ApxrIo.Team.RegistryBuilderTest do
       ApxrIo.Repo.delete!(p3)
       RegistryBuilder.full_build(team)
 
-      assert length(vmap("repos/#{team.name}/names").projects) == 2
-      assert vmap("repos/#{team.name}/projects/#{p1.name}")
-      assert vmap("repos/#{team.name}/projects/#{p2.name}")
-      refute vmap("repos/#{team.name}/projects/#{p3.name}")
+      assert length(vmap("repos/#{team.name}/names", [team.name])) == 2
+      assert vmap("repos/#{team.name}/projects/#{p1.name}", [team.name, p1.name])
+      assert vmap("repos/#{team.name}/projects/#{p2.name}", [team.name, p2.name])
+      refute vmap("repos/#{team.name}/projects/#{p3.name}", [team.name, p3.name])
     end
 
     test "registry builds for multiple repositories" do
@@ -86,16 +86,14 @@ defmodule ApxrIo.Team.RegistryBuilderTest do
 
       refute open_table(team.name)
 
-      names = vmap("repos/#{team.name}/names")
-      assert names.repository == team.name
-      assert length(names.projects) == 1
+      names = vmap("repos/#{team.name}/names", [team.name])
+      assert length(names) == 1
 
-      versions = vmap("repos/#{team.name}/versions")
-      assert versions.repository == team.name
+      versions = vmap("repos/#{team.name}/versions", [team.name])
+      assert length(versions) == 1
 
-      project = v2_map("repos/#{team.name}/projects/#{project.name}")
-      assert project.name == project.name
-      assert project.repository == team.name
+      releases = vmap("repos/#{team.name}/projects/#{project.name}", [team.name, project.name])
+      assert length(releases) == 1
     end
   end
 
@@ -112,17 +110,17 @@ defmodule ApxrIo.Team.RegistryBuilderTest do
 
       refute open_table(team.name)
 
-      versions = vmap("repos/#{team.name}/versions")
+      versions = vmap("repos/#{team.name}/versions", [team.name])
 
-      assert Enum.find(versions.projects, &(&1.name == p2.name)) == %{
+      assert Enum.find(versions, &(&1.name == p2.name)) == %{
                name: p2.name,
                versions: ["0.0.1", "0.0.2", "0.0.3"],
                retired: [2]
              }
 
-      project = vmap("repos/#{team.name}/projects/#{p2.name}")
-      assert length(project.releases) == 3
-      release = List.last(project.releases)
+      releases = vmap("repos/#{team.name}/projects/#{p2.name}", [team.name, p2.name])
+      assert length(releases) == 3
+      release = List.last(releases)
       assert release.version == "0.0.3"
       assert release.retired.reason == :RETIRED_INVALID
       assert release.retired.message == "message"
@@ -136,16 +134,16 @@ defmodule ApxrIo.Team.RegistryBuilderTest do
 
       refute open_table(team.name)
 
-      versions = vmap("repos/#{team.name}/versions")
+      versions = vmap("repos/#{team.name}/versions", [team.name])
 
-      assert Enum.find(versions.projects, &(&1.name == p2.name)) == %{
+      assert Enum.find(versions, &(&1.name == p2.name)) == %{
                name: p2.name,
                versions: ["0.0.1"],
                retired: []
              }
 
-      project2 = vmap("repos/#{team.name}/projects/#{p2.name}")
-      assert length(project2.releases) == 1
+      releases = vmap("repos/#{team.name}/projects/#{p2.name}", [team.name, p2.name])
+      assert length(releases) == 1
     end
 
     test "add project", %{team: team} do
@@ -157,18 +155,18 @@ defmodule ApxrIo.Team.RegistryBuilderTest do
 
       refute open_table(team.name)
 
-      assert length(vmap("repos/#{team.name}/names").projects) == 4
+      assert length(vmap("repos/#{team.name}/names", [team.name])) == 4
 
-      versions = vmap("repos/#{team.name}/versions")
+      versions = vmap("repos/#{team.name}/versions", [team.name])
 
-      assert Enum.find(versions.projects, &(&1.name == p.name)) == %{
+      assert Enum.find(versions, &(&1.name == p.name)) == %{
                name: p.name,
                versions: ["0.0.1"],
                retired: []
              }
 
-      ecto = vmap("repos/#{team.name}/projects/#{p.name}")
-      assert length(ecto.releases) == 1
+      ecto_releases = vmap("repos/#{team.name}/projects/#{p.name}", [team.name, p.name])
+      assert length(ecto_releases) == 1
     end
 
     test "remove project", %{projects: [_, _, p3], releases: [_, _, _, r4], team: team} do
@@ -180,10 +178,10 @@ defmodule ApxrIo.Team.RegistryBuilderTest do
 
       refute open_table(team.name)
 
-      assert length(vmap("repos/#{team.name}/names").projects) == 2
-      assert length(vmap("repos/#{team.name}/versions").projects) == 2
+      assert length(vmap("repos/#{team.name}/names", [team.name])) == 2
+      assert length(vmap("repos/#{team.name}/versions", [team.name])) == 2
 
-      refute vmap("repos/#{team.name}/projects/#{p3.name}")
+      refute vmap("repos/#{team.name}/projects/#{p3.name}", [team.name, p3.name])
     end
 
     test "add project for multiple repositories" do
@@ -198,11 +196,11 @@ defmodule ApxrIo.Team.RegistryBuilderTest do
 
       refute open_table(team.name)
 
-      names = vmap("repos/#{team.name}/names")
-      assert length(names.projects) == 2
+      names = vmap("repos/#{team.name}/names", [team.name])
+      assert length(names) == 2
 
-      assert vmap("repos/#{team.name}/projects/#{project1.name}")
-      assert vmap("repos/#{team.name}/projects/#{project2.name}")
+      assert vmap("repos/#{team.name}/projects/#{project1.name}", [team.name, project1.name])
+      assert vmap("repos/#{team.name}/projects/#{project2.name}", [team.name, project2.name])
     end
   end
 end

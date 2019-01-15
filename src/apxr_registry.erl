@@ -24,12 +24,12 @@
 %% @doc
 %% Encode Names message.
 encode_names(Names) ->
-	apxr_pb_names:encode_msg(Names, 'Names').
+	apxr_pb_names:encode_msg(Names, 'names').
 
 %% @doc
 %% Decode message created with encode_names/1.
 decode_names(Payload, Repository) ->
-	case apxr_pb_names:decode_msg(Payload, 'Names') of
+	case apxr_pb_names:decode_msg(Payload, 'names') of
 		#{repository := Repository, projects := Projects} ->
 			{ok, Projects};
 		_ ->
@@ -39,12 +39,12 @@ decode_names(Payload, Repository) ->
 %% @doc
 %% Encode Versions message.
 encode_versions(Versions) ->
-	apxr_pb_versions:encode_msg(Versions, 'Versions').
+	apxr_pb_versions:encode_msg(Versions, 'versions').
 
 %% @doc
 %% Decode message created with encode_versions/1.
 decode_versions(Payload, Repository) ->
-	case apxr_pb_versions:decode_msg(Payload, 'Versions') of
+	case apxr_pb_versions:decode_msg(Payload, 'versions') of
 		#{repository := Repository, projects := Projects} ->
 			{ok, Projects};
 		_ ->
@@ -54,12 +54,12 @@ decode_versions(Payload, Repository) ->
 %% @doc
 %% Encode Project message.
 encode_project(Project) ->
-	apxr_pb_project:encode_msg(Project, 'Project').
+	apxr_pb_project:encode_msg(Project, 'project').
 
 %% @doc
 %% Decode message created with encode_project/1.
 decode_project(Payload, Repository, Project) ->
-	case apxr_pb_project:decode_msg(Payload, 'Project') of
+	case apxr_pb_project:decode_msg(Payload, 'project') of
 		#{repository := Repository, name := Project, releases := Releases} ->
     	{ok, Releases};
     _ ->
@@ -70,12 +70,12 @@ decode_project(Payload, Repository, Project) ->
 %% Encode Signed message.
 sign_protobuf(Payload, PrivateKey) ->
 	Signature = sign(Payload, PrivateKey),
-	apxr_pb_signed:encode_msg(#{payload => Payload, signature => Signature}, 'Signed').
+	apxr_pb_signed:encode_msg(#{payload => Payload, signature => Signature}, 'signed').
 
 %% @doc
 %% Decode message created with sign_protobuf/2 without verification.
 decode_signed(Signed) ->
-	apxr_pb_signed:decode_msg(Signed, 'Signed').
+	apxr_pb_signed:decode_msg(Signed, 'signed').
 
 %% @doc
 %% Decode message created with sign_protobuf/2 and verify it against public key.
