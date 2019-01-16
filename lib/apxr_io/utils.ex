@@ -167,10 +167,6 @@ defmodule ApxrIo.Utils do
     end
   end
 
-  def archive_url(path) do
-    Application.get_env(:apxr_io, :archive_base_url) <> "/" <> Path.join(List.wrap(path))
-  end
-
   def paginate(query, page, count) when is_integer(page) and page > 0 do
     offset = (page - 1) * count
 

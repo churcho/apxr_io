@@ -83,10 +83,6 @@ defmodule ApxrIo.Factory do
     }
   end
 
-  def install_factory() do
-    %ApxrIo.Repository.Install{}
-  end
-
   def block_address_factory() do
     %ApxrIo.BlockAddress.Entry{
       comment: "blocked"

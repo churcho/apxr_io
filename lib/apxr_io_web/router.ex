@@ -164,11 +164,6 @@ defmodule ApxrIoWeb.Router do
   scope "/api", ApxrIoWeb.API, as: :api do
     pipe_through :api
 
-    get "/installs/apxr_sh-1.x", InstallController, :index
-    get "/installs/apxr_sh-1.x.csv", InstallController, :csv
-    get "/installs/apxr_sh-1.x.csv.signed", InstallController, :signed
-    get "/installs/apxr_sh.ez", InstallController, :archive
-
     post "/users", UserController, :create
     get "/users/me", UserController, :me
 

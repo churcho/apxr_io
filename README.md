@@ -1,8 +1,14 @@
 # apxr.io
 
-- API server and website
+API server and website
 
-### Quick Start
+--------------------
+### Requirements
+
+  - [Erlang/OTP 21](https://github.com/erlang)
+
+--------------------
+### Quick start
 
 1. Run `mix setup` to install dependencies, create and seed database etc
 2. Run `mix test`
@@ -12,7 +18,8 @@ After this succeeds you should be good to go!
 
 See [`setup` alias in mix.exs](./mix.exs) and the sections below for more information or when you run into issues.
 
-### PostgreSQL Modules And Version
+--------------------
+### PostgreSQL modules & version
 
 PostgreSQL version should be >= 9.4, as apxr_io uses the `jsonb` type, that is available from PostgreSQL 9.4 onward.
 
@@ -20,6 +27,7 @@ apxr_io requires the PostgreSQL modules [pg_trgm](http://www.postgresql.org/docs
 
 This is located in the "postgresql-contrib" project, however the project name can vary depending on your operating system. If the module is not installed the ecto migrations will fail.
 
+--------------------
 ### Database
 
 By default, apxr_io connects to a localhost PostgreSQL database `apxr_io_dev` using the username `postgres` with the password `postgres`.
@@ -44,7 +52,8 @@ Now you are fine to run the ecto migrations:
 mix ecto.migrate
 ```
 
-### Sample Data
+--------------------
+### Sample data
 
 Using the following command you can seed your local apxr_io instance with some sample data:
 
@@ -52,7 +61,8 @@ Using the following command you can seed your local apxr_io instance with some s
 mix run priv/repo/seeds.exs
 ```
 
-### Node Dependencies
+--------------------
+### Node dependencies
 
 For assets compilation we need to install Node dependencies:
 
@@ -62,6 +72,7 @@ cd assets && yarn install
 
 If you don't have yarn installed, run `brew install yarn --without-node` (if you use nvm or similar, you should exclude installing Node.js so that nvm’s version of Node.js is used) or `cd assets && npm install` will work too.
 
+--------------------
 ### Running apxr_io
 
 Once the database is set up you can start apxr_io:
@@ -78,8 +89,8 @@ apxr_io will be available at [http://localhost:4000/](http://localhost:4000/)
 
 emails will be available at [http://localhost:4000/sent_emails](http://localhost:4000/sent_emails)
 
-
-### Additional Checks
+--------------------
+### Additional checks
 
 1. Run `mix format`
 2. Run `mix xref unreachable`
@@ -87,13 +98,13 @@ emails will be available at [http://localhost:4000/sent_emails](http://localhost
 4. Run `mix app.tree`
 5. Run `mix hex.outdated`
 
-
+--------------------
 ### Proto
 
 Files should be generated with the following library `https://github.com/tsloughter/grpcbox`.
 
-
-### NOTE:
+--------------------
+### Note
 
 You need a CLOAK_KEY environment variable containing a key in Base64 encoding.
 
@@ -101,6 +112,7 @@ For example:
 
 `export APXR_CLOAK_KEY="A7x+qcFD9yeRfl3GohiOFZM5bNCdHNu27B0Ozv8X4dE="`
 
+--------------------
 ### License
 
    Copyright 2015 Six Colors AB
