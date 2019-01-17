@@ -11,7 +11,9 @@ config :apxr_io,
   billing_url: "${APXR_BILLING_URL}",
   store_impl: ApxrIo.Store.S3,
   billing_impl: ApxrIo.Billing.ApxrIo,
-  tmp_dir: "tmp"
+  tmp_dir: "tmp",
+  ws_endpoint: "${WS_ENDPOINT}",
+  ws_token_secret: "${WS_SECRET}"
 
 config :apxr_io, ApxrIoWeb.Endpoint,
   http: [compress: true],

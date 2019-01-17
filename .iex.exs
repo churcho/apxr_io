@@ -16,8 +16,6 @@ alias ApxrIo.{
   Emails,
   Emails.Mailer,
   Repository.Assets,
-  Repository.Install,
-  Repository.Installs,
   Repository.Owners,
   Repository.Project,
   Repository.ProjectMetadata,

@@ -112,4 +112,19 @@ defmodule ApxrIoWeb.Plugs do
         ApxrIoWeb.AuthHelpers.error(conn, error)
     end
   end
+
+  def put_ws_params(conn, _) do
+    if String.contains?(conn.request_path, "/experiments/") && conn.params["id"] != "all" do
+      secret = Application.get_env(:apxr_io, :ws_token_secret)
+      token = Phoenix.Token.sign(secret, "experiment socket", conn.params["id"], max_age: 1800))
+      endpoint = Application.get_env(:apxr_io, :ws_endpoint)
+      channel_route = "experiment:" <> conn.params["id"]
+
+      assign(conn, :ws_token, token)
+      |> assign(:ws_endpoint, endpoint)
+      |> assign(:ws_channel_route, channel_route)
+    else
+      conn
+    end
+  end
 end

@@ -6,6 +6,8 @@ defmodule ApxrIo.Learn.ExperimentMetadata do
   @params ~w(identifier backup_flag started stopped duration status
   interruptions init_constraints pm_parameters total_runs)a
 
+  @reserved_names ~w(all)
+
   embedded_schema do
     field :identifier, :string
     field :backup_flag, :boolean
@@ -21,6 +23,7 @@ defmodule ApxrIo.Learn.ExperimentMetadata do
 
   def changeset(meta, params) do
     cast(meta, params, @params)
-    |> validate_inclusion(:status, ~w(waiting in_progress completed))
+    |> validate_exclusion(:identifier, @reserved_names)
+    |> validate_inclusion(:status, ~w(paused in_progress completed))
   end
 end

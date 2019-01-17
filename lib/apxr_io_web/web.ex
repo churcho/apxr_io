@@ -127,8 +127,6 @@ defmodule ApxrIoWeb do
         Learn.ExperimentGraphData,
         Learn.Runner,
         Repository.Assets,
-        Repository.Install,
-        Repository.Installs,
         Repository.Owners,
         Repository.Project,
         Repository.Projects,

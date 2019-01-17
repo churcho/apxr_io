@@ -5,7 +5,9 @@ config :apxr_io,
   user_agent_req: true,
   secret: "qSsR0LzzK+3uLZTF7P/DjwHaFKjyiKbQGjExcI7ZZp",
   store_impl: ApxrIo.Store.Local,
-  billing_impl: ApxrIo.Billing.Local
+  billing_impl: ApxrIo.Billing.Local,
+  ws_endpoint: "ws://localhost:8080/socket",
+  ws_token_secret: "0adm3lg3uLZTQSD23QSFsaFKjydfqFGR3sd7ZZp"
 
 config :apxr_io, ecto_repos: [ApxrIo.RepoBase]
 

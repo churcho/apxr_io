@@ -69,3 +69,5 @@ initial_constraints: <%= Poison.encode_to_iodata!(@experiment.meta.init_constrai
     </div>
   </div>
 </div>
+
+<div id="exp_log_messages"></div>
