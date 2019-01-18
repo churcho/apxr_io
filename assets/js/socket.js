@@ -10,7 +10,7 @@ let socket = new Socket(window.wsEndpoint, {
 
 socket.connect()
 
-let channel           = socket.channel(window.wsChannelRoute, {})
+let channel           = socket.channel("experiment", {})
 let messagesContainer = document.querySelector("#exp_log_messages")
 
 channel.on("log", payload => {

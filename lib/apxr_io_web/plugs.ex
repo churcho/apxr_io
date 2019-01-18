@@ -117,11 +117,9 @@ defmodule ApxrIoWeb.Plugs do
     if String.contains?(conn.request_path, "/experiments/") && conn.params["id"] != "all" do
       token = ApxrIo.WSToken.generate_and_sign!(%{"exp" => conn.params["id"]})
       endpoint = Application.get_env(:apxr_io, :ws_endpoint)
-      channel_route = "experiment:" <> conn.params["id"]
 
-      assign(conn, :ws_token, token)
-      |> assign(:ws_endpoint, endpoint)
-      |> assign(:ws_channel_route, channel_route)
+      assign(conn, :ws_endpoint, endpoint)
+      |> assign(:ws_token, token)
     else
       conn
     end

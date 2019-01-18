@@ -39,7 +39,6 @@
 
     <script>window.wsEndpoint = "<%= assigns[:ws_endpoint] %>";</script>
     <script>window.wsToken = "<%= assigns[:ws_token] %>";</script>
-    <script>window.wsChannelRoute = "<%= assigns[:ws_channel_route] %>";</script>
     <script src="<%= Routes.static_path(Endpoint, "/js/app.js") %>"></script>
 
   </body>

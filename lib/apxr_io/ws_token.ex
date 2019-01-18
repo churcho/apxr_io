@@ -5,7 +5,8 @@ defmodule ApxrIo.WSToken do
     default_claims(
       iss: "apxr_io",
       aud: "apxr_run",
-      default_exp: 60 * 60 # 1 hour
-    ) 
+      # 1 hour
+      default_exp: 60 * 60
+    )
   end
 end
