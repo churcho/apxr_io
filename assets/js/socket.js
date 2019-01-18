@@ -6,21 +6,23 @@
 import {Socket} from "phoenix"
 
 let socket = new Socket(window.wsEndpoint, {
-  params: {token: window.wsToken}, transport: "Websocket"})
+  params: {token: window.wsToken}, opts: {transport: "Websocket"}})
 
-socket.connect()
+if ((/experiments/.test(window.location.href)) && (/^((?!all).)*$/.test(window.location.href))) {
+  socket.connect()
 
-let channel           = socket.channel("experiment", {})
-let messagesContainer = document.querySelector("#exp_log_messages")
+  let channel           = socket.channel("experiment", {})
+  let messagesContainer = document.querySelector("#exp_log_messages")
 
-channel.on("log", payload => {
-  let messageItem = document.createElement("li")
-  messageItem.innerText = `[${Date()}] ${payload.body}`
-  messagesContainer.appendChild(messageItem)
-})
+  channel.on("log", payload => {
+    let messageItem = document.createElement("li")
+    messageItem.innerText = `[${Date()}] ${payload.body}`
+    messagesContainer.appendChild(messageItem)
+  })
 
-channel.join()
-  .receive("ok", resp => { console.log("Joined successfully", resp) })
-  .receive("error", resp => { console.log("Unable to join", resp) })
+  channel.join()
+    .receive("ok", resp => { console.log("Joined successfully", resp) })
+    .receive("error", resp => { console.log("Unable to join", resp) })
+}
 
 export default socket
