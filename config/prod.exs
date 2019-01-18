@@ -12,8 +12,9 @@ config :apxr_io,
   store_impl: ApxrIo.Store.S3,
   billing_impl: ApxrIo.Billing.ApxrIo,
   tmp_dir: "tmp",
-  ws_endpoint: "${WS_ENDPOINT}",
-  ws_token_secret: "${WS_SECRET}"
+  ws_endpoint: "${WS_ENDPOINT}"
+
+config :joken, default_signer: "${WS_SECRET}"
 
 config :apxr_io, ApxrIoWeb.Endpoint,
   http: [compress: true],

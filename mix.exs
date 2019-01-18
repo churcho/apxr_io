@@ -88,7 +88,9 @@ defmodule ApxrIo.MixProject do
       # PostgreSQL driver - Apache 2.0
       {:postgrex, "~> 0.14"},
       # Wrapper of :xmerl to help query xml docs - Apache 2.0
-      {:sweet_xml, "~> 0.5"}
+      {:sweet_xml, "~> 0.5"},
+      # Elixir JWT library - Apache 2.0
+      {:joken, "~> 2.0"}
     ]
   end
 
