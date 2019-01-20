@@ -4,7 +4,7 @@ defmodule ApxrIo.Learn.ExperimentMetadata do
   @derive ApxrIoWeb.Stale
 
   @params ~w(identifier backup_flag started stopped duration status
-  interruptions init_constraints pm_parameters total_runs)a
+  interruptions init_constraints pm_parameters exp_parameters total_runs)a
 
   @reserved_names ~w(all)
 
@@ -18,6 +18,7 @@ defmodule ApxrIo.Learn.ExperimentMetadata do
     field :interruptions, {:array, :integer}
     field :init_constraints, {:array, :map}
     field :pm_parameters, :map
+    field :exp_parameters, :map - TO_FINISH !
     field :total_runs, :integer
   end
 

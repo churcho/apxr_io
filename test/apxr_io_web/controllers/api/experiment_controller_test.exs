@@ -625,7 +625,7 @@ defmodule ApxrIoWeb.API.ExperimentControllerTest do
       assert experiment_count == Experiments.count(project)
     end
 
-    test "experiment requries write permission", %{
+    test "experiment requires write permission", %{
       unauthorized_user: unauthorized_user,
       team: team,
       project: project,
