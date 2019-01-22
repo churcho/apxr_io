@@ -121,7 +121,23 @@ defmodule ApxrIoWeb.TeamView do
     })
   end
 
+  def extract_params("experiment.create", params) do
+    Map.to_list(%{project: params["project"]["name"], version: params["release"]["version"]})
+  end
+
   def extract_params("experiment.start", params) do
+    Map.to_list(%{project: params["project"]["name"], version: params["release"]["version"]})
+  end
+
+  def extract_params("experiment.pause", params) do
+    Map.to_list(%{project: params["project"]["name"], version: params["release"]["version"]})
+  end
+
+  def extract_params("experiment.continue", params) do
+    Map.to_list(%{project: params["project"]["name"], version: params["release"]["version"]})
+  end
+
+  def extract_params("experiment.stop", params) do
     Map.to_list(%{project: params["project"]["name"], version: params["release"]["version"]})
   end
 

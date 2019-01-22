@@ -184,7 +184,23 @@ defmodule ApxrIo.Accounts.AuditLog do
     %{team: serialize(team), user: serialize(user), role: role}
   end
 
+  defp extract_params("experiment.create", {project, release, exp}) do
+    %{project: serialize(project), release: serialize(release), experiment: serialize(exp)}
+  end
+
   defp extract_params("experiment.start", {project, release, exp}) do
+    %{project: serialize(project), release: serialize(release), experiment: serialize(exp)}
+  end
+
+  defp extract_params("experiment.pause", {project, release, exp}) do
+    %{project: serialize(project), release: serialize(release), experiment: serialize(exp)}
+  end
+
+  defp extract_params("experiment.continue", {project, release, exp}) do
+    %{project: serialize(project), release: serialize(release), experiment: serialize(exp)}
+  end
+
+  defp extract_params("experiment.stop", {project, release, exp}) do
     %{project: serialize(project), release: serialize(release), experiment: serialize(exp)}
   end
 

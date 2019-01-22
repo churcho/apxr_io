@@ -190,6 +190,16 @@ defmodule ApxrIoWeb.Router do
 
         get "/projects/:name/experiments/all", ExperimentController, :index
         get "/projects/:name/releases/:version/experiments/:id", ExperimentController, :show
+
+        post "/projects/:name/releases/:version/experiments/:id/pause",
+             ExperimentController,
+             :pause
+
+        post "/projects/:name/releases/:version/experiments/:id/continue",
+             ExperimentController,
+             :continue
+
+        post "/projects/:name/releases/:version/experiments/:id/stop", ExperimentController, :stop
         delete "/projects/:name/releases/:version/experiments/:id", ExperimentController, :delete
 
         get "/projects/:name/artifacts/all", ArtifactController, :index

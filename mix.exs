@@ -43,6 +43,8 @@ defmodule ApxrIo.MixProject do
       {:corsica, "~> 1.0"},
       # static code analysis tool - MIT
       {:credo, "~> 0.10.0", only: [:dev, :test], runtime: false},
+      # Mix tasks to simplify use of Dialyzer in Elixir projects - Apache 2.0
+      {:dialyxir, "~> 1.0.0-rc.4", only: [:dev], runtime: false},
       # Build releases tool - MIT
       {:distillery, "~> 1.5", runtime: false},
       # Markdown converter - Apache 2.0
@@ -63,6 +65,8 @@ defmodule ApxrIo.MixProject do
       {:hackney, "~> 1.7"},
       # JSON parser and generator - Apache 2.0
       {:jason, "~> 1.1"},
+      # Elixir JWT library - Apache 2.0
+      {:joken, "~> 2.0"},
       # Automatic Erlang cluster formation and management for - Apache 2.0
       {:libcluster, "~> 3.0"},
       # Easily parsable single line, plain text and JSON logger - MIT
@@ -88,9 +92,7 @@ defmodule ApxrIo.MixProject do
       # PostgreSQL driver - Apache 2.0
       {:postgrex, "~> 0.14"},
       # Wrapper of :xmerl to help query xml docs - Apache 2.0
-      {:sweet_xml, "~> 0.5"},
-      # Elixir JWT library - Apache 2.0
-      {:joken, "~> 2.0"}
+      {:sweet_xml, "~> 0.5"}
     ]
   end
 

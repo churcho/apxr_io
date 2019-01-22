@@ -3,10 +3,10 @@ defmodule ApxrIoWeb.API.ExperimentController do
 
   plug :fetch_project when action in [:index]
 
-  plug :fetch_release when action in [:show, :create, :update, :delete]
+  plug :fetch_release when action in [:show, :create, :update, :pause, :continue, :stop, :delete]
 
   plug :maybe_fetch_experiment when action in [:show]
-  plug :fetch_experiment when action in [:delete, :update]
+  plug :fetch_experiment when action in [:delete, :update, :pause, :continue, :stop]
 
   plug :authorize,
        [domain: "api", resource: "read", fun: &team_access/2]
@@ -14,7 +14,7 @@ defmodule ApxrIoWeb.API.ExperimentController do
 
   plug :authorize,
        [domain: "api", resource: "write", fun: [&maybe_project_owner/2, &team_billing_active/2]]
-       when action in [:create, :update]
+       when action in [:create, :update, :pause, :continue, :stop]
 
   plug :authorize,
        [domain: "api", resource: "write", fun: [&project_owner/2, &team_billing_active/2]]
@@ -49,6 +49,34 @@ defmodule ApxrIoWeb.API.ExperimentController do
     experiment = conn.assigns.experiment
 
     Experiments.update(project, release, experiment, experiment_body, audit: audit_data(conn))
+    |> handle_result(conn)
+  end
+
+  def pause(conn, _params) do
+    project = conn.assigns.project
+    release = conn.assigns.release
+    experiment = conn.assigns.experiment
+
+    Experiments.pause(project, release.version, experiment, audit: audit_data(conn))
+    |> handle_result(conn)
+    |> send_resp(204, Jason.encode!(%{}))
+  end
+
+  def continue(conn, _params) do
+    project = conn.assigns.project
+    release = conn.assigns.release
+    experiment = conn.assigns.experiment
+
+    Experiments.continue(project, release.version, experiment, audit: audit_data(conn))
+    |> handle_result(conn)
+  end
+
+  def stop(conn, _params) do
+    project = conn.assigns.project
+    release = conn.assigns.release
+    experiment = conn.assigns.experiment
+
+    Experiments.stop(project, release.version, experiment, audit: audit_data(conn))
     |> handle_result(conn)
   end
 
@@ -90,6 +118,12 @@ defmodule ApxrIoWeb.API.ExperimentController do
     |> api_cache(:private)
     |> put_status(201)
     |> render(:show, experiment: experiment)
+  end
+
+  defp handle_result(:ok, conn) do
+    conn
+    |> api_cache(:private)
+    |> send_resp(204, Jason.encode!(%{}))
   end
 
   defp handle_result({:error, errors}, conn) do

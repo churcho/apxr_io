@@ -11,7 +11,7 @@ defmodule ApxrIo.RepoBase.Migrations.AddExperimentsTable do
         default:
           fragment("json_build_object('id', uuid_generate_v4(), 'identifier', 'backup_flag',
           'started', 'stopped', 'duration', 'status', 'interruptions', 'init_constraints',
-          'pm_parameters', 'total_runs')::jsonb")
+          'pm_parameters', 'exp_parameters', 'total_runs')::jsonb")
       )
 
       add(:trace, :jsonb)

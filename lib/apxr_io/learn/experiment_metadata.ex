@@ -18,7 +18,7 @@ defmodule ApxrIo.Learn.ExperimentMetadata do
     field :interruptions, {:array, :integer}
     field :init_constraints, {:array, :map}
     field :pm_parameters, :map
-    field :exp_parameters, :map - TO_FINISH !
+    field :exp_parameters, :map
     field :total_runs, :integer
   end
 

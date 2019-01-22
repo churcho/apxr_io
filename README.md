@@ -97,6 +97,7 @@ emails will be available at [http://localhost:4000/sent_emails](http://localhost
 3. Run `mix credo`
 4. Run `mix app.tree`
 5. Run `mix hex.outdated`
+6. Run `mix dialyzer` (release candidate)
 
 --------------------
 ### Proto

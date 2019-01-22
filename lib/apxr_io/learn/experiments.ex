@@ -30,7 +30,7 @@ defmodule ApxrIo.Learn.Experiments do
     result =
       Multi.new()
       |> Multi.insert(:experiment, Experiment.build(release, params))
-      |> audit_start(audit_data, project, release)
+      |> audit_create(audit_data, project, release)
       |> Repo.transaction(timeout: @timeout)
 
     case result do
@@ -38,7 +38,7 @@ defmodule ApxrIo.Learn.Experiments do
         {:error, changeset}
 
       {:ok, %{experiment: experiment}} ->
-        start_experiment(experiment)
+        ApxrRun.start(project, release.version, experiment.meta.identifier, audit: audit_data)
     end
   end
 
@@ -48,6 +48,18 @@ defmodule ApxrIo.Learn.Experiments do
     |> maybe_send_notification_email(experiment.meta.status, project, release)
     |> audit_update(audit_data, project, release)
     |> Repo.transaction(timeout: @timeout)
+  end
+
+  def pause(project, version, experiment, audit: audit_data) do
+    ApxrRun.pause(project, version, experiment.meta.identifier, audit: audit_data)
+  end
+
+  def continue(project, version, experiment, audit: audit_data) do
+    ApxrRun.continue(project, version, experiment.meta.identifier, audit: audit_data)
+  end
+
+  def stop(project, version, experiment, audit: audit_data) do
+    ApxrRun.stop(project, version, experiment.meta.identifier, audit: audit_data)
   end
 
   def delete(project, release, experiment, audit: audit_data) do
@@ -66,17 +78,13 @@ defmodule ApxrIo.Learn.Experiments do
     end
   end
 
-  defp start_experiment(experiment) do
-    Runner.run(experiment)
-    {:ok, %{experiment: experiment}}
-  end
-
   defp delete_experiment(_experiment) do
+    # TODO - delete snapshot/backup
     :ok
   end
 
-  defp audit_start(multi, audit_data, project, release) do
-    audit(multi, audit_data, "experiment.start", fn %{experiment: exp} ->
+  defp audit_create(multi, audit_data, project, release) do
+    audit(multi, audit_data, "experiment.create", fn %{experiment: exp} ->
       {project, release, exp}
     end)
   end

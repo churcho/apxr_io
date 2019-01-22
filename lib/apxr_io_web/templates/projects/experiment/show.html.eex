@@ -43,7 +43,9 @@ initial_constraints: <%= Poison.encode_to_iodata!(@experiment.meta.init_constrai
 </code></pre>
   </div>
   <div id="params" class="tab-pane fade">
-<pre><code>parameters: <%= Poison.encode_to_iodata!(@experiment.meta.pm_parameters, pretty: true) %></code></pre>
+<pre><code>exp_parameters: <%= Poison.encode_to_iodata!(@experiment.meta.exp_parameters, pretty: true) %>
+pm_parameters: <%= Poison.encode_to_iodata!(@experiment.meta.pm_parameters, pretty: true) %>
+</code></pre>
   </div>
   <div id="trace" class="tab-pane fade">
 <pre><code><%= if @experiment.trace do %><%= Poison.encode_to_iodata!(@experiment.trace.trace_acc, pretty: true) %><% end %>

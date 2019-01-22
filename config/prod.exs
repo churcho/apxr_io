@@ -12,7 +12,8 @@ config :apxr_io,
   store_impl: ApxrIo.Store.S3,
   billing_impl: ApxrIo.Billing.ApxrIo,
   tmp_dir: "tmp",
-  ws_endpoint: "${WS_ENDPOINT}"
+  ws_endpoint: "${WS_ENDPOINT}",
+  apxr_run_url: "${APXR_RUN_URL}"
 
 config :joken, default_signer: "${WS_SECRET}"
 
