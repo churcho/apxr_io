@@ -676,6 +676,10 @@ defmodule ApxrIoWeb.API.ExperimentControllerTest do
       experiment2: experiment2,
       release2: release2
     } do
+      Mox.stub(ApxrIo.Learn.Mock, :start, fn _proj, _v, experiment, _audit_data ->
+        {:ok, %{experiment: experiment}}
+      end)
+
       experiment_count = Experiments.count(project)
 
       user = insert(:user)
@@ -695,7 +699,7 @@ defmodule ApxrIoWeb.API.ExperimentControllerTest do
       log = ApxrIo.Repo.one!(AuditLog)
       assert log.user_id == user.id
       assert log.team_id == team.id
-      assert log.action == "experiment.start"
+      assert log.action == "experiment.create"
       assert log.params["project"]["name"] == project.name
       assert log.params["release"]["version"] == "0.0.2"
     end
@@ -770,6 +774,10 @@ defmodule ApxrIoWeb.API.ExperimentControllerTest do
       experiment: experiment,
       release: release
     } do
+      Mox.stub(ApxrIo.Learn.Mock, :delete, fn _proj, _v, _eid, _audit_data ->
+        :ok
+      end)
+
       experiment_count = Experiments.count(project)
 
       user = insert(:user)

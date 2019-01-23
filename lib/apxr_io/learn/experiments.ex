@@ -1,6 +1,8 @@
 defmodule ApxrIo.Learn.Experiments do
   use ApxrIoWeb, :context
 
+  alias ApxrIo.Learn
+
   @timeout 60_000
 
   def all(project, page, count, sort) do
@@ -38,7 +40,7 @@ defmodule ApxrIo.Learn.Experiments do
         {:error, changeset}
 
       {:ok, %{experiment: experiment}} ->
-        ApxrRun.start(project, release.version, experiment.meta.identifier, audit: audit_data)
+        Learn.start(project, release.version, experiment, audit: audit_data)
     end
   end
 
@@ -51,15 +53,15 @@ defmodule ApxrIo.Learn.Experiments do
   end
 
   def pause(project, version, experiment, audit: audit_data) do
-    ApxrRun.pause(project, version, experiment.meta.identifier, audit: audit_data)
+    Learn.pause(project, version, experiment.meta.identifier, audit: audit_data)
   end
 
   def continue(project, version, experiment, audit: audit_data) do
-    ApxrRun.continue(project, version, experiment.meta.identifier, audit: audit_data)
+    Learn.continue(project, version, experiment.meta.identifier, audit: audit_data)
   end
 
   def stop(project, version, experiment, audit: audit_data) do
-    ApxrRun.stop(project, version, experiment.meta.identifier, audit: audit_data)
+    Learn.stop(project, version, experiment.meta.identifier, audit: audit_data)
   end
 
   def delete(project, release, experiment, audit: audit_data) do
@@ -74,13 +76,8 @@ defmodule ApxrIo.Learn.Experiments do
         {:error, changeset}
 
       {:ok, %{experiment: experiment}} ->
-        delete_experiment(experiment)
+        Learn.delete(project, release.version, experiment.meta.identifier, audit: audit_data)
     end
-  end
-
-  defp delete_experiment(_experiment) do
-    # TODO - delete snapshot/backup
-    :ok
   end
 
   defp audit_create(multi, audit_data, project, release) do

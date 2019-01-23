@@ -1,4 +1,4 @@
-defmodule ApxrIo.Learn.ApxrRun do
+defmodule ApxrIo.Learn.Local do
   alias ApxrIo.Accounts.{AuditLog, Teams}
   alias ApxrIo.Learn.Experiments
   alias ApxrIoWeb.ErlangFormat
@@ -66,7 +66,6 @@ defmodule ApxrIo.Learn.ApxrRun do
   end
 
   def delete(_project, _version, _identifier, audit: _audit_data) do
-    # TODO - delete snapshot/backup
     :ok
   end
 

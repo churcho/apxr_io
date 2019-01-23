@@ -11,6 +11,7 @@ config :apxr_io,
   billing_url: "${APXR_BILLING_URL}",
   store_impl: ApxrIo.Store.S3,
   billing_impl: ApxrIo.Billing.ApxrIo,
+  learn_impl: ApxrIo.Learn.ApxrRun,
   tmp_dir: "tmp",
   ws_endpoint: "${WS_ENDPOINT}",
   apxr_run_url: "${APXR_RUN_URL}"

@@ -6,6 +6,7 @@ config :apxr_io,
   secret: "qSsR0LzzK+3uLZTF7P/DjwHaFKjyiKbQGjExcI7ZZp",
   store_impl: ApxrIo.Store.Local,
   billing_impl: ApxrIo.Billing.Local,
+  learn_impl: ApxrIo.Learn.Local,
   ws_endpoint: "ws://localhost:8080",
   apxr_run_url: "http://localhost:8080"
 

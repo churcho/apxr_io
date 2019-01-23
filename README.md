@@ -90,6 +90,21 @@ apxr_io will be available at [http://localhost:4000/](http://localhost:4000/)
 emails will be available at [http://localhost:4000/sent_emails](http://localhost:4000/sent_emails)
 
 --------------------
+### Debugging
+
+At the top of your module, add the following line:
+
+```
+require IEx
+```
+
+Next, inside of your function, add the following line:
+
+```
+IEx.pry
+```
+
+--------------------
 ### Additional checks
 
 1. Run `mix format`

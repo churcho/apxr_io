@@ -5,7 +5,8 @@ config :apxr_io,
   tmp_dir: Path.expand("tmp/test"),
   private_key: File.read!("test/fixtures/private.pem"),
   public_key: File.read!("test/fixtures/public.pem"),
-  billing_impl: ApxrIo.Billing.Mock
+  billing_impl: ApxrIo.Billing.Mock,
+  learn_impl: ApxrIo.Learn.Mock
 
 config :apxr_io, ApxrIoWeb.Endpoint,
   http: [port: 5000],
