@@ -59,7 +59,6 @@ defmodule ApxrIoWeb.API.ExperimentController do
 
     Experiments.pause(project, release.version, experiment, audit: audit_data(conn))
     |> handle_result(conn)
-    |> send_resp(204, Jason.encode!(%{}))
   end
 
   def continue(conn, _params) do

@@ -12,7 +12,14 @@ defmodule ApxrIo.MixProject do
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      test_coverage: [tool: ExCoveralls],
+      preferred_cli_env: [
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.post": :test,
+        "coveralls.html": :test
+      ]
     ]
   end
 
@@ -55,6 +62,8 @@ defmodule ApxrIo.MixProject do
       {:ex_aws_ses, "~> 2.0"},
       # AWS client - MIT
       {:ex_aws, "~> 2.0"},
+      # Coverage report tool for Elixir - MIT
+      {:excoveralls, "~> 0.10", only: :test},
       # Factory library - MIT
       {:ex_machina, "~> 2.0"},
       # Data mapping and language integrated query - Apache 2.0

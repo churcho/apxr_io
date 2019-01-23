@@ -34,7 +34,7 @@ defmodule ApxrIo.Learn do
   end
 
   def stop(project, version, identifier, audit: audit_data) do
-    impl().sto(project, version, identifier, audit: audit_data)
+    impl().stop(project, version, identifier, audit: audit_data)
   end
 
   def delete(project, version, identifier, audit: audit_data) do

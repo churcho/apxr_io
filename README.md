@@ -11,7 +11,7 @@ API server and website
 ### Quick start
 
 1. Run `mix setup` to install dependencies, create and seed database etc
-2. Run `mix test`
+2. Run `mix test` (--cover)
 3. Run `iex -S mix phx.server` and visit [http://localhost:4000/](http://localhost:4000/)
 
 After this succeeds you should be good to go!

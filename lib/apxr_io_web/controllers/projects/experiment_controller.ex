@@ -47,7 +47,7 @@ defmodule ApxrIoWeb.Projects.ExperimentController do
           "show.html",
           title: experiment.release.version,
           container: "container experiment-view",
-          status: experiment.meta.status,
+          progress: experiment.meta.progress,
           project: project,
           version: experiment.release.version,
           experiment: experiment

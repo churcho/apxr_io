@@ -4,19 +4,14 @@ defmodule ApxrIo.Serve.ArtifactMetadata do
   @derive ApxrIoWeb.Stale
 
   @locations [
-    "Ireland",
-    "Frankfurt",
-    "London",
-    "Paris",
-    "Tokyo",
-    "Sydney",
-    "Singapore",
-    "Seoul",
-    "Sao Paulo",
-    "Beijing",
-    "Mumbai",
-    "US West",
-    "US East"
+    "TOR",
+    "SFO",
+    "NYC",
+    "LON",
+    "FRA",
+    "AMS",
+    "BLR",
+    "SGP"
   ]
 
   embedded_schema do

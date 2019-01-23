@@ -1,6 +1,6 @@
 <nav>
   <div class="pagination-info">
-    <h4 class="projects-title"><%= @version %> <small>(<%= @status %>)</small></h4>
+    <h4 class="projects-title"><%= @version %> <small>(<%= @progress %>)</small></h4>
   </div>
   <div class="navbar-right pagination-sort">
     <div>
@@ -34,9 +34,9 @@
   <div id="config" class="tab-pane fade in active">
 <pre><code>identifier: <%= @experiment.meta.identifier %>
 started: <%= @experiment.meta.started %>
-stopped: <%= @experiment.meta.stopped %>
+completed: <%= @experiment.meta.completed %>
 duration: <%= @experiment.meta.duration %>
-status: <%= @experiment.meta.status %>
+progress: <%= @experiment.meta.progress %>
 interruptions: <%= @experiment.meta.interruptions %>
 total_runs: <%= @experiment.meta.total_runs %>
 initial_constraints: <%= Poison.encode_to_iodata!(@experiment.meta.init_constraints, pretty: true) %>
@@ -55,19 +55,23 @@ pm_parameters: <%= Poison.encode_to_iodata!(@experiment.meta.pm_parameters, pret
     <%= if @experiment.graph do %>
       <%= charts(@experiment.graph) %>
     <% end %>
-    <div id="fitness_vs_evals" style="min-width: 310px; max-width: 800px; height: 400px; margin: 0 auto">
+    <div id="avg_fitness_vs_evaluations" style="min-width: 310px; max-width: 800px; height: 400px; margin: 0 auto">
     </div>
-    <div id="val_fitness_vs_evals" style="min-width: 310px; max-width: 800px; height: 400px; margin: 0 auto">
+    <div id="avg_neurons_vs_evaluations" style="min-width: 310px; max-width: 800px; height: 400px; margin: 0 auto">
     </div>
-    <div id="specie_pop_turnover_vs_evals" style="min-width: 310px; max-width: 800px; height: 400px; margin: 0 auto">
+    <div id="avg_diversity_vs_evaluations" style="min-width: 310px; max-width: 800px; height: 400px; margin: 0 auto">
     </div>
-    <div id="avg_fitness_vs_evals_std" style="min-width: 310px; height: 400px; margin: 0 auto">
+    <div id="max_fitness_vs_evaluations" style="min-width: 310px; height: 400px; margin: 0 auto">
     </div>
-    <div id="avg_val_fitness_vs_evals_std" style="min-width: 310px; height: 400px; margin: 0 auto">
+    <div id="avg_max_fitness_vs_evaluations" style="min-width: 310px; height: 400px; margin: 0 auto">
     </div>
-    <div id="avg_neurons_vs_evals_std" style="min-width: 310px; height: 400px; margin: 0 auto">
+    <div id="avg_min_fitness_vs_evaluations" style="min-width: 310px; height: 400px; margin: 0 auto">
     </div>
-    <div id="avg_diversity_vs_evals_std" style="min-width: 310px; height: 400px; margin: 0 auto">
+    <div id="validation_avg_fitness_vs_evaluations" style="min-width: 310px; height: 400px; margin: 0 auto">
+    </div>
+    <div id="validation_max_fitness_vs_evaluations" style="min-width: 310px; height: 400px; margin: 0 auto">
+    </div>
+    <div id="validation_min_fitness_vs_evaluations" style="min-width: 310px; height: 400px; margin: 0 auto">
     </div>
   </div>
 </div>

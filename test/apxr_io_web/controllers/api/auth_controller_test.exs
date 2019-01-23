@@ -63,91 +63,14 @@ defmodule ApxrIoWeb.API.AuthControllerTest do
     experiment =
       insert(
         :experiment,
-        description: "SDQFQLSMDFLM",
-        release: release,
-        meta:
-          build(
-            :experiment_metadata,
-            identifier: "1536357583135391000",
-            backup_flag: true,
-            started: "{{2018,9,7},-576460748933985000}",
-            stopped: "{{2018,9,8},-576460429400119000}",
-            duration: 80_600_000,
-            status: "completed",
-            interruptions: [],
-            init_constraints: [
-              %{
-                data: %{
-                  agent_encoding_types: [:neural],
-                  annealing_parameters: [0.5],
-                  connection_architecture: :recurrent,
-                  heredity_types: [:darwinian],
-                  hof_distinguishers: [:tot_n],
-                  morphology: :dtm_morphology,
-                  mutation_operators: %{
-                    mutate_weights: 1,
-                    add_bias: 1,
-                    remove_bias: 1,
-                    mutate_af: 1,
-                    add_outlink: 1,
-                    add_inlink: 1,
-                    add_neuron: 1,
-                    outsplice: 1,
-                    add_sensor: 1,
-                    add_sensorlink: 1,
-                    add_actuator: 1,
-                    add_actuatorlink: 1,
-                    mutate_plasticity_parameter: 1
-                  },
-                  neural_afs: [:tanh],
-                  neural_aggr_fs: [:dot_product],
-                  neural_pfns: [:hebbian],
-                  objectives: [:main_fitness, :inverse_tot_n],
-                  perturbation_ranges: [1.0],
-                  population_evo_alg_f: :generational,
-                  population_fitness_postprocessor_f: :size_proportional,
-                  population_selection_f: :hof_competition,
-                  specie_distinguishers: [:tot_n],
-                  substrate_linkforms: [:l2l_feedforward],
-                  substrate_plasticities: [:none],
-                  tot_topological_mutations_fs: %{ncount_exponential: 0.5},
-                  tuning_duration_f: %{wsize_proportional: 0.5},
-                  tuning_selection_fs: [:dynamic_random]
-                }
-              }
-            ],
-            pm_parameters: %{
-              data: %{
-                evaluations_limit: 5000,
-                fitness_goal: :inf,
-                generation_limit: 100,
-                init_specie_size: 5,
-                op_modes: [:gt, :validation],
-                polis_id: :mathema,
-                population_id: :dtm,
-                specie_size_limit: 20,
-                survival_percentage: 0.5
-              }
-            },
-            total_runs: 5
-          )
+        release: release
       )
 
     artifact =
       insert(
         :artifact,
         experiment: experiment,
-        project: project,
-        name: "artifDFSQSDFact",
-        status: "offline",
-        meta:
-          build(
-            :artifact_metadata,
-            location: "Paris",
-            scale_min: 1,
-            scale_max: 10,
-            scale_factor: 2
-          )
+        project: project
       )
 
     {:ok,
