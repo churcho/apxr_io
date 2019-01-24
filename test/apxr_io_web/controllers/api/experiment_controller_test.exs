@@ -43,6 +43,7 @@ defmodule ApxrIoWeb.API.ExperimentControllerTest do
 
     experiment2 = build_experiment(release2.id)
     experiment3 = build_experiment(release3.id)
+    invalid_experiment = build_experiment(release2.id)
     uexperiment = build_experiment(release.id)
 
     %{
@@ -58,6 +59,7 @@ defmodule ApxrIoWeb.API.ExperimentControllerTest do
       experiment2: experiment2,
       experiment3: experiment3,
       uexperiment: uexperiment,
+      invalid_experiment: invalid_experiment,
       team: team,
       nbteam: nbteam,
       user: user,
@@ -209,6 +211,37 @@ defmodule ApxrIoWeb.API.ExperimentControllerTest do
       |> json_response(403)
 
       assert experiment_count == Experiments.count(project3)
+    end
+
+    test "create experiment validates parameters", %{
+      team: team,
+      project: project,
+      invalid_experiment: invalid_experiment,
+      release2: release2
+    } do
+      invalid_experiment1 =
+        put_in(invalid_experiment, [:meta, :exp_parameters, :runs], "wrong value")
+
+      experiment_count = Experiments.count(project)
+
+      user = insert(:user)
+
+      insert(:team_user, team: team, user: user, role: "write")
+
+      conn =
+        build_conn()
+        |> put_req_header("authorization", key_for(user))
+        |> json_post(
+          "api/repos/#{team.name}/projects/#{project.name}/releases/#{release2.version}/experiments",
+          %{"experiment" => invalid_experiment1}
+        )
+
+      assert conn.status == 422
+      result = json_response(conn, 422)
+      assert result["message"] =~ "Validation error"
+      assert result["errors"] == %{"meta" => %{"exp_parameters" => "runs invalid"}}
+
+      assert experiment_count == Experiments.count(project)
     end
 
     test "create experiment", %{

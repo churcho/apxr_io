@@ -6,7 +6,7 @@ defmodule ApxrIoWeb.Projects.ExperimentView do
   def show_sort_info(:inserted_at), do: "Sort: Recently created"
   def show_sort_info(_param), do: nil
 
-  def charts(data) do
+  def charts(_data) do
     # raw("""
     #   <script type="text/javascript">
     #     window.onload = function(){  
@@ -171,7 +171,7 @@ defmodule ApxrIoWeb.Projects.ExperimentView do
     #           }]
     #         }
     #       });
-          
+
     #       Highcharts.chart('avg_val_fitness_vs_evals_std', {
     #         title: {
     #           text: 'Validation Fitness vs Evaluations'
@@ -216,7 +216,7 @@ defmodule ApxrIoWeb.Projects.ExperimentView do
     #           }
     #         }]
     #       });
-           
+
     #       Highcharts.chart('avg_fitness_vs_evals_std', {
     #         title: {
     #           text: 'Fitness vs Evaluations'
@@ -261,7 +261,7 @@ defmodule ApxrIoWeb.Projects.ExperimentView do
     #           }
     #         }]
     #       });
-        
+
     #       Highcharts.chart('avg_neurons_vs_evals_std', {
     #         title: {
     #           text: 'Neurons vs Evaluations'
@@ -306,7 +306,7 @@ defmodule ApxrIoWeb.Projects.ExperimentView do
     #           }
     #         }]
     #       });
-         
+
     #       Highcharts.chart('avg_diversity_vs_evals_std', {
     #         title: {
     #           text: 'Diversity vs Evaluations'
