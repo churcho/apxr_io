@@ -39,7 +39,9 @@ defmodule ApxrIoWeb.LoginControllerTest do
 
     conn = post(build_conn(), "login", %{"email" => email})
     assert redirected_to(conn) == "/"
-    assert get_flash(conn, :info) =~ "We have sent you a link to login via email."
+
+    assert get_flash(conn, :info) =~
+             "We have sent you a login link if there is a verified account associated with this email."
 
     user = Users.get_by_username(user.username)
     refute user.auth_token

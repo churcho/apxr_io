@@ -18,24 +18,15 @@ defmodule ApxrIoWeb.LoginController do
         |> put_flash(:info, "We have sent you a link to login via email.")
         |> redirect(to: Routes.login_path(ApxrIoWeb.Endpoint, :new))
 
-      :not_primary ->
-        conn
-        |> put_flash(:error, auth_error_message(:not_primary))
-        |> put_status(400)
-        |> render_new()
-
-      :not_verified ->
-        conn
-        |> put_flash(:error, auth_error_message(:not_verified))
-        |> put_status(400)
-        |> render_new()
-
       :error ->
         # Do not leak information about (non-)existing users.
         # always reply with success message, even though the
         # user might not exist.
         conn
-        |> put_flash(:info, "We have sent you a link to login via email.")
+        |> put_flash(
+          :info,
+          "We have sent you a login link if there is a verified account associated with this email."
+        )
         |> redirect(to: Routes.login_path(ApxrIoWeb.Endpoint, :new))
     end
   end

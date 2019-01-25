@@ -1,5 +1,4 @@
 defmodule ApxrIo.Learn.ApxrSh do
-
   @behaviour ApxrIo.Learn
 
   def start(_project, _version, _experiment, audit: _audit_data) do
@@ -22,5 +21,4 @@ defmodule ApxrIo.Learn.ApxrSh do
   def delete(_project, _version, _identifier, audit: _audit_data) do
     :ok
   end
-
 end

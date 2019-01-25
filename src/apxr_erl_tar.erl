@@ -446,7 +446,7 @@ do_create(TarFile, [Name|Rest], Opts) ->
 -type add_type() :: string()
 				  | {string(), string()}
 				  | {string(), binary()}.
--spec add(reader(), add_type(), [add_opt()]) -> ok | {error, term()}.
+-spec add(reader(), add_type(), list()) -> ok | {error, term()}.
 add(Reader, {NameInArchive, Name}, Opts)
   when is_list(NameInArchive), is_list(Name) ->
 	do_add(Reader, Name, NameInArchive, undefined, Opts);
@@ -460,14 +460,14 @@ add(Reader, Name, Opts) when is_list(Name) ->
 	do_add(Reader, Name, Name, undefined, Opts).
 
 
--spec add(reader(), string() | binary(), string(), [add_opt()]) ->
+-spec add(reader(), string() | binary(), string(), list()) ->
 				 ok | {error, term()}.
 add(Reader, NameOrBin, NameInArchive, Options)
   when is_list(NameOrBin); is_binary(NameOrBin),
 	   is_list(NameInArchive), is_list(Options) ->
 	do_add(Reader, NameOrBin, NameInArchive, undefined, Options).
 
--spec add(reader(), string() | binary(), string(), integer(), [add_opt()]) ->
+-spec add(reader(), string() | binary(), string(), integer(), list()) ->
 				 ok | {error, term()}.
 add(Reader, NameOrBin, NameInArchive, Mode, Options)
   when is_list(NameOrBin); is_binary(NameOrBin),

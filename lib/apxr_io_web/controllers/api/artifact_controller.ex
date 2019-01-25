@@ -96,7 +96,7 @@ defmodule ApxrIoWeb.API.ArtifactController do
           |> api_cache(:private)
           |> send_resp(204, "")
 
-        {:error, _, changeset, _} ->
+        {:error, changeset} ->
           validation_failed(conn, changeset)
       end
     else

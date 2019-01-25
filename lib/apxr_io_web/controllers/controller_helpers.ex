@@ -365,12 +365,6 @@ defmodule ApxrIoWeb.ControllerHelpers do
       :ok ->
         :ok
 
-      {:error, :email_not_primary} ->
-        :not_primary
-
-      {:error, :email_not_verified} ->
-        :not_verified
-
       {:error, _reason} ->
         :error
     end
