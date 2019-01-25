@@ -3,7 +3,8 @@ use Mix.Config
 config :apxr_io,
   tmp_dir: Path.expand("tmp/apxr_sh"),
   private_key: File.read!("test/fixtures/private.pem"),
-  user_confirm: false
+  user_confirm: false,
+  learn_impl: ApxrIo.Learn.ApxrSh
 
 config :apxr_io, ApxrIoWeb.Endpoint,
   http: [port: 4043, protocol_options: [max_keepalive: :infinity]],

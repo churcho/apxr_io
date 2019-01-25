@@ -1,4 +1,4 @@
-# Needed to support old apxr_sh clients for CI testing
+# Needed to support apxr_sh clients for CI testing
 if Mix.env() == :apxr_sh do
   defmodule ApxrWeb.Repo do
     use Ecto.Repo,
