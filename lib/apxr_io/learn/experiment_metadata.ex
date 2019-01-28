@@ -3,13 +3,10 @@ defmodule ApxrIo.Learn.ExperimentMetadata do
 
   @derive ApxrIoWeb.Stale
 
-  @params ~w(identifier started completed duration progress
-  interruptions init_constraints pm_parameters exp_parameters total_runs)a
-
-  @reserved_names ~w(all)
+  @params ~w(started completed duration progress total_runs
+  interruptions exp_parameters pm_parameters init_constraints)a
 
   embedded_schema do
-    field :identifier, :string
     field :started, :string
     field :completed, :string
     field :duration, :integer
@@ -23,7 +20,6 @@ defmodule ApxrIo.Learn.ExperimentMetadata do
 
   def changeset(meta, params) do
     cast(meta, params, @params)
-    |> validate_exclusion(:identifier, @reserved_names)
     |> validate_inclusion(:progress, ~w(paused, in_progress completed))
     |> validate_parameters(:exp_parameters)
     |> validate_parameters(:pm_parameters)
@@ -70,6 +66,9 @@ defmodule ApxrIo.Learn.ExperimentMetadata do
   defp exp_parameters_validator(parameters) do
     Enum.reduce(parameters, [], fn {k, v}, acc ->
       case k do
+        "identifier" ->
+          validate_identifier(v, acc)
+
         "public_scape" ->
           validate_public_scape(v, acc)
 
@@ -215,6 +214,14 @@ defmodule ApxrIo.Learn.ExperimentMetadata do
   end
 
   # exp_parameters validators
+
+  defp validate_identifier(v, acc) when v != "all" do
+    acc
+  end
+
+  defp validate_identifier(_v, acc) do
+    ["identifier invalid" | acc]
+  end
 
   defp validate_public_scape(v, acc) when v == [] do
     acc

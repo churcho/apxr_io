@@ -53,15 +53,17 @@ defmodule ApxrIo.Learn.Experiments do
   end
 
   def pause(project, version, experiment, audit: audit_data) do
-    Learn.pause(project, version, experiment.meta.identifier, audit: audit_data)
+    Learn.pause(project, version, experiment.meta.exp_parameters["identifier"], audit: audit_data)
   end
 
   def continue(project, version, experiment, audit: audit_data) do
-    Learn.continue(project, version, experiment.meta.identifier, audit: audit_data)
+    Learn.continue(project, version, experiment.meta.exp_parameters["identifier"],
+      audit: audit_data
+    )
   end
 
   def stop(project, version, experiment, audit: audit_data) do
-    Learn.stop(project, version, experiment.meta.identifier, audit: audit_data)
+    Learn.stop(project, version, experiment.meta.exp_parameters["identifier"], audit: audit_data)
   end
 
   def delete(project, release, experiment, audit: audit_data) do
@@ -76,7 +78,9 @@ defmodule ApxrIo.Learn.Experiments do
         {:error, changeset}
 
       {:ok, %{experiment: experiment}} ->
-        Learn.delete(project, release.version, experiment.meta.identifier, audit: audit_data)
+        Learn.delete(project, release.version, experiment.meta.exp_parameters["identifier"],
+          audit: audit_data
+        )
     end
   end
 

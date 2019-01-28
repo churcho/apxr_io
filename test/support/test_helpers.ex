@@ -60,7 +60,6 @@ defmodule ApxrIo.TestHelpers do
       description: "Experiment description goes here.",
       release_id: release_id,
       meta: %{
-        identifier: "1536357583135391000",
         started: "{{2018,9,7},-576460748933985000}",
         completed: "{{2018,9,8},-576460429400119000}",
         duration: 80_600_000,

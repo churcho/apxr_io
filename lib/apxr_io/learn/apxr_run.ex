@@ -7,7 +7,7 @@ defmodule ApxrIo.Learn.ApxrRun do
   @behaviour ApxrIo.Learn
 
   def start(project, version, experiment, audit: audit_data) do
-    identifiers = {project, version, experiment.meta.identifier}
+    identifiers = {project, version, experiment.meta.exp_parameters["identifier"]}
 
     with {:ok, 204, _h, _b} <- post("/actions/polis/prep", tarball(identifiers), identifiers),
          {:ok, 204, _h, _b} <- post("/actions/polis/setup", config(identifiers), identifiers),

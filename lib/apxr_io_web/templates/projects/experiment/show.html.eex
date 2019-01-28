@@ -32,7 +32,7 @@
 
 <div class="tab-content">
   <div id="config" class="tab-pane fade in active">
-<pre><code>identifier: <%= @experiment.meta.identifier %>
+<pre><code>identifier: <%= @experiment.meta.exp_parameters["identifier"] %>
 started: <%= @experiment.meta.started %>
 completed: <%= @experiment.meta.completed %>
 duration: <%= @experiment.meta.duration %>
