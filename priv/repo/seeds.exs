@@ -2,8 +2,7 @@ import ApxrIo.Factory
 
 ApxrIo.Fake.start()
 
-lorem = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-  tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."
+lorem = "Lorem ipsum dolor sit amet, consectetur adipisicing elit."
 
 ApxrIo.Repo.transaction(fn ->
   myrepo = insert(:team, name: "myrepo")
@@ -11,6 +10,15 @@ ApxrIo.Repo.transaction(fn ->
   eric_email = "eric@example.com"
   jose_email = "jose@example.com"
   joe_email = "joe@example.com"
+
+  insert(:post)
+
+  insert(
+    :post,
+    title: "Unpublished",
+    slug: "un-published",
+    published: false
+  )
 
   eric =
     insert(

@@ -1,15 +1,28 @@
-<h2>Verify email</h2>
-
-<%= form_tag Routes.email_verification_path(Endpoint, :create) do %>
-  <div class="form-group">
-    <label for="email">Email</label>
-    <input type="email" class="form-control" name="email" required>
+<div class="columns">
+  <div class="column is-4-desktop is-6-tablet is-offset-4">
+    <div class="box">
+      <h3 class="subtitle is-3 has-text-centered">APXR</h2>
+      <%= form_tag(Routes.email_verification_path(Endpoint, :create)) do %>
+        <div class="field">
+          <div class="control">
+            <input class="input" autofocus name="email" type="email" placeholder="e.g. alexsmith@gmail.com">
+          </div>
+        </div>
+        
+        <div class="field">
+          <div class="control is-expanded">
+            <button type="submit" class="button is-fullwidth is-black">VERIFY</button>
+          </div>
+        </div>
+        <hr />
+        <div class="field is-grouped is-grouped-centered is-grouped-multiline">
+          <div class="control">
+            <button class="button is-text">
+              <a href="<%= Routes.signup_path(Endpoint, :show) %>">Don't have an account?</a>
+            </button>
+          </div>
+        </div>
+      <% end %>
+    </div>    
   </div>
-
-  <button type="submit" class="btn btn-primary btn-black">Submit</button>
-
-  <br><br>
-  <p>
-    <a href="<%= Routes.signup_path(Endpoint, :show) %>">Don't have an account?</a>
-  </p>
-<% end %>
+</div>

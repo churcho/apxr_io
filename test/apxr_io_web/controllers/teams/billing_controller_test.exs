@@ -41,7 +41,7 @@ defmodule ApxrIoWeb.Teams.BillingControllerTest do
 
     message =
       "Your subscription is canceled, you will have access until " <>
-        "the end of your billing period at Dec 12, 2017"
+        "the end of your billing period at Dec 12 2017 0:0:0"
 
     assert redirected_to(conn) == "/teams/#{team.name}/billing"
     assert get_flash(conn, :info) == message

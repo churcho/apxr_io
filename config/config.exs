@@ -33,8 +33,6 @@ config :sasl, sasl_error_logger: false
 
 config :apxr_io, ApxrIo.Emails.Mailer, adapter: ApxrIo.Emails.Bamboo.SESAdapter
 
-config :phoenix, :template_engines, md: ApxrIoWeb.MarkdownEngine
-
 config :phoenix, stacktrace_depth: 20
 
 config :phoenix, :generators,

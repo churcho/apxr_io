@@ -6,7 +6,7 @@ defmodule ApxrIoWeb.PageController do
       conn,
       "about.html",
       title: "About",
-      container: "container page page-sm"
+      container: "container page"
     )
   end
 end

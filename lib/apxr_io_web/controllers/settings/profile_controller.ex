@@ -28,17 +28,19 @@ defmodule ApxrIoWeb.Settings.ProfileController do
     page = ApxrIo.Utils.safe_page(page_param, log_count, @logs_per_page)
     audit_log = ApxrIo.Accounts.AuditLogs.all_by_user_or_team(user, page, @logs_per_page)
 
-    assigns = [
-      title: "Settings - Audit Log",
+    render(
+      conn,
+      "layout.html",
+      view: "audit_log.html",
+      view_name: :audit_log,
+      title: "Audit log",
       container: "container page settings",
       per_page: @logs_per_page,
       audit_log_count: log_count,
       page: page,
       user: user,
       audit_log: audit_log
-    ]
-
-    render(conn, "audit_log.html", assigns)
+    )
   end
 
   def update(conn, params) do
@@ -60,8 +62,10 @@ defmodule ApxrIoWeb.Settings.ProfileController do
   defp render_index(conn, changeset) do
     render(
       conn,
-      "index.html",
-      title: "Settings - Profile",
+      "layout.html",
+      view: "index.html",
+      view_name: :index,
+      title: "Profile",
       container: "container page settings",
       changeset: changeset,
       user: conn.assigns.current_user

@@ -1,112 +1,116 @@
-<%= if @artifact_count == 0 do %>
-  <div class="project-list no-results">
-    <h4>No Results Found</h4>
-  </div>
-<% else %>
-  <%
-  shown_artifacts = length(@artifacts)
-  paginate = paginate(@page, @artifact_count, items_per_page: @per_page, page_links: 5)
-
-  range_start = (@page - 1) * @per_page + 1
-  range_end = range_start + shown_artifacts - 1
-  page = if @page == 1, do: nil, else: @page
-
-  sort_name_params = params(page: page, sort: "name")
-  sort_status_params = params(page: page, sort: "status")
-  sort_created_params = params(page: page, sort: "inserted_at")
-  sort_updated_params = params(page: page, sort: "updated_at")
-  prev_page_params = params(page: @page-1, sort: @sort)
-  next_page_params = params(page: @page+1, sort: @sort)
-  %>
-
-<nav>
-  <div class="pagination-info">
-    <h4 class="projects-title">Artifacts (<%= @artifact_count %>)</h4>
-  </div>
-  <div class="navbar-right pagination-sort">
-    <div class="dropdown">
-      <button class="btn btn-default dropdown-toggle" type="button" id="sort_dropdown" data-toggle="dropdown">
-        <%= show_sort_info(@sort) %>
-        <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu dropdown-menu-right" role="menu">
-        <li role="presentation">
-          <a role="menuitem" tabindex="-1" href="<%= Routes.artifact_path(Endpoint, :index, @project, sort_name_params) %>">Name</a>
-        </li>
-        <li role="presentation">
-          <a role="menuitem" tabindex="-1" href="<%= Routes.artifact_path(Endpoint, :index, @project, sort_status_params) %>">Status</a>
-        </li>
-        <li role="presentation">
-          <a role="menuitem" tabindex="-1" href="<%= Routes.artifact_path(Endpoint, :index, @project, sort_created_params) %>">Recently created</a>
-        </li>
-        <li role="presentation">
-          <a role="menuitem" tabindex="-1" href="<%= Routes.artifact_path(Endpoint, :index, @project, sort_updated_params) %>">Recently updated</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-  <div class="navbar-right pagination-sort">
-    <div>
-      <a href="<%= Routes.project_path(Endpoint, :show, @project) %>">
-        <button class="btn btn-default">
-          Back to project
-        </button>
-      </a>
-    </div>
-  </div>
-</nav>
-
-<div class="clearfix"></div>
-
-<div class="table-responsive">
-  <table class="table table-condensed table-striped">
-    <tr>
-      <td>Name</td>
-      <td>Created</td>
-      <td>Updated</td>
-      <td>Status</td>
-    </tr>
-    <%= for artifact <- @artifacts do %>
-      <%= render "_artifact.html", project: @project, artifact: artifact, view: @sort %>
-    <% end %>
-  </table>
-</div>
-
-<div class="pagination-wrapper">
-  <div class="pagination-info">
-    <%= if shown_artifacts == 1 do %>
-      Showing last artifact of <%= @artifact_count %> total
+<div class="columns">
+  <div class="column is-1"></div>
+  <div class="column is-10">
+    <%= if @artifact_count == 0 do %>
+      <div>
+        <h4>No Results Found</h4>
+      </div>
     <% else %>
-      Showing <%= range_start %>&ndash;<%= range_end %> artifacts of <%= @artifact_count %> total
+      <%
+      shown_artifacts = length(@artifacts)
+      paginate = paginate(@page, @artifact_count, items_per_page: @per_page, page_links: 5)
+
+      range_start = (@page - 1) * @per_page + 1
+      range_end = range_start + shown_artifacts - 1
+      page = if @page == 1, do: nil, else: @page
+
+      sort_name_params = params(page: page, sort: "name")
+      sort_status_params = params(page: page, sort: "status")
+      sort_created_params = params(page: page, sort: "inserted_at")
+      sort_updated_params = params(page: page, sort: "updated_at")
+      prev_page_params = params(page: @page-1, sort: @sort)
+      next_page_params = params(page: @page+1, sort: @sort)
+      %>
+      <nav class="breadcrumb" aria-label="breadcrumbs">
+        <ul>
+          <li><a href="<%= Routes.project_path(Endpoint, :index) %>"><%= @project.team.name %></a></li>
+          <li><a href="<%= path_for_project(@project) %>"><%= @project.name %></a></li>
+          <li class="is-active"><a href="#">artifacts</a></li>
+        </ul>
+      </nav>
+      <hr />
+      <nav>
+        <div class="is-inline-flex">
+          <h6 class="subtitle is-6 is-uppercase">Artifacts (<%= @artifact_count %>)</h6>
+        </div>
+        <div class="dropdown is-pulled-right is-right">
+          <div class="dropdown-trigger">
+            <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+              <span><%= show_sort_info(@sort) %></span>
+            </button>
+          </div>
+          <div class="dropdown-menu" id="dropdown-menu" role="menu">
+            <div class="dropdown-content">
+              <a class="dropdown-item" href="<%= Routes.artifact_path(Endpoint, :index, @project, sort_name_params) %>">
+                Name
+              </a>
+              <a class="dropdown-item" href="<%= Routes.artifact_path(Endpoint, :index, @project, sort_status_params) %>">
+                Status
+              </a>
+              <a class="dropdown-item" href="<%= Routes.artifact_path(Endpoint, :index, @project, sort_created_params) %>">
+                Recently Created
+              </a>
+              <a class="dropdown-item" href="<%= Routes.artifact_path(Endpoint, :index, @project, sort_updated_params) %>">
+                Recently Updated
+              </a>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <br />
+      <div style="overflow-x:auto;">
+        <table class="table is-bordered is-striped is-fullwidth">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Created</th>
+              <th>Updated</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <%= for artifact <- @artifacts do %>
+              <%= render "_artifact.html", project: @project, artifact: artifact, view: @sort %>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      <br />
+      <nav class="pagination" role="navigation" aria-label="pagination">
+        <%= if paginate[:prev] do %>
+          <a class="pagination-previous" href="<%= Routes.artifact_path(Endpoint, :index, @artifact.project, prev_page_params) %>">Previous</a>
+        <% else %>
+          <a class="pagination-previous" disabled>Previous</a>
+        <% end %>
+        <%= if paginate[:next] do %>
+          <a class="pagination-next" href="<%= Routes.artifact_path(Endpoint, :index, @artifact.project, next_page_params) %>">Next</a>
+        <% else %>
+          <a class="pagination-next" disabled>Next</a>
+        <% end %>
+        <ul class="pagination-list">
+          <%= for counter <- paginate[:page_links] do %>
+            <%= if counter == @page do %>
+              <li>
+                <a class="pagination-link is-current" aria-label="Page <%=counter%>" aria-current="page"><%=counter%></a>
+              </li>
+            <% else %>
+              <li>
+                <a class="pagination-link" aria-label="Goto page <%=counter%>" href="<%= Routes.artifact_path(Endpoint, :index, @artifact.project, params(page: counter, sort: @sort)) %>"><%=counter%></a>
+              </li>
+            <% end %>
+            <%= if shown_artifacts == 1 do %>
+              <li>
+                <span class="pagination-ellipsis">Showing last artifact of <%= @artifact_count %> total</span>
+              </li>
+            <% else %>
+              <li>
+                <span class="pagination-ellipsis">Showing <%= range_start %>&ndash;<%= range_end %> artifacts of <%= @artifact_count %> total</span>
+              </li>
+            <% end %>
+          <% end %>
+        </ul>
+      </nav>
     <% end %>
   </div>
-  <nav class="pagination-widget">
-    <ul class="pagination pagination-sm">
-      <%= if paginate[:prev] do %>
-        <li><a href="<%= Routes.artifact_path(Endpoint, :index, @artifact.project, prev_page_params) %>" aria-label="Previous">&laquo;</a></li>
-      <% else %>
-        <li class="disabled"><span>&laquo;</span></li>
-      <% end %>
-      <%= for counter <- paginate[:page_links] do %>
-        <%= if counter == @page do %>
-          <li class="active">
-            <span><%= counter %></span>
-          </li>
-        <% else %>
-          <li>
-            <a href="<%= Routes.artifact_path(Endpoint, :index, @artifact.project, params(page: counter, sort: @sort)) %>">
-              <%= counter %>
-            </a>
-          </li>
-        <% end %>
-      <% end %>
-      <%= if paginate[:next] do %>
-        <li><a href="<%= Routes.artifact_path(Endpoint, :index, @artifact.project, next_page_params) %>" aria-label="Next" >&raquo;</a></li>
-      <% else %>
-        <li class="disabled"><span>&raquo;</span></li>
-      <% end %>
-    </ul>
-  </nav>
+  <div class="column is-1"></div>
 </div>
-
-<% end %>

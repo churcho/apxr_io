@@ -203,18 +203,23 @@ defmodule ApxrIoWeb.Teams.BillingController do
   end
 
   defp render_index(conn, team, opts \\ []) do
+    user = conn.assigns.current_user
+    teams = Teams.all_by_user(user)
     billing = ApxrIo.Billing.teams(team.name)
 
     assigns = [
+      view: "index.html",
+      view_name: :index,
       title: "Billing",
       container: "container page teams",
       team: team,
       params: opts[:params],
-      errors: opts[:errors]
+      errors: opts[:errors],
+      teams: teams
     ]
 
     assigns = Keyword.merge(assigns, billing_assigns(billing, team))
-    render(conn, "index.html", assigns)
+    render(conn, "layout.html", assigns)
   end
 
   defp cancel_message(nil = _cancel_date) do

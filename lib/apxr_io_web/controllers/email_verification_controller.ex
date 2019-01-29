@@ -18,8 +18,8 @@ defmodule ApxrIoWeb.EmailVerificationController do
     render(
       conn,
       "show.html",
-      title: "Verify email",
-      container: "container page page-xs"
+      title: "Verify",
+      container: "container verification"
     )
   end
 
@@ -31,7 +31,7 @@ defmodule ApxrIoWeb.EmailVerificationController do
     end
 
     conn
-    |> put_flash(:info, "A verification email has been sent to #{email_address}.")
+    |> put_flash(:info, "A verification email has been sent.")
     |> redirect(to: Routes.login_path(ApxrIoWeb.Endpoint, :new))
   end
 end

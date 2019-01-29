@@ -186,63 +186,86 @@ defmodule ApxrIoWeb.TeamController do
     user = conn.assigns.current_user
     teams = Teams.all_by_user(user)
 
-    render(
-      conn,
-      "index.html",
-      title: "Teams",
-      container: "container page teams",
-      create_changeset: create_changeset,
-      teams: teams
-    )
+    if teams == [] do
+      render(
+        conn,
+        "layout.html",
+        view: "index.html",
+        view_name: :index,
+        title: "Teams",
+        container: "container teams",
+        create_changeset: create_changeset,
+        teams: teams
+      )
+    else
+      team = List.first(teams)
+      redirect(conn, to: Routes.team_path(conn, :members, team))
+    end
   end
 
   defp render_members(conn, team, opts \\ []) do
+    user = conn.assigns.current_user
+    teams = Teams.all_by_user(user)
     billing = ApxrIo.Billing.teams(team.name)
 
-    assigns = [
-      title: "Team",
-      container: "container page teams",
+    render(
+      conn,
+      "layout.html",
+      view: "members.html",
+      view_name: :members,
+      title: "Members",
+      container: "container teams",
       team: team,
       quantity: billing["billing"],
       params: opts[:params],
       errors: opts[:errors],
-      add_member_changeset: opts[:add_member_changeset] || add_member_changeset()
-    ]
-
-    render(conn, "members.html", assigns)
+      add_member_changeset: opts[:add_member_changeset] || add_member_changeset(),
+      teams: teams
+    )
   end
 
   defp render_audit_log(conn, team, params) do
+    user = conn.assigns.current_user
+    teams = Teams.all_by_user(user)
     page_param = ApxrIo.Utils.safe_int(params["page"]) || 1
     log_count = ApxrIo.Accounts.AuditLogs.count(team)
     page = ApxrIo.Utils.safe_page(page_param, log_count, @logs_per_page)
     audit_log = ApxrIo.Accounts.AuditLogs.all_by_user_or_team(team, page, @logs_per_page)
 
-    assigns = [
-      title: "Team",
-      container: "container page teams",
+    render(
+      conn,
+      "layout.html",
+      view: "audit_log.html",
+      view_name: :audit_log,
+      title: "Audit log",
+      container: "container teams",
       per_page: @logs_per_page,
       audit_log_count: log_count,
       page: page,
       team: team,
-      audit_log: audit_log
-    ]
-
-    render(conn, "audit_log.html", assigns)
+      audit_log: audit_log,
+      teams: teams
+    )
   end
 
   defp render_new(conn, opts \\ []) do
+    user = conn.assigns.current_user
+    teams = Teams.all_by_user(user)
+
     render(
       conn,
-      "new.html",
+      "layout.html",
+      view: "new.html",
+      view_name: :new,
       title: "New team",
-      container: "container page teams",
+      container: "container teams",
       billing_email: nil,
       person: nil,
       company: nil,
       params: opts[:params],
       errors: opts[:errors],
-      changeset: opts[:changeset] || create_changeset()
+      changeset: opts[:changeset] || create_changeset(),
+      teams: teams
     )
   end
 

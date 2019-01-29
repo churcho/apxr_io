@@ -4,7 +4,7 @@ defmodule ApxrIoWeb.DocsView do
 
   def selected_docs(conn, view) do
     if conn.assigns.view_name == view do
-      "selected"
+      "is-active"
     else
       ""
     end

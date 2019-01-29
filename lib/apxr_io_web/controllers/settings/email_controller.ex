@@ -72,11 +72,14 @@ defmodule ApxrIoWeb.Settings.EmailController do
 
     render(
       conn,
-      "index.html",
-      title: "Settings - Email",
+      "layout.html",
+      view: "index.html",
+      view_name: :index,
+      title: "Emails",
       container: "container page settings",
       create_changeset: create_changeset,
-      emails: emails
+      emails: emails,
+      user: user
     )
   end
 

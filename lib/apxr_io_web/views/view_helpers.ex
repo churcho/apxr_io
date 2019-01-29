@@ -13,7 +13,7 @@ defmodule ApxrIoWeb.ViewHelpers do
   end
 
   def project_name(repository, project) do
-    repository <> " / " <> project
+    [repository, " ", "/", " ", content_tag(:span, project, class: "has-text-weight-bold")]
   end
 
   def path_for_project(project) do
@@ -24,17 +24,13 @@ defmodule ApxrIoWeb.ViewHelpers do
     Routes.project_path(Endpoint, :show, project, release, [])
   end
 
-  def path_for_releases(project) do
-    Routes.version_path(Endpoint, :index, project, [])
-  end
-
   def path_for_experiment(project, experiment) do
     Routes.experiment_path(Endpoint, :show, project, experiment.release, experiment, [])
   end
 
   def changeset_error(changeset) do
     if changeset.action do
-      content_tag :div, class: "alert alert-danger" do
+      content_tag :div, class: "notification is-danger" do
         "Oops, something went wrong! Please check the errors below."
       end
     end
@@ -69,7 +65,7 @@ defmodule ApxrIoWeb.ViewHelpers do
 
   defp add_error_class(opts, form, field) do
     error? = Keyword.has_key?(form.errors, field)
-    error_class = if error?, do: "form-input-error", else: ""
+    error_class = if error?, do: "is-danger", else: ""
     class = "form-control #{error_class} #{opts[:class]}"
 
     Keyword.put(opts, :class, class)
@@ -77,7 +73,7 @@ defmodule ApxrIoWeb.ViewHelpers do
 
   def error_tag(form, field) do
     if error = form.errors[field] do
-      content_tag(:span, translate_error(error), class: "form-error")
+      content_tag(:p, translate_error(error), class: "help is-danger")
     end
   end
 
@@ -85,6 +81,56 @@ defmodule ApxrIoWeb.ViewHelpers do
     Enum.reduce(opts, msg, fn {key, value}, msg ->
       String.replace(msg, "%{#{key}}", to_string(value))
     end)
+  end
+
+  def user_settings() do
+    [
+      profile: {"Profile", Routes.profile_path(Endpoint, :index)},
+      email: {"Emails", Routes.email_path(Endpoint, :index)},
+      keys: {"Keys", Routes.settings_key_path(Endpoint, :index)},
+      audit_log: {"Audit log", Routes.profile_path(Endpoint, :audit_log)}
+    ]
+  end
+
+  def selected_user_setting(conn, id) do
+    if Enum.take(conn.path_info, -2) == ["settings", Atom.to_string(id)] do
+      "is-active"
+    end
+  end
+
+  def team_menu_selected(conn, view) do
+    if conn.assigns.view_name == view do
+      "is-active"
+    else
+      ""
+    end
+  end
+
+  def selected_team(conn, team) do
+    if Enum.at(conn.path_info, 1) == team.name do
+      "is-active"
+    end
+  end
+
+  def selected_team_item(conn, view) when is_atom(view) do
+    if Enum.take(conn.path_info, -1) == [Atom.to_string(view)] do
+      "is-active-team-item"
+    else
+      ""
+    end
+  end
+
+  def team_settings(conn, team) do
+    if Enum.at(conn.path_info, 1) == team.name do
+      [
+        members: {"Members", Routes.team_path(Endpoint, :members, team)},
+        keys: {"Keys", Routes.teams_key_path(Endpoint, :index, team)},
+        billing: {"Billing", Routes.billing_path(Endpoint, :index, team)},
+        audit_log: {"Audit log", Routes.team_path(Endpoint, :audit_log, team)}
+      ]
+    else
+      []
+    end
   end
 
   def paginate(page, count, opts) do
@@ -187,8 +233,8 @@ defmodule ApxrIoWeb.ViewHelpers do
   defp rel_from_now({day, {_, _, _}}) when day < 0, do: "about now"
   defp rel_from_now({day, {_, _, _}}), do: "#{day} days ago"
 
-  def pretty_datetime(%{year: year, month: month, day: day}) do
-    "#{pretty_month(month)} #{day}, #{year}"
+  def pretty_datetime(%{year: year, month: month, day: day, hour: hr, minute: min, second: sec}) do
+    "#{pretty_month(month)} #{day} #{year} #{hr}:#{min}:#{sec}"
   end
 
   defp pretty_month(1), do: "Jan"

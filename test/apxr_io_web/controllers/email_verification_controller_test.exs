@@ -64,7 +64,7 @@ defmodule ApxrIoWeb.EmailVerificationControllerTest do
   describe "GET /email/verification" do
     test "show verification form" do
       conn = get(build_conn(), "email/verification")
-      assert response(conn, 200) =~ "Verify email"
+      assert response(conn, 200) =~ "Verify"
     end
   end
 

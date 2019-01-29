@@ -5,7 +5,7 @@ defmodule ApxrIo.Emails do
   def owner_added(project, owners, owner) do
     email()
     |> email_to(owners)
-    |> subject("approximatereality.com - Owner added to project #{project.name}")
+    |> subject("APXR - Owner added to project #{project.name}")
     |> assign(:username, owner.username)
     |> assign(:project, project.name)
     |> render("owner_add.html")
@@ -14,7 +14,7 @@ defmodule ApxrIo.Emails do
   def owner_removed(project, owners, owner) do
     email()
     |> email_to(owners)
-    |> subject("approximatereality.com - Owner removed from project #{project.name}")
+    |> subject("APXR - Owner removed from project #{project.name}")
     |> assign(:username, owner.username)
     |> assign(:project, project.name)
     |> render("owner_remove.html")
@@ -23,7 +23,7 @@ defmodule ApxrIo.Emails do
   def verification(user, email) do
     email()
     |> email_to(%{email | user: user})
-    |> subject("approximatereality.com - Email verification")
+    |> subject("APXR - Email verification")
     |> assign(:username, user.username)
     |> assign(:email, email.email)
     |> assign(:key, email.verification_key)
@@ -33,7 +33,7 @@ defmodule ApxrIo.Emails do
   def login_link(auth_token, user, email) do
     email()
     |> email_to(%{email | user: user})
-    |> subject("approximatereality.com - Login link")
+    |> subject("APXR - Login link")
     |> assign(:auth_token, auth_token)
     |> render("login_link.html")
   end
@@ -41,7 +41,7 @@ defmodule ApxrIo.Emails do
   def team_invite(team, user) do
     email()
     |> email_to(user)
-    |> subject("approximatereality.com - You have been added to the #{team.name} team")
+    |> subject("APXR - You have been added to the #{team.name} team")
     |> assign(:team, team.name)
     |> assign(:username, user.username)
     |> render("team_invite.html")
@@ -50,7 +50,7 @@ defmodule ApxrIo.Emails do
   def experiment_complete(name, version, owners) do
     email()
     |> email_to(owners)
-    |> subject("approximatereality.com - Experiment #{name} #{version} complete")
+    |> subject("APXR - Experiment #{name} #{version} complete")
     |> assign(:project, name)
     |> assign(:version, version)
     |> render("experiment_complete.html")
@@ -68,7 +68,7 @@ defmodule ApxrIo.Emails do
   end
 
   defp source() do
-    host = Application.get_env(:apxr_io, :email_host) || "approximatereality.com"
-    {"approximatereality.com", "noreply@#{host}"}
+    host = Application.get_env(:apxr_io, :email_host) || "approximatereality"
+    {"approximatereality", "noreply@#{host}"}
   end
 end

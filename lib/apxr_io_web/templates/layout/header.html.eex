@@ -5,64 +5,98 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="<%= description(assigns) %>">
-
     <title><%= title(assigns) %></title>
-
     <link rel="stylesheet" href="<%= Routes.static_path(Endpoint, "/css/app.css") %>">
     <link rel="shortcut icon" href="<%= Routes.static_path(Endpoint, "/favicon.png") %>">
   </head>
-  <body>
+  <body class="site">
     <!--[if lt IE 10]>
       <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-
-    <section class="content-wrapper">
-    
-    <nav class="navbar navbar-default">
+    <nav class="navbar is-spaced is-white has-shadow" role="navigation" aria-label="main navigation">
       <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/">
-            <img src="<%= Routes.static_path(Endpoint, "/images/apxr_io.png") %>" srcset="<%= Routes.static_path(Endpoint, "/images/apxr_io.png") %> 1x, <%= Routes.static_path(Endpoint, "/images/apxr_io@2.png") %> 2x, <%= Routes.static_path(Endpoint, "/images/apxr_io@3.png") %> 3x" alt="apxr_io logo">
+        <div class="navbar-brand">
+          <a class="navbar-item has-background-black  is-radiusless" href="/">
+            <img src="<%= Routes.static_path(Endpoint, "/images/apxr_io.png") %>"
+            srcset="<%= Routes.static_path(Endpoint, "/images/apxr_io.png") %> 1x,
+            <%= Routes.static_path(Endpoint, "/images/apxr_io@2.png") %> 2x,
+            <%= Routes.static_path(Endpoint, "/images/apxr_io@3.png") %> 3x"
+            alt="approximatereality"
+          </a>
+          <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navMenu">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
           </a>
         </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
+        <div id="navMenu" class="navbar-menu">
+          <div class="navbar-start">
+            <div class="navbar-item"></div>
             <%= if logged_in?(assigns) do %>
-              <li><a href="<%= Routes.project_path(Endpoint, :index) %>">Projects</a></li>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="text-transform: capitalize;">
-                  <%= @current_user.username %>
-                  <b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu">
-                  <li><a href="<%= Routes.profile_path(Endpoint, :index) %>">Settings</a></li>
-                  <li><a href="<%= Routes.team_path(Endpoint, :index) %>">Teams</a></li>
-                  <li role="separator" class="divider"></li>
-                  <li>
-                    <%= form_tag(Routes.login_path(Endpoint, :delete)) do %>
-                      <button type="submit" class="btn btn-link">Log out</button>
-                    <% end %>
-                  </li>
-                </ul>
-              </li>
+              <a class="navbar-item" href="<%= Routes.project_path(Endpoint, :index) %>">
+                <span>
+                  Projects
+                </span>
+              </a>
+              <a class="navbar-item" href="<%= Routes.team_path(Endpoint, :index) %>">
+                <span>
+                  Teams
+                </span>
+              </a>
+              <a class="navbar-item" href="<%= Routes.profile_path(Endpoint, :index) %>">
+                <span>
+                  Account
+                </span>
+              </a>
             <% else %>
-              <li><a href="<%= Routes.login_path(Endpoint, :new) %>">Log in</a></li>
-              <li><a href="<%= Routes.signup_path(Endpoint, :show) %>">Sign up</a></li>
+              <a class="navbar-item" href="<%= Routes.page_path(Endpoint, :about) %>">
+                <span>
+                  About
+                </span>
+              </a>
+              <a class="navbar-item" href="<%= Routes.blog_path(Endpoint, :index) %>">
+                <span>
+                  Blog
+                </span>
+              </a>
+              <a class="navbar-item" href="<%= Routes.docs_path(Endpoint, :index) %>">
+                <span>
+                  Pricing
+                </span>
+              </a>
             <% end %>
-
-          </ul>
-        </div><!--/.nav-collapse -->
+              <a class="navbar-item" href="<%= Routes.docs_path(Endpoint, :index) %>">
+                <span>
+                  Docs
+                </span>
+              </a>
+          </div>
+          <div class="navbar-end">
+            <div class="navbar-item">
+              <div class="buttons">
+                <%= if logged_in?(assigns) do %>
+                  <a href="<%= Routes.profile_path(Endpoint, :index) %>" class="button is-text">
+                    <%= @current_user.username %>
+                  </a>
+                  <%= form_tag(Routes.login_path(Endpoint, :delete)) do %>
+                    <button type="submit" class="button is-black is-outlined">Log out</button>
+                  <% end %>
+                <% else %>
+                  <a href="<%= Routes.signup_path(Endpoint, :show) %>" id="apxr-hover" class="button is-black">
+                    <strong>Sign up</strong>
+                  </a>
+                  <a href="<%= Routes.login_path(Endpoint, :new) %>" class="button is-black is-outlined">
+                    Log in
+                  </a>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </nav>
-
     <%= unless assigns[:error] || assigns[:custom_flash] do %>
+      <br />
       <%= render "_flash.html", conn: @conn %>
     <% end %>
-
-    <div class="<%= container_class(assigns) %>">
+    <div class="<%= section_class(assigns) %>">

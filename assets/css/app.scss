@@ -1,23 +1,32 @@
-@import "vendor/media-queries";
-@import "vendor/roboto";
+@charset "utf-8";
 
-@import "base/variables";
-@import "base/mixins";
-@import "base/general";
+#apxr-hover:hover {
+  background-color: #FFF;
+  color: #0a0a0a;
+  border-color: #0a0a0a;
+}
 
-@import "template/error";
-@import "template/footer";
-@import "template/navbar";
+.site {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
 
-@import "template/page";
-@import "template/blog";
-@import "template/content-wrapper";
-@import "template/settings";
-@import "template/teams";
-@import "template/docs";
-@import "template/login";
-@import "template/project-list";
-@import "template/project-view";
-@import "template/policies";
-@import "template/signup";
-@import "template/version-list";
+.site-content {
+  flex: 1;
+}
+
+.tab-content{
+  display: none;
+}
+
+.tab-content.is-active-tab{
+  display: inherit;
+}
+
+.is-active-team-item{
+  text-decoration: underline;
+}
+
+
+@import "../node_modules/bulma/bulma.sass";

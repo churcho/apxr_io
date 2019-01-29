@@ -1,32 +1,25 @@
 defmodule ApxrIoWeb.BlogController do
   use ApxrIoWeb, :controller
 
-  Enum.each(ApxrIoWeb.BlogView.all_templates(), fn {slug, template} ->
-    defp slug_to_template(unquote(slug)), do: unquote(Path.rootname(template))
-  end)
+  def index(conn, _) do
+    posts = Blog.get_published_posts()
 
-  defp slug_to_template(_other), do: nil
-
-  def index(conn, _params) do
     render(
       conn,
       "index.html",
       title: "Blog",
-      container: "container page page-sm blog"
+      container: "container blog",
+      posts: posts
     )
   end
 
-  def show(conn, %{"slug" => "002-teams-going-live"}) do
-    redirect(conn, to: Routes.blog_path(Endpoint, :show, "teams-going-live"))
-  end
-
-  def show(conn, %{"slug" => slug}) do
-    if template = slug_to_template(slug) do
+  def show(conn, %{"id" => slug}) do
+    if post = %Post{slug: slug, published: true} = Blog.get(slug) do
       render(
         conn,
-        "#{template}.html",
+        "show.html",
         title: title(slug),
-        container: "container page page-sm blog"
+        post: post
       )
     else
       not_found(conn)

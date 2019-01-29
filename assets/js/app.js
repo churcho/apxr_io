@@ -28,66 +28,86 @@ HighchartsMore(Highcharts);
 
 export default class App {
   constructor() {
-    // Copy button
-    $(".copy-button").click(this.onCopy.bind(this))
+    // Check for click events on the navbar burger icon
+    $(".navbar-burger").click(function() {
+      // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+      $(".navbar-burger").toggleClass("is-active");
+      $(".navbar-menu").toggleClass("is-active");
+    });
 
-    // Show show-versions button if JS is enabled
-    $(".show-versions").show()
+    // Dismiss notification box
+    $(".notification-delete").click(function(){
+      $(".notification").hide();
+    });
 
-    // Project: toggle text in "All Versions / Recent Version" buttons
-    $(".show-versions .invisible").removeClass("invisible").toggle()
-    $(".show-versions .toggle-text").click((event) => $(event.target).parent().find("a").toggle())
+    // Dismiss notification box
+    $(".notification-delete").click(function(){
+      $(".notification").hide();
+    });
+
+    // Show dropdown menu
+    $(".dropdown").click(function() {
+      $(".dropdown").toggleClass("is-active");
+    });
 
     // Switch tabs
-    $(".nav-tabs a").click(function (e) {
-      e.preventDefault()
-      $(this).tab("show")
-    })
+    $('.tab').click(function(){
+      var tab_id = $(this).attr('data-tab');
 
-    $("[data-toggle='popover']").popover({container: "body", html: true})
+      $('.tabs li').removeClass('is-active');
+      $('.tab-content').removeClass('is-active-tab');
 
-    // Highlight syntax
-    hljs.initHighlightingOnLoad()
-  }
+      $(this).parent().addClass('is-active');
+      $("#"+tab_id).addClass('is-active-tab');
+    });
 
-  // Project: copy config snippet to clipboard
-  onCopy(event) {
-    var button = $(event.currentTarget)
-    var succeeded = false
+    // Modals
 
-    try {
-      var snippet = document.getElementById(button.attr("data-input-id"))
-      snippet.select()
-      succeeded = document.execCommand("copy")
-    } catch (e) {
-      console.log("snippet copy failed", e)
+    var rootEl = document.documentElement;
+    var $modals = getAll('.modal');
+    var $modalButtons = getAll('.modal-button');
+    var $modalCloses = getAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button');
+
+    if ($modalButtons.length > 0) {
+      $modalButtons.forEach(function ($el) {
+        $el.addEventListener('click', function () {
+          var target = $el.dataset.target;
+          openModal(target);
+        });
+      });
     }
 
-    succeeded ? this.copySucceeded(button) : this.copyFailed(button)
-  }
+    if ($modalCloses.length > 0) {
+      $modalCloses.forEach(function ($el) {
+        $el.addEventListener('click', function () {
+          closeModals();
+        });
+      });
+    }
 
-  copySucceeded(button) {
-    button.children(".glyphicon-copy").hide()
-    button.children(".glyphicon-ok").show()
-    button.tooltip({title: "Copied!", container: "body", placement: "bottom", trigger: "manual"}).tooltip("show")
+    function openModal(target) {
+      var $target = document.getElementById(target);
+      rootEl.classList.add('is-clipped');
+      $target.classList.add('is-active');
+    }
 
-    setTimeout(() => {
-      button.children(".glyphicon-ok").hide()
-      button.children(".glyphicon-copy").show()
-      button.tooltip("hide")
-    }, 1500)
-  }
+    function closeModals() {
+      rootEl.classList.remove('is-clipped');
+      $modals.forEach(function ($el) {
+        $el.classList.remove('is-active');
+      });
+    }
 
-  copyFailed(button) {
-    button.children(".glyphicon-copy").hide()
-    button.children(".glyphicon-remove").show()
-    button.tooltip({title: "Copy not supported in your browser", container: "body", placement: "bottom", trigger: "manual"}).tooltip("show")
+    document.addEventListener('keydown', function (event) {
+      var e = event || window.event;
+      if (e.keyCode === 27) {
+        closeModals();
+      }
+    });
 
-    setTimeout(() => {
-      button.children(".glyphicon-remove").hide()
-      button.children(".glyphicon-copy").show()
-      button.tooltip("hide")
-    }, 1500)
+    function getAll(selector) {
+      return Array.prototype.slice.call(document.querySelectorAll(selector), 0);
+    };
   }
 }
 

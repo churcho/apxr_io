@@ -130,9 +130,13 @@ defmodule ApxrIo.Accounts.AuditLog do
     end)
   end
 
-  defp extract_params("key.generate", key), do: serialize(key)
+  defp extract_params("key.generate", key) do
+    %{key: serialize(key)}
+  end
 
-  defp extract_params("key.remove", key), do: serialize(key)
+  defp extract_params("key.remove", key) do
+    %{key: serialize(key)}
+  end
 
   defp extract_params("owner.add", {project, level, user}) do
     %{project: serialize(project), level: level, user: serialize(user)}
@@ -158,19 +162,29 @@ defmodule ApxrIo.Accounts.AuditLog do
     %{project: serialize(project), release: serialize(release)}
   end
 
-  defp extract_params("email.add", email), do: serialize(email)
+  defp extract_params("email.add", email) do
+    %{email: serialize(email)}
+  end
 
-  defp extract_params("email.remove", email), do: serialize(email)
+  defp extract_params("email.remove", email) do
+    %{email: serialize(email)}
+  end
 
   defp extract_params("email.primary", {old_email, new_email}) do
     %{old_email: serialize(old_email), new_email: serialize(new_email)}
   end
 
-  defp extract_params("user.create", user), do: serialize(user)
+  defp extract_params("user.create", user) do
+    %{user: serialize(user)}
+  end
 
-  defp extract_params("user.update", user), do: serialize(user)
+  defp extract_params("user.update", user) do
+    %{user: serialize(user)}
+  end
 
-  defp extract_params("team.create", team), do: serialize(team)
+  defp extract_params("team.create", team) do
+    %{team: serialize(team)}
+  end
 
   defp extract_params("team.member.add", {team, user}) do
     %{team: serialize(team), user: serialize(user)}

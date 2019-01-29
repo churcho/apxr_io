@@ -1,10 +1,81 @@
 <%= changeset_error(@key_changeset) %>
 
-<div class="row">
-  <div class="col-sm-3">
-    <%= render ApxrIoWeb.SettingsView, "_sidebar.html", assigns %>
+<div>
+  <h4 class="title is-4 is-spaced">Keys</h4>
+  <h6 class="subtitle is-6">Keys are used to authenticate and authorize clients to interact with the APXR API.</h6>
+</div>
+<br />
+<%= if @keys != [] do %>
+  <div>
+    <div style="overflow-x:auto;">
+      <table class="table is-fullwidth is-narrow is-striped">
+        <thead>
+          <th>Name</th>
+          <th>Permissions</th>
+          <th>Last Use</th>
+          <th></th>
+        </thead>
+        <tbody>
+          <%= for key <- @keys do %>
+            <tr>
+              <td><%= key.name %></td>
+              <td>
+                <%= for permission <- key.permissions do %>
+                  <span class="tag is-dark"><%= permission_name(permission) %></span>
+                <% end %>
+              </td>
+              <td>
+                <small>
+                  <%= if last_use = key.last_use do %>
+                    <div>
+                      <%= last_use.used_at %> <strong>IP:</strong> <%= last_use.ip %><strong> UA:</strong> <%= last_use.user_agent %>
+                    </div>
+                  <% end %>
+                </small>
+              </td>
+              <td>
+                <%= form_tag(Routes.settings_key_path(Endpoint, :delete, key), method: :delete, class: "action") do %>
+                  <input type="hidden" name="name" value="<%= key.name %>">
+                  <button type="submit" class="button is-danger is-small">Revoke</button>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>      
+        </tbody>
+      </table>
+    </div>
   </div>
-  <div class="col-sm-9 keys">
-    <%= render ApxrIoWeb.SettingsView, "_keys.html", assigns %>
-  </div>
+<% end %>
+<br />
+<div>
+  <h4 class="title is-4">Generate key</h4>
+</div>
+<br />
+<div>
+  <%= form_for @key_changeset, Routes.settings_key_path(Endpoint, :create), [method: :post], fn f -> %>
+    <div class="field">
+      <label class="label">Key Name</label>
+      <div class="control">
+        <%= text_input f, :name, class: "input", placeholder: "e.g. Alex API" %>
+        <%= error_tag f, :name %>
+      </div>
+    </div>
+    <%= inputs_for f, :permissions, fn f -> %>
+      <div class="field">
+        <label class="label">Permission Domain</label>
+        <div class="control is-expanded">
+          <%= select(f, :domain, [API: "api", "Team": "repository"], class: "input is-fullwidth") %>
+          <%= error_tag f, :domain %>
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Domain Resource</label>
+        <div class="control is-expanded">
+          <%= select(f, :resource, [API: ["Read": "read", "Write": "write"], "Team": team_resources(assigns)], class: "input is-fullwidth") %>
+          <%= error_tag f, :resource %>
+        </div>
+      </div>
+    <% end %>
+    <button type="submit" class="button is-black">Generate</button>
+  <% end %>
 </div>

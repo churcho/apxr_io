@@ -5,111 +5,135 @@ links = Enum.to_list(@project.meta.links || [])
 build_tool = @current_release && @current_release.meta.build_tool
 %>
 
-<h2 class="project-title"><%= @project.name %>
-  <%= if @current_release do %>
-    <%= if @current_release.retirement do %>
-      <span class="version retired"><%= @current_release.version %> (retired)</span>
-    <% else %>
-      <span class="version"><%= @current_release.version %></span>
-    <% end %>
-  <% end %>
-</h2>
-
-<%= if retirement = @current_release && @current_release.retirement do %>
-  <div class="alert alert-danger" style="margin-top: 40px" role="alert">
-    <%= retirement_html(retirement) %>
-  </div>
-<% end %>
-
-<%= if description do %>
-  <div class="description">
-    <%= text_length(description, 300) |> text_to_html(insert_brs: false) %>
-  </div>
-<% end %>
-
-<div class="row">
-  <div class="col-md-4">
-    <%= if links != [] do %>
-      <h3>Links</h3>
-      <ul class="links">
-        <%= for {name, link} <- links do %>
-          <li><a href="<%= link %>" rel="nofollow"><%= name %></a></li>
+<div class="columns">
+  <div class="column is-1"></div>
+  <div class="column is-10">
+    <nav class="breadcrumb" aria-label="breadcrumbs">
+      <ul>
+        <li><a href="<%= Routes.project_path(Endpoint, :index) %>"><%= @project.team.name %></a></li>
+        <li><a href="#"><%= @project.name %></a></li>
+        <%= if @current_release do %>
+          <%= if @current_release.retirement do %>
+            <li class="is-active"><a href="#" aria-current="page"><%= @current_release.version %> (retired)</a></li>
+          <% else %>
+            <li class="is-active"><a href="#" aria-current="page"><%= @current_release.version %></a></li>
+          <% end %>
         <% end %>
       </ul>
-    <% end %>
-
-    <%= if licenses != [] do %>
-      <h3>License</h3>
-      <span class="license"><%= Enum.join(licenses, ", ") %></span>
-    <% end %>
-
-    <%= if build_tool do %>
-      <h3>Build Tool</h3>
-      <div class="build-tools-box">
-        <span class="build-tool <%= build_tool %>"><%= build_tool %> <%= @current_release.meta.build_tool_version %></span>
-      </div>
-    <% end %>
-
-    <h3>Owners</h3>
-    <ul class="owners-list list-inline">
-      <%= for owner <- @owners do %>
-        <li><%= owner.user.username %></li>
+    </nav>
+  </div>
+  <div class="column is-1"></div>
+</div>
+<div class="columns">
+  <div class="column is-1"></div>
+  <div class="column is-10">
+    <header>
+      <h3 class="title is-3"><%= @project.name %></h3>
+      <%= if description do %>
+        <h5 class="subtitle is-5 has-text-weight-semi-bold has-text-grey-dark"><%= text_length(description, 500) |> text_to_html() %></h5>
       <% end %>
-    </ul>
-  </div>
-
-  <div class="col-md-4">
-    <div class="row">
-      <div class="col-md-12">
-        <h3>Versions (<%= Enum.count(@releases) %>)</h3>
-        <ul id="versions" class="version-dependency-list">
-          <% show_latest_versions = 5 %>
-          <%= render "versions.html", [project: @project, releases: Enum.take(@releases, show_latest_versions)] %>
-        </ul>
-
-        <%= if length(@releases) > show_latest_versions do %>
-          <p class="show-versions">
-            <a href="<%= path_for_releases(@project) %>">Show all versions</a>
-          </p>
-        <% end %>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-md-4">
-    <div class="row">
-      <div class="col-md-12">
-        <a href="<%= Routes.experiment_path(Endpoint, :index, @project) %>" style="float: left;"><h3>Experiments (<%= Experiments.count(@project) %>)</h3></a>
-        <span style="float: right;"><%= icon(:octicon, :beaker, style: "height: 25px; margin: 14px 0; padding-right: 10px;") %></span>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-12">
-        <a href="<%= Routes.artifact_path(Endpoint, :index, @project) %>" style="float: left;"><h3>Artifacts (<%= Artifacts.count(@project) %>)</h3></a>
-        <span style="float: right;"><%= icon(:octicon, :"file-directory", style: "height: 25px; margin: 14px 0; padding-right: 10px;") %></span>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-12">
-        <h3>Checksum</h3>
-        <div class="config-input">
-          <div class="input-group">
-            <input type="text" class="form-control snippet"
-              value="<%= String.downcase(@current_release.checksum) %>"
-              onfocus="this.select();"
-              readonly="readonly" id="checksum-snippet" />
-            <span class="input-group-btn">
-              <button class="btn btn-default btn-no-hover copy-button" type="button" data-input-id="checksum-snippet">
-                <%= icon(:glyphicon, :copy) %>
-                <%= icon(:glyphicon, :remove, style: "display: none") %>
-                <%= icon(:glyphicon, :ok, style: "display: none; color: green") %>
-              </button>
-            </span>
+      <div>
+      <%= if retirement = @current_release && @current_release.retirement do %>
+        <article class="message is-warning is-small" style="width: fit-content;">
+          <div class="message-body">
+            <%= retirement_html(retirement) %>
           </div>
+        </article>
+      <% end %>
+        <div class="field is-grouped is-grouped-multiline">
+          <%= for owner <- @owners do %>
+            <div class="control">
+              <div class="tags has-addons">
+                <span class="tag is-dark">owner</span>
+                <span class="tag is-info"><%= owner.user.username %> (<%= owner.level %>)</span>
+              </div>
+            </div>
+          <% end %>
+          <%= if build_tool do %>
+            <div class="control">
+              <div class="tags has-addons">
+                <span class="tag is-dark">lang</span>
+                <span class="tag is-success"><%= build_tool %> <%= @current_release.meta.build_tool_version %></span>
+              </div>
+            </div>
+          <% end %>
+          <%= if licenses != [] do %>
+            <%= for license <- licenses do %>
+              <div class="control">
+                <div class="tags has-addons">
+                  <span class="tag is-dark">license</span>
+                  <span class="tag is-primary"><%= license %></span>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+          <%= if links != [] do %>
+            <%= for {name, link} <- links do %>
+              <div class="control">
+                <div class="tags has-addons">
+                  <span class="tag is-dark">link</span>
+                  <a class="tag is-link" href="<%= link %>" rel="nofollow"><%= name %></a>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
         </div>
       </div>
-    </div>
+    </header>
   </div>
+  <div class="column is-1"></div>
+</div>
+<div class="columns">
+  <div class="column is-1"></div>
+  <div class="column is-10">
+    <h6 class="title is-6">
+      Checksum:
+      <span class="has-text-weight-semi-bold has-text-grey" style="word-wrap: break-word;"> <%= String.downcase(@current_release.checksum) %></span>
+    </h6>
+    <h6 class="title is-6">Project Stats:</h6>
+    <nav class="level">
+      <div class="level-item has-text-centered">
+        <div>
+          <h1 class="title is-1"><%= Enum.count(@releases) %></h1>
+          <a href="#versions" class="heading">Versions</a>
+        </div>
+      </div>
+      <div class="level-item has-text-centered">
+        <div>
+          <h1 class="title is-1"><%= Experiments.count(@project) %></h1>
+          <a href="<%= Routes.experiment_path(Endpoint, :index, @project) %>" class="heading">Experiments</a>
+        </div>
+      </div>
+      <div class="level-item has-text-centered">
+        <div>
+          <h1 class="title is-1"><%= Artifacts.count(@project) %></h1>
+          <a href="<%= Routes.artifact_path(Endpoint, :index, @project) %>" class="heading">Artifacts</a>
+        </div>
+      </div>
+    </nav>
+    <hr />
+  </div>
+  <div class="column is-1"></div>
+</div>
+<div class="columns is-mobile">
+  <div class="column is-1"></div>
+  <div class="column is-10">
+    <nav>
+      <h4 id="versions" class="subtitle is-4">Versions:</h4>
+      <ul>
+        <%= for release <- @releases do %>
+          <li>
+            <span>&#8226 on <%= pretty_datetime(release.inserted_at) %> - </span>
+            <a href="<%= path_for_release(@project, release) %>">
+              <strong>v<%= release.version %></strong>
+            </a>
+            <%= if release.retirement do %>
+              <span><strong> - retired</strong></span>
+            <% end %>
+          </li>
+        <% end %>
+    </ul>
+    </nav>
+  </div>
+  <div class="column is-1"></div>
 </div>

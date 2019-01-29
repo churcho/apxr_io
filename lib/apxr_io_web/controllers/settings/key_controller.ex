@@ -14,8 +14,7 @@ defmodule ApxrIoWeb.Settings.KeyController do
     case Keys.create(user, key_params, audit: audit_data(conn)) do
       {:ok, %{key: key}} ->
         flash =
-          "The key #{key.name} was successfully generated, " <>
-            "copy the secret \"#{key.user_secret}\", you won't be able to see it again."
+          "Copy the secret \"#{key.user_secret}\". You won't be able to see it again."
 
         conn
         |> put_flash(:info, flash)
@@ -52,12 +51,15 @@ defmodule ApxrIoWeb.Settings.KeyController do
 
     render(
       conn,
-      "index.html",
-      title: "Settings - User keys",
+      "layout.html",
+      view: "index.html",
+      view_name: :index,
+      title: "Keys",
       container: "container page settings",
       keys: keys,
       teams: teams,
-      key_changeset: changeset
+      key_changeset: changeset,
+      user: user
     )
   end
 

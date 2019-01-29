@@ -29,7 +29,7 @@ defmodule ApxrIoWeb.Settings.KeyControllerTest do
         |> post("settings/keys", %{key: %{name: "computer"}})
 
       assert redirected_to(conn) == "/settings/keys"
-      assert get_flash(conn, :info) =~ "The key computer was successfully generated"
+      assert get_flash(conn, :info) =~ "Copy the secret"
     end
   end
 

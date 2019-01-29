@@ -1,8 +1,0 @@
-<li>
-  <a href="<%= path_for_release(@project, @release) %>" class="version-number"><strong><%= @release.version %></strong></a>
-  <span class="release-date"><%= pretty_datetime(@release.inserted_at) %></span>
-
-  <%= if @release.retirement do %>
-    (<span class="version-retirement">retired</span>)
-  <% end %>
-</li>

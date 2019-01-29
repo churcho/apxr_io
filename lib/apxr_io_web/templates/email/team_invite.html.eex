@@ -5,6 +5,6 @@
 <p>Authenticate to the team by running <pre>apxr.team auth <%= @team %></pre> in your shell.</a>.
 
 <p>
-  --<br>
-  approximatereality.com
+  ---<br>
+  ApproximateReality
 </p>

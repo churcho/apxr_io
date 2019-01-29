@@ -87,7 +87,7 @@ defmodule ApxrIoWeb do
           select: 4
         ]
 
-      import ApxrIoWeb.{ViewHelpers, ViewIcons}
+      import ApxrIoWeb.ViewHelpers
 
       alias ApxrIoWeb.Endpoint
       alias ApxrIoWeb.Router.Helpers, as: Routes
@@ -118,6 +118,8 @@ defmodule ApxrIoWeb do
         Accounts.Session,
         Accounts.User,
         Accounts.Users,
+        CMS.Post,
+        CMS.Blog,
         Emails,
         Emails.Mailer,
         Learn.Experiment,

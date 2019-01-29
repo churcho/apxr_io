@@ -13,13 +13,11 @@
       </ul>
     </div>
   </div>
-
   <div class="col-sm-9 keys">
     <div class="panel panel-default">
       <div class="panel-heading">Keys</div>
       <div class="panel-body">
         <p>Keys are used to authenticate and authorize clients to interact with the Artifact API and repository. </p>
-    
         <%= if @keys != [] do %>
           <br>
           <table class="table table-condensed table-striped">
@@ -40,16 +38,9 @@
                 <td>
                   <small>
                     <%= if last_use = key.last_use do %>
-                      <a
-                        tabindex="0"
-                        role="button"
-                        data-toggle="popover"
-                        data-trigger="focus"
-                        data-placement="bottom"
-                        title="Last use"
-                        data-content="<strong>Used at:</strong> <%= last_use.used_at %><br><strong>IP:</strong> <%= last_use.ip %><br><strong>User agent:</strong> <%= last_use.user_agent %>">
-                          <%= pretty_datetime(last_use.used_at) %> ...
-                      </a>
+                      <div>
+                        <%= last_use.used_at %> <strong>IP:</strong> <%= last_use.ip %><strong> UA:</strong> <%= last_use.user_agent %>
+                      </div>
                     <% end %>
                   </small>
                 </td>
@@ -64,7 +55,6 @@
           </table>
         <% end %>
       </div>
-    
       <div class="panel-body-part">
         <%= form_for @key_changeset, Routes.artifacts_key_path(Endpoint, :create, @artifact.project, @artifact), [method: :post], fn f -> %>
           <%= label f, :name, "Key name" %>

@@ -1,6 +1,6 @@
 <p><%= @username %> has been removed as an owner of project <%= @project %>.</p>
 
 <p>
-  --<br>
-  approximatereality.com
+  ---<br>
+  ApproximateReality
 </p>

@@ -1,5 +1,7 @@
-<li>
-  <a href="<%= path_for_project(@project) %>"><%= project_name(@project) %></a>
-  <span class="version"><%= @project.latest_version %></span>
-  <p><%= text_length(@project.meta.description, 280) %></p>
-</li>
+<tr>
+  <td><%= @project.team.name %></td>
+  <td><a href="<%= path_for_project(@project) %>"><%= @project.name %></a></td>
+  <td><%= @project.latest_version %></td>
+  <td><%= human_relative_time_from_now(@project.updated_at) %></td>
+  <td><%= text_length(@project.meta.description, 50) %></td>
+</tr>

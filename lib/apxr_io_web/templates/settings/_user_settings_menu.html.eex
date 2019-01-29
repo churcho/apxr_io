@@ -1,0 +1,33 @@
+<div class="column is-3-tablet is-2-desktop" style="border-right: solid 2px whitesmoke; padding-left: 2rem;">
+  <aside class="menu">
+    <p class="menu-label">
+      Account
+    </p>
+    <ul class="menu-list">
+    <%= for {id, {name, path}} <- user_settings() do %>
+      <li>  
+        <a class="<%= selected_user_setting(@conn, id) %>" href="<%= path %>">
+          <span><%= name %></span>
+        </a>
+      </li>
+    <% end %>
+    </ul>
+    <p class="menu-label">
+      Actions
+    </p>
+    <ul class="menu-list">
+      <li>
+        <%= link to: Routes.user_path(Endpoint, :delete, @user),
+          method: :delete,
+          data: [confirm: "Are you sure? This action will fail if you are a current project owner and/or the only admin of a team with other members."] do %>
+          Delete account
+        <% end %>
+      </li>
+      <li>
+        <%= link to: Routes.profile_path(Endpoint, :export_data), method: :get do %>
+          Export data
+        <% end %>
+      </li>
+    </ul>
+  </aside>
+</div>

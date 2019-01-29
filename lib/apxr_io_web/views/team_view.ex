@@ -23,21 +23,6 @@ defmodule ApxrIoWeb.TeamView do
     end)
   end
 
-  defp settings(team) do
-    [
-      members: {"Members", Routes.team_path(Endpoint, :members, team)},
-      keys: {"Keys", Routes.teams_key_path(Endpoint, :index, team)},
-      billing: {"Billing", Routes.billing_path(Endpoint, :index, team)},
-      audit_log: {"Audit log", Routes.team_path(Endpoint, :audit_log, team)}
-    ]
-  end
-
-  defp selected_setting(conn, id) when is_atom(id) do
-    if Enum.take(conn.path_info, -1) == [Atom.to_string(id)] do
-      "selected"
-    end
-  end
-
   def extract_params("key.generate", params) do
     Map.to_list(%{name: params["key"]["name"]})
   end

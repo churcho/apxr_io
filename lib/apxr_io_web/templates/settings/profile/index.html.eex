@@ -1,44 +1,35 @@
 <%= changeset_error(@changeset) %>
 
-<div class="row">
-  <div class="col-sm-3">
-    <%= render ApxrIoWeb.SettingsView, "_sidebar.html", assigns %>
+<div>
+  <div>
+    <h4 class="title is-4">Profile</h4>
   </div>
-
-  <div class="col-sm-9">
-    <div class="panel panel-default">
-      <div class="panel-heading">Profile</div>
-      <div class="panel-body">
-        <%= form_for @changeset, Routes.profile_path(Endpoint, :update), [method: :post], fn f -> %>
-          <div class="form-group">
-            <%= label f, :username %>
-            <%= text_input f, :username %>
-            <%= error_tag f, :username %>
-          </div>
-
-          <div class="form-group">
-            <%= label f, :primary_email %>
-            <%= select f, :primary_email, primary_email_options(@changeset.data), value: primary_email_value(@changeset.data) %>
-            <%= error_tag f, :primary_email %>
-            <small>
-              You can add or remove email addresses on the <a href="<%= Routes.email_path(Endpoint, :index) %>">email settings page</a>.
-            </small>
-          </div>
-          <button type="submit" class="btn btn-primary btn-black">Save</button>
-        <% end %>
-        <hr />
-        <div>
-          <%= link to: Routes.user_path(Endpoint, :delete, @user),
-            method: :delete,
-            data: [confirm: "Are you sure? NOTE: This action will fail if you are a current project owner and/or the only admin of a team with other members."] do %>
-            Delete account
-          <% end %>
-        |
-          <%= link to: Routes.profile_path(Endpoint, :export_data), method: :get do %>
-            Export data
-          <% end %>
+  <br />
+  <div>
+    <%= form_for @changeset, Routes.profile_path(Endpoint, :update), [method: :post], fn f -> %>
+      <div class="field">
+        <label class="label">Username</label>
+        <div class="control">
+          <%= text_input f, :username, [class: "input", type: "text", placeholder: "e.g. asmith", required: true, pattern: "[a-z]\\w*", "aria-describedby": "name-helpblock"] %>
+          <%= error_tag f, :username %>
         </div>
       </div>
-    </div>
+      <div class="field">
+        <label class="label">Primary email</label>
+        <div class="control">
+          <%= select f, :primary_email, primary_email_options(@changeset.data), value: primary_email_value(@changeset.data), class: "input" %>
+          <%= error_tag f, :primary_email %>
+        </div>
+        <p class="help has-text-grey">You can add or remove email addresses on the <a href="<%= Routes.email_path(Endpoint, :index) %>">email settings page</a>.</p>
+      </div>
+      <div class="field">
+        <div class="control">
+          <%= submit "Save", class: "button is-black" %>
+        </div>
+      </div>
+    <% end %>
   </div>
 </div>
+            
+
+

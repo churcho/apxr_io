@@ -32,8 +32,8 @@ defmodule ApxrIoWeb.SignupController do
     render(
       conn,
       "show.html",
-      title: "Sign up",
-      container: "container page page-xs signup",
+      title: "SignUp",
+      container: "container signup",
       changeset: changeset
     )
   end

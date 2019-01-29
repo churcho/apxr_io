@@ -1,55 +1,64 @@
-<nav>
-  <div class="pagination-info">
-    <h4 class="projects-title"><%= @artifact.name %></h4>
+<div class="columns">
+  <div class="column is-1"></div>
+  <div class="column is-10">
+    <nav class="breadcrumb" aria-label="breadcrumbs">
+      <ul>
+        <li><a href="<%= Routes.project_path(Endpoint, :index) %>"><%= @project.team.name %></a></li>
+        <li><a href="<%= path_for_project(@project) %>"><%= @project.name %></a></li>
+        <li ><a href="<%= path_for_release(@project, @artifact.experiment.release) %>"><%= @artifact.experiment.release.version %></a></li>
+        <li ><a href="<%= Routes.artifact_path(Endpoint, :index, @project) %>">artifacts</a></li>
+        <li class="is-active"><a href="#"><%= @artifact.name %></a></li>
+      </ul>
+    </nav>
   </div>
-  <%= if @artifact.experiment do %>
-    <div class="navbar-right pagination-sort">
-      <div>
-        <a href="<%= path_for_experiment(@project, @artifact.experiment) %>">
-          <button class="btn btn-default">View experiment</button>
-        </a>
+  <div class="column is-1"></div>
+</div>
+<div class="columns">
+  <div class="column is-1"></div>
+  <div class="column is-10">
+    <header>
+      <h3 class="title is-3"><%= @artifact.name %></h3>
+      <span class="tag is-dark heading"><%= @status %></span> 
+    </header>
+  </div>
+  <div class="column is-1"></div>
+</div>
+<div class="columns">
+  <div class="column is-1"></div>
+  <div class="column is-10">
+    <div>
+      <div class="tabs is-centered is-medium">
+        <ul>
+          <li class="is-active"><a class="tab heading is-size-6" data-tab="config">Configuration</a></li>
+          <li><a class="tab heading is-size-6" data-tab="graphs">Graphs</a></li>
+        </ul>
       </div>
     </div>
-  <% end %>
-  <div class="navbar-right pagination-sort">
-    <div>
-      <a href="<%= Routes.artifact_path(Endpoint, :index, @project) %>">
-        <button class="btn btn-default">
-          Back to artifacts
-        </button>
-      </a>
-    </div>
-  </div> 
-</nav>
-
-<div class="clearfix"></div>
-
-<div>
-  <kbd>
-    <%= @status %>
-  </kbd>
+  </div>
+  <div class="column is-1"></div>
 </div>
-
-<br />
-
-<ul class="nav nav-tabs nav-justified">
-  <li class="active"><a data-toggle="tab" href="#config">CONFIGURATION</a></li>
-  <li><a data-toggle="tab" href="#graphs">GRAPHS</a></li>
-</ul>
-
-<div class="tab-content">
-    <div id="config" class="tab-pane fade in active">
-<pre><code>location: <%= @artifact.meta.location %>
+<div class="columns">
+  <div class="column is-1"></div>
+  <div class="column is-10">
+    <div>
+      <div id="config" class="tab-content is-active-tab">
+<pre>
+<code>location: <%= @artifact.meta.location %>
 scale_min: <%= @artifact.meta.scale_min %>
 scale_max: <%= @artifact.meta.scale_max %>
-scale_factor: <%= @artifact.meta.scale_factor %>
-</code></pre>
-  </div>
-  <div id="graphs" class="tab-pane fade">
-    <%= if @artifact.stats do %>
-      <%= charts(@artifact.stats, @artifact.name) %>
-    <% end %>
-    <div id="artifact_stats" style="min-width: 310px; height: 400px; margin: 0 auto">
+scale_factor: <%= @artifact.meta.scale_factor %></code>
+</pre>
+      </div>
+      <div id="graphs" class="tab-content">
+        <%= if @artifact.stats do %>
+          <%= charts(@artifact.stats, @artifact.name) %>
+        <% end %>
+        <div class="columns">
+          <div class="column">
+            <div id="artifact_stats"></div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

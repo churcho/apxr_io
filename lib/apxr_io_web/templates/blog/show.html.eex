@@ -1,0 +1,13 @@
+<div class="columns">
+  <div class="column is-9 is-offset-1">
+    <div>
+      <div class="index-post">
+        <h3 class="title is-3 is-spaced"><%= @post.title %></h3>
+        <h6 class="subtitle is-6"> <%= pretty_datetime(@post.inserted_at) %> · by <%= @post.author %></h6>
+        <div class="content">
+          <%= text_to_html(@post.body) %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
