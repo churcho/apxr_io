@@ -543,9 +543,7 @@ defmodule ApxrIo.TestHelpers do
           fitness_std: [
             [118.1676, 132.4324001],
             [126.15, 124.75],
-            [129.090400002, 131.5584],
-            [126.15, 134.75],
-            [56.15, 124.75]
+            [129.090400002]
           ]
         },
         avg_neurons_vs_evaluations: %{
@@ -555,9 +553,7 @@ defmodule ApxrIo.TestHelpers do
           neurons_std: [
             [118.1676, 132.4324001],
             [126.15, 124.75],
-            [129.090400002, 131.5584],
-            [126.15, 134.75],
-            [56.15, 124.75]
+            [129.090400002]
           ]
         },
         avg_diversity_vs_evaluations: %{
@@ -567,9 +563,7 @@ defmodule ApxrIo.TestHelpers do
           diversity_std: [
             [118.1676, 132.4324001],
             [126.15, 124.75],
-            [129.090400002, 131.5584],
-            [126.15, 134.75],
-            [56.15, 124.75]
+            [129.090400002]
           ]
         },
         max_fitness_vs_evaluations: %{
@@ -595,7 +589,12 @@ defmodule ApxrIo.TestHelpers do
         validation_avg_fitness_vs_evaluations: %{
           morphology: "some_morphology",
           evaluation_index: [500, 1000, 1500, 2500, 3000],
-          validation_fitness: [122.00001, 56.0001, 115.52000012, 117.24000012, 149.12]
+          validation_fitness: [122.00001, 56.0001, 115.52000012, 117.24000012, 149.12],
+          validation_fitness_std: [
+            [118.1676, 132.4324001],
+            [126.15, 124.75],
+            [129.090400002]
+          ]
         },
         validation_max_fitness_vs_evaluations: %{
           morphology: "some_morphology",

@@ -24,14 +24,14 @@
 <br />
 
 <ul class="nav nav-tabs nav-justified">
-  <li class="active"><a data-toggle="tab" href="#config">CONFIGURATION</a></li>
-  <li><a data-toggle="tab" href="#params">PARAMETERS</a></li>
+  <li class="active"><a data-toggle="tab" href="#overview">OVERVIEW</a></li>
+  <li><a data-toggle="tab" href="#init_constraints">INITIAL CONSTRAINTS</a></li>
   <li><a data-toggle="tab" href="#trace">TRACE</a></li>
   <li><a data-toggle="tab" href="#graphs">GRAPHS</a></li>
 </ul>
 
 <div class="tab-content">
-  <div id="config" class="tab-pane fade in active">
+  <div id="overview" class="tab-pane fade in active">
 <pre><code>identifier: <%= @experiment.meta.exp_parameters["identifier"] %>
 started: <%= @experiment.meta.started %>
 completed: <%= @experiment.meta.completed %>
@@ -39,12 +39,12 @@ duration: <%= @experiment.meta.duration %>
 progress: <%= @experiment.meta.progress %>
 interruptions: <%= @experiment.meta.interruptions %>
 total_runs: <%= @experiment.meta.total_runs %>
-initial_constraints: <%= Poison.encode_to_iodata!(@experiment.meta.init_constraints, pretty: true) %>
+exp_parameters: <%= Poison.encode_to_iodata!(@experiment.meta.exp_parameters, pretty: true) %>
+pm_parameters: <%= Poison.encode_to_iodata!(@experiment.meta.pm_parameters, pretty: true) %>
 </code></pre>
   </div>
-  <div id="params" class="tab-pane fade">
-<pre><code>exp_parameters: <%= Poison.encode_to_iodata!(@experiment.meta.exp_parameters, pretty: true) %>
-pm_parameters: <%= Poison.encode_to_iodata!(@experiment.meta.pm_parameters, pretty: true) %>
+  <div id="init_constraints" class="tab-pane fade">
+<pre><code>initial_constraints: <%= Poison.encode_to_iodata!(@experiment.meta.init_constraints, pretty: true) %>
 </code></pre>
   </div>
   <div id="trace" class="tab-pane fade">
@@ -55,23 +55,25 @@ pm_parameters: <%= Poison.encode_to_iodata!(@experiment.meta.pm_parameters, pret
     <%= if @experiment.graph do %>
       <%= charts(@experiment.graph) %>
     <% end %>
-    <div id="avg_fitness_vs_evaluations" style="min-width: 310px; max-width: 800px; height: 400px; margin: 0 auto">
+    <div id="avg_fitness_vs_evaluations" style="height: 400px; margin: auto; min-width: 310px; max-width: 600px">
     </div>
-    <div id="avg_neurons_vs_evaluations" style="min-width: 310px; max-width: 800px; height: 400px; margin: 0 auto">
+    <div id="avg_neurons_vs_evaluations" style="height: 400px; margin: auto; min-width: 310px; max-width: 600px">
     </div>
-    <div id="avg_diversity_vs_evaluations" style="min-width: 310px; max-width: 800px; height: 400px; margin: 0 auto">
+    <div id="avg_diversity_vs_evaluations" style="height: 400px; margin: auto; min-width: 310px; max-width: 600px">
     </div>
-    <div id="max_fitness_vs_evaluations" style="min-width: 310px; height: 400px; margin: 0 auto">
+    <div id="max_fitness_vs_evaluations" style="height: 400px; margin: auto; min-width: 310px; max-width: 600px">
     </div>
-    <div id="avg_max_fitness_vs_evaluations" style="min-width: 310px; height: 400px; margin: 0 auto">
+    <div id="avg_max_fitness_vs_evaluations" style="height: 400px; margin: auto; min-width: 310px; max-width: 600px">
     </div>
-    <div id="avg_min_fitness_vs_evaluations" style="min-width: 310px; height: 400px; margin: 0 auto">
+    <div id="avg_min_fitness_vs_evaluations" style="height: 400px; margin: auto; min-width: 310px; max-width: 600px">
     </div>
-    <div id="validation_avg_fitness_vs_evaluations" style="min-width: 310px; height: 400px; margin: 0 auto">
+    <div id="specie_pop_turnover_vs_evaluations" style="height: 400px; margin: auto; min-width: 310px; max-width: 600px">
     </div>
-    <div id="validation_max_fitness_vs_evaluations" style="min-width: 310px; height: 400px; margin: 0 auto">
+    <div id="validation_avg_fitness_vs_evaluations" style="height: 400px; margin: auto; min-width: 310px; max-width: 600px">
     </div>
-    <div id="validation_min_fitness_vs_evaluations" style="min-width: 310px; height: 400px; margin: 0 auto">
+    <div id="validation_max_fitness_vs_evaluations" style="height: 400px; margin: auto; min-width: 310px; max-width: 600px">
+    </div>
+    <div id="validation_min_fitness_vs_evaluations" style="height: 400px; margin: auto; min-width: 310px; max-width: 600px">
     </div>
   </div>
 </div>

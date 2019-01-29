@@ -6,353 +6,441 @@ defmodule ApxrIoWeb.Projects.ExperimentView do
   def show_sort_info(:inserted_at), do: "Sort: Recently created"
   def show_sort_info(_param), do: nil
 
-  def charts(_data) do
-    # raw("""
-    #   <script type="text/javascript">
-    #     window.onload = function(){  
-    #       Highcharts.chart('fitness_vs_evals', {
-    #         title: {
-    #           text: 'Fitness (Max, Avg. Max, and Avg. Min) vs. Evaluations'
-    #         },
-    #         xAxis: {
-    #           title: {
-    #             text: 'Evaluations'
-    #           }
-    #         },
-    #         yAxis: {
-    #           title: {
-    #             text: 'Fitness'
-    #           }
-    #         },
-    #         subtitle: {
-    #           text: 'Morphology: #{data.fitness_vs_evals["morphology"]}'
-    #         },
-    #         legend: {
-    #           layout: 'vertical',
-    #           align: 'right',
-    #           verticalAlign: 'middle'
-    #         },
-    #         plotOptions: {
-    #           series: {
-    #             label: {
-    #               connectorAllowed: false
-    #             },
-    #             pointStart: 500,
-    #             pointInterval: 500
-    #           }
-    #         },
-    #         series: [{
-    #           name: 'Max Fitness',
-    #           data: #{inspect(data.fitness_vs_evals["max_fitness"])}
-    #         }, {
-    #           name: 'Avg. Max Fitness',
-    #           data: #{inspect(data.fitness_vs_evals["maxavg_fitness"])}
-    #         }, {
-    #           name: 'Avg. Min Fitness',
-    #           data: #{inspect(data.fitness_vs_evals["min_fintess"])}
-    #         }],
-    #         responsive: {
-    #           rules: [{
-    #             condition: {
-    #               maxWidth: 500
-    #             },
-    #             chartOptions: {
-    #               legend: {
-    #                 layout: 'horizontal',
-    #                 align: 'center',
-    #                 verticalAlign: 'bottom'
-    #               }
-    #             }
-    #           }]
-    #         }
-    #       });
+  def charts(data) do
+    raw("""
+      <script type="text/javascript">
+        window.onload = function(){
+          Highcharts.chart('avg_fitness_vs_evaluations', {
+            chart: {
+              zoomType: 'xy'
+            },
+            title: {
+              text: 'Average Fitness vs Evaluations'
+            },
+            subtitle: {
+              text: 'Morphology: #{inspect(data.avg_fitness_vs_evaluations["morphology"])}'
+            },
+            xAxis: [{
+              categories: #{inspect(data.avg_fitness_vs_evaluations["evaluation_index"])},
+              title: {
+                text: 'Evaluations',
+                style: {
+                  color: Highcharts.getOptions().colors[1]
+                }
+              }
+            }],
+            yAxis: [{
+              labels: {
+                format: '{value}',
+                style: {
+                  color: Highcharts.getOptions().colors[1]
+                }
+              },
+              title: {
+                text: 'Fitness',
+                style: {
+                  color: Highcharts.getOptions().colors[1]
+                }
+              }
+            }],
+          
+            tooltip: {
+              shared: true
+            },
+          
+            series: [{
+              name: 'Average Fitness',
+              type: 'spline',
+              data: #{inspect(data.avg_fitness_vs_evaluations["avg_fitness"])},
+              tooltip: {
+                pointFormat: '<span style="font-weight: bold; color: {series.color}">Fitness</span>: <b>{point.y}</b> '
+              }
+            }, {
+              name: 'Fitness STD',
+              type: 'errorbar',
+              data: #{inspect(data.avg_fitness_vs_evaluations["fitness_std"])},
+              tooltip: {
+                pointFormat: '(range: {point.low}-{point.high})<br/>'
+              }
+            }]
+          });
 
-    #       Highcharts.chart('val_fitness_vs_evals', {
-    #         title: {
-    #           text: 'Validation Fitness (Max, Min) vs. Evaluations'
-    #         },
-    #         xAxis: {
-    #           title: {
-    #             text: 'Evaluations'
-    #           }
-    #         },
-    #         yAxis: {
-    #           title: {
-    #             text: 'Fitness'
-    #           }
-    #         },
-    #         subtitle: {
-    #           text: 'Morphology: #{data.val_fitness_vs_evals["morphology"]}'
-    #         },
-    #         legend: {
-    #           layout: 'vertical',
-    #           align: 'right',
-    #           verticalAlign: 'middle'
-    #         },
-    #         plotOptions: {
-    #           series: {
-    #             label: {
-    #               connectorAllowed: false
-    #             },
-    #             pointStart: 500,
-    #             pointInterval: 500
-    #           }
-    #         },
-    #         series: [{
-    #           name: 'Validation Max Fitness',
-    #           data: #{inspect(data.val_fitness_vs_evals["validationmax_fitness"])}
-    #         }, {
-    #           name: 'Validation Min Fitness',
-    #           data: #{inspect(data.val_fitness_vs_evals["validationmin_fitness"])}
-    #         }],
-    #         responsive: {
-    #           rules: [{
-    #             condition: {
-    #               maxWidth: 500
-    #             },
-    #             chartOptions: {
-    #               legend: {
-    #                 layout: 'horizontal',
-    #                 align: 'center',
-    #                 verticalAlign: 'bottom'
-    #               }
-    #             }
-    #           }]
-    #         }
-    #       });
+          Highcharts.chart('avg_neurons_vs_evaluations', {
+            chart: {
+              zoomType: 'xy'
+            },
+            title: {
+              text: 'Average Neurons vs Evaluations'
+            },
+            subtitle: {
+              text: 'Morphology: #{inspect(data.avg_neurons_vs_evaluations["morphology"])}'
+            },
+            xAxis: [{
+              categories: #{inspect(data.avg_neurons_vs_evaluations["evaluation_index"])},
+              title: {
+                text: 'Evaluations',
+                style: {
+                  color: Highcharts.getOptions().colors[1]
+                }
+              }
+            }],
+            yAxis: [{
+              labels: {
+                format: '{value}',
+                style: {
+                  color: Highcharts.getOptions().colors[1]
+                }
+              },
+              title: {
+                text: 'Neurons',
+                style: {
+                  color: Highcharts.getOptions().colors[1]
+                }
+              }
+            }],
+          
+            tooltip: {
+              shared: true
+            },
+          
+            series: [{
+              name: 'Average Neurons',
+              type: 'spline',
+              data: #{inspect(data.avg_neurons_vs_evaluations["avg_neurons"])},
+              tooltip: {
+                pointFormat: '<span style="font-weight: bold; color: {series.color}">Neurons</span>: <b>{point.y}</b> '
+              }
+            }, {
+              name: 'Neurons STD',
+              type: 'errorbar',
+              data: #{inspect(data.avg_neurons_vs_evaluations["neurons_std"])},
+              tooltip: {
+                pointFormat: '(range: {point.low}-{point.high})<br/>'
+              }
+            }]
+          });
 
-    #       Highcharts.chart('specie_pop_turnover_vs_evals', {            
-    #         title: {
-    #           text: 'Specie Population Turnover Vs Evaluations'
-    #         },
-    #         xAxis: {
-    #           title: {
-    #             text: 'Evaluations'
-    #           }
-    #         },
-    #         yAxis: {
-    #           title: {
-    #             text: 'Specie Population Turnover'
-    #           }
-    #         },
-    #         subtitle: {
-    #           text: 'Morphology: #{data.specie_pop_turnover_vs_evals["morphology"]}'
-    #         },
-    #         legend: {
-    #           layout: 'vertical',
-    #           align: 'right',
-    #           verticalAlign: 'middle'
-    #         },
-    #         plotOptions: {
-    #           series: {
-    #             label: {
-    #               connectorAllowed: false
-    #             },
-    #             pointStart: 500,
-    #             pointInterval: 500
-    #           }
-    #         },
-    #         series: [{
-    #           name: 'Specie-Population Turnover',
-    #           data: #{inspect(data.specie_pop_turnover_vs_evals["specie_pop_turnover"])}
-    #         }],
-    #         responsive: {
-    #           rules: [{
-    #             condition: {
-    #               maxWidth: 500
-    #             },
-    #             chartOptions: {
-    #               legend: {
-    #                 layout: 'horizontal',
-    #                 align: 'center',
-    #                 verticalAlign: 'bottom'
-    #               }
-    #             }
-    #           }]
-    #         }
-    #       });
+          Highcharts.chart('avg_diversity_vs_evaluations', {
+            chart: {
+              zoomType: 'xy'
+            },
+            title: {
+              text: 'Average Diversity vs Evaluations'
+            },
+            subtitle: {
+              text: 'Morphology: #{inspect(data.avg_diversity_vs_evaluations["morphology"])}'
+            },
+            xAxis: [{
+              categories: #{inspect(data.avg_diversity_vs_evaluations["evaluation_index"])},
+              title: {
+                text: 'Evaluations',
+                style: {
+                  color: Highcharts.getOptions().colors[1]
+                }
+              }
+            }],
+            yAxis: [{
+              labels: {
+                format: '{value}',
+                style: {
+                  color: Highcharts.getOptions().colors[1]
+                }
+              },
+              title: {
+                text: 'Diversity',
+                style: {
+                  color: Highcharts.getOptions().colors[1]
+                }
+              }
+            }],
+          
+            tooltip: {
+              shared: true
+            },
+          
+            series: [{
+              name: 'Average Diversity',
+              type: 'spline',
+              data: #{inspect(data.avg_diversity_vs_evaluations["avg_diversity"])},
+              tooltip: {
+                pointFormat: '<span style="font-weight: bold; color: {series.color}">Diversity</span>: <b>{point.y}</b> '
+              }
+            }, {
+              name: 'Diversity STD',
+              type: 'errorbar',
+              data: #{inspect(data.avg_diversity_vs_evaluations["diversity_std"])},
+              tooltip: {
+                pointFormat: '(range: {point.low}-{point.high})<br/>'
+              }
+            }]
+          });
 
-    #       Highcharts.chart('avg_val_fitness_vs_evals_std', {
-    #         title: {
-    #           text: 'Validation Fitness vs Evaluations'
-    #         },
-    #         xAxis: {
-    #           type: 'Evaluations'
-    #         },
-    #         yAxis: {
-    #           title: {
-    #             text: 'Average Validation Fitness'
-    #           }
-    #         },
-    #         subtitle: {
-    #           text: 'Morphology: #{data.avg_val_fitness_vs_evals_std["morphology"]}'
-    #         },
-    #         tooltip: {
-    #           crosshairs: true,
-    #           shared: true
-    #         },
-    #         legend: {},
-    #         series: [{
-    #           name: 'Validation Fitness',
-    #           data: #{inspect(data.avg_val_fitness_vs_evals_std["avgs"])},
-    #           zIndex: 1,
-    #           marker: {
-    #             fillColor: 'white',
-    #             lineWidth: 2,
-    #             lineColor: Highcharts.getOptions().colors[0]
-    #           }
-    #         },
-    #         {
-    #           name: 'Std. Dev',
-    #           data: #{inspect(data.avg_val_fitness_vs_evals_std["std"])},
-    #           type: 'arearange',
-    #           lineWidth: 0,
-    #           linkedTo: ':previous',
-    #           color: Highcharts.getOptions().colors[0],
-    #           fillOpacity: 0.3,
-    #           zIndex: 0,
-    #           marker: {
-    #             enabled: false
-    #           }
-    #         }]
-    #       });
+          Highcharts.chart('max_fitness_vs_evaluations', {
+            chart: {
+              type: 'line'
+            },
+            title: {
+              text: 'Max Fitness vs Evaluations'
+            },
+            subtitle: {
+              text: 'Morphology: #{inspect(data.max_fitness_vs_evaluations["morphology"])}'
+            },
+            xAxis: {
+              categories: #{inspect(data.max_fitness_vs_evaluations["evaluation_index"])}
+            },
+            yAxis: {
+              title: {
+                text: 'Fitness'
+              }
+            },
+            plotOptions: {
+              line: {
+                dataLabels: {
+                  enabled: true
+                },
+                enableMouseTracking: false
+              }
+            },
+            series: [{
+              name: 'Max Fitness',
+              data: #{inspect(data.max_fitness_vs_evaluations["max_fitness"])}
+            }]
+          });
 
-    #       Highcharts.chart('avg_fitness_vs_evals_std', {
-    #         title: {
-    #           text: 'Fitness vs Evaluations'
-    #         },
-    #         xAxis: {
-    #           type: 'Evaluations'
-    #         },
-    #         yAxis: {
-    #           title: {
-    #             text: 'Average Fitness'
-    #           }
-    #         },
-    #         subtitle: {
-    #           text: 'Morphology: #{data.avg_fitness_vs_evals_std["morphology"]}'
-    #         },
-    #         tooltip: {
-    #           crosshairs: true,
-    #           shared: true
-    #         },
-    #         legend: {},
-    #         series: [{
-    #           name: 'Fitness',
-    #           data: #{inspect(data.avg_fitness_vs_evals_std["avgs"])},
-    #           zIndex: 1,
-    #           marker: {
-    #             fillColor: 'white',
-    #             lineWidth: 2,
-    #             lineColor: Highcharts.getOptions().colors[0]
-    #           }
-    #         },
-    #         {
-    #           name: 'Std. Dev',
-    #           data: #{inspect(data.avg_fitness_vs_evals_std["std"])},
-    #           type: 'arearange',
-    #           lineWidth: 0,
-    #           linkedTo: ':previous',
-    #           color: Highcharts.getOptions().colors[0],
-    #           fillOpacity: 0.3,
-    #           zIndex: 0,
-    #           marker: {
-    #             enabled: false
-    #           }
-    #         }]
-    #       });
+          Highcharts.chart('avg_max_fitness_vs_evaluations', {
+            chart: {
+              type: 'line'
+            },
+            title: {
+              text: 'Average Max Fitness vs Evaluations'
+            },
+            subtitle: {
+              text: 'Morphology: #{inspect(data.avg_max_fitness_vs_evaluations["morphology"])}'
+            },
+            xAxis: {
+              categories: #{inspect(data.avg_max_fitness_vs_evaluations["evaluation_index"])}
+            },
+            yAxis: {
+              title: {
+                text: 'Fitness'
+              }
+            },
+            plotOptions: {
+              line: {
+                dataLabels: {
+                  enabled: true
+                },
+                enableMouseTracking: false
+              }
+            },
+            series: [{
+              name: 'Average Max Fitness',
+              data: #{inspect(data.avg_max_fitness_vs_evaluations["maxavg_fitness"])}
+            }]
+          });
 
-    #       Highcharts.chart('avg_neurons_vs_evals_std', {
-    #         title: {
-    #           text: 'Neurons vs Evaluations'
-    #         },
-    #         xAxis: {
-    #           type: 'Evaluations'
-    #         },
-    #         yAxis: {
-    #           title: {
-    #             text: 'Average Neurons'
-    #           }
-    #         },
-    #         subtitle: {
-    #           text: 'Morphology: #{data.avg_neurons_vs_evals_std["morphology"]}'
-    #         },
-    #         tooltip: {
-    #           crosshairs: true,
-    #           shared: true
-    #         },
-    #         legend: {},
-    #         series: [{
-    #           name: 'Neurons',
-    #           data: #{inspect(data.avg_neurons_vs_evals_std["avgs"])},
-    #           zIndex: 1,
-    #           marker: {
-    #             fillColor: 'white',
-    #             lineWidth: 2,
-    #             lineColor: Highcharts.getOptions().colors[0]
-    #           }
-    #         },
-    #         {
-    #           name: 'Std. Dev',
-    #           data: #{inspect(data.avg_neurons_vs_evals_std["std"])},
-    #           type: 'arearange',
-    #           lineWidth: 0,
-    #           linkedTo: ':previous',
-    #           color: Highcharts.getOptions().colors[0],
-    #           fillOpacity: 0.3,
-    #           zIndex: 0,
-    #           marker: {
-    #             enabled: false
-    #           }
-    #         }]
-    #       });
+          Highcharts.chart('avg_min_fitness_vs_evaluations', {
+            chart: {
+              type: 'line'
+            },
+            title: {
+              text: 'Average Min Fitness vs Evaluations'
+            },
+            subtitle: {
+              text: 'Morphology: #{inspect(data.avg_min_fitness_vs_evaluations["morphology"])}'
+            },
+            xAxis: {
+              categories: #{inspect(data.avg_min_fitness_vs_evaluations["evaluation_index"])}
+            },
+            yAxis: {
+              title: {
+                text: 'Fitness'
+              }
+            },
+            plotOptions: {
+              line: {
+                dataLabels: {
+                  enabled: true
+                },
+                enableMouseTracking: false
+              }
+            },
+            series: [{
+              name: 'Average Min Fitness',
+              data: #{inspect(data.avg_min_fitness_vs_evaluations["min_fitness"])}
+            }]
+          });
 
-    #       Highcharts.chart('avg_diversity_vs_evals_std', {
-    #         title: {
-    #           text: 'Diversity vs Evaluations'
-    #         },
-    #         xAxis: {
-    #           type: 'Evaluations'
-    #         },
-    #         yAxis: {
-    #           title: {
-    #             text: 'Average Diversity'
-    #           }
-    #         },
-    #         subtitle: {
-    #           text: 'Morphology: #{data.avg_diversity_vs_evals_std["morphology"]}'
-    #         },
-    #         tooltip: {
-    #           crosshairs: true,
-    #           shared: true
-    #         },
-    #         legend: {},
-    #         series: [{
-    #           name: 'Diversity',
-    #           data: #{inspect(data.avg_diversity_vs_evals_std["avgs"])},
-    #           zIndex: 1,
-    #           marker: {
-    #             fillColor: 'white',
-    #             lineWidth: 2,
-    #             lineColor: Highcharts.getOptions().colors[0]
-    #           }
-    #         },
-    #         {
-    #           name: 'Std. Dev',
-    #           data: #{inspect(data.avg_diversity_vs_evals_std["std"])},
-    #           type: 'arearange',
-    #           lineWidth: 0,
-    #           linkedTo: ':previous',
-    #           color: Highcharts.getOptions().colors[0],
-    #           fillOpacity: 0.3,
-    #           zIndex: 0,
-    #           marker: {
-    #             enabled: false
-    #           }
-    #         }]
-    #       });
-    #     };
-    #   </script>
-    # """)
+          Highcharts.chart('specie_pop_turnover_vs_evaluations', {
+            chart: {
+              type: 'line'
+            },
+            title: {
+              text: 'Specie-Population Turnover Vs Evaluations'
+            },
+            subtitle: {
+              text: 'Morphology: #{inspect(data.specie_pop_turnover_vs_evaluations["morphology"])}'
+            },
+            xAxis: {
+              categories: #{inspect(data.specie_pop_turnover_vs_evaluations["evaluation_index"])}
+            },
+            yAxis: {
+              title: {
+                text: 'Turnover'
+              }
+            },
+            plotOptions: {
+              line: {
+                dataLabels: {
+                  enabled: true
+                },
+                enableMouseTracking: false
+              }
+            },
+            series: [{
+              name: 'Specie-Population Turnover',
+              data: #{inspect(data.specie_pop_turnover_vs_evaluations["evaluations_fitness"])}
+            }]
+          });
+
+          Highcharts.chart('validation_avg_fitness_vs_evaluations', {
+            chart: {
+              zoomType: 'xy'
+            },
+            title: {
+              text: 'Validation Average Fitness vs Evaluations'
+            },
+            subtitle: {
+              text: 'Morphology: #{
+      inspect(data.validation_avg_fitness_vs_evaluations["morphology"])
+    }'
+            },
+            xAxis: [{
+              categories: #{
+      inspect(data.validation_avg_fitness_vs_evaluations["evaluation_index"])
+    },
+              title: {
+                text: 'Evaluations',
+                style: {
+                  color: Highcharts.getOptions().colors[1]
+                }
+              }
+            }],
+            yAxis: [{
+              labels: {
+                format: '{value}',
+                style: {
+                  color: Highcharts.getOptions().colors[1]
+                }
+              },
+              title: {
+                text: 'Fitness',
+                style: {
+                  color: Highcharts.getOptions().colors[1]
+                }
+              }
+            }],
+          
+            tooltip: {
+              shared: true
+            },
+          
+            series: [{
+              name: 'Validation Average Fitness',
+              type: 'spline',
+              data: #{inspect(data.validation_avg_fitness_vs_evaluations["validation_fitness"])},
+              tooltip: {
+                pointFormat: '<span style="font-weight: bold; color: {series.color}">Fitness</span>: <b>{point.y}</b> '
+              }
+            }, {
+              name: 'Fitness STD',
+              type: 'errorbar',
+              data: #{
+      inspect(data.validation_avg_fitness_vs_evaluations["validation_fitness_std"])
+    },
+              tooltip: {
+                pointFormat: '(range: {point.low}-{point.high})<br/>'
+              }
+            }]
+          });
+
+          Highcharts.chart('validation_max_fitness_vs_evaluations', {
+            chart: {
+              type: 'line'
+            },
+            title: {
+              text: 'Validation Max Fitness vs Evaluations'
+            },
+            subtitle: {
+              text: 'Morphology: #{
+      inspect(data.validation_max_fitness_vs_evaluations["morphology"])
+    }'
+            },
+            xAxis: {
+              categories: #{
+      inspect(data.validation_max_fitness_vs_evaluations["evaluation_index"])
+    }
+            },
+            yAxis: {
+              title: {
+                text: 'Fitness'
+              }
+            },
+            plotOptions: {
+              line: {
+                dataLabels: {
+                  enabled: true
+                },
+                enableMouseTracking: false
+              }
+            },
+            series: [{
+              name: 'Validation Max Fitness',
+              data: #{
+      inspect(data.validation_max_fitness_vs_evaluations["validationmax_fitness"])
+    }
+            }]
+          });
+
+          Highcharts.chart('validation_min_fitness_vs_evaluations', {
+            chart: {
+              type: 'line'
+            },
+            title: {
+              text: 'Validation Min Fitness vs Evaluations'
+            },
+            subtitle: {
+              text: 'Morphology: #{
+      inspect(data.validation_min_fitness_vs_evaluations["morphology"])
+    }'
+            },
+            xAxis: {
+              categories: #{
+      inspect(data.validation_min_fitness_vs_evaluations["evaluation_index"])
+    }
+            },
+            yAxis: {
+              title: {
+                text: 'Fitness'
+              }
+            },
+            plotOptions: {
+              line: {
+                dataLabels: {
+                  enabled: true
+                },
+                enableMouseTracking: false
+              }
+            },
+            series: [{
+              name: 'Validation Min Fitness',
+              data: #{
+      inspect(data.validation_min_fitness_vs_evaluations["validationmin_fitness"])
+    }
+            }]
+          });
+        }    
+      </script>
+    """)
   end
 end
