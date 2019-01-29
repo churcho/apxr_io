@@ -6,11 +6,12 @@ defmodule ApxrIo.Learn.Local do
 
   @behaviour ApxrIo.Learn
 
-  def start(project, version, experiment, audit: audit_data) do
-    identifiers = {project, version, experiment.meta.exp_parameters["identifier"]}
+  def start(project, release, experiment, audit: audit_data) do
+    identifiers = {project, release.version, experiment.meta.exp_parameters["identifier"]}
 
     with {:ok, 204, _h, _b} <- post("/actions/polis/prep", tarball(identifiers), identifiers),
-         {:ok, 204, _h, _b} <- post("/actions/polis/setup", config(identifiers), identifiers),
+         {:ok, 204, _h, _b} <-
+           post("/actions/polis/setup", config(identifiers, release), identifiers),
          {:ok, 204, _h, _b} <- post("/actions/experiment/start", <<>>, identifiers) do
       AuditLog.audit(Multi.new(), audit_data, "experiment.start", identifiers)
       {:ok, %{experiment: experiment}}
@@ -121,11 +122,15 @@ defmodule ApxrIo.Learn.Local do
     end)
   end
 
-  defp config({project, version, identifier}) do
+  defp config({project, version, identifier}, release) do
     experiment = Experiments.get(project, version, identifier)
 
+    exp_parameters =
+      experiment.meta.exp_parameters
+      |> Map.merge(%{build_tool: release.meta.build_tool})
+
     %{
-      exp_parameters: experiment.meta.exp_parameters,
+      exp_parameters: exp_parameters,
       pm_parameters: experiment.meta.pm_parameters,
       init_constraints: experiment.meta.init_constraints
     }

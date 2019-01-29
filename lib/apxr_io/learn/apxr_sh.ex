@@ -1,7 +1,7 @@
 defmodule ApxrIo.Learn.ApxrSh do
   @behaviour ApxrIo.Learn
 
-  def start(_project, _version, _experiment, audit: _audit_data) do
+  def start(_project, _release, _experiment, audit: _audit_data) do
     experiment = ApxrIo.Learn.Experiments.get_by_id(1)
     {:ok, %{experiment: experiment}}
   end

@@ -40,7 +40,7 @@ defmodule ApxrIo.Learn.Experiments do
         {:error, changeset}
 
       {:ok, %{experiment: experiment}} ->
-        Learn.start(project, release.version, experiment, audit: audit_data)
+        Learn.start(project, release, experiment, audit: audit_data)
     end
   end
 

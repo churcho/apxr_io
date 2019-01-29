@@ -1,14 +1,15 @@
 defmodule ApxrIo.Learn do
-  alias ApxrIo.Repository.Project
+  alias ApxrIo.Repository.{Project, Release}
   alias ApxrIo.Learn.Experiment
 
   @type project() :: %Project{}
+  @type release() :: %Release{}
   @type version() :: map()
   @type experiment() :: %Experiment{}
   @type experiment_id() :: String.t()
   @type audit_data() :: map()
 
-  @callback start(project(), version(), map(), audit: audit_data()) ::
+  @callback start(project(), release(), map(), audit: audit_data()) ::
               {:ok, %{experiment: experiment()}} | {:error, map()}
   @callback pause(project(), version(), experiment_id(), audit: audit_data()) ::
               :ok | {:error, map()}
@@ -21,8 +22,8 @@ defmodule ApxrIo.Learn do
 
   defp impl(), do: Application.get_env(:apxr_io, :learn_impl)
 
-  def start(project, version, experiment, audit: audit_data) do
-    impl().start(project, version, experiment, audit: audit_data)
+  def start(project, release, experiment, audit: audit_data) do
+    impl().start(project, release, experiment, audit: audit_data)
   end
 
   def pause(project, version, identifier, audit: audit_data) do
