@@ -44,8 +44,6 @@ export default class App {
       $(this).tab("show")
     })
 
-    $("[data-toggle='popover']").popover({container: "body", html: true})
-
     // Highlight syntax
     hljs.initHighlightingOnLoad()
   }

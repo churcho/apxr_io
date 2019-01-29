@@ -15,8 +15,7 @@ exports.config = {
       // https://github.com/brunch/brunch/tree/master/docs#concatenation
       order: {
         before: [
-          "vendor/js/jquery.js",
-          "vendor/js/bootstrap.js"
+          "vendor/js/jquery.js"
         ]
       }
     },
