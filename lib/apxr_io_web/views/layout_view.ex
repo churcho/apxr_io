@@ -13,7 +13,7 @@ defmodule ApxrIoWeb.LayoutView do
     if description = Map.get(assigns, :description) do
       String.slice(description, 0, 160)
     else
-      "ApproximateReality.com"
+      "approximatereality.com - The best way to predict the future is to simulate it."
     end
   end
 
@@ -25,7 +25,7 @@ defmodule ApxrIoWeb.LayoutView do
     end
   end
 
-  def container_class(assigns) do
-    Map.get(assigns, :container, "container")
+  def section_class(assigns) do
+    Map.get(assigns, :section, "section")
   end
 end

@@ -1,14 +1,37 @@
-<h2>Log in</h2>
-<%= form_tag(Routes.login_path(Endpoint, :create)) do %>
-  <div class="form-group">
-    <label for="email">Email</label>
-    <input type="text" autofocus class="form-control" name="email">
+<div class="columns">
+  <div class="column"></div>
+  <div class="column">
+    <div class="box">
+      <h3 class="title is-3 has-text-centered">Log in</h2>
+      <%= form_tag(Routes.login_path(Endpoint, :create)) do %>
+        <div class="control">
+          <div class="field">
+            <div class="control">
+              <input class="input" autofocus type="email" placeholder="e.g. alexsmith@gmail.com">
+            </div>
+          </div>
+          
+          <div class="field">
+            <div class="control">
+              <button type="submit" class="button is-link"  style="width: 100%;">Submit</button>
+            </div>
+          </div>
+          <hr />
+          <div class="field is-grouped is-grouped-centered is-grouped-multiline">
+            <div class="control">
+              <button class="button is-text">
+                <a href="<%= Routes.signup_path(Endpoint, :show) %>">Don't have an account?</a>
+              </button>
+            </div>
+            <div class="control">
+              <button class="button is-text">
+                <a href="<%= Routes.email_verification_path(Endpoint, :show) %>">Resend verification email</a>
+              </button>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>    
   </div>
-  <input type="hidden" name="return" value="<%= @return %>">
-  <button type="submit" class="btn btn-primary btn-black">Log in</button>
-  <br><br>
-  <p>
-    <a href="<%= Routes.signup_path(Endpoint, :show) %>">Don't have an account?</a> |
-    <a href="<%= Routes.email_verification_path(Endpoint, :show) %>">Resend verification email</a>
-  </p>
-<% end %>
+  <div class="column"></div>
+</div>

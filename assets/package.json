@@ -21,8 +21,6 @@
     "uglify-js-brunch": "2.10.0"
   },
   "scripts": {
-    "css-build": "node-sass --omit-source-map-url sass/app.scss css/app.css",
-    "css-watch": "npm run css-build -- --watch",
-    "start": "npm run css-watch"
+    "css-build": "node-sass --omit-source-map-url sass/app.scss css/app.css"
   }
 }

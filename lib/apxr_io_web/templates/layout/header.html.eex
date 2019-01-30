@@ -16,48 +16,89 @@
       <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <section class="content-wrapper">
-    
-    <nav class="navbar navbar-default">
+    <nav class="navbar has-shadow is-spaced is-white" role="navigation" aria-label="main navigation">
       <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/">
-            <img src="<%= Routes.static_path(Endpoint, "/images/apxr_io.png") %>" srcset="<%= Routes.static_path(Endpoint, "/images/apxr_io.png") %> 1x, <%= Routes.static_path(Endpoint, "/images/apxr_io@2.png") %> 2x, <%= Routes.static_path(Endpoint, "/images/apxr_io@3.png") %> 3x" alt="apxr_io logo">
+        <div class="navbar-brand">
+          <a class="navbar-item" href="/">
+            <img src="<%= Routes.static_path(Endpoint, "/images/apxr_io.png") %>"
+            srcset="<%= Routes.static_path(Endpoint, "/images/apxr_io.png") %> 1x,
+            <%= Routes.static_path(Endpoint, "/images/apxr_io@2.png") %> 2x,
+            <%= Routes.static_path(Endpoint, "/images/apxr_io@3.png") %> 3x"
+            alt="approximatereality"
+          </a>
+
+          <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navMenu">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
           </a>
         </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-            <%= if logged_in?(assigns) do %>
-              <li><a href="<%= Routes.project_path(Endpoint, :index) %>">Projects</a></li>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="text-transform: capitalize;">
-                  <%= @current_user.username %>
-                  <b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu">
-                  <li><a href="<%= Routes.profile_path(Endpoint, :index) %>">Settings</a></li>
-                  <li><a href="<%= Routes.team_path(Endpoint, :index) %>">Teams</a></li>
-                  <li role="separator" class="divider"></li>
-                  <li>
-                    <%= form_tag(Routes.login_path(Endpoint, :delete)) do %>
-                      <button type="submit" class="btn btn-link">Log out</button>
-                    <% end %>
-                  </li>
-                </ul>
-              </li>
-            <% else %>
-              <li><a href="<%= Routes.login_path(Endpoint, :new) %>">Log in</a></li>
-              <li><a href="<%= Routes.signup_path(Endpoint, :show) %>">Sign up</a></li>
-            <% end %>
 
-          </ul>
-        </div><!--/.nav-collapse -->
+        <div id="navMenu" class="navbar-menu">
+          <div class="navbar-start">
+            <%= if logged_in?(assigns) do %>
+              <a class="navbar-item href="<%= Routes.project_path(Endpoint, :index) %>">
+                <span>
+                  Projects
+                </span>
+              </a>
+              <a class="navbar-item href="<%= Routes.team_path(Endpoint, :index) %>">
+                <span>
+                  Teams
+                </span>
+              </a>
+              <a class="navbar-item href="<%= Routes.profile_path(Endpoint, :index) %>">
+                <span>
+                  Settings
+                </span>
+              </a>
+            <% else %>
+              <a class="navbar-item href="<%= Routes.page_path(Endpoint, :about) %>">
+                <span>
+                  About
+                </span>
+              </a>
+              <a class="navbar-item href="<%= Routes.blog_path(Endpoint, :index) %>">
+                <span>
+                  Blog
+                </span>
+              </a>
+              <a class="navbar-item href="<%= Routes.docs_path(Endpoint, :index) %>">
+                <span>
+                  Docs
+                </span>
+              </a>
+              <a class="navbar-item href="<%= Routes.docs_path(Endpoint, :index) %>">
+                <span>
+                  Pricing
+                </span>
+              </a>
+            <% end %>
+          </div>
+
+          <div class="navbar-end">
+            <div class="navbar-item">
+              <div class="buttons">
+                <%= if logged_in?(assigns) do %>
+                  <a href="#" class="button is-light">
+                    <%= @current_user.username %>
+                  </a>
+                  <%= form_tag(Routes.login_path(Endpoint, :delete)) do %>
+                    <button type="submit" class="button is-primary">Log out</button>
+                  <% end %>
+                <% else %>
+                  <a href="<%= Routes.signup_path(Endpoint, :show) %>" class="button is-primary">
+                    <strong>Sign up</strong>
+                  </a>
+                  <a href="<%= Routes.login_path(Endpoint, :new) %>" class="button is-light">
+                    Log in
+                  </a>
+                <% end %>
+              </div>
+            </div>
+          </div>
+
+        </div>
       </div>
     </nav>
 
@@ -65,4 +106,4 @@
       <%= render "_flash.html", conn: @conn %>
     <% end %>
 
-    <div class="<%= container_class(assigns) %>">
+    <div class="<%= section_class(assigns) %>">

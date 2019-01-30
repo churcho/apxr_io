@@ -31,18 +31,14 @@ export default class App {
     // Copy button
     $(".copy-button").click(this.onCopy.bind(this))
 
-    // Show show-versions button if JS is enabled
-    $(".show-versions").show()
+    // Check for click events on the navbar burger icon
+    $(".navbar-burger").click(function() {
 
-    // Project: toggle text in "All Versions / Recent Version" buttons
-    $(".show-versions .invisible").removeClass("invisible").toggle()
-    $(".show-versions .toggle-text").click((event) => $(event.target).parent().find("a").toggle())
+    // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+    $(".navbar-burger").toggleClass("is-active");
+    $(".navbar-menu").toggleClass("is-active");
 
-    // Switch tabs
-    $(".nav-tabs a").click(function (e) {
-      e.preventDefault()
-      $(this).tab("show")
-    })
+  });
 
     // Highlight syntax
     hljs.initHighlightingOnLoad()
