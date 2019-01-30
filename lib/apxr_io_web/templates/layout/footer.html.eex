@@ -1,13 +1,12 @@
     </div>
 
-    <footer class="footer has-text-centered" style="padding: 1rem;">
+    <footer class="footer has-text-centered" style="padding: 1.5rem;">
       <div class="container">
         <div class="columns">
           <div class="column">
             <h6 class="subtitle is-6 is-marginless has-text-black-ter">Info</h6>
             <ul>
               <li><a class="has-text-grey-light" href="<%= Routes.page_path(Endpoint, :about) %>">About</a></li>
-              <li><a class="has-text-grey-light" href="<%= Routes.blog_path(Endpoint, :index) %>">Blog</a></li>
               <li><a class="has-text-grey-light" href="https://twitter.com/ApproxReality">Twitter</a></li>
             </ul>
           </div>
@@ -18,7 +17,8 @@
               <%= if logged_in?(assigns) do %>
                 <li><a class="has-text-grey-light" href="<%= Routes.docs_path(Endpoint, :index) %>">Documentation</a></li>
               <% end %>
-              <li><a class="has-text-grey-light" href="mailto:approximatereality@gmail.com">Contact Support</a></li>
+              <li><a class="has-text-grey-light" href="mailto:approximatereality@gmail.com">Contact</a></li>
+              <li><a class="has-text-grey-light" href="https://twitter.com/ApproxReality">Support</a></li>
             </ul>
           </div>
 

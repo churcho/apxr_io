@@ -34,7 +34,7 @@ defmodule ApxrIoWeb.ViewHelpers do
 
   def changeset_error(changeset) do
     if changeset.action do
-      content_tag :div, class: "alert alert-danger" do
+      content_tag :div, class: "notification is-danger" do
         "Oops, something went wrong! Please check the errors below."
       end
     end
@@ -77,7 +77,7 @@ defmodule ApxrIoWeb.ViewHelpers do
 
   def error_tag(form, field) do
     if error = form.errors[field] do
-      content_tag(:span, translate_error(error), class: "form-error")
+      content_tag(:p, translate_error(error), class: "help is-danger")
     end
   end
 

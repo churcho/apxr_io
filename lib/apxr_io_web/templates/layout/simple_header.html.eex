@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="<%= Routes.static_path(Endpoint, "/css/app.css") %>">
     <link rel="shortcut icon" href="<%= Routes.static_path(Endpoint, "/favicon.png") %>">
   </head>
-  <body>
+  <body class="site">
     <!--[if lt IE 10]>
       <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -19,7 +19,7 @@
     <nav class="navbar has-shadow is-spaced is-white" role="navigation" aria-label="main navigation">
       <div class="container">
         <div class="navbar-brand">
-          <a class="navbar-item has-background-black" href="/">
+          <a class="navbar-item has-background-black is-radiusless" href="/">
             <img src="<%= Routes.static_path(Endpoint, "/images/apxr_io.png") %>"
             srcset="<%= Routes.static_path(Endpoint, "/images/apxr_io.png") %> 1x,
             <%= Routes.static_path(Endpoint, "/images/apxr_io@2.png") %> 2x,

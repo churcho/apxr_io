@@ -26,6 +26,6 @@ defmodule ApxrIoWeb.LayoutView do
   end
 
   def section_class(assigns) do
-    Map.get(assigns, :section, "section")
+    Map.get(assigns, :section, "section site-content")
   end
 end
