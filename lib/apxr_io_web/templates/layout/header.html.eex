@@ -19,7 +19,7 @@
     <nav class="navbar has-shadow is-spaced is-white" role="navigation" aria-label="main navigation">
       <div class="container">
         <div class="navbar-brand">
-          <a class="navbar-item" href="/">
+          <a class="navbar-item has-background-black" href="/">
             <img src="<%= Routes.static_path(Endpoint, "/images/apxr_io.png") %>"
             srcset="<%= Routes.static_path(Endpoint, "/images/apxr_io.png") %> 1x,
             <%= Routes.static_path(Endpoint, "/images/apxr_io@2.png") %> 2x,
@@ -87,10 +87,10 @@
                     <button type="submit" class="button is-primary">Log out</button>
                   <% end %>
                 <% else %>
-                  <a href="<%= Routes.signup_path(Endpoint, :show) %>" class="button is-primary">
+                  <a href="<%= Routes.signup_path(Endpoint, :show) %>" id="apxr-hover" class="button is-black">
                     <strong>Sign up</strong>
                   </a>
-                  <a href="<%= Routes.login_path(Endpoint, :new) %>" class="button is-light">
+                  <a href="<%= Routes.login_path(Endpoint, :new) %>" class="button is-black is-outlined">
                     Log in
                   </a>
                 <% end %>
@@ -103,6 +103,7 @@
     </nav>
 
     <%= unless assigns[:error] || assigns[:custom_flash] do %>
+      <br />
       <%= render "_flash.html", conn: @conn %>
     <% end %>
 

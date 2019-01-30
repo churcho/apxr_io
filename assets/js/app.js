@@ -33,12 +33,15 @@ export default class App {
 
     // Check for click events on the navbar burger icon
     $(".navbar-burger").click(function() {
+      // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+      $(".navbar-burger").toggleClass("is-active");
+      $(".navbar-menu").toggleClass("is-active");
+    });
 
-    // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
-    $(".navbar-burger").toggleClass("is-active");
-    $(".navbar-menu").toggleClass("is-active");
-
-  });
+    // Dismiss notification box
+    $(".notification-delete").click(function(){
+      $(".notification").hide();
+    });
 
     // Highlight syntax
     hljs.initHighlightingOnLoad()

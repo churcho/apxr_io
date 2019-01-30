@@ -1,28 +1,25 @@
-<div class="container flash">
+<div class="container has-text-centered" style="width: fit-content;">
   <%= if flash = get_flash(@conn, :error) do %>
-    <div class="alert alert-danger alert-dismissible" role="alert">
-      <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-      <span class="alert__type">danger:</span>
+    <div class="notification is-danger">
+      <button class="delete notification-delete" style="top: auto;"></button>
       <%= flash %>
     </div>
   <% end %>
   <%= if flash = get_flash(@conn, :warning) do %>
-    <div class="alert alert-warning alert-dismissible" role="alert">
-      <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-      <span class="alert__type">warning:</span>
+    <div class="notification is-warning">
+      <button class="delete notification-delete" style="top: auto;"></button>
       <%= flash %>
     </div>
   <% end %>
   <%= if flash = get_flash(@conn, :info) do %>
-    <div class="alert alert-info alert-dismissible" role="alert">
-      <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <div class="notification">
+      <button class="delete notification-delete" style="top: auto;"></button>
       <%= flash %>
     </div>
   <% end %>
   <%= if flash = get_flash(@conn, :success) do %>
-    <div class="alert alert-success alert-dismissible" role="alert">
-      <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-      <span class="alert__type">success:</span>
+    <div class="notification is-success">
+      <button class="delete notification-delete" style="top: auto;"></button>
       <%= flash %>
     </div>
   <% end %>
