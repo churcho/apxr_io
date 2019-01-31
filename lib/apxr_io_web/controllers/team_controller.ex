@@ -190,7 +190,7 @@ defmodule ApxrIoWeb.TeamController do
       conn,
       "index.html",
       title: "Teams",
-      container: "container page teams",
+      container: "container teams",
       create_changeset: create_changeset,
       teams: teams
     )
@@ -201,7 +201,7 @@ defmodule ApxrIoWeb.TeamController do
 
     assigns = [
       title: "Team",
-      container: "container page teams",
+      container: "container teams",
       team: team,
       quantity: billing["billing"],
       params: opts[:params],
@@ -220,7 +220,7 @@ defmodule ApxrIoWeb.TeamController do
 
     assigns = [
       title: "Team",
-      container: "container page teams",
+      container: "container teams",
       per_page: @logs_per_page,
       audit_log_count: log_count,
       page: page,
@@ -236,7 +236,7 @@ defmodule ApxrIoWeb.TeamController do
       conn,
       "new.html",
       title: "New team",
-      container: "container page teams",
+      container: "container teams",
       billing_email: nil,
       person: nil,
       company: nil,

@@ -69,10 +69,6 @@ defmodule ApxrIoWeb.Router do
     delete "/users/:username", UserController, :delete
 
     get "/docs", DocsController, :index
-    get "/docs/usage", DocsController, :usage
-    get "/docs/publish", DocsController, :publish
-    get "/docs/tasks", DocsController, :tasks
-    get "/docs/private", DocsController, :private
     get "/docs/faq", DocsController, :faq
     get "/docs/public_keys", DocsController, :public_keys
 
@@ -86,7 +82,7 @@ defmodule ApxrIoWeb.Router do
     get "/projects/:name/:version", ProjectController, :show
 
     get "/blog", BlogController, :index
-    get "/blog/:slug", BlogController, :show
+    get "/blog/:id", BlogController, :show
   end
 
   scope "/settings", ApxrIoWeb.Settings do

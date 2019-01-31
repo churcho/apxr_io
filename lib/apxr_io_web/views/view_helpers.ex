@@ -69,7 +69,7 @@ defmodule ApxrIoWeb.ViewHelpers do
 
   defp add_error_class(opts, form, field) do
     error? = Keyword.has_key?(form.errors, field)
-    error_class = if error?, do: "form-input-error", else: ""
+    error_class = if error?, do: "is-danger", else: ""
     class = "form-control #{error_class} #{opts[:class]}"
 
     Keyword.put(opts, :class, class)

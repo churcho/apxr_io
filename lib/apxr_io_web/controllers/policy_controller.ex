@@ -6,7 +6,7 @@ defmodule ApxrIoWeb.PolicyController do
       conn,
       "privacy.html",
       title: "Privacy Policy",
-      container: "container page page-sm policies"
+      container: "container policies"
     )
   end
 
@@ -15,7 +15,7 @@ defmodule ApxrIoWeb.PolicyController do
       conn,
       "tos.html",
       title: "Terms of Service",
-      container: "container page page-sm policies"
+      container: "container policies"
     )
   end
 end

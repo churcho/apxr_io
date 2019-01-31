@@ -64,25 +64,25 @@ export default class App {
   }
 
   copySucceeded(button) {
-    button.children(".glyphicon-copy").hide()
-    button.children(".glyphicon-ok").show()
+    button.children(".icon-copy").hide()
+    button.children(".icon-ok").show()
     button.tooltip({title: "Copied!", container: "body", placement: "bottom", trigger: "manual"}).tooltip("show")
 
     setTimeout(() => {
-      button.children(".glyphicon-ok").hide()
-      button.children(".glyphicon-copy").show()
+      button.children(".icon-ok").hide()
+      button.children(".icon-copy").show()
       button.tooltip("hide")
     }, 1500)
   }
 
   copyFailed(button) {
-    button.children(".glyphicon-copy").hide()
-    button.children(".glyphicon-remove").show()
+    button.children(".icon-copy").hide()
+    button.children(".icon-remove").show()
     button.tooltip({title: "Copy not supported in your browser", container: "body", placement: "bottom", trigger: "manual"}).tooltip("show")
 
     setTimeout(() => {
-      button.children(".glyphicon-remove").hide()
-      button.children(".glyphicon-copy").show()
+      button.children(".icon-remove").hide()
+      button.children(".icon-copy").show()
       button.tooltip("hide")
     }, 1500)
   }

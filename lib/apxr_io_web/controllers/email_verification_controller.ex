@@ -19,7 +19,7 @@ defmodule ApxrIoWeb.EmailVerificationController do
       conn,
       "show.html",
       title: "Verify email",
-      container: "container page page-xs"
+      container: "container verification"
     )
   end
 

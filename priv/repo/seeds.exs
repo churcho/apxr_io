@@ -12,6 +12,17 @@ ApxrIo.Repo.transaction(fn ->
   jose_email = "jose@example.com"
   joe_email = "joe@example.com"
 
+  insert(
+    :post
+  )
+
+  insert(
+    :post,
+    title: "Unpublished",
+    slug: "un-published",
+    published: false
+  )
+
   eric =
     insert(
       :user,

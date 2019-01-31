@@ -33,7 +33,7 @@ defmodule ApxrIoWeb.SignupController do
       conn,
       "show.html",
       title: "Sign up",
-      container: "container page page-xs signup",
+      container: "container signup",
       changeset: changeset
     )
   end

@@ -5,7 +5,7 @@ defmodule ApxrIoWeb.LoginController do
 
   def new(conn, _params) do
     if logged_in?(conn) do
-      redirect_return(conn)
+      redirect(conn, to: Routes.project_path(conn, :index))
     else
       render_new(conn)
     end
@@ -41,7 +41,7 @@ defmodule ApxrIoWeb.LoginController do
         )
         |> configure_session(renew: true)
         |> put_session("user_id", user.id)
-        |> redirect_return()
+        |> redirect(to: Routes.project_path(conn, :index))
 
       :error ->
         conn
@@ -59,18 +59,12 @@ defmodule ApxrIoWeb.LoginController do
     |> redirect(to: Routes.login_path(ApxrIoWeb.Endpoint, :new))
   end
 
-  defp redirect_return(conn) do
-    path = conn.params["return"] || Routes.project_path(conn, :index)
-    redirect(conn, to: path)
-  end
-
   defp render_new(conn) do
     render(
       conn,
       "new.html",
       title: "Log in",
-      container: "container page page-xs login",
-      return: conn.params["return"]
+      container: "container login"
     )
   end
 end
