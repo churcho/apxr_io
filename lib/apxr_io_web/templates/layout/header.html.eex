@@ -36,6 +36,7 @@
 
         <div id="navMenu" class="navbar-menu">
           <div class="navbar-start">
+            <div class="navbar-item"></div>
             <%= if logged_in?(assigns) do %>
               <a class="navbar-item" href="<%= Routes.project_path(Endpoint, :index) %>">
                 <span>
@@ -65,26 +66,26 @@
               </a>
               <a class="navbar-item" href="<%= Routes.docs_path(Endpoint, :index) %>">
                 <span>
-                  Docs
-                </span>
-              </a>
-              <a class="navbar-item" href="<%= Routes.docs_path(Endpoint, :index) %>">
-                <span>
                   Pricing
                 </span>
               </a>
             <% end %>
+              <a class="navbar-item" href="<%= Routes.docs_path(Endpoint, :index) %>">
+                <span>
+                  Docs
+                </span>
+              </a>
           </div>
 
           <div class="navbar-end">
             <div class="navbar-item">
               <div class="buttons">
                 <%= if logged_in?(assigns) do %>
-                  <a href="#" class="button is-light">
+                  <a href="#" class="button is-text">
                     <%= @current_user.username %>
                   </a>
                   <%= form_tag(Routes.login_path(Endpoint, :delete)) do %>
-                    <button type="submit" class="button is-primary">Log out</button>
+                    <button type="submit" class="button is-black is-outlined">Log out</button>
                   <% end %>
                 <% else %>
                   <a href="<%= Routes.signup_path(Endpoint, :show) %>" id="apxr-hover" class="button is-black">
@@ -107,4 +108,4 @@
       <%= render "_flash.html", conn: @conn %>
     <% end %>
 
-    <div class="<%= section_class(assigns) %>">
+    <div class="<%= section_class(assigns) %>" style="padding: 1.5rem;">

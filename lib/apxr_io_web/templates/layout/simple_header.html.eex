@@ -36,4 +36,4 @@
       </div>
     </nav>
 
-    <div class="<%= section_class(assigns) %>">
+    <div class="<%= section_class(assigns) %>" style="padding: 1.5rem;">

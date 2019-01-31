@@ -1,5 +1,13 @@
 <li>
-  <a href="<%= path_for_project(@project) %>"><%= project_name(@project) %></a>
-  <span class="version"><%= @project.latest_version %></span>
-  <p><%= text_length(@project.meta.description, 280) %></p>
+  <div>
+    <h4 class="subtitle is-4 is-marginless">
+      <a href="<%= path_for_project(@project) %>"><%= project_name(@project) %></a>
+    </h4>
+    <p style="padding-top: 0.5rem;"><%= text_length(@project.meta.description, 140) %></p>
+    <p class="has-text-weight-semi-bold has-text-grey-dark is-size-7" style="padding-top: 0.5rem;">
+      Updated <%= human_relative_time_from_now(@project.updated_at) %>
+      &nbsp<span class="tag is-light"><%= @project.latest_version %></span>
+    </p>
+  </div>
 </li>
+<hr />

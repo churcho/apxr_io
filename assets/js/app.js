@@ -43,6 +43,16 @@ export default class App {
       $(".notification").hide();
     });
 
+    // Dismiss notification box
+    $(".notification-delete").click(function(){
+      $(".notification").hide();
+    });
+
+    // Show dropdown menu
+    $(".dropdown").click(function() {
+      $(".dropdown").toggleClass("is-active");
+    });
+
     // Highlight syntax
     hljs.initHighlightingOnLoad()
   }

@@ -13,7 +13,7 @@ defmodule ApxrIoWeb.ViewHelpers do
   end
 
   def project_name(repository, project) do
-    repository <> " / " <> project
+    [repository, " ", "/", " ", content_tag(:span, project, class: "has-text-weight-bold")]
   end
 
   def path_for_project(project) do
