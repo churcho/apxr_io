@@ -4,7 +4,7 @@ defmodule ApxrIo.Factory do
 
   def post_factory() do
     %ApxrIo.CMS.Post{
-      title: "ProjectTeams",
+      title: "Projects & Teams",
       slug: "projects-and-teams",
       author: "Alex Smith",
       body: post_body(),

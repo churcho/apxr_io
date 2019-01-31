@@ -1,19 +1,29 @@
-## Public keys
+<div class="columns">
+  <div class="column is-11">
+    <div class="level">
+      <div class="index-post">
+        <h2 class="title is-2 is-spaced">Active keys</h2>
+        
+        <h4 class="title is-4">Why is my project documentation returning "page not found"?</h4>
+        <p class="content">
+This page lists the public keys used by approximatereality.com. APXR uses those public keys to
+guarantee developers can safely fetch the registry hosted by approximatereality.com. If you
+have been linked to this page from an error message, it means the public key that ships with
+your ApxrIo client has been revoked. Below you can find up to date keys and instructions on
+how to install it for your client.
+        </p>
+        <p class="content">
+<strong>Remember to only install public keys from sources you trust!</strong>
+        </p>
+        
+        <p class="content">
+<strong>Public key released:</strong> 03/Mar/2016
+        </p>
+        <p class="content">
+<strong>Last changed:</strong> never
+        </p>
 
-This page lists the public keys used by approximatereality.com. ApxrIo uses those public keys to guarantee developers can safely fetch the registry hosted by approximatereality.com.
-
-If you have been linked to this page from an error message, it means the public key that ships with your ApxrIo client has been revoked. Below you can find up to date keys and instructions on how to install it for your client.
-
-**Remember to only install public keys from sources you trust!**
-
-### approximatereality.com public keys
-
-#### Active keys
-
-* **Public key released:** 03/Mar/2016
-* **Last changed:** never
-
-```nohighlight
+        <div class="box">
 -----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApqREcFDt5vV21JVe2QNB
 Edvzk6w36aNFhVGWN5toNJRjRJ6m4hIuG4KaXtDWVLjnvct6MYMfqhC79HAGwyF+
@@ -23,15 +33,13 @@ XgK7s5pESgiwf2YC/2MGDXjAJfpfCd0RpLdvd4eRiXtVlE9qO9bND94E7PgQ/xqZ
 J1i2xWFndWa6nfFnRxZmCStCOZWYYPlaxr+FZceFbpMwzTNs4g3d4tLNUcbKAIH4
 0wIDAQAB
 -----END PUBLIC KEY-----
-```
-{: style="display:inline-block"}
+        </div>
 
-#### Revoked keys
-
+        <h2 class="title is-2">Revoked keys</h2>
+        <p class="content">
 No public keys have been revoked yet.
-
-### Installation instructions
-
-#### Mix
-
-Run `mix help apxr_io.repo` in your terminal for instructions or go to [`apxr_io.repo`](/docs/tasks#apxr_io_repo).
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
