@@ -1,6 +1,6 @@
 <div class="columns">
-  <div class="column"></div>
-  <div class="column is-four-fifths">
+  <div class="column is-1"></div>
+  <div class="column is-10">
     <%= if @project_count == 0 do %>
       <div class="box">
         <h4>No Results Found</h4>
@@ -93,5 +93,5 @@
       </nav>
     <% end %> 
   </div>
-  <div class="column"></div>
+  <div class="column is-1"></div>
 </div>

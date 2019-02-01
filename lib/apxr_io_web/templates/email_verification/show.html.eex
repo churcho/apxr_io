@@ -1,6 +1,5 @@
 <div class="columns">
-  <div class="column"></div>
-  <div class="column">
+  <div class="column is-4-desktop is-6-tablet is-offset-4">
     <div class="box">
       <h3 class="subtitle is-3 has-text-centered">APXR</h2>
       <%= form_tag(Routes.email_verification_path(Endpoint, :create)) do %>
@@ -26,5 +25,4 @@
       <% end %>
     </div>    
   </div>
-  <div class="column"></div>
 </div>

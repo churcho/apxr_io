@@ -1,6 +1,5 @@
 <div class="columns">
-  <div class="column"></div>
-  <div class="column is-two-fifths has-text-centered">
+  <div class="column is-half is-offset-one-quarter has-text-centered">
     <div class="about">
       <h2 class="title is-2">APXR</h2>
     
@@ -11,5 +10,4 @@
       </p>  
     </div>
   </div>
-  <div class="column"></div>
 </div>

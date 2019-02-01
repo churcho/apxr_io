@@ -1,6 +1,5 @@
 <div class="columns">
-  <div class="column"></div>
-  <div class="column is-three-fifths">
+  <div class="column is-9 is-offset-1">
     <div>
       <h3 class="title is-3">
         Terms of Service
@@ -43,5 +42,4 @@ User may access Content via an API (Application Program Interface). Any use of t
       </p>
     </div>
   </div>
-  <div class="column"></div>
 </div>

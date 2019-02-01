@@ -1,6 +1,5 @@
 <div class="columns">
-  <div class="column"></div>
-  <div class="column is-four-fifths">
+  <div class="column is-9 is-offset-1">
     <div>
       <%= for post <- @posts do %>
         <div class="index-post">
@@ -13,5 +12,4 @@
       <% end %>  
     </div>
   </div>
-  <div class="column"></div>
 </div>

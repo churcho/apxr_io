@@ -6,8 +6,8 @@ build_tool = @current_release && @current_release.meta.build_tool
 %>
 
 <div class="columns">
-  <div class="column is-narrow"></div>
-  <div class="column is-four-fifths">
+  <div class="column is-1"></div>
+  <div class="column is-10">
     <nav class="breadcrumb" aria-label="breadcrumbs">
       <ul>
         <li><a href="<%= Routes.project_path(Endpoint, :index) %>"><%= @project.team.name %></a></li>
@@ -22,17 +22,18 @@ build_tool = @current_release && @current_release.meta.build_tool
       </ul>
     </nav>
   </div>
-  <div class="column"></div>
+  <div class="column is-1"></div>
 </div>
+
 <div class="columns">
-  <div class="column is-narrow"></div>
-  <div class="column is-four-fifths">
+  <div class="column is-1"></div>
+  <div class="column is-10">
     <header>
       <h3 class="title is-3"><%= @project.name %></h3>
       <%= if description do %>
-        <h5 class="subtitle is-5 has-text-weight-semi-bold has-text-grey"><%= text_length(description, 500) |> text_to_html() %></h5>
+        <h5 class="subtitle is-5 has-text-weight-semi-bold has-text-grey-dark"><%= text_length(description, 500) |> text_to_html() %></h5>
       <% end %>
-      <p class="has-text-grey"><strong>Checksum: </strong><%= String.downcase(@current_release.checksum) %></p>
+      <p class="has-text-grey" style="word-wrap: break-word;"><strong>Checksum:</strong> <%= String.downcase(@current_release.checksum) %></p>
       <br />
       <div>
       <%= if retirement = @current_release && @current_release.retirement do %>
@@ -47,11 +48,10 @@ build_tool = @current_release && @current_release.meta.build_tool
             <div class="control">
               <div class="tags has-addons">
                 <span class="tag is-dark">owner</span>
-                <span class="tag is-info"><%= owner.user.username %></span>
+                <span class="tag is-info"><%= owner.user.username %> (<%= owner.level %>)</span>
               </div>
             </div>
           <% end %>
-
           <%= if build_tool do %>
             <div class="control">
               <div class="tags has-addons">
@@ -60,7 +60,6 @@ build_tool = @current_release && @current_release.meta.build_tool
               </div>
             </div>
           <% end %>
-
           <%= if licenses != [] do %>
             <%= for license <- licenses do %>
               <div class="control">
@@ -71,7 +70,6 @@ build_tool = @current_release && @current_release.meta.build_tool
               </div>
             <% end %>
           <% end %>
-
           <%= if links != [] do %>
             <%= for {name, link} <- links do %>
               <div class="control">
@@ -86,15 +84,15 @@ build_tool = @current_release && @current_release.meta.build_tool
       </div>
     </header>
   </div>
-  <div class="column"></div>
+  <div class="column is-1"></div>
 </div>
-<div class="container">
-  <br />
+
+<div class="section">
   <nav class="level">
     <div class="level-item has-text-centered">
       <div>
         <h1 class="title is-1"><%= Enum.count(@releases) %></h1>
-        <a href="<%= path_for_releases(@project) %>" class="heading">Versions</a>
+        <a href="#versions" class="heading">Versions</a>
       </div>
     </div>
     <div class="level-item has-text-centered">
@@ -110,5 +108,28 @@ build_tool = @current_release && @current_release.meta.build_tool
       </div>
     </div>
   </nav>
-  <br />
+</div>
+
+<div class="columns is-mobile">
+  <div class="column is-1"></div>
+  <div class="column is-10">
+    <hr>
+    <nav>
+      <h4 id="versions" class="subtitle is-4 heading">Versions:</h4>
+      <ul>
+        <%= for release <- @releases do %>
+          <li>
+            <span>&#9673 on <%= pretty_datetime(release.inserted_at) %> - </span>
+            <a href="<%= path_for_release(@project, release) %>">
+              <strong>v<%= release.version %></strong>
+            </a>
+            <%= if release.retirement do %>
+              <span><strong> - retired</strong></span>
+            <% end %>
+          </li>
+        <% end %>
+    </ul>
+    </nav>
+  </div>
+  <div class="column is-1"></div>
 </div>

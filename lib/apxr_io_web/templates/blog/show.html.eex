@@ -1,6 +1,5 @@
 <div class="columns">
-  <div class="column"></div>
-  <div class="column is-four-fifths">
+  <div class="column is-9 is-offset-1">
     <div>
       <div class="index-post">
         <h3 class="title is-3 is-spaced"><%= @post.title %></h3>
@@ -9,5 +8,4 @@
       </div>
     </div>
   </div>
-  <div class="column"></div>
 </div>

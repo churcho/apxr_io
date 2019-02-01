@@ -81,7 +81,7 @@
             <div class="navbar-item">
               <div class="buttons">
                 <%= if logged_in?(assigns) do %>
-                  <a href="#" class="button is-text">
+                  <a href="<%= Routes.profile_path(Endpoint, :index) %>" class="button is-text">
                     <%= @current_user.username %>
                   </a>
                   <%= form_tag(Routes.login_path(Endpoint, :delete)) do %>
@@ -108,4 +108,4 @@
       <%= render "_flash.html", conn: @conn %>
     <% end %>
 
-    <div class="<%= section_class(assigns) %>" style="padding: 1.5rem;">
+    <div class="<%= section_class(assigns) %>">

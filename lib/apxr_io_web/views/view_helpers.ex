@@ -24,10 +24,6 @@ defmodule ApxrIoWeb.ViewHelpers do
     Routes.project_path(Endpoint, :show, project, release, [])
   end
 
-  def path_for_releases(project) do
-    Routes.version_path(Endpoint, :index, project, [])
-  end
-
   def path_for_experiment(project, experiment) do
     Routes.experiment_path(Endpoint, :show, project, experiment.release, experiment, [])
   end
@@ -188,7 +184,7 @@ defmodule ApxrIoWeb.ViewHelpers do
   defp rel_from_now({day, {_, _, _}}), do: "#{day} days ago"
 
   def pretty_datetime(%{year: year, month: month, day: day}) do
-    "#{pretty_month(month)} #{day}, #{year}"
+    "#{pretty_month(month)} #{day} #{year}"
   end
 
   defp pretty_month(1), do: "Jan"

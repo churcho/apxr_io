@@ -1,6 +1,5 @@
 <div class="columns">
-  <div class="column is-narrow"></div>
-  <div class="column">
+  <div class="column is-3-tablet is-2-desktop">
     <aside class="menu">
       <p class="menu-label">
         APXR
@@ -19,8 +18,7 @@
       </ul>
     </aside>
   </div>
-  <div class="column is-four-fifths-tablet is-three-fifths-desktop">
+  <div class="column is-9-tablet is-8-desktop">
     <%= render DocsView, @view, assigns %>
   </div>
-  <div class="column"></div>
 </div>
