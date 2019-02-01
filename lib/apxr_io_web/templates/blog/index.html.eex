@@ -1,7 +1,7 @@
 <div class="columns">
-  <div class="column is-narrow-touch"></div>
-  <div class="column">
-    <div class="container">
+  <div class="column"></div>
+  <div class="column is-four-fifths">
+    <div>
       <%= for post <- @posts do %>
         <div class="index-post">
           <h3 class="title is-3 is-spaced"><%= post.title %></h3>
@@ -13,5 +13,5 @@
       <% end %>  
     </div>
   </div>
-  <div class="column is-narrow-touch"></div>
+  <div class="column"></div>
 </div>

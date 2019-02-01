@@ -28,9 +28,6 @@ HighchartsMore(Highcharts);
 
 export default class App {
   constructor() {
-    // Copy button
-    $(".copy-button").click(this.onCopy.bind(this))
-
     // Check for click events on the navbar burger icon
     $(".navbar-burger").click(function() {
       // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
@@ -55,46 +52,6 @@ export default class App {
 
     // Highlight syntax
     hljs.initHighlightingOnLoad()
-  }
-
-  // Project: copy config snippet to clipboard
-  onCopy(event) {
-    var button = $(event.currentTarget)
-    var succeeded = false
-
-    try {
-      var snippet = document.getElementById(button.attr("data-input-id"))
-      snippet.select()
-      succeeded = document.execCommand("copy")
-    } catch (e) {
-      console.log("snippet copy failed", e)
-    }
-
-    succeeded ? this.copySucceeded(button) : this.copyFailed(button)
-  }
-
-  copySucceeded(button) {
-    button.children(".icon-copy").hide()
-    button.children(".icon-ok").show()
-    button.tooltip({title: "Copied!", container: "body", placement: "bottom", trigger: "manual"}).tooltip("show")
-
-    setTimeout(() => {
-      button.children(".icon-ok").hide()
-      button.children(".icon-copy").show()
-      button.tooltip("hide")
-    }, 1500)
-  }
-
-  copyFailed(button) {
-    button.children(".icon-copy").hide()
-    button.children(".icon-remove").show()
-    button.tooltip({title: "Copy not supported in your browser", container: "body", placement: "bottom", trigger: "manual"}).tooltip("show")
-
-    setTimeout(() => {
-      button.children(".icon-remove").hide()
-      button.children(".icon-copy").show()
-      button.tooltip("hide")
-    }, 1500)
   }
 }
 

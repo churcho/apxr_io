@@ -23,7 +23,7 @@
     
       <nav>
         <div class="is-inline-flex">
-          <h6 class="subtitle is-6 is-uppercase">All Projects (<%= @project_count %>)</h6>
+          <h6 class="subtitle is-6 is-uppercase">Projects (<%= @project_count %>)</h6>
         </div>
         <div class="dropdown is-pulled-right is-right">
           <div class="dropdown-trigger">
