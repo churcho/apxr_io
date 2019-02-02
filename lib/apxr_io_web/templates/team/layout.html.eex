@@ -2,19 +2,31 @@
   <div class="column is-3-tablet is-2-desktop" style="border-right: solid 2px whitesmoke; padding-left: 2rem;">
     <aside class="menu">
       <p class="menu-label">
-        APXR
+        Teams
       </p>
       <ul class="menu-list">
-        <li class="sidebar-item"><a href="<%= Routes.docs_path(Endpoint, :faq) %>" class="<%= selected_setting(@conn, :faq) %>">FAQ</a></li>
-        <li class="sidebar-item"><a href="<%= Routes.docs_path(Endpoint, :public_keys) %>" class="<%= selected_setting(@conn, :public_keys) %>">Public Keys</a></li>
+      <%= for team <- Enum.sort_by(@current_user.teams, & &1.name) do %>
+        <li>  
+          <a class="menu-item <%= selected_team(@conn, @team) %>" href="<%= Routes.team_path(Endpoint, :members, team) %>">
+            <span><%= team.name %></span>
+          </a>
+          <ul>
+            <%= for {view, {name, path}} <- team_settings(@conn, @team) do %>
+              <li><a class="<%= selected_team_item(@conn, view) %>" href="<%= path %>"><%= name %></a></li>
+            <% end %>
+          </ul>
+        </li>
+      <% end %>
       </ul>
       <p class="menu-label">
-        Administration
+        Actions
       </p>
       <ul class="menu-list">
-        <li><a>Payments</a></li>
-        <li><a>Transfers</a></li>
-        <li><a>Balance</a></li>
+        <li>
+          <a class="menu-item" href="<%= Routes.team_path(Endpoint, :new) %>">
+            New Team
+          </a>
+        </li>
       </ul>
     </aside>
   </div>

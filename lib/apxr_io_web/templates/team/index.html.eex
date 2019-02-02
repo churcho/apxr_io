@@ -1,31 +1,3 @@
-<div class="row">
-  <div class="col-sm-3">
-    <div class="panel panel-default sidebar">
-      <div class="panel-heading">Menu</div>
-      <ul class="list-group">
-        <a href="<%= Routes.team_path(Endpoint, :new) %>">
-          <li class="list-group-item">
-            <small>New team <span style="float: right;">+</span></small>
-          </li>  
-        </a>
-      </ul>
-    </div>
-  </div>
-
-  <div class="col-sm-9">
-    <div class="panel panel-default">
-      <div class="panel-heading">Teams</div>
-      <div class="panel-body">
-        <ul class="list-group list-group-flush" style="margin-bottom: 0px;">
-          <%= for team <- Enum.sort_by(@current_user.teams, & &1.name) do %>
-            <li class="list-group-item">  
-              <a href="<%= Routes.team_path(Endpoint, :members, team) %>">
-                <span><%= team.name %></span>
-              </a>
-            </li>
-          <% end %>
-        </ul>
-      </div>
-    </div>
-  </div>
+<div class="notification">
+  You are not currently a member of any team. Create a team to get started!
 </div>

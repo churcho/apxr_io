@@ -24,29 +24,30 @@ defmodule ApxrIoWeb.TeamView do
     end)
   end
 
-  defp settings(team) do
-    [
-      members: {"Members", Routes.team_path(Endpoint, :members, team)},
-      keys: {"Keys", Routes.teams_key_path(Endpoint, :index, team)},
-      billing: {"Billing", Routes.billing_path(Endpoint, :index, team)},
-      audit_log: {"Audit log", Routes.team_path(Endpoint, :audit_log, team)}
-    ]
+  defp selected_team(conn, team) do
+    if Enum.at(conn.path_info, 1) == team.name do
+      "is-active"
+    end
   end
 
-  def selected_setting(conn, view) do
-    # if conn.assigns.view_name == view do
-    #   "is-active"
-    # else
-    #   ""
-    # end
-    ""
+  defp selected_team_item(conn, view) when is_atom(view) do
+    if Enum.take(conn.path_info, -1) == [Atom.to_string(view)] do
+      "is-active-team-item"
+    else
+      ""
+    end
   end
 
-  # defp selected_setting(conn, id) when is_atom(id) do
-  #   if Enum.take(conn.path_info, -1) == [Atom.to_string(id)] do
-  #     "selected"
-  #   end
-  # end
+  defp team_settings(conn, team) do
+    if Enum.at(conn.path_info, 1) == team.name do
+      [
+        members: {"Members", Routes.team_path(Endpoint, :members, team)},
+        keys: {"Keys", Routes.teams_key_path(Endpoint, :index, team)},
+        billing: {"Billing", Routes.billing_path(Endpoint, :index, team)},
+        audit_log: {"Audit log", Routes.team_path(Endpoint, :audit_log, team)}
+      ]
+    end
+  end
 
   def extract_params("key.generate", params) do
     Map.to_list(%{name: params["key"]["name"]})

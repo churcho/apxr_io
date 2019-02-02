@@ -8,14 +8,6 @@
         <li class="sidebar-item"><a href="<%= Routes.docs_path(Endpoint, :faq) %>" class="<%= selected_docs(@conn, :faq) %>">FAQ</a></li>
         <li class="sidebar-item"><a href="<%= Routes.docs_path(Endpoint, :public_keys) %>" class="<%= selected_docs(@conn, :public_keys) %>">Public Keys</a></li>
       </ul>
-      <p class="menu-label">
-        Administration
-      </p>
-      <ul class="menu-list">
-        <li><a>Payments</a></li>
-        <li><a>Transfers</a></li>
-        <li><a>Balance</a></li>
-      </ul>
     </aside>
   </div>
   <div class="column is-9-tablet is-8-desktop">

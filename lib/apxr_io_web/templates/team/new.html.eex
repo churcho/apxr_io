@@ -21,7 +21,7 @@
         <p>
           With teams you can publish and host private projects with fine-grained access
           control to projects for your team members. For more information see the
-          <a href="<%= Routes.docs_path(Endpoint, :private) %>">private project documentation</a>.
+          <a href="<%= Routes.docs_path(Endpoint, :faq) %>">private project documentation</a>.
         </p>
         <p>
           The first month is free and you don't need to enter any payment information to try out

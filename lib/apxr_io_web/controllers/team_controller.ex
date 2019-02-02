@@ -44,10 +44,10 @@ defmodule ApxrIoWeb.TeamController do
         |> put_status(400)
         |> put_flash(:error, "Oops, something went wrong! Please check the errors below.")
         |> render_new(
-          changeset: changeset,
-          params: params,
-          errors: reason["errors"]
-        )
+            changeset: changeset,
+            params: params,
+            errors: reason["errors"]
+          )
     end
   end
 
@@ -186,32 +186,42 @@ defmodule ApxrIoWeb.TeamController do
     user = conn.assigns.current_user
     teams = Teams.all_by_user(user)
 
-    render(
-      conn,
-      "layout.html",
-      view: "index.html",
-      view_name: :index,
-      title: "Teams",
-      container: "container teams",
-      create_changeset: create_changeset,
-      teams: teams
-    )
+    if teams == [] do
+      render(
+        conn,
+        "layout.html",
+        view: "index.html",
+        view_name: :index,
+        title: "Teams",
+        container: "container teams",
+        create_changeset: create_changeset,
+        teams: teams
+      )
+    else
+      team = List.first(teams)
+      redirect(conn, to: Routes.team_path(conn, :members, team))
+    end
   end
 
   defp render_members(conn, team, opts \\ []) do
+    user = conn.assigns.current_user
+    teams = Teams.all_by_user(user)
     billing = ApxrIo.Billing.teams(team.name)
 
-    assigns = [
+    render(
+      conn,
+      "layout.html",
+      view: "members.html",
+      view_name: :members,
       title: "Team",
       container: "container teams",
       team: team,
       quantity: billing["billing"],
       params: opts[:params],
       errors: opts[:errors],
-      add_member_changeset: opts[:add_member_changeset] || add_member_changeset()
-    ]
-
-    render(conn, "members.html", assigns)
+      add_member_changeset: opts[:add_member_changeset] || add_member_changeset(),
+      teams: teams
+    )
   end
 
   defp render_audit_log(conn, team, params) do

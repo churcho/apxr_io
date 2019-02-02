@@ -1,72 +1,66 @@
 <%= changeset_error(@add_member_changeset) %>
 
-<div class="row">
-  <div class="col-sm-3">
-    <%= render ApxrIoWeb.TeamView, "_sidebar.html", assigns %>
-  </div>
+<div class="level">
+  <h6 class="subtitle is-6">Here you control your team members and their permissions. Hover over the assign options to learn more.</h6>
+</div>
 
-  <div class="col-sm-9 team members">
-    <div class="panel panel-default">
-      <div class="panel-heading">Members</div>
-      <div class="panel-body">
-        Here you control your team members and their roles. Mouse-over the role for more details.
-      </div>
-      <ul class="list-group clearfix">
+<div>
+  <div style="overflow-x:auto;">
+    <table class="table is-fullwidth is-narrow is-hoverable">
+      <thead>
+        <th>User</th>
+        <th>Permissions</th>
+        <th>Assign</th>
+        <th>Assign</th>
+        <th>Assign</th>
+        <th></th>
+      </thead>
+      <tbody>
         <%= for team_user <- @team.team_users do %>
-          <li class="list-group-item member-username clearfix">
-            <%= team_user.user.username %>
-            <div style="float: right">
-              <div class="dropdown role-dropdown">
-                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-                  <%= team_role(team_user.role) %>
-                  <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu dropdown-menu-right">
-                  <%= for {name, id, title} <- team_roles() do %>
-                    <li>
-                      <%= form_tag Routes.team_path(Endpoint, :update, @team), class: "change-role" do %>
-                        <input type="hidden" name="action" value="change_role">
-                        <input type="hidden" name="team_user[username]" value="<%= team_user.user.username %>">
-                        <input type="hidden" name="team_user[role]" value="<%= id %>">
-                        <button type="submit" class="btn btn-link" title="<%= title %>"><%= name %></button>
-                      <% end %>
-                    </li>
-                  <% end %>
-                </ul>
-                  <%= form_tag Routes.team_path(Endpoint, :update, @team), class: "remove-role" do %>
-                    <input type="hidden" name="action" value="remove_member">
+          <tr>
+            <td><%= team_user.user.username %></td>
+            <td>
+              <span class="button is-dark is-small" style="pointer-events:none;"><%= team_role(team_user.role) %></span>
+            </td>
+              <%= for {name, id, title} <- team_roles() do %>
+                <td>
+                  <%= form_tag Routes.team_path(Endpoint, :update, @team) do %>
+                    <input type="hidden" name="action" value="change_role">
                     <input type="hidden" name="team_user[username]" value="<%= team_user.user.username %>">
-                    <%= submit "Remove", class: "btn btn-danger", disabled: team_user.user.id == @current_user.id %>
+                    <input type="hidden" name="team_user[role]" value="<%= id %>">
+                    <button type="submit" class="button is-dark is-outlined is-small" title="<%= title %>"><%= name %></button>
                   <% end %>
-              </div>
-            </div>
-          </li>
+                </td>
+              <% end %>
+            <td>
+              <%= form_tag Routes.team_path(Endpoint, :update, @team) do %>
+                <input type="hidden" name="action" value="remove_member">
+                <input type="hidden" name="team_user[username]" value="<%= team_user.user.username %>">
+                <%= submit "Remove", class: "button is-small is-danger", disabled: team_user.user.id == @current_user.id %>
+              <% end %>    
+            </td>
+          </tr>
         <% end %>
-        <li class="list-group-item clearfix">
-          <%= form_for @add_member_changeset, Routes.team_path(Endpoint, :update, @team), [method: :post, class: "form-inline add-member"], fn f -> %>
-            <%= content_tag :fieldset, disabled: @quantity <= length(@team.team_users) do %>
-              <input type="hidden" name="action" value="add_member">
-              <div class="form-group">
-                <%= text_input f, :username, style: "width: 250px", placeholder: "Username or email address", required: true %>
-                <%= error_tag f, :username %>
-              </div>
-              <div class="form-group">
-                <%= select f, :role, team_roles_selector(), style: "width: 80px" %>
-                <%= error_tag f, :role %>
-              </div>
-              <button type="submit" class="btn btn-primary btn-black">Add member</button>
-            <% end %>
-          <% end %>
-        </li>
-      </ul>
-      <div class="panel-body">
-        <%= length(@team.team_users) %> of <%= @quantity %> seats are in use.
-        You can add more seats 
-        <%= link to: Routes.billing_path(Endpoint, :index, @team), method: :get do %>
-          here.
-        <% end %>
-      </div>
-    </div>
+      </tbody>
+    </table>
   </div>
+</div>
+<hr />
 
+<div>
+  <h6 class="subtitle is-6">Add member</h6>
+  <%= form_for @add_member_changeset, Routes.team_path(Endpoint, :update, @team), [method: :post, class: "form-inline add-member"], fn f -> %>
+    <%= content_tag :fieldset, disabled: @quantity <= length(@team.team_users) do %>
+      <input type="hidden" name="action" value="add_member">
+      <div class="form-group">
+        <%= text_input f, :username, style: "width: 250px", placeholder: "Username or email address", required: true %>
+        <%= error_tag f, :username %>
+      </div>
+      <div class="form-group">
+        <%= select f, :role, team_roles_selector(), style: "width: 80px" %>
+        <%= error_tag f, :role %>
+      </div>
+      <button type="submit" class="btn btn-primary btn-black">Add member</button>
+    <% end %>
+  <% end %>
 </div>

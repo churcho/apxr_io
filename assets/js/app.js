@@ -60,6 +60,13 @@ export default class App {
       $(this).parent().addClass('is-active');
       $("#"+tab_id).addClass('is-active-tab');
     });
+
+    // Set "is-active" class on menu
+    $('.menu-item').click(function(){
+      $('.menu-list li').removeClass('is-active');
+
+      $(this).parent().addClass('is-active');
+    });
   }
 }
 
