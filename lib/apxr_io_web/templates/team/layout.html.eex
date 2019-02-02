@@ -5,13 +5,13 @@
         Teams
       </p>
       <ul class="menu-list">
-      <%= for team <- Enum.sort_by(@current_user.teams, & &1.name) do %>
+      <%= for team <- Enum.sort_by(@teams, & &1.name) do %>
         <li>  
-          <a class="menu-item <%= selected_team(@conn, @team) %>" href="<%= Routes.team_path(Endpoint, :members, team) %>">
+          <a class="<%= selected_team(@conn, team) %>" href="<%= Routes.team_path(Endpoint, :members, team) %>">
             <span><%= team.name %></span>
           </a>
           <ul>
-            <%= for {view, {name, path}} <- team_settings(@conn, @team) do %>
+            <%= for {view, {name, path}} <- team_settings(@conn, team) do %>
               <li><a class="<%= selected_team_item(@conn, view) %>" href="<%= path %>"><%= name %></a></li>
             <% end %>
           </ul>
@@ -23,7 +23,7 @@
       </p>
       <ul class="menu-list">
         <li>
-          <a class="menu-item" href="<%= Routes.team_path(Endpoint, :new) %>">
+          <a class="<%= selected(@conn, :new) %>" href="<%= Routes.team_path(Endpoint, :new) %>">
             New Team
           </a>
         </li>

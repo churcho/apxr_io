@@ -1,8 +1,10 @@
 <%= changeset_error(@add_member_changeset) %>
 
-<div class="level">
+<div>
+  <h4 class="title is-4 is-spaced">Edit members</h4>
   <h6 class="subtitle is-6">Here you control your team members and their permissions. Hover over the assign options to learn more.</h6>
 </div>
+<br />
 
 <div>
   <div style="overflow-x:auto;">
@@ -45,22 +47,45 @@
     </table>
   </div>
 </div>
-<hr />
-
+<br />
 <div>
-  <h6 class="subtitle is-6">Add member</h6>
-  <%= form_for @add_member_changeset, Routes.team_path(Endpoint, :update, @team), [method: :post, class: "form-inline add-member"], fn f -> %>
-    <%= content_tag :fieldset, disabled: @quantity <= length(@team.team_users) do %>
+  <h4 class="title is-4">Add member</h4>
+</div>
+<br />
+<div>
+  <%= form_for @add_member_changeset, Routes.team_path(Endpoint, :update, @team), [method: :post], fn f -> %>
+    <div class="field has-addons">
       <input type="hidden" name="action" value="add_member">
-      <div class="form-group">
-        <%= text_input f, :username, style: "width: 250px", placeholder: "Username or email address", required: true %>
+      <p class="control">
+        <span class="select">
+          <select name="team_user[role]">
+            <%= for {name, id} <- team_roles_selector() do %>
+              <option value="<%= id %>"><%= name %></option>
+            <% end %>
+          </select>
+          <%= error_tag f, :role %>
+        </span>
+      </p>
+      <div class="control is-expanded">
+        <%= text_input f, :username, class: "input", placeholder: "Username or email address", required: true %>
         <%= error_tag f, :username %>
       </div>
-      <div class="form-group">
-        <%= select f, :role, team_roles_selector(), style: "width: 80px" %>
-        <%= error_tag f, :role %>
+      <div class="control">
+        <button type="submit" class="button is-black">Add member</button>
       </div>
-      <button type="submit" class="btn btn-primary btn-black">Add member</button>
     <% end %>
-  <% end %>
+  </div>
+</div>
+<br />
+<div>
+  <h4 class="title is-4">Add seats</h4>
+</div>
+<br />
+<div>
+  <%= length(@team.team_users) %> of <%= @quantity %> seats are in use.
+    You can add more seats
+      <%= link to: Routes.billing_path(Endpoint, :index, @team), method: :get do %>
+        here.
+      <% end %>
+  </div>  
 </div>

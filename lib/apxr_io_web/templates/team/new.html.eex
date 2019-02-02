@@ -1,66 +1,70 @@
 <%= changeset_error(@changeset) %>
 
-<div class="row">
-  <div class="col-sm-3">
-    <div class="panel panel-default sidebar">
-      <div class="panel-heading">Menu</div>
-      <ul class="list-group">
-        <a href="<%= Routes.team_path(Endpoint, :index) %>">
-          <li class="list-group-item">
-            <small>Back to teams <span style="float: right;"><</span></small>
-          </li>
-        </a>
-      </ul>
+<div>
+  <h4 class="title is-4 is-spaced">New team</h4>
+  <h6 class="subtitle is-6">
+    With teams you can publish private projects with fine-grained access control for your team members.
+  </h6>
+  <h6 class="subtitle is-6">
+    The first month is free and you don't need to enter any payment information to try out teams. After the first month the cost for teams is <strong>$7.00 per user / month</strong>.
+  </h6>
+</div>
+<br />
+
+<div class="columns">
+  <div class="column is-1"></div>
+  <div class="column is-10">
+    <div>
+      <div class="tabs is-centered is-medium">
+        <ul>
+          <li class="<%= if !@params["company"] do %>active<% end %>"><a class="tab heading is-size-6" data-tab="person">Person</a></li>
+          <li class="<%= if @params["company"] do %>active<% end %>"><a class="tab heading is-size-6" data-tab="company">Enterprise</a></li>
+        </ul>
+      </div>
     </div>
   </div>
+  <div class="column is-1"></div>
+</div>
 
-  <div class="col-sm-9 team-signup">
-    <div class="panel panel-default">
-      <div class="panel-heading">New Team</div>
-      <div class="panel-body">
-        <p>
-          With teams you can publish and host private projects with fine-grained access
-          control to projects for your team members. For more information see the
-          <a href="<%= Routes.docs_path(Endpoint, :faq) %>">private project documentation</a>.
-        </p>
-        <p>
-          The first month is free and you don't need to enter any payment information to try out
-          teams. After the first month the cost for teams is
-          <strong>$7.00 per user / month</strong>.
-        </p>
-        <br>
-
-        <ul class="nav nav-tabs" role="tablist">
-          <li role="presentation" class="<%= if !@params["company"] do %>active<% end %>"><a href="#person" aria-controls="person" role="tab" data-toggle="tab">Person</a></li>
-          <li role="presentation" class="<%= if @params["company"] do %>active<% end %>"><a href="#company" aria-controls="company" role="tab" data-toggle="tab">Company</a></li>
-        </ul>
-
-        <div class="tab-content">
-          <div role="tabpanel" class="tab-pane <%= if !@params["company"] do %>active<% end %>" id="person">
-            <%= form_for @changeset, Routes.team_path(Endpoint, :create), fn f -> %>
-              <div class="form-group">
-                <%= label f, :team, "Team name" %>
-                <%= text_input f, :name, [placeholder: "Only allows lowercase letters and underscore", required: true, pattern: "[a-z]\\w*", "aria-describedby": "name-helpblock"] %>
-                <%= error_tag f, :name %>
-                <span id="name-helpbox" class="help-block">This field is immutable. It cannot be edited later.</span>
-              </div>
-              <%= render "_billing_person.html", assigns %>
-              <%= submit "Submit", class: "btn btn-primary btn-black" %>
-            <% end %>
+<div class="columns">
+  <div class="column is-1"></div>
+  <div class="column is-10">
+    <div>
+      <div id="person" class="tab-content <%= if !@params["company"] do %>is-active-tab<% end %>">
+        <%= form_for @changeset, Routes.team_path(Endpoint, :create), fn f -> %>
+          <div class="field">
+            <label class="label">Team Name</label>
+            <div class="control">
+              <%= text_input f, :name, [class: "input", type: "text", placeholder: "e.g. asmith", required: true, pattern: "[a-z]\\w*", "aria-describedby": "name-helpblock"] %>
+              <%= error_tag f, :name %>
+            </div>
+            <p class="help has-text-grey">This field is immutable. It cannot be edited later. Only allows lowercase letters and underscore.</p>
           </div>
-          <div role="tabpanel" class="tab-pane <%= if @params["company"] do %>active<% end %>" id="company">
-            <%= form_for @changeset, Routes.team_path(Endpoint, :create), fn f -> %>
-              <div class="form-group">
-                <%= label f, :team, "Team name" %>
-                <%= text_input f, :name, [placeholder: "Only lowercase letters and underscore", required: true, pattern: "[a-z]\\w*", "aria-describedby": "name-helpblock"] %>
-                <%= error_tag f, :name %>
-                <span id="name-helpbox" class="help-block">This field is immutable. It cannot be edited later.</span>
-              </div>
-              <%= render "_billing_company.html", assigns %>
-              <%= submit "Submit", class: "btn btn-primary btn-black" %>
-            <% end %>
+          <%= render "_billing_person.html", assigns %>
+          <div class="field">
+            <div class="control">
+              <%= submit "Submit", class: "button is-black" %>
+            </div>
           </div>
-        </div>
+        <% end %>
+      </div>
+      <div id="company" class="tab-content <%= if @params["company"] do %>active<% end %>">
+        <%= form_for @changeset, Routes.team_path(Endpoint, :create), fn f -> %>
+          <div class="field">
+            <label class="label">Team Name</label>
+            <div class="control">
+              <%= text_input f, :name, [class: "input", type: "text", placeholder: "e.g. smiths", required: true, pattern: "[a-z]\\w*", "aria-describedby": "name-helpblock"] %>
+              <%= error_tag f, :name %>
+            </div>
+            <p class="help has-text-grey">This field is immutable. It cannot be edited later. Only allows lowercase letters and underscore.</p>
+          </div>
+          <%= render "_billing_company.html", assigns %>
+          <div class="field">
+            <div class="control">
+              <%= submit "Submit", class: "button is-black" %>
+            </div>
+          </div>
+        <% end %>  
       </div>
     </div>
   </div>

@@ -244,9 +244,14 @@ defmodule ApxrIoWeb.TeamController do
   end
 
   defp render_new(conn, opts \\ []) do
+    user = conn.assigns.current_user
+    teams = Teams.all_by_user(user)
+
     render(
       conn,
-      "new.html",
+      "layout.html",
+      view: "new.html",
+      view_name: :new,
       title: "New team",
       container: "container teams",
       billing_email: nil,
@@ -254,7 +259,8 @@ defmodule ApxrIoWeb.TeamController do
       company: nil,
       params: opts[:params],
       errors: opts[:errors],
-      changeset: opts[:changeset] || create_changeset()
+      changeset: opts[:changeset] || create_changeset(),
+      teams: teams
     )
   end
 

@@ -24,6 +24,14 @@ defmodule ApxrIoWeb.TeamView do
     end)
   end
 
+  def selected(conn, view) do
+    if conn.assigns.view_name == view do
+      "is-active"
+    else
+      ""
+    end
+  end
+
   defp selected_team(conn, team) do
     if Enum.at(conn.path_info, 1) == team.name do
       "is-active"
@@ -46,6 +54,8 @@ defmodule ApxrIoWeb.TeamView do
         billing: {"Billing", Routes.billing_path(Endpoint, :index, team)},
         audit_log: {"Audit log", Routes.team_path(Endpoint, :audit_log, team)}
       ]
+    else
+      []
     end
   end
 
