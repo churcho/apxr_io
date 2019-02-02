@@ -33,8 +33,6 @@ build_tool = @current_release && @current_release.meta.build_tool
       <%= if description do %>
         <h5 class="subtitle is-5 has-text-weight-semi-bold has-text-grey-dark"><%= text_length(description, 500) |> text_to_html() %></h5>
       <% end %>
-      <p class="has-text-grey" style="word-wrap: break-word;"><strong>Checksum:</strong> <%= String.downcase(@current_release.checksum) %></p>
-      <br />
       <div>
       <%= if retirement = @current_release && @current_release.retirement do %>
         <article class="message is-warning is-small" style="width: fit-content;">
@@ -87,35 +85,44 @@ build_tool = @current_release && @current_release.meta.build_tool
   <div class="column is-1"></div>
 </div>
 
-<div class="section">
-  <nav class="level">
-    <div class="level-item has-text-centered">
-      <div>
-        <h1 class="title is-1"><%= Enum.count(@releases) %></h1>
-        <a href="#versions" class="heading">Versions</a>
+<div class="columns">
+  <div class="column is-1"></div>
+  <div class="column is-10">
+    <h6 class="title is-6">
+      Checksum:
+      <span class="has-text-weight-semi-bold has-text-grey" style="word-wrap: break-word;"> <%= String.downcase(@current_release.checksum) %></span>
+    </h6>
+    <h6 class="title is-6">Project stats:</h6>
+    <nav class="level">
+      <div class="level-item has-text-centered">
+        <div>
+          <h1 class="title is-1"><%= Enum.count(@releases) %></h1>
+          <a href="#versions" class="heading">Versions</a>
+        </div>
       </div>
-    </div>
-    <div class="level-item has-text-centered">
-      <div>
-        <h1 class="title is-1"><%= Experiments.count(@project) %></h1>
-        <a href="<%= Routes.experiment_path(Endpoint, :index, @project) %>" class="heading">Experiments</a>
+      <div class="level-item has-text-centered">
+        <div>
+          <h1 class="title is-1"><%= Experiments.count(@project) %></h1>
+          <a href="<%= Routes.experiment_path(Endpoint, :index, @project) %>" class="heading">Experiments</a>
+        </div>
       </div>
-    </div>
-    <div class="level-item has-text-centered">
-      <div>
-        <h1 class="title is-1"><%= Artifacts.count(@project) %></h1>
-        <a href="<%= Routes.artifact_path(Endpoint, :index, @project) %>" class="heading">Arifacts</a>
+      <div class="level-item has-text-centered">
+        <div>
+          <h1 class="title is-1"><%= Artifacts.count(@project) %></h1>
+          <a href="<%= Routes.artifact_path(Endpoint, :index, @project) %>" class="heading">Artifacts</a>
+        </div>
       </div>
-    </div>
-  </nav>
+    </nav>
+    <hr />
+  </div>
+  <div class="column is-1"></div>
 </div>
 
 <div class="columns is-mobile">
   <div class="column is-1"></div>
   <div class="column is-10">
-    <hr>
     <nav>
-      <h4 id="versions" class="subtitle is-4 heading">Versions:</h4>
+      <h4 id="versions" class="subtitle is-4">Versions:</h4>
       <ul>
         <%= for release <- @releases do %>
           <li>

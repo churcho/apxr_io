@@ -1,38 +1,54 @@
-<nav>
-  <div class="pagination-info">
-    <h4 class="projects-title"><%= @version %> <small>(<%= @progress %>)</small></h4>
+<div class="columns">
+  <div class="column is-1"></div>
+  <div class="column is-10">
+    <nav class="breadcrumb" aria-label="breadcrumbs">
+      <ul>
+        <li><a href="<%= Routes.project_path(Endpoint, :index) %>"><%= @project.team.name %></a></li>
+        <li><a href="<%= path_for_project(@project) %>"><%= @project.name %></a></li>
+        <li class="is-active"><a href="<%= path_for_release(@project, @experiment.release) %>"><%= @version %></a></li>
+      </ul>
+    </nav>
   </div>
-  <div class="navbar-right pagination-sort">
-    <div>
-      <a href="<%= Routes.experiment_path(Endpoint, :index, @project) %>">
-        <button class="btn btn-default">
-          Back to experiments
-        </button>
-      </a>
-    </div>
-  </div>
-</nav>
-
-<div class="clearfix"></div>
-
-<div>
-  <%= if @experiment.description do %>
-    </p><%= @experiment.description %></p>
-  <% end %>
+  <div class="column is-1"></div>
 </div>
 
-<br />
+<div class="columns">
+  <div class="column is-1"></div>
+  <div class="column is-10">
+    <header>
+      <h3 class="title is-3 is-spaced"><span class="tag is-dark heading"><%= @progress %></span></h3>
+      <%= if @experiment.description do %>
+        <h5 class="subtitle is-5 has-text-weight-semi-bold has-text-grey"><%= text_length(@experiment.description, 500) |> text_to_html() %></h5>
+      <% end %>
+    </header>
+  </div>
+  <div class="column is-1"></div>
+</div>
 
-<ul class="nav nav-tabs nav-justified">
-  <li class="active"><a data-toggle="tab" href="#overview">OVERVIEW</a></li>
-  <li><a data-toggle="tab" href="#init_constraints">INITIAL CONSTRAINTS</a></li>
-  <li><a data-toggle="tab" href="#trace">TRACE</a></li>
-  <li><a data-toggle="tab" href="#graphs">GRAPHS</a></li>
-</ul>
+<div class="columns">
+  <div class="column is-1"></div>
+  <div class="column is-10">
+    <div>
+      <div class="tabs is-centered is-medium">
+        <ul>
+          <li class="is-active"><a class="tab heading is-size-6" data-tab="overview">Overview</a></li>
+          <li><a class="tab heading is-size-6" data-tab="init_constraints">Initial Constraints</a></li>
+          <li><a class="tab heading is-size-6" data-tab="trace">Trace</a></li>
+          <li><a class="tab heading is-size-6" data-tab="graphs">Graphs</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="column is-1"></div>
+</div>
 
-<div class="tab-content">
-  <div id="overview" class="tab-pane fade in active">
-<pre><code>identifier: <%= @experiment.meta.exp_parameters["identifier"] %>
+<div class="columns">
+  <div class="column is-1"></div>
+  <div class="column is-10">
+    <div>
+      <div id="overview" class="tab-content is-active-tab">
+<pre>
+<code>identifier: <%= @experiment.meta.exp_parameters["identifier"] %>
 started: <%= @experiment.meta.started %>
 completed: <%= @experiment.meta.completed %>
 duration: <%= @experiment.meta.duration %>
@@ -41,41 +57,69 @@ interruptions: <%= @experiment.meta.interruptions %>
 total_runs: <%= @experiment.meta.total_runs %>
 exp_parameters: <%= Poison.encode_to_iodata!(@experiment.meta.exp_parameters, pretty: true) %>
 pm_parameters: <%= Poison.encode_to_iodata!(@experiment.meta.pm_parameters, pretty: true) %>
-</code></pre>
+</code>
+</pre>
+      </div>
+      <div id="init_constraints" class="tab-content">
+<pre>
+<code>initial_constraints: <%= Poison.encode_to_iodata!(@experiment.meta.init_constraints, pretty: true) %>
+</code>
+</pre>
+      </div>
+      <div id="trace" class="tab-content">
+<pre>
+<code><%= if @experiment.trace do %><%= Poison.encode_to_iodata!(@experiment.trace.trace_acc, pretty: true) %><% end %>
+</code>
+</pre>
+      </div>
+      <div id="graphs" class="tab-content">
+        <%= if @experiment.graph do %>
+          <%= charts(@experiment.graph) %>
+        <% end %>
+        <div class="columns">
+          <div class="column is-half">
+            <div id="avg_fitness_vs_evaluations" style="height: 400px; margin: auto; min-width: 310px; max-width: 600px"></div>
+          </div>
+          <div class="column is-half">
+            <div id="avg_neurons_vs_evaluations" style="height: 400px; margin: auto; min-width: 310px; max-width: 600px"></div>
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column is-half">
+            <div id="avg_diversity_vs_evaluations" style="height: 400px; margin: auto; min-width: 310px; max-width: 600px"></div>
+          </div>
+          <div class="column is-half">
+            <div id="max_fitness_vs_evaluations" style="height: 400px; margin: auto; min-width: 310px; max-width: 600px"></div>
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column is-half">
+            <div id="avg_max_fitness_vs_evaluations" style="height: 400px; margin: auto; min-width: 310px; max-width: 600px"></div>
+          </div>
+          <div class="column is-half">
+            <div id="avg_min_fitness_vs_evaluations" style="height: 400px; margin: auto; min-width: 310px; max-width: 600px"></div>
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column is-half">
+            <div id="specie_pop_turnover_vs_evaluations" style="height: 400px; margin: auto; min-width: 310px; max-width: 600px"></div>
+          </div>
+          <div class="column is-half">
+            <div id="validation_avg_fitness_vs_evaluations" style="height: 400px; margin: auto; min-width: 310px; max-width: 600px"></div>
+          </div>
+        </div>    
+        <div class="columns">
+          <div class="column is-half">
+            <div id="validation_max_fitness_vs_evaluations" style="height: 400px; margin: auto; min-width: 310px; max-width: 600px"></div>
+          </div>
+          <div class="column is-half">
+            <div id="validation_min_fitness_vs_evaluations" style="height: 400px; margin: auto; min-width: 310px; max-width: 600px"></div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <div id="init_constraints" class="tab-pane fade">
-<pre><code>initial_constraints: <%= Poison.encode_to_iodata!(@experiment.meta.init_constraints, pretty: true) %>
-</code></pre>
-  </div>
-  <div id="trace" class="tab-pane fade">
-<pre><code><%= if @experiment.trace do %><%= Poison.encode_to_iodata!(@experiment.trace.trace_acc, pretty: true) %><% end %>
-</code></pre>
-  </div>
-  <div id="graphs" class="tab-pane fade">
-    <%= if @experiment.graph do %>
-      <%= charts(@experiment.graph) %>
-    <% end %>
-    <div id="avg_fitness_vs_evaluations" style="height: 400px; margin: auto; min-width: 310px; max-width: 600px">
-    </div>
-    <div id="avg_neurons_vs_evaluations" style="height: 400px; margin: auto; min-width: 310px; max-width: 600px">
-    </div>
-    <div id="avg_diversity_vs_evaluations" style="height: 400px; margin: auto; min-width: 310px; max-width: 600px">
-    </div>
-    <div id="max_fitness_vs_evaluations" style="height: 400px; margin: auto; min-width: 310px; max-width: 600px">
-    </div>
-    <div id="avg_max_fitness_vs_evaluations" style="height: 400px; margin: auto; min-width: 310px; max-width: 600px">
-    </div>
-    <div id="avg_min_fitness_vs_evaluations" style="height: 400px; margin: auto; min-width: 310px; max-width: 600px">
-    </div>
-    <div id="specie_pop_turnover_vs_evaluations" style="height: 400px; margin: auto; min-width: 310px; max-width: 600px">
-    </div>
-    <div id="validation_avg_fitness_vs_evaluations" style="height: 400px; margin: auto; min-width: 310px; max-width: 600px">
-    </div>
-    <div id="validation_max_fitness_vs_evaluations" style="height: 400px; margin: auto; min-width: 310px; max-width: 600px">
-    </div>
-    <div id="validation_min_fitness_vs_evaluations" style="height: 400px; margin: auto; min-width: 310px; max-width: 600px">
-    </div>
-  </div>
+  <div class="column is-1"></div>
 </div>
 
 <div id="exp_log_messages"></div>

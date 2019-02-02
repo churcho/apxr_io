@@ -16,4 +16,13 @@
   flex: 1;
 }
 
+.tab-content{
+  display: none;
+}
+
+.tab-content.is-active-tab{
+  display: inherit;
+}
+
+
 @import "../node_modules/bulma/bulma.sass";

@@ -50,8 +50,16 @@ export default class App {
       $(".dropdown").toggleClass("is-active");
     });
 
-    // Highlight syntax
-    hljs.initHighlightingOnLoad()
+    // Switch tabs
+    $('.tab').click(function(){
+      var tab_id = $(this).attr('data-tab');
+
+      $('.tabs li').removeClass('is-active');
+      $('.tab-content').removeClass('is-active-tab');
+
+      $(this).parent().addClass('is-active');
+      $("#"+tab_id).addClass('is-active-tab');
+    });
   }
 }
 

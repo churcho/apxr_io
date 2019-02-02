@@ -27,7 +27,7 @@
         <ul>
           <li><a href="<%= Routes.project_path(Endpoint, :index) %>"><%= @project.team.name %></a></li>
           <li><a href="<%= path_for_project(@project) %>"><%= @project.name %></a></li>
-          <li class="is-active"><a href="#">Artifacts</a></li>
+          <li class="is-active"><a href="#">artifacts</a></li>
         </ul>
       </nav>
 
