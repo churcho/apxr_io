@@ -1,98 +1,85 @@
-<div class="row">
-  <div class="col-sm-3">
-    <%= render ApxrIoWeb.TeamView, "_sidebar.html", assigns %>
-  </div>
-
-  <div class="col-sm-9">
-    <div class="panel panel-default">
-      <div class="panel-heading">Audit log</div>
-      <div class="panel-body">
-        <%= if @audit_log_count == 0 do %>
-          <div class="audit_log-list no-results">
-            <h4>No Results Found</h4>
-          </div>
-        <% else %>
-          <%
-            shown_audit_logs = length(@audit_log)
-            paginate = paginate(@page, @audit_log_count, items_per_page: @per_page, page_links: 5)
-        
-            range_start = (@page - 1) * @per_page + 1
-            range_end = range_start + shown_audit_logs - 1
-
-            prev_page_params = params(page: @page-1)
-            next_page_params = params(page: @page+1)
-          %>
-
-          <div class="clearfix"></div>
-
-          <div class="auditlog-list">
-            <ol>
-              <%= for event <- @audit_log do %>
-                <li>
-                  <div>
-                    <kbd>When:</kbd> <%= DateTime.to_iso8601(DateTime.truncate(event.inserted_at, :second)) %>
-                  </div>
-                  <div>
-                    <kbd>Where:</kbd> <%= event.user_agent %>
-                  </div>
-                  <div>
-                    <kbd>IP:</kbd> <%= event.ip %>
-                  </div>
-                  <div>
-                    <%= if event.user do %>
-                      <kbd>Who:</kbd> <%= event.user.username %>
-                    <% end %>
-                  </div>
-                  <div>
-                    <kbd>What:</kbd> <%= event.action %>
-                  </div>
-                  <div>
-                    <kbd>Details:</kbd> <%= inspect extract_params(event.action, event.params) %>
-                  </div>
-                </li>
-                <hr />
-              <% end %>
-            </ol>
-          </div>
-
-          <div class="pagination-wrapper">
-            <div class="pagination-info">
-              <%= if shown_audit_logs == 1 do %>
-                Showing last audit_log of <%= @audit_log_count %> total
-              <% else %>
-                Showing <%= range_start %>&ndash;<%= range_end %> audit_logs of <%= @audit_log_count %> total
-              <% end %>
-            </div>
-            <nav class="pagination-widget">
-              <ol class="pagination pagination-sm">
-                <%= if paginate[:prev] do %>
-                  <li><a href="<%= Routes.team_path(Endpoint, :audit_log, @team, prev_page_params) %>" aria-label="Previous">&laquo;</a></li>
-                <% else %>
-                  <li class="disabled"><span>&laquo;</span></li>
-                <% end %>
-                <%= for counter <- paginate[:page_links] do %>
-                  <%= if counter == @page do %>
-                    <li class="active">
-                      <span><%= counter %></span>
-                    </li>
-                  <% else %>
-                    <li>
-                      <a href="<%= Routes.team_path(Endpoint, :audit_log, @team, params(page: counter)) %>">
-                        <%= counter %>
-                      </a>
-                    </li>
-                  <% end %>
-                <% end %>
-                <%= if paginate[:next] do %>
-                  <li><a href="<%= Routes.team_path(Endpoint, :audit_log, @team, next_page_params) %>" aria-label="Next" >&raquo;</a></li>
-                <% else %>
-                  <li class="disabled"><span>&raquo;</span></li>
-                <% end %>
-              </ul>
-            </nav>
-          </div>
-        <% end %>
-      </div>
-    </div>
-  </div>
+<div>
+  <h4 class="title is-4">Audit log</h4>
 </div>
+    <div class="section">
+      <%= if @audit_log_count == 0 do %>
+        <div>
+          <h4>No Results Found</h4>
+        </div>
+      <% else %>
+        <%
+          shown_audit_logs = length(@audit_log)
+          paginate = paginate(@page, @audit_log_count, items_per_page: @per_page, page_links: 5)
+        
+          range_start = (@page - 1) * @per_page + 1
+          range_end = range_start + shown_audit_logs - 1
+
+          prev_page_params = params(page: @page-1)
+          next_page_params = params(page: @page+1)
+        %>
+        <div>
+          <ol>
+            <%= for event <- @audit_log do %>
+              <li>
+                <div>
+                  <kbd>When:</kbd> <%= DateTime.to_iso8601(DateTime.truncate(event.inserted_at, :second)) %>
+                </div>
+                <div>
+                  <kbd>Where:</kbd> <%= event.user_agent %>
+                </div>
+                <div>
+                  <kbd>IP:</kbd> <%= event.ip %>
+                </div>
+                <div>
+                  <%= if event.user do %>
+                    <kbd>Who:</kbd> <%= event.user.username %>
+                  <% end %>
+                </div>
+                <div>
+                  <kbd>What:</kbd> <%= event.action %>
+                </div>
+                <div>
+                  <kbd>Details:</kbd> <%= inspect extract_params(event.action, event.params) %>
+                </div>
+              </li>
+              <hr />
+            <% end %>
+          </ol>
+        </div>
+        <br />
+        <nav class="pagination" role="navigation" aria-label="pagination">
+          <%= if paginate[:prev] do %>
+            <a class="pagination-previous" href="<%= Routes.team_path(Endpoint, :audit_log, @team, prev_page_params) %>">Previous</a>
+          <% else %>
+            <a class="pagination-previous" disabled>Previous</a>
+          <% end %>
+          <%= if paginate[:next] do %>
+            <a class="pagination-next" href="<%= Routes.team_path(Endpoint, :audit_log, @team, next_page_params) %>">Next</a>
+          <% else %>
+            <a class="pagination-next" disabled>Next</a>
+          <% end %>
+          <ul class="pagination-list">
+            <%= for counter <- paginate[:page_links] do %>
+              <%= if counter == @page do %>
+                <li>
+                  <a class="pagination-link is-current" aria-label="Page <%=counter%>" aria-current="page"><%=counter%></a>
+                </li>
+              <% else %>
+                <li>
+                  <a class="pagination-link" aria-label="Goto page <%=counter%>" href="<%= Routes.team_path(Endpoint, :audit_log, @team, params(page: counter)) %>"><%=counter%></a>
+                </li>
+              <% end %>
+              <%= if shown_audit_logs == 1 do %>
+                <li>
+                  <span class="pagination-ellipsis">Showing last log of <%= @audit_log_count %> total</span>
+                </li>
+              <% else %>
+                <li>
+                  <span class="pagination-ellipsis">Showing <%= range_start %>&ndash;<%= range_end %> logs of <%= @audit_log_count %> total</span>
+                </li>
+              <% end %>
+            <% end %>
+          </ul>
+        </nav>
+      <% end %>
+    </div>

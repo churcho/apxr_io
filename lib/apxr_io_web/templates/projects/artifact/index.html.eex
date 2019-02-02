@@ -6,7 +6,6 @@
         <h4>No Results Found</h4>
       </div>
     <% else %>
-
       <%
       shown_artifacts = length(@artifacts)
       paginate = paginate(@page, @artifact_count, items_per_page: @per_page, page_links: 5)
@@ -22,7 +21,6 @@
       prev_page_params = params(page: @page-1, sort: @sort)
       next_page_params = params(page: @page+1, sort: @sort)
       %>
-
       <nav class="breadcrumb" aria-label="breadcrumbs">
         <ul>
           <li><a href="<%= Routes.project_path(Endpoint, :index) %>"><%= @project.team.name %></a></li>
@@ -30,9 +28,7 @@
           <li class="is-active"><a href="#">artifacts</a></li>
         </ul>
       </nav>
-
       <hr />
-
       <nav>
         <div class="is-inline-flex">
           <h6 class="subtitle is-6 is-uppercase">Artifacts (<%= @artifact_count %>)</h6>
@@ -61,9 +57,7 @@
           </div>
         </div>
       </nav>
-
       <br />
-
       <div style="overflow-x:auto;">
         <table class="table is-bordered is-striped is-fullwidth">
           <thead>
@@ -81,9 +75,7 @@
           </tbody>
         </table>
       </div>
-
-      <br />      
-
+      <br />
       <nav class="pagination" role="navigation" aria-label="pagination">
         <%= if paginate[:prev] do %>
           <a class="pagination-previous" href="<%= Routes.artifact_path(Endpoint, :index, @artifact.project, prev_page_params) %>">Previous</a>

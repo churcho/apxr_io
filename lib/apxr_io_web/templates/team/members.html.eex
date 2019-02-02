@@ -67,7 +67,7 @@
         </span>
       </p>
       <div class="control is-expanded">
-        <%= text_input f, :username, class: "input", placeholder: "Username or email address", required: true %>
+        <%= text_input f, :username, class: "input is-fullwidth", placeholder: "Username or email address", required: true %>
         <%= error_tag f, :username %>
       </div>
       <div class="control">

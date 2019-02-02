@@ -1,11 +1,11 @@
-<div class="row">
-  <div class="col-sm-3">
-    <%= render TeamView, "_sidebar.html", assigns %>
-  </div>
+<div>
+  <h4 class="title is-4 is-spaced">Billing</h4>
+</div>
+<br />
 
+<div class="row">
   <div class="col-sm-9">
     <div class="panel panel-default">
-      <div class="panel-heading">Billing</div>
       <%= if @billing_started? do %>
         <div class="panel-body">
           <%= if @subscription do %>

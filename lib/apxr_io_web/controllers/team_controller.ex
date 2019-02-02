@@ -225,22 +225,27 @@ defmodule ApxrIoWeb.TeamController do
   end
 
   defp render_audit_log(conn, team, params) do
+    user = conn.assigns.current_user
+    teams = Teams.all_by_user(user)
     page_param = ApxrIo.Utils.safe_int(params["page"]) || 1
     log_count = ApxrIo.Accounts.AuditLogs.count(team)
     page = ApxrIo.Utils.safe_page(page_param, log_count, @logs_per_page)
     audit_log = ApxrIo.Accounts.AuditLogs.all_by_user_or_team(team, page, @logs_per_page)
 
-    assigns = [
+    render(
+      conn,
+      "layout.html",
+      view: "audit_log.html",
+      view_name: :audit_log,
       title: "Team",
       container: "container teams",
       per_page: @logs_per_page,
       audit_log_count: log_count,
       page: page,
       team: team,
-      audit_log: audit_log
-    ]
-
-    render(conn, "audit_log.html", assigns)
+      audit_log: audit_log,
+      teams: teams
+    )
   end
 
   defp render_new(conn, opts \\ []) do

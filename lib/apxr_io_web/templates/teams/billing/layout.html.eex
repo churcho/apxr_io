@@ -3,6 +3,6 @@
   <%= render ApxrIoWeb.TeamView, "_team_menu.html", assigns %>
 
   <div class="column is-9-tablet is-8-desktop">
-    <%= render ApxrIoWeb.TeamView, @view, assigns %>
+    <%= render ApxrIoWeb.Teams.BillingView, @view, assigns %>
   </div>
 </div>

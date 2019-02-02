@@ -17,8 +17,8 @@ defmodule ApxrIoWeb.Teams.KeyController do
       case Keys.create(team, key_params, audit: audit_data(conn)) do
         {:ok, %{key: key}} ->
           flash =
-            "The key #{key.name} was successfully generated, " <>
-              "copy the secret \"#{key.user_secret}\", you won't be able to see it again."
+            "Success! " <>
+              "Copy the secret \"#{key.user_secret}\". You won't be able to see it again."
 
           conn
           |> put_flash(:info, flash)
@@ -62,19 +62,24 @@ defmodule ApxrIoWeb.Teams.KeyController do
   end
 
   defp render_index(conn, team, opts \\ []) do
+    user = conn.assigns.current_user
+    teams = Teams.all_by_user(user)
     keys = Keys.all(team)
 
-    assigns = [
+    render(
+      conn,
+      "layout.html",
+      view: "index.html",
+      view_name: :index,
       title: "Team keys",
       container: "container page teams",
       team: team,
       keys: keys,
       params: opts[:params],
       errors: opts[:errors],
-      key_changeset: changeset()
-    ]
-
-    render(conn, "index.html", assigns)
+      key_changeset: changeset(),
+      teams: teams
+    )
   end
 
   defp changeset() do
