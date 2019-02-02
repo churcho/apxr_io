@@ -16,7 +16,7 @@
       <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <nav class="navbar is-spaced is-white" role="navigation" aria-label="main navigation">
+    <nav class="navbar is-spaced is-white has-shadow" role="navigation" aria-label="main navigation">
       <div class="container">
         <div class="navbar-brand">
           <a class="navbar-item has-background-black  is-radiusless" href="/">

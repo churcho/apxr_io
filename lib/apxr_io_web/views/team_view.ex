@@ -1,5 +1,6 @@
 defmodule ApxrIoWeb.TeamView do
   use ApxrIoWeb, :view
+  alias ApxrIoWeb.TeamView
 
   defp team_roles_selector() do
     Enum.map(team_roles(), fn {name, id, _title} ->
@@ -32,11 +33,20 @@ defmodule ApxrIoWeb.TeamView do
     ]
   end
 
-  defp selected_setting(conn, id) when is_atom(id) do
-    if Enum.take(conn.path_info, -1) == [Atom.to_string(id)] do
-      "selected"
-    end
+  def selected_setting(conn, view) do
+    # if conn.assigns.view_name == view do
+    #   "is-active"
+    # else
+    #   ""
+    # end
+    ""
   end
+
+  # defp selected_setting(conn, id) when is_atom(id) do
+  #   if Enum.take(conn.path_info, -1) == [Atom.to_string(id)] do
+  #     "selected"
+  #   end
+  # end
 
   def extract_params("key.generate", params) do
     Map.to_list(%{name: params["key"]["name"]})

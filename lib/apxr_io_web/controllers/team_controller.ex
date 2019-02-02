@@ -188,7 +188,9 @@ defmodule ApxrIoWeb.TeamController do
 
     render(
       conn,
-      "index.html",
+      "layout.html",
+      view: "index.html",
+      view_name: :index,
       title: "Teams",
       container: "container teams",
       create_changeset: create_changeset,

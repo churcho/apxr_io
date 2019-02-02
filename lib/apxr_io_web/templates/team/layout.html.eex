@@ -5,8 +5,8 @@
         APXR
       </p>
       <ul class="menu-list">
-        <li class="sidebar-item"><a href="<%= Routes.docs_path(Endpoint, :faq) %>" class="<%= selected_docs(@conn, :faq) %>">FAQ</a></li>
-        <li class="sidebar-item"><a href="<%= Routes.docs_path(Endpoint, :public_keys) %>" class="<%= selected_docs(@conn, :public_keys) %>">Public Keys</a></li>
+        <li class="sidebar-item"><a href="<%= Routes.docs_path(Endpoint, :faq) %>" class="<%= selected_setting(@conn, :faq) %>">FAQ</a></li>
+        <li class="sidebar-item"><a href="<%= Routes.docs_path(Endpoint, :public_keys) %>" class="<%= selected_setting(@conn, :public_keys) %>">Public Keys</a></li>
       </ul>
       <p class="menu-label">
         Administration
@@ -19,6 +19,6 @@
     </aside>
   </div>
   <div class="column is-9-tablet is-8-desktop">
-    <%= render DocsView, @view, assigns %>
+    <%= render TeamView, @view, assigns %>
   </div>
 </div>

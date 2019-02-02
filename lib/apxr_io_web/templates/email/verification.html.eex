@@ -11,6 +11,6 @@ verify_url = Routes.email_verification_url(Endpoint, :verify, username: @usernam
 </p>
 
 <p>
-  --<br>
-  approximatereality.com
+  ---<br>
+  approximatereality
 </p>

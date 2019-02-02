@@ -78,42 +78,42 @@ pm_parameters: <%= Poison.encode_to_iodata!(@experiment.meta.pm_parameters, pret
         <% end %>
         <div class="columns">
           <div class="column is-half">
-            <div id="avg_fitness_vs_evaluations" style="height: 400px; margin: auto; min-width: 310px; max-width: 600px"></div>
+            <div id="avg_fitness_vs_evaluations"></div>
           </div>
           <div class="column is-half">
-            <div id="avg_neurons_vs_evaluations" style="height: 400px; margin: auto; min-width: 310px; max-width: 600px"></div>
-          </div>
-        </div>
-        <div class="columns">
-          <div class="column is-half">
-            <div id="avg_diversity_vs_evaluations" style="height: 400px; margin: auto; min-width: 310px; max-width: 600px"></div>
-          </div>
-          <div class="column is-half">
-            <div id="max_fitness_vs_evaluations" style="height: 400px; margin: auto; min-width: 310px; max-width: 600px"></div>
+            <div id="avg_neurons_vs_evaluations"></div>
           </div>
         </div>
         <div class="columns">
           <div class="column is-half">
-            <div id="avg_max_fitness_vs_evaluations" style="height: 400px; margin: auto; min-width: 310px; max-width: 600px"></div>
+            <div id="avg_diversity_vs_evaluations"></div>
           </div>
           <div class="column is-half">
-            <div id="avg_min_fitness_vs_evaluations" style="height: 400px; margin: auto; min-width: 310px; max-width: 600px"></div>
+            <div id="max_fitness_vs_evaluations"></div>
           </div>
         </div>
         <div class="columns">
           <div class="column is-half">
-            <div id="specie_pop_turnover_vs_evaluations" style="height: 400px; margin: auto; min-width: 310px; max-width: 600px"></div>
+            <div id="avg_max_fitness_vs_evaluations"></div>
           </div>
           <div class="column is-half">
-            <div id="validation_avg_fitness_vs_evaluations" style="height: 400px; margin: auto; min-width: 310px; max-width: 600px"></div>
+            <div id="avg_min_fitness_vs_evaluations"></div>
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column is-half">
+            <div id="specie_pop_turnover_vs_evaluations"></div>
+          </div>
+          <div class="column is-half">
+            <div id="validation_avg_fitness_vs_evaluations"></div>
           </div>
         </div>    
         <div class="columns">
           <div class="column is-half">
-            <div id="validation_max_fitness_vs_evaluations" style="height: 400px; margin: auto; min-width: 310px; max-width: 600px"></div>
+            <div id="validation_max_fitness_vs_evaluations"></div>
           </div>
           <div class="column is-half">
-            <div id="validation_min_fitness_vs_evaluations" style="height: 400px; margin: auto; min-width: 310px; max-width: 600px"></div>
+            <div id="validation_min_fitness_vs_evaluations"></div>
           </div>
         </div>
       </div>
