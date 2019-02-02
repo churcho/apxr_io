@@ -17,8 +17,8 @@
     <div>
       <div class="tabs is-centered is-medium">
         <ul>
-          <li class="<%= if !@params["company"] do %>active<% end %>"><a class="tab heading is-size-6" data-tab="person">Person</a></li>
-          <li class="<%= if @params["company"] do %>active<% end %>"><a class="tab heading is-size-6" data-tab="company">Enterprise</a></li>
+          <li class="<%= if !@params["company"] do %>is-active<% end %>"><a class="tab heading is-size-6" data-tab="person">Person</a></li>
+          <li class="<%= if @params["company"] do %>is-active<% end %>"><a class="tab heading is-size-6" data-tab="company">Company</a></li>
         </ul>
       </div>
     </div>
@@ -48,7 +48,7 @@
           </div>
         <% end %>
       </div>
-      <div id="company" class="tab-content <%= if @params["company"] do %>active<% end %>">
+      <div id="company" class="tab-content <%= if @params["company"] do %>is-active-tab<% end %>">
         <%= form_for @changeset, Routes.team_path(Endpoint, :create), fn f -> %>
           <div class="field">
             <label class="label">Team Name</label>

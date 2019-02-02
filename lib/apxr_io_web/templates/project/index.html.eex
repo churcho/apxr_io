@@ -20,7 +20,6 @@
       prev_page_params = params(page: @page-1, sort: @sort)
       next_page_params = params(page: @page+1, sort: @sort)
       %>
-    
       <nav>
         <div class="is-inline-flex">
           <h6 class="subtitle is-6 is-uppercase">Projects (<%= @project_count %>)</h6>
@@ -46,17 +45,26 @@
           </div>
         </div>
       </nav>
-
       <hr />
-
-      <div>
-        <ul>
-          <%= for project <- @projects do %>
-            <%= render "_project.html", project: project, view: @sort %>
-          <% end %>
-        </ul>
+      <div style="overflow-x:auto;">
+        <table class="table is-striped is-fullwidth">
+          <thead>
+            <tr>
+              <th>Team</th>
+              <th>Project</th>
+              <th>Latest Version</th>
+              <th>Last Updated</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <%= for project <- @projects do %>
+              <%= render "_project.html", project: project, view: @sort %>
+            <% end %>
+          </tbody>
+        </table>
       </div>
-
+      <br />  
       <nav class="pagination" role="navigation" aria-label="pagination">
         <%= if paginate[:prev] do %>
           <a class="pagination-previous" href="<%= Routes.project_path(Endpoint, :index, prev_page_params) %>">Previous</a>

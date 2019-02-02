@@ -56,7 +56,7 @@
   <%= form_for @add_member_changeset, Routes.team_path(Endpoint, :update, @team), [method: :post], fn f -> %>
     <div class="field has-addons">
       <input type="hidden" name="action" value="add_member">
-      <p class="control">
+      <div class="control">
         <span class="select">
           <select name="team_user[role]">
             <%= for {name, id} <- team_roles_selector() do %>
@@ -65,7 +65,7 @@
           </select>
           <%= error_tag f, :role %>
         </span>
-      </p>
+      </div>
       <div class="control is-expanded">
         <%= text_input f, :username, class: "input is-fullwidth", placeholder: "Username or email address", required: true %>
         <%= error_tag f, :username %>
