@@ -1,12 +1,12 @@
 defmodule ApxrIo.CMS.Blog do
   use ApxrIoWeb, :context
-  
+
   def get_posts_list() do
-    Repo.all(from p in Post)
+    Repo.all(from(p in Post))
   end
 
   def get_published_posts() do
-    Repo.all(from p in Post, where: p.published == true)
+    Repo.all(from(p in Post, where: p.published == true))
   end
 
   def get(slug) do
@@ -15,9 +15,11 @@ defmodule ApxrIo.CMS.Blog do
 
   def create(post) do
     changeset = Post.create_changeset(%Post{}, post)
+
     case changeset.valid? do
       true ->
         Repo.insert(changeset)
+
       false ->
         {:error, changeset}
     end
@@ -25,9 +27,11 @@ defmodule ApxrIo.CMS.Blog do
 
   def update(post, params) do
     changeset = Post.common_changeset(post, params)
+
     case changeset.valid? do
       true ->
         Repo.update(changeset)
+
       false ->
         {:error, changeset}
     end

@@ -44,10 +44,10 @@ defmodule ApxrIoWeb.TeamController do
         |> put_status(400)
         |> put_flash(:error, "Oops, something went wrong! Please check the errors below.")
         |> render_new(
-            changeset: changeset,
-            params: params,
-            errors: reason["errors"]
-          )
+          changeset: changeset,
+          params: params,
+          errors: reason["errors"]
+        )
     end
   end
 

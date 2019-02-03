@@ -3,14 +3,12 @@ defmodule ApxrIo.RepoBase.Migrations.AddPostsTable do
 
   def change() do
     create table(:posts) do
-      add :slug, :string, unique: true
-      add :title, :string
-      add :author, :string
-      add :body, :text
-      add :published, :boolean, default: false, null: false
+      add(:slug, :string, unique: true)
+      add(:title, :string)
+      add(:author, :string)
+      add(:body, :text)
+      add(:published, :boolean, default: false, null: false)
       timestamps()
     end
   end
 end
-
-

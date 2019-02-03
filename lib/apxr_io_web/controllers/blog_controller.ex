@@ -3,6 +3,7 @@ defmodule ApxrIoWeb.BlogController do
 
   def index(conn, _) do
     posts = Blog.get_published_posts()
+
     render(
       conn,
       "index.html",
@@ -31,9 +32,3 @@ defmodule ApxrIoWeb.BlogController do
     |> String.capitalize()
   end
 end
-
-
-
-  
-
-  

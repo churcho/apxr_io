@@ -11,9 +11,7 @@ ApxrIo.Repo.transaction(fn ->
   jose_email = "jose@example.com"
   joe_email = "joe@example.com"
 
-  insert(
-    :post
-  )
+  insert(:post)
 
   insert(
     :post,
