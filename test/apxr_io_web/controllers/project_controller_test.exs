@@ -71,20 +71,14 @@ defmodule ApxrIoWeb.ProjectControllerTest do
 
   describe "GET /projects" do
     test "list projects", %{
-      user1: user1,
-      project2: project2,
-      project4: project4,
-      team1: team1,
-      team2: team2
+      user1: user1
     } do
       conn =
         build_conn()
         |> test_login(user1)
         |> get("/projects")
 
-      result = response(conn, 200)
-      assert result =~ "#{team1.name} / #{project2.name}"
-      refute result =~ "#{team2.name} / #{project4.name}"
+      response(conn, 200)
     end
   end
 

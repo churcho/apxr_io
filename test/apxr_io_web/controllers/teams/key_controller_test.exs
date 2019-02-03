@@ -30,7 +30,7 @@ defmodule ApxrIoWeb.Teams.KeyControllerTest do
         |> post("/teams/#{c.team.name}/keys", %{key: %{name: "computer"}})
 
       assert redirected_to(conn) == "/teams/#{c.team.name}/keys"
-      assert get_flash(conn, :info) =~ "The key computer was successfully generated"
+      assert get_flash(conn, :info) =~ "Success! Copy the secret"
     end
   end
 
@@ -47,7 +47,7 @@ defmodule ApxrIoWeb.Teams.KeyControllerTest do
         |> delete("/teams/#{c.team.name}/keys/computer", %{name: "computer"})
 
       assert redirected_to(conn) == "/teams/#{c.team.name}/keys"
-      assert get_flash(conn, :info) =~ "The key computer was revoked successfully"
+      assert get_flash(conn, :info) =~ "The key computer was revoked successfully."
     end
 
     test "revoking an already revoked key throws an error", c do
