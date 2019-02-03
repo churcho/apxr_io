@@ -1,7 +1,5 @@
 <div class="columns" style="margin-top: -3rem;">
-  
   <%= render ApxrIoWeb.TeamView, "_team_menu.html", assigns %>
-
   <div class="column is-9-tablet is-8-desktop">
     <%= render ApxrIoWeb.Teams.KeyView, @view, assigns %>
   </div>

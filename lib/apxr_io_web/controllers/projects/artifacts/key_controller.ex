@@ -64,7 +64,7 @@ defmodule ApxrIoWeb.Projects.Artifacts.KeyController do
     keys = Keys.all(artifact)
 
     assigns = [
-      title: "Artifact keys",
+      title: "Keys",
       container: "container page artifacts",
       artifact: artifact,
       keys: keys,

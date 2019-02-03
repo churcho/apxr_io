@@ -24,7 +24,6 @@ build_tool = @current_release && @current_release.meta.build_tool
   </div>
   <div class="column is-1"></div>
 </div>
-
 <div class="columns">
   <div class="column is-1"></div>
   <div class="column is-10">
@@ -84,7 +83,6 @@ build_tool = @current_release && @current_release.meta.build_tool
   </div>
   <div class="column is-1"></div>
 </div>
-
 <div class="columns">
   <div class="column is-1"></div>
   <div class="column is-10">
@@ -117,7 +115,6 @@ build_tool = @current_release && @current_release.meta.build_tool
   </div>
   <div class="column is-1"></div>
 </div>
-
 <div class="columns is-mobile">
   <div class="column is-1"></div>
   <div class="column is-10">

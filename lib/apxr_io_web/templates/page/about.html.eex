@@ -2,7 +2,6 @@
   <div class="column is-half is-offset-one-quarter has-text-centered">
     <div class="about">
       <h2 class="title is-2">APXR</h2>
-    
       <p>
         ApxrIo is a project manager for the BEAM ecosystem, any language that compiles to run on the BEAM VM, such as <a href="https://elixir-lang.org/">Elixir</a> and <a href="http://www.erlang.org/">Erlang</a>, can be used to build ApxrIo projects.
         ApxrIo consists of the <a href="https://github.com/apxr_io/specifications/blob/master/http_api.md">HTTP API</a>, <a href="/">this website</a>, the repository serving projects and indexes, <a href="https://hexdocs.pm">hexdocs</a>, the <a href="https://github.com/apxr_io/apxr_io">Mix build-tool integration</a>, and <a href="https://github.com/apxr_io">other services</a>.

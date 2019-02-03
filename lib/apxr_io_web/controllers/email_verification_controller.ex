@@ -18,7 +18,7 @@ defmodule ApxrIoWeb.EmailVerificationController do
     render(
       conn,
       "show.html",
-      title: "Verify email",
+      title: "Verify",
       container: "container verification"
     )
   end

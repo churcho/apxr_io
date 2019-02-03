@@ -19,7 +19,6 @@
       prev_page_params = params(page: @page-1, sort: @sort)
       next_page_params = params(page: @page+1, sort: @sort)
       %>
-
       <nav class="breadcrumb" aria-label="breadcrumbs">
         <ul>
           <li><a href="<%= Routes.project_path(Endpoint, :index) %>"><%= @project.team.name %></a></li>
@@ -27,9 +26,7 @@
           <li class="is-active"><a href="#">experiments</a></li>
         </ul>
       </nav>
-
       <hr />
-
       <nav>
         <div class="is-inline-flex">
           <h6 class="subtitle is-6 is-uppercase">Experiments (<%= @experiment_count %>)</h6>
@@ -52,9 +49,7 @@
           </div>
         </div>
       </nav>
-
       <br />
-
       <div style="overflow-x:auto;">
         <table class="table is-bordered is-striped is-fullwidth">
           <thead>
@@ -74,9 +69,7 @@
           </tbody>
         </table>
       </div>
-
-      <br />  
-
+      <br />
       <nav class="pagination" role="navigation" aria-label="pagination">
         <%= if paginate[:prev] do %>
           <a class="pagination-previous" href="<%= Routes.experiment_path(Endpoint, :index, @experiment.project, prev_page_params) %>">Previous</a>

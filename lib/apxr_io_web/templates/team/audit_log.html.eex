@@ -18,7 +18,7 @@
           next_page_params = params(page: @page+1)
         %>
         <div>
-          <ol>
+          <ul>
             <%= for event <- @audit_log do %>
               <li>
                 <div>
@@ -44,7 +44,7 @@
               </li>
               <hr />
             <% end %>
-          </ol>
+          </ul>
         </div>
         <br />
         <nav class="pagination" role="navigation" aria-label="pagination">

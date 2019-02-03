@@ -2,7 +2,6 @@
   <h2 class="title is-2">
     Active keys
   </h2>
-
   <h4 class="title is-4">
     Why is my project documentation returning "page not found"?
   </h4>
@@ -37,11 +36,9 @@ J1i2xWFndWa6nfFnRxZmCStCOZWYYPlaxr+FZceFbpMwzTNs4g3d4tLNUcbKAIH4
 0wIDAQAB
 -----END PUBLIC KEY-----
   </div>
-
   <h2 class="title is-2">
     Revoked keys
   </h2>
-
   <p>
 No public keys have been revoked yet.
   </p>

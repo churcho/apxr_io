@@ -13,13 +13,11 @@
       </ul>
     </div>
   </div>
-
   <div class="col-sm-9 keys">
     <div class="panel panel-default">
       <div class="panel-heading">Keys</div>
       <div class="panel-body">
         <p>Keys are used to authenticate and authorize clients to interact with the Artifact API and repository. </p>
-    
         <%= if @keys != [] do %>
           <br>
           <table class="table table-condensed table-striped">
@@ -64,7 +62,6 @@
           </table>
         <% end %>
       </div>
-    
       <div class="panel-body-part">
         <%= form_for @key_changeset, Routes.artifacts_key_path(Endpoint, :create, @artifact.project, @artifact), [method: :post], fn f -> %>
           <%= label f, :name, "Key name" %>

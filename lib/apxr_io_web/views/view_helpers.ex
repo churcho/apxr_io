@@ -83,6 +83,21 @@ defmodule ApxrIoWeb.ViewHelpers do
     end)
   end
 
+  def user_settings() do
+    [
+      profile: {"Profile", Routes.profile_path(Endpoint, :index)},
+      email: {"Emails", Routes.email_path(Endpoint, :index)},
+      keys: {"Keys", Routes.settings_key_path(Endpoint, :index)},
+      audit_log: {"Audit log", Routes.profile_path(Endpoint, :audit_log)}
+    ]
+  end
+
+  def selected_user_setting(conn, id) do
+    if Enum.take(conn.path_info, -2) == ["settings", Atom.to_string(id)] do
+      "is-active"
+    end
+  end
+
   def team_menu_selected(conn, view) do
     if conn.assigns.view_name == view do
       "is-active"

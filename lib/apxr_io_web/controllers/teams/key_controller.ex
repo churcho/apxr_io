@@ -71,7 +71,7 @@ defmodule ApxrIoWeb.Teams.KeyController do
       "layout.html",
       view: "index.html",
       view_name: :index,
-      title: "Team keys",
+      title: "Keys",
       container: "container page teams",
       team: team,
       keys: keys,

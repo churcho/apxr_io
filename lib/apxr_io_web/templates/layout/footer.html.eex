@@ -1,5 +1,4 @@
     </div>
-
     <footer class="footer has-text-centered">
       <div class="container">
         <div class="columns">
@@ -10,7 +9,6 @@
               <li><a class="has-text-grey-light" href="https://twitter.com/ApproxReality">Twitter</a></li>
             </ul>
           </div>
-
           <div class="column">
             <h6 class="subtitle is-6 has-text-black-ter">Help</h6>
             <ul>
@@ -18,7 +16,6 @@
               <li><a class="has-text-grey-light" href="https://twitter.com/ApproxReality">Support</a></li>
             </ul>
           </div>
-
           <div class="column">
             <h6 class="subtitle is-6 has-text-black-ter">Policies and Terms</h6>
             <ul>
@@ -29,10 +26,8 @@
         </div>
       </div>
     </footer>
-
     <script>window.wsEndpoint = "<%= assigns[:ws_endpoint] %>";</script>
     <script>window.wsToken = "<%= assigns[:ws_token] %>";</script>
     <script src="<%= Routes.static_path(Endpoint, "/js/app.js") %>"></script>
-
   </body>
 </html>

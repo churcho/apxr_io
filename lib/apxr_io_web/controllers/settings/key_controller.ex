@@ -52,12 +52,15 @@ defmodule ApxrIoWeb.Settings.KeyController do
 
     render(
       conn,
-      "index.html",
-      title: "Settings - User keys",
+      "layout.html",
+      view: "index.html",
+      view_name: :index,
+      title: "Keys",
       container: "container page settings",
       keys: keys,
       teams: teams,
-      key_changeset: changeset
+      key_changeset: changeset,
+      user: user
     )
   end
 

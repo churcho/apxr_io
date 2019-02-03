@@ -5,9 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="<%= description(assigns) %>">
-
     <title><%= title(assigns) %></title>
-
     <link rel="stylesheet" href="<%= Routes.static_path(Endpoint, "/css/app.css") %>">
     <link rel="shortcut icon" href="<%= Routes.static_path(Endpoint, "/favicon.png") %>">
   </head>
@@ -15,7 +13,6 @@
     <!--[if lt IE 10]>
       <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-
     <nav class="navbar has-shadow is-spaced is-white" role="navigation" aria-label="main navigation">
       <div class="container">
         <div class="navbar-brand">
@@ -26,7 +23,6 @@
             <%= Routes.static_path(Endpoint, "/images/apxr_io@3.png") %> 3x"
             alt="approximatereality"
           </a>
-
           <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
@@ -35,5 +31,4 @@
         </div>
       </div>
     </nav>
-
     <div class="<%= section_class(assigns) %>">

@@ -63,7 +63,7 @@ defmodule ApxrIoWeb.LoginController do
     render(
       conn,
       "new.html",
-      title: "Log in",
+      title: "Login",
       container: "container login"
     )
   end

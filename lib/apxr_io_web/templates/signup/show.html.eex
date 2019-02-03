@@ -11,7 +11,6 @@
           <%= error_tag f, :username %>
         </div>
       </div>
-    
       <%= inputs_for f, :emails, [append: [%Email{}]], fn f -> %>
         <div class="field">
           <div class="control">
@@ -20,7 +19,6 @@
             <%= error_tag f, :email %>
           </div>
         </div>
-    
         <div class="field">
           <div class="control">
             <%= label f, :email_confirmation, class: "label" %>
@@ -29,7 +27,6 @@
           </div>
         </div>
       <% end %>
-    
       <div class="field">
         <div class="control">
           <label class="checkbox">
@@ -38,7 +35,6 @@
         </label>
         </div>
       </div>
-    
       <div class="field">
         <div class="control is-expanded">
           <button type="submit" class="button is-fullwidth is-black">SIGN UP</button>

@@ -23,7 +23,7 @@
     <ul class="menu-list">
       <li>
         <a class="<%= team_menu_selected(@conn, :new) %>" href="<%= Routes.team_path(Endpoint, :new) %>">
-          New Team
+          New team
         </a>
       </li>
     </ul>

@@ -12,5 +12,5 @@ login_url = Routes.login_url(Endpoint, :login, @auth_token)
 
 <p>
   ---<br>
-  approximatereality
+  ApproximateReality
 </p>

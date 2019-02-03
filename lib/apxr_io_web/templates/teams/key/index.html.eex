@@ -55,7 +55,7 @@
 <% end %>
 <br />
 <div>
-  <h4 class="title is-4">Generate Key</h4>
+  <h4 class="title is-4">Generate key</h4>
 </div>
 <br />
 <div>
@@ -71,14 +71,14 @@
       <div class="field">
         <label class="label">Permission Domain</label>
         <div class="control is-expanded">
-          <%= select(f, :domain, ["Team": "repository"], class: "select is-fullwidth") %>
+          <%= select(f, :domain, ["Team": "repository"], class: "input is-fullwidth") %>
           <%= error_tag f, :domain %>
         </div>
       </div>
       <div class="field">
         <label class="label">Domain Resource</label>
         <div class="control is-expanded">
-          <%= select(f, :resource, ["Team": team_resources(assigns)], class: "select is-fullwidth") %>
+          <%= select(f, :resource, ["Team": team_resources(assigns)], class: "input is-fullwidth") %>
           <%= error_tag f, :resource %>
         </div>
       </div>

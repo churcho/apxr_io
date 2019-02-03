@@ -5,7 +5,6 @@
   <h6 class="subtitle is-6">Here you control your team members and their permissions. Hover over the assign options to learn more.</h6>
 </div>
 <br />
-
 <div>
   <div style="overflow-x:auto;">
     <table class="table is-fullwidth is-narrow is-hoverable">
