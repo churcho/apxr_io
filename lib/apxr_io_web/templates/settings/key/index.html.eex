@@ -71,14 +71,14 @@
       <div class="field">
         <label class="label">Permission Domain</label>
         <div class="control is-expanded">
-          <%= select(f, :domain, ["Team": "repository"], class: "input is-fullwidth") %>
+          <%= select(f, :domain, [API: "api", "Team": "repository"], class: "input is-fullwidth") %>
           <%= error_tag f, :domain %>
         </div>
       </div>
       <div class="field">
         <label class="label">Domain Resource</label>
         <div class="control is-expanded">
-          <%= select(f, :resource, ["Team": team_resources(assigns)], class: "input is-fullwidth") %>
+          <%= select(f, :resource, [API: ["Read": "read", "Write": "write"], "Team": team_resources(assigns)], class: "input is-fullwidth") %>
           <%= error_tag f, :resource %>
         </div>
       </div>
