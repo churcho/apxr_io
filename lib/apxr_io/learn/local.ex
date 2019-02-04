@@ -1,23 +1,26 @@
 defmodule ApxrIo.Learn.Local do
-  alias ApxrIo.Accounts.{AuditLog, Teams}
-  alias ApxrIo.Learn.Experiments
+  alias ApxrIo.Accounts.AuditLog
+  alias ApxrIo.Repository.Assets
   alias ApxrIoWeb.ErlangFormat
   alias Ecto.Multi
 
   @behaviour ApxrIo.Learn
 
   def start(project, release, experiment, audit: audit_data) do
-    identifiers = {project, release.version, experiment.meta.exp_parameters["identifier"]}
+    tarball = tarball(release)
+    config = config(experiment, release)
+    identifiers = {project, release, experiment}
 
-    with {:ok, 204, _h, _b} <- post("/actions/polis/prep", tarball(identifiers), identifiers),
-         {:ok, 204, _h, _b} <-
-           post("/actions/polis/setup", config(identifiers, release), identifiers),
+    with {:ok, 204, _h, _b} <- post("/actions/polis/prep", tarball, identifiers),
+         :ok <- :timer.sleep(100),
+         {:ok, 204, _h, _b} <- post("/actions/polis/setup", config, identifiers),
+         :ok <- :timer.sleep(100),
          {:ok, 204, _h, _b} <- post("/actions/experiment/start", <<>>, identifiers) do
       AuditLog.audit(Multi.new(), audit_data, "experiment.start", identifiers)
       {:ok, %{experiment: experiment}}
     else
-      {:ok, _error, _headers, body} ->
-        {:error, body}
+      {:ok, error, _headers, _body} ->
+        {:error, [{:error, "created but failed to start experiment: #{error}"}]}
     end
   end
 
@@ -70,8 +73,8 @@ defmodule ApxrIo.Learn.Local do
     :ok
   end
 
-  defp post(url, body, identifiers) do
-    url = Application.get_env(:apxr_io, :apxr_run_url) <> url
+  defp post(path, body, identifiers) do
+    url = Application.get_env(:apxr_io, :apxr_run_url) <> path
 
     headers = [
       {"token", token(identifiers)},
@@ -85,11 +88,15 @@ defmodule ApxrIo.Learn.Local do
     |> read_request()
   end
 
-  defp token({project, version, exp}) do
+  defp token({project, release, experiment}) do
     ApxrIo.Token.generate_and_sign!(%{
+      "team" => project.team.name,
       "project" => project.name,
-      "version" => version,
-      "experiment" => exp
+      "version" => release.version,
+      "exp_id" => experiment.id,
+      "identifier" => experiment.meta.exp_parameters["identifier"],
+      "iss" => "apxr_io",
+      "aud" => "apxr_run"
     })
   end
 
@@ -122,31 +129,25 @@ defmodule ApxrIo.Learn.Local do
     end)
   end
 
-  defp config({project, version, identifier}, release) do
-    experiment = Experiments.get(project, version, identifier)
-
+  defp config(experiment, release) do
     exp_parameters =
       experiment.meta.exp_parameters
       |> Map.merge(%{build_tool: release.meta.build_tool})
 
-    %{
-      exp_parameters: exp_parameters,
-      pm_parameters: experiment.meta.pm_parameters,
-      init_constraints: experiment.meta.init_constraints
+    {
+      :config,
+      %{
+        exp_parameters: exp_parameters,
+        pm_parameters: experiment.meta.pm_parameters,
+        init_constraints: experiment.meta.init_constraints
+      }
     }
   end
 
-  defp tarball({project, version, _identifier}) do
-    ApxrIo.Store.get(nil, :s3_bucket, tarball_store_key(project, version), [])
-  end
-
-  defp tarball_store_key(project, version) do
-    "#{repository_store_key(project)}tarballs/#{project.name}-#{version}.tar"
-  end
-
-  defp repository_store_key(project) do
-    team = Teams.get_by_id(project.team_id)
-
-    "repos/#{team.name}/"
+  defp tarball(release) do
+    {
+      :tarball,
+      Assets.get_release(release)
+    }
   end
 end

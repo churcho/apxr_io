@@ -18,10 +18,16 @@ defmodule ApxrIoWeb.Projects.ExperimentView do
               text: 'Average Fitness vs Evaluations'
             },
             subtitle: {
-              text: 'Morphology: #{inspect(data.avg_fitness_vs_evaluations["morphology"])}'
+              text: 'Morphology: #{
+      inspect(Enum.find_value(data, fn g -> g["avg_fitness_vs_evaluations"] end)["morphology"])
+    }'
             },
             xAxis: [{
-              categories: #{inspect(data.avg_fitness_vs_evaluations["evaluation_index"])},
+              categories: #{
+      inspect(
+        Enum.find_value(data, fn g -> g["avg_fitness_vs_evaluations"] end)["evaluation_index"]
+      )
+    },
               title: {
                 text: 'Evaluations',
                 style: {
@@ -51,14 +57,18 @@ defmodule ApxrIoWeb.Projects.ExperimentView do
             series: [{
               name: 'Average Fitness',
               type: 'spline',
-              data: #{inspect(data.avg_fitness_vs_evaluations["avg_fitness"])},
+              data: #{
+      inspect(Enum.find_value(data, fn g -> g["avg_fitness_vs_evaluations"] end)["avg_fitness"])
+    },
               tooltip: {
                 pointFormat: '<span style="font-weight: bold; color: {series.color}">Fitness</span>: <b>{point.y}</b> '
               }
             }, {
               name: 'Fitness STD',
               type: 'errorbar',
-              data: #{inspect(data.avg_fitness_vs_evaluations["fitness_std"])},
+              data: #{
+      inspect(Enum.find_value(data, fn g -> g["avg_fitness_vs_evaluations"] end)["fitness_std"])
+    },
               tooltip: {
                 pointFormat: '(range: {point.low}-{point.high})<br/>'
               }
@@ -73,10 +83,16 @@ defmodule ApxrIoWeb.Projects.ExperimentView do
               text: 'Average Neurons vs Evaluations'
             },
             subtitle: {
-              text: 'Morphology: #{inspect(data.avg_neurons_vs_evaluations["morphology"])}'
+              text: 'Morphology: #{
+      inspect(Enum.find_value(data, fn g -> g["avg_neurons_vs_evaluations"] end)["morphology"])
+    }'
             },
             xAxis: [{
-              categories: #{inspect(data.avg_neurons_vs_evaluations["evaluation_index"])},
+              categories: #{
+      inspect(
+        Enum.find_value(data, fn g -> g["avg_neurons_vs_evaluations"] end)["evaluation_index"]
+      )
+    },
               title: {
                 text: 'Evaluations',
                 style: {
@@ -106,14 +122,18 @@ defmodule ApxrIoWeb.Projects.ExperimentView do
             series: [{
               name: 'Average Neurons',
               type: 'spline',
-              data: #{inspect(data.avg_neurons_vs_evaluations["avg_neurons"])},
+              data: #{
+      inspect(Enum.find_value(data, fn g -> g["avg_neurons_vs_evaluations"] end)["avg_neurons"])
+    },
               tooltip: {
                 pointFormat: '<span style="font-weight: bold; color: {series.color}">Neurons</span>: <b>{point.y}</b> '
               }
             }, {
               name: 'Neurons STD',
               type: 'errorbar',
-              data: #{inspect(data.avg_neurons_vs_evaluations["neurons_std"])},
+              data: #{
+      inspect(Enum.find_value(data, fn g -> g["avg_neurons_vs_evaluations"] end)["neurons_std"])
+    },
               tooltip: {
                 pointFormat: '(range: {point.low}-{point.high})<br/>'
               }
@@ -128,10 +148,16 @@ defmodule ApxrIoWeb.Projects.ExperimentView do
               text: 'Average Diversity vs Evaluations'
             },
             subtitle: {
-              text: 'Morphology: #{inspect(data.avg_diversity_vs_evaluations["morphology"])}'
+              text: 'Morphology: #{
+      inspect(Enum.find_value(data, fn g -> g["avg_diversity_vs_evaluations"] end)["morphology"])
+    }'
             },
             xAxis: [{
-              categories: #{inspect(data.avg_diversity_vs_evaluations["evaluation_index"])},
+              categories: #{
+      inspect(
+        Enum.find_value(data, fn g -> g["avg_diversity_vs_evaluations"] end)["evaluation_index"]
+      )
+    },
               title: {
                 text: 'Evaluations',
                 style: {
@@ -161,14 +187,22 @@ defmodule ApxrIoWeb.Projects.ExperimentView do
             series: [{
               name: 'Average Diversity',
               type: 'spline',
-              data: #{inspect(data.avg_diversity_vs_evaluations["avg_diversity"])},
+              data: #{
+      inspect(
+        Enum.find_value(data, fn g -> g["avg_diversity_vs_evaluations"] end)["avg_diversity"]
+      )
+    },
               tooltip: {
                 pointFormat: '<span style="font-weight: bold; color: {series.color}">Diversity</span>: <b>{point.y}</b> '
               }
             }, {
               name: 'Diversity STD',
               type: 'errorbar',
-              data: #{inspect(data.avg_diversity_vs_evaluations["diversity_std"])},
+              data: #{
+      inspect(
+        Enum.find_value(data, fn g -> g["avg_diversity_vs_evaluations"] end)["diversity_std"]
+      )
+    },
               tooltip: {
                 pointFormat: '(range: {point.low}-{point.high})<br/>'
               }
@@ -183,14 +217,23 @@ defmodule ApxrIoWeb.Projects.ExperimentView do
               text: 'Max Fitness vs Evaluations'
             },
             subtitle: {
-              text: 'Morphology: #{inspect(data.max_fitness_vs_evaluations["morphology"])}'
+              text: 'Morphology: #{
+      inspect(Enum.find_value(data, fn g -> g["max_fitness_vs_evaluations"] end)["morphology"])
+    }'
             },
             xAxis: {
-              categories: #{inspect(data.max_fitness_vs_evaluations["evaluation_index"])}
+              categories: #{
+      inspect(
+        Enum.find_value(data, fn g -> g["max_fitness_vs_evaluations"] end)["evaluation_index"]
+      )
+    }
             },
             yAxis: {
               title: {
                 text: 'Fitness'
+              },
+              labels: {
+                format: '{value:.2f}'
               }
             },
             plotOptions: {
@@ -203,7 +246,9 @@ defmodule ApxrIoWeb.Projects.ExperimentView do
             },
             series: [{
               name: 'Max Fitness',
-              data: #{inspect(data.max_fitness_vs_evaluations["max_fitness"])}
+              data: #{
+      inspect(Enum.find_value(data, fn g -> g["max_fitness_vs_evaluations"] end)["max_fitness"])
+    }
             }]
           });
 
@@ -215,14 +260,25 @@ defmodule ApxrIoWeb.Projects.ExperimentView do
               text: 'Average Max Fitness vs Evaluations'
             },
             subtitle: {
-              text: 'Morphology: #{inspect(data.avg_max_fitness_vs_evaluations["morphology"])}'
+              text: 'Morphology: #{
+      inspect(
+        Enum.find_value(data, fn g -> g["avg_max_fitness_vs_evaluations"] end)["morphology"]
+      )
+    }'
             },
             xAxis: {
-              categories: #{inspect(data.avg_max_fitness_vs_evaluations["evaluation_index"])}
+              categories: #{
+      inspect(
+        Enum.find_value(data, fn g -> g["avg_max_fitness_vs_evaluations"] end)["evaluation_index"]
+      )
+    }
             },
             yAxis: {
               title: {
                 text: 'Fitness'
+              },
+              labels: {
+                format: '{value:.2f}'
               }
             },
             plotOptions: {
@@ -235,7 +291,11 @@ defmodule ApxrIoWeb.Projects.ExperimentView do
             },
             series: [{
               name: 'Average Max Fitness',
-              data: #{inspect(data.avg_max_fitness_vs_evaluations["maxavg_fitness"])}
+              data: #{
+      inspect(
+        Enum.find_value(data, fn g -> g["avg_max_fitness_vs_evaluations"] end)["maxavg_fitness"]
+      )
+    }
             }]
           });
 
@@ -247,14 +307,25 @@ defmodule ApxrIoWeb.Projects.ExperimentView do
               text: 'Average Min Fitness vs Evaluations'
             },
             subtitle: {
-              text: 'Morphology: #{inspect(data.avg_min_fitness_vs_evaluations["morphology"])}'
+              text: 'Morphology: #{
+      inspect(
+        Enum.find_value(data, fn g -> g["avg_min_fitness_vs_evaluations"] end)["morphology"]
+      )
+    }'
             },
             xAxis: {
-              categories: #{inspect(data.avg_min_fitness_vs_evaluations["evaluation_index"])}
+              categories: #{
+      inspect(
+        Enum.find_value(data, fn g -> g["avg_min_fitness_vs_evaluations"] end)["evaluation_index"]
+      )
+    }
             },
             yAxis: {
               title: {
                 text: 'Fitness'
+              },
+              labels: {
+                format: '{value:.2f}'
               }
             },
             plotOptions: {
@@ -267,7 +338,11 @@ defmodule ApxrIoWeb.Projects.ExperimentView do
             },
             series: [{
               name: 'Average Min Fitness',
-              data: #{inspect(data.avg_min_fitness_vs_evaluations["min_fitness"])}
+              data: #{
+      inspect(
+        Enum.find_value(data, fn g -> g["avg_min_fitness_vs_evaluations"] end)["min_fitness"]
+      )
+    }
             }]
           });
 
@@ -279,10 +354,20 @@ defmodule ApxrIoWeb.Projects.ExperimentView do
               text: 'Specie-Population Turnover Vs Evaluations'
             },
             subtitle: {
-              text: 'Morphology: #{inspect(data.specie_pop_turnover_vs_evaluations["morphology"])}'
+              text: 'Morphology: #{
+      inspect(
+        Enum.find_value(data, fn g -> g["specie_pop_turnover_vs_evaluations"] end)["morphology"]
+      )
+    }'
             },
             xAxis: {
-              categories: #{inspect(data.specie_pop_turnover_vs_evaluations["evaluation_index"])}
+              categories: #{
+      inspect(
+        Enum.find_value(data, fn g -> g["specie_pop_turnover_vs_evaluations"] end)[
+          "evaluation_index"
+        ]
+      )
+    }
             },
             yAxis: {
               title: {
@@ -299,7 +384,11 @@ defmodule ApxrIoWeb.Projects.ExperimentView do
             },
             series: [{
               name: 'Specie-Population Turnover',
-              data: #{inspect(data.specie_pop_turnover_vs_evaluations["evaluations_fitness"])}
+              data: #{
+      inspect(
+        Enum.find_value(data, fn g -> g["specie_pop_turnover_vs_evaluations"] end)["evaluations"]
+      )
+    }
             }]
           });
 
@@ -312,12 +401,20 @@ defmodule ApxrIoWeb.Projects.ExperimentView do
             },
             subtitle: {
               text: 'Morphology: #{
-      inspect(data.validation_avg_fitness_vs_evaluations["morphology"])
+      inspect(
+        Enum.find_value(data, fn g -> g["validation_avg_fitness_vs_evaluations"] end)[
+          "morphology"
+        ]
+      )
     }'
             },
             xAxis: [{
               categories: #{
-      inspect(data.validation_avg_fitness_vs_evaluations["evaluation_index"])
+      inspect(
+        Enum.find_value(data, fn g -> g["validation_avg_fitness_vs_evaluations"] end)[
+          "evaluation_index"
+        ]
+      )
     },
               title: {
                 text: 'Evaluations',
@@ -348,7 +445,13 @@ defmodule ApxrIoWeb.Projects.ExperimentView do
             series: [{
               name: 'Validation Average Fitness',
               type: 'spline',
-              data: #{inspect(data.validation_avg_fitness_vs_evaluations["validation_fitness"])},
+              data: #{
+      inspect(
+        Enum.find_value(data, fn g -> g["validation_avg_fitness_vs_evaluations"] end)[
+          "validation_fitness"
+        ]
+      )
+    },
               tooltip: {
                 pointFormat: '<span style="font-weight: bold; color: {series.color}">Fitness</span>: <b>{point.y}</b> '
               }
@@ -356,7 +459,11 @@ defmodule ApxrIoWeb.Projects.ExperimentView do
               name: 'Fitness STD',
               type: 'errorbar',
               data: #{
-      inspect(data.validation_avg_fitness_vs_evaluations["validation_fitness_std"])
+      inspect(
+        Enum.find_value(data, fn g -> g["validation_avg_fitness_vs_evaluations"] end)[
+          "validation_fitness_std"
+        ]
+      )
     },
               tooltip: {
                 pointFormat: '(range: {point.low}-{point.high})<br/>'
@@ -373,17 +480,28 @@ defmodule ApxrIoWeb.Projects.ExperimentView do
             },
             subtitle: {
               text: 'Morphology: #{
-      inspect(data.validation_max_fitness_vs_evaluations["morphology"])
+      inspect(
+        Enum.find_value(data, fn g -> g["validation_max_fitness_vs_evaluations"] end)[
+          "morphology"
+        ]
+      )
     }'
             },
             xAxis: {
               categories: #{
-      inspect(data.validation_max_fitness_vs_evaluations["evaluation_index"])
+      inspect(
+        Enum.find_value(data, fn g -> g["validation_max_fitness_vs_evaluations"] end)[
+          "evaluation_index"
+        ]
+      )
     }
             },
             yAxis: {
               title: {
                 text: 'Fitness'
+              },
+              labels: {
+                format: '{value:.2f}'
               }
             },
             plotOptions: {
@@ -397,7 +515,11 @@ defmodule ApxrIoWeb.Projects.ExperimentView do
             series: [{
               name: 'Validation Max Fitness',
               data: #{
-      inspect(data.validation_max_fitness_vs_evaluations["validationmax_fitness"])
+      inspect(
+        Enum.find_value(data, fn g -> g["validation_max_fitness_vs_evaluations"] end)[
+          "validationmax_fitness"
+        ]
+      )
     }
             }]
           });
@@ -411,17 +533,28 @@ defmodule ApxrIoWeb.Projects.ExperimentView do
             },
             subtitle: {
               text: 'Morphology: #{
-      inspect(data.validation_min_fitness_vs_evaluations["morphology"])
+      inspect(
+        Enum.find_value(data, fn g -> g["validation_min_fitness_vs_evaluations"] end)[
+          "morphology"
+        ]
+      )
     }'
             },
             xAxis: {
               categories: #{
-      inspect(data.validation_min_fitness_vs_evaluations["evaluation_index"])
+      inspect(
+        Enum.find_value(data, fn g -> g["validation_min_fitness_vs_evaluations"] end)[
+          "evaluation_index"
+        ]
+      )
     }
             },
             yAxis: {
               title: {
                 text: 'Fitness'
+              },
+              labels: {
+                format: '{value:.2f}'
               }
             },
             plotOptions: {
@@ -435,7 +568,11 @@ defmodule ApxrIoWeb.Projects.ExperimentView do
             series: [{
               name: 'Validation Min Fitness',
               data: #{
-      inspect(data.validation_min_fitness_vs_evaluations["validationmin_fitness"])
+      inspect(
+        Enum.find_value(data, fn g -> g["validation_min_fitness_vs_evaluations"] end)[
+          "validationmin_fitness"
+        ]
+      )
     }
             }]
           });

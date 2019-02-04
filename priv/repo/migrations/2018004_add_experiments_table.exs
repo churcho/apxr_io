@@ -14,7 +14,7 @@ defmodule ApxrIo.RepoBase.Migrations.AddExperimentsTable do
       )
 
       add(:trace, :jsonb)
-      add(:graph, :jsonb)
+      add(:graph_data, :jsonb)
 
       timestamps()
     end

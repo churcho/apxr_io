@@ -55,559 +55,570 @@ defmodule ApxrIo.TestHelpers do
   def params(params) when is_list(params), do: Enum.map(params, &params/1)
   def params(other), do: other
 
-  def build_experiment(release_id) do
-    %{
-      description: "Experiment description goes here.",
-      release_id: release_id,
-      meta: %{
-        started: "{{2018,9,7},-576460748933985000}",
-        completed: "{{2018,9,8},-576460429400119000}",
-        duration: 80_600_000,
-        progress: "completed",
-        total_runs: 5,
-        interruptions: [],
-        exp_parameters: %{
-          identifier: "local_test",
-          public_scape: [],
-          runs: 20,
-          min_pimprovement: 0.0,
-          search_params_mut_prob: 0.5,
-          output_sat_limit: 1,
-          ro_signal: [0.0],
-          fitness_stagnation: false,
-          population_mgr_efficiency: 1,
-          interactive_selection: false,
-          re_entry_probability: 0.0,
-          shof_ratio: 1,
-          selection_algorithm_efficiency: 1
-        },
-        pm_parameters: %{
-          data: %{
-            evaluations_limit: 5000,
-            fitness_goal: :inf,
-            generation_limit: 100,
-            init_specie_size: 5,
-            op_modes: [:gt, :validation],
-            polis_id: :mathema,
-            population_id: :dtm,
-            specie_size_limit: 20,
-            survival_percentage: 0.5
-          }
-        },
-        init_constraints: [
-          %{
+  def build_experiment(release_id, attrs \\ %{})
+
+  def build_experiment(release_id, attrs) do
+    Map.merge(
+      %{
+        description: "Experiment description goes here.",
+        release_id: release_id,
+        meta: %{
+          started: nil,
+          completed: nil,
+          duration: 80_600_000,
+          progress: "completed",
+          total_runs: 5,
+          interruptions: [],
+          exp_parameters: %{
+            identifier: "local_test",
+            public_scape: [],
+            runs: 20,
+            min_pimprovement: 0.0,
+            search_params_mut_prob: 0.5,
+            output_sat_limit: 1,
+            ro_signal: [0.0],
+            fitness_stagnation: false,
+            population_mgr_efficiency: 1,
+            interactive_selection: false,
+            re_entry_probability: 0.0,
+            shof_ratio: 1,
+            selection_algorithm_efficiency: 1
+          },
+          pm_parameters: %{
             data: %{
-              agent_encoding_types: [:substrate],
-              annealing_parameters: [0.5],
-              connection_architecture: :recurrent,
-              heredity_types: [:darwinian],
-              hof_distinguishers: [:tot_n],
-              morphology: :dtm_morphology,
-              mutation_operators: [
-                [:mutate_weights, 1],
-                [:add_bias, 1],
-                [:remove_bias, 1],
-                [:mutate_af, 1],
-                [:add_outlink, 1],
-                [:add_inlink, 1],
-                [:add_neuron, 1],
-                [:outsplice, 1],
-                [:add_sensor, 1],
-                [:add_actuator, 1],
-                [:add_sensorlink, 1],
-                [:add_actuatorlink, 1],
-                [:mutate_plasticity_parameters, 1],
-                [:add_cpp, 1],
-                [:add_cep, 1]
-              ],
-              neural_afs: [:tanh, :relu],
-              neural_aggr_fs: [:dot_product, :diff_product],
-              neural_pfns: [:ojas],
-              perturbation_ranges: [1],
-              population_evo_alg_f: :generational,
-              population_selection_f: :hof_competition,
-              specie_distinguishers: [:tot_n],
-              substrate_linkforms: [:l2l_feedforward, :jordan_recurrent],
-              substrate_plasticities: [:abcn, :none],
-              tot_topological_mutations_fs: [[:ncount_exponential, 0.5]],
-              tuning_duration_f: [:wsize_proportional, 0.5],
-              tuning_selection_fs: [:dynamic_random]
-            }
-          }
-        ]
-      },
-      trace: %{
-        trace_acc: [
-          %{
-            data: %{
-              stats: [
-                [
-                  %{
-                    data: %{
-                      avg_diversity: 1,
-                      avg_fitness: [122.0000000000001],
-                      avg_neurons: 2.0,
-                      evaluations: 0,
-                      max_fitness: [122.0000000000001],
-                      min_fitness: [122.0000000000001],
-                      morphology: :dtm_morphology,
-                      specie_id: %{specie: 1.4371871231435058},
-                      std_fitness: :inf,
-                      std_neurons: 0.0,
-                      time_stamp: -576_460_447_388_161_000,
-                      validation_fitness: :void
-                    }
-                  }
-                ],
-                [
-                  %{
-                    data: %{
-                      avg_diversity: 1,
-                      avg_fitness: [122.0000000000001],
-                      avg_neurons: 2.0,
-                      evaluations: 5787.0,
-                      max_fitness: [122.0000000000001],
-                      min_fitness: [122.0000000000001],
-                      morphology: :dtm_morphology,
-                      specie_id: %{specie: 1.4371871231435058},
-                      std_fitness: :inf,
-                      std_neurons: 0.0,
-                      time_stamp: -576_460_448_175_023_000,
-                      validation_fitness: %{
-                        fitness: [118.00000000000011],
-                        agent: 1.3570186341785193
-                      }
-                    }
-                  },
-                  %{
-                    data: %{
-                      avg_diversity: 1,
-                      avg_fitness: [122.0000000000001],
-                      avg_neurons: 2.0,
-                      evaluations: 4091.0,
-                      max_fitness: [122.0000000000001],
-                      min_fitness: [122.0000000000001],
-                      morphology: :dtm_morphology,
-                      specie_id: %{specie: 1.4371871231435058},
-                      std_fitness: :inf,
-                      std_neurons: 0.0,
-                      time_stamp: -576_460_478_580_102_000,
-                      validation_fitness: %{
-                        fitness: [105.20000000000016],
-                        agent: 36.29493258331371
-                      }
-                    }
-                  }
-                ],
-                [
-                  %{
-                    data: %{
-                      avg_diversity: 1,
-                      avg_fitness: [122.0000000000001],
-                      avg_neurons: 2.0,
-                      evaluations: 4091.0,
-                      max_fitness: [122.0000000000001],
-                      min_fitness: [122.0000000000001],
-                      morphology: :dtm_morphology,
-                      specie_id: %{specie: 1.4371871231435058},
-                      std_fitness: :inf,
-                      std_neurons: 0.0,
-                      time_stamp: -576_460_478_580_102_000,
-                      validation_fitness: %{
-                        fitness: [105.20000000000016],
-                        agent: 36.29493258331371
-                      }
-                    }
-                  }
-                ]
-              ],
-              step_size: 500,
-              tot_evaluations: 9863.0
+              evaluations_limit: 5000,
+              fitness_goal: :inf,
+              generation_limit: 100,
+              init_specie_size: 5,
+              op_modes: [:gt, :validation],
+              polis_id: :mathema,
+              population_id: :dtm,
+              specie_size_limit: 20,
+              survival_percentage: 0.5
             }
           },
-          %{
-            data: %{
-              stats: [
-                [
-                  %{
-                    data: %{
-                      avg_diversity: 1,
-                      avg_fitness: [111.60000000000014],
-                      avg_neurons: 2.0,
-                      evaluations: 0,
-                      max_fitness: [111.60000000000014],
-                      min_fitness: [111.60000000000014],
-                      morphology: :dtm_morphology,
-                      specie_id: %{specie: 1.8214531913639145},
-                      std_fitness: :inf,
-                      std_neurons: 0.0,
-                      time_stamp: -576_460_500_880_041_000,
-                      validation_fitness: :void
-                    }
-                  }
+          init_constraints: [
+            %{
+              data: %{
+                agent_encoding_types: [:substrate],
+                annealing_parameters: [0.5],
+                connection_architecture: :recurrent,
+                heredity_types: [:darwinian],
+                hof_distinguishers: [:tot_n],
+                morphology: :dtm_morphology,
+                mutation_operators: [
+                  [:mutate_weights, 1],
+                  [:add_bias, 1],
+                  [:remove_bias, 1],
+                  [:mutate_af, 1],
+                  [:add_outlink, 1],
+                  [:add_inlink, 1],
+                  [:add_neuron, 1],
+                  [:outsplice, 1],
+                  [:add_sensor, 1],
+                  [:add_actuator, 1],
+                  [:add_sensorlink, 1],
+                  [:add_actuatorlink, 1],
+                  [:mutate_plasticity_parameters, 1],
+                  [:add_cpp, 1],
+                  [:add_cep, 1]
                 ],
-                [
-                  %{
-                    data: %{
-                      avg_diversity: 1,
-                      avg_fitness: [111.60000000000014],
-                      avg_neurons: 2.0,
-                      evaluations: 4452.0,
-                      max_fitness: [111.60000000000014],
-                      min_fitness: [111.60000000000014],
-                      morphology: :dtm_morphology,
-                      specie_id: %{specie: 1.8214531913639145},
-                      std_fitness: :inf,
-                      std_neurons: 0.0,
-                      time_stamp: -576_460_501_715_080_000,
-                      validation_fitness: %{
-                        fitness: [111.60000000000014],
-                        agent: 1.229791395419694
-                      }
-                    }
-                  },
-                  %{
-                    data: %{
-                      avg_diversity: 1,
-                      avg_fitness: [111.60000000000014],
-                      avg_neurons: 1.0,
-                      evaluations: 3987.0,
-                      max_fitness: [111.60000000000014],
-                      min_fitness: [111.60000000000014],
-                      morphology: :dtm_morphology,
-                      specie_id: %{specie: 1.8214531913639145},
-                      std_fitness: :inf,
-                      std_neurons: 0.0,
-                      time_stamp: -576_460_525_941_047_000,
-                      validation_fitness: %{
-                        fitness: [110.80000000000014],
-                        agent: 1.3343012802318095
-                      }
-                    }
-                  }
-                ],
-                [
-                  %{
-                    data: %{
-                      avg_diversity: 1,
-                      avg_fitness: [111.60000000000014],
-                      avg_neurons: 1.0,
-                      evaluations: 3987.0,
-                      max_fitness: [111.60000000000014],
-                      min_fitness: [111.60000000000014],
-                      morphology: :dtm_morphology,
-                      specie_id: %{specie: 1.8214531913639145},
-                      std_fitness: :inf,
-                      std_neurons: 0.0,
-                      time_stamp: -576_460_525_941_047_000,
-                      validation_fitness: %{
-                        fitness: [110.80000000000014],
-                        agent: 1.3343012802318095
-                      }
-                    }
-                  }
-                ]
-              ],
-              step_size: 500,
-              tot_evaluations: 8410.0
+                neural_afs: [:tanh, :relu],
+                neural_aggr_fs: [:dot_product, :diff_product],
+                neural_pfns: [:ojas],
+                perturbation_ranges: [1],
+                population_evo_alg_f: :generational,
+                population_selection_f: :hof_competition,
+                specie_distinguishers: [:tot_n],
+                substrate_linkforms: [:l2l_feedforward, :jordan_recurrent],
+                substrate_plasticities: [:abcn, :none],
+                tot_topological_mutations_fs: [[:ncount_exponential, 0.5]],
+                tuning_duration_f: [:wsize_proportional, 0.5],
+                tuning_selection_fs: [:dynamic_random]
+              }
             }
-          },
-          %{
-            data: %{
-              stats: [
-                [
-                  %{
-                    data: %{
-                      avg_diversity: 1,
-                      avg_fitness: [110.20000000000013],
-                      avg_neurons: 1.0,
-                      evaluations: 5946.0,
-                      max_fitness: [110.20000000000013],
-                      min_fitness: [110.20000000000013],
-                      morphology: :dtm_morphology,
-                      specie_id: %{specie: 4.343880044146821},
-                      std_fitness: :inf,
-                      std_neurons: 0.0,
-                      time_stamp: -576_460_547_710_797_000,
-                      validation_fitness: :void
-                    }
-                  }
-                ],
-                [
-                  %{
-                    data: %{
-                      avg_diversity: 1,
-                      avg_fitness: [118.80000000000011],
-                      avg_neurons: 1.0,
-                      evaluations: 3747.0,
-                      max_fitness: [118.80000000000011],
-                      min_fitness: [118.80000000000011],
-                      morphology: :dtm_morphology,
-                      specie_id: %{specie: 4.343880044146821},
-                      std_fitness: :inf,
-                      std_neurons: 0.0,
-                      time_stamp: -576_460_579_658_012_000,
-                      validation_fitness: %{
-                        fitness: [110.80000000000014],
-                        agent: 1.8626167383518626
-                      }
-                    }
-                  }
-                ]
-              ],
-              step_size: 500,
-              tot_evaluations: 9666.0
-            }
-          },
-          %{
-            data: %{
-              stats: [
-                [
-                  %{
-                    data: %{
-                      avg_diversity: 1,
-                      avg_fitness: [122.0000000000001],
-                      avg_neurons: 2.0,
-                      evaluations: 0,
-                      max_fitness: [122.0000000000001],
-                      min_fitness: [122.0000000000001],
-                      morphology: :dtm_morphology,
-                      specie_id: %{specie: 2.4212499068997544},
-                      std_fitness: :inf,
-                      std_neurons: 0.0,
-                      time_stamp: -576_460_600_560_254_000,
-                      validation_fitness: :void
-                    }
-                  }
-                ],
-                [
-                  %{
-                    data: %{
-                      avg_diversity: 1,
-                      avg_fitness: [122.0000000000001],
-                      avg_neurons: 2.0,
-                      evaluations: 5417.0,
-                      max_fitness: [122.0000000000001],
-                      min_fitness: [122.0000000000001],
-                      morphology: :dtm_morphology,
-                      specie_id: %{specie: 2.4212499068997544},
-                      std_fitness: :inf,
-                      std_neurons: 0.0,
-                      time_stamp: -576_460_601_514_361_000,
-                      validation_fitness: %{
-                        fitness: [111.60000000000014],
-                        agent: 2.3645207756533715
-                      }
-                    }
-                  },
-                  %{
-                    data: %{
-                      avg_diversity: 1,
-                      avg_fitness: [121.2000000000001],
-                      avg_neurons: 2.0,
-                      evaluations: 3907.0,
-                      max_fitness: [121.2000000000001],
-                      min_fitness: [121.2000000000001],
-                      morphology: :dtm_morphology,
-                      specie_id: %{specie: 2.4212499068997544},
-                      std_fitness: :inf,
-                      std_neurons: 0.0,
-                      time_stamp: -576_460_634_053_245_000,
-                      validation_fitness: %{
-                        fitness: [121.2000000000001],
-                        agent: 8.657592343491151
-                      }
-                    }
-                  }
-                ],
-                [
-                  %{
-                    data: %{
-                      avg_diversity: 1,
-                      avg_fitness: [121.2000000000001],
-                      avg_neurons: 2.0,
-                      evaluations: 3907.0,
-                      max_fitness: [121.2000000000001],
-                      min_fitness: [121.2000000000001],
-                      morphology: :dtm_morphology,
-                      specie_id: %{specie: 2.4212499068997544},
-                      std_fitness: :inf,
-                      std_neurons: 0.0,
-                      time_stamp: -576_460_634_053_245_000,
-                      validation_fitness: %{
-                        fitness: [121.2000000000001],
-                        agent: 8.657592343491151
-                      }
-                    }
-                  }
-                ]
-              ],
-              step_size: 500,
-              tot_evaluations: 9240.0
-            }
-          },
-          %{
-            data: %{
-              stats: [
-                [
-                  %{
-                    data: %{
-                      avg_diversity: 1,
-                      avg_fitness: [111.80000000000014],
-                      avg_neurons: 1.0,
-                      evaluations: 0,
-                      max_fitness: [111.80000000000014],
-                      min_fitness: [111.80000000000014],
-                      morphology: :dtm_morphology,
-                      specie_id: %{specie: 7.283701082221204},
-                      std_fitness: :inf,
-                      std_neurons: 0.0,
-                      time_stamp: -576_460_654_891_967_000,
-                      validation_fitness: :void
-                    }
-                  }
-                ],
-                [
-                  %{
-                    data: %{
-                      avg_diversity: 1,
-                      avg_fitness: [111.80000000000014],
-                      avg_neurons: 1.0,
-                      evaluations: 4474.0,
-                      max_fitness: [111.80000000000014],
-                      min_fitness: [111.80000000000014],
-                      morphology: :dtm_morphology,
-                      specie_id: %{specie: 7.283701082221204},
-                      std_fitness: :inf,
-                      std_neurons: 0.0,
-                      time_stamp: -576_460_655_730_126_000,
-                      validation_fitness: %{
-                        fitness: [111.80000000000014],
-                        agent: 1.500341954669379
-                      }
-                    }
-                  },
-                  %{
-                    data: %{
-                      avg_diversity: 1,
-                      avg_fitness: [112.40000000000013],
-                      avg_neurons: 1.0,
-                      evaluations: 3370.0,
-                      max_fitness: [112.40000000000013],
-                      min_fitness: [112.40000000000013],
-                      morphology: :dtm_morphology,
-                      specie_id: %{specie: 7.283701082221204},
-                      std_fitness: :inf,
-                      std_neurons: 0.0,
-                      time_stamp: -576_460_677_736_102_000,
-                      validation_fitness: %{
-                        fitness: [110.80000000000014],
-                        agent: 1.564879436189423
-                      }
-                    }
-                  }
-                ],
-                [
-                  %{
-                    data: %{
-                      avg_diversity: 1,
-                      avg_fitness: [112.40000000000013],
-                      avg_neurons: 1.0,
-                      evaluations: 3370.0,
-                      max_fitness: [112.40000000000013],
-                      min_fitness: [112.40000000000013],
-                      morphology: :dtm_morphology,
-                      specie_id: %{specie: 7.283701082221204},
-                      std_fitness: :inf,
-                      std_neurons: 0.0,
-                      time_stamp: -576_460_677_736_102_000,
-                      validation_fitness: %{
-                        fitness: [110.80000000000014],
-                        agent: 1.564879436189423
-                      }
-                    }
-                  }
-                ]
-              ],
-              step_size: 500,
-              tot_evaluations: 7813.0
-            }
-          }
-        ]
-      },
-      graph: %{
-        avg_fitness_vs_evaluations: %{
-          morphology: "some_morphology",
-          evaluation_index: [500, 1000, 1500, 2500, 3000],
-          avg_fitness: [122.00001, 56.0001, 115.52000012, 117.24000012, 149.12],
-          fitness_std: [
-            [118.1676, 132.4324001],
-            [126.15, 124.75],
-            [129.090400002]
           ]
         },
-        avg_neurons_vs_evaluations: %{
-          morphology: "some_morphology",
-          evaluation_index: [500, 1000, 1500, 2500, 3000],
-          avg_neurons: [122.00001, 56.0001, 115.52000012, 117.24000012, 149.12],
-          neurons_std: [
-            [118.1676, 132.4324001],
-            [126.15, 124.75],
-            [129.090400002]
+        trace: %{
+          trace_acc: [
+            %{
+              data: %{
+                stats: [
+                  [
+                    %{
+                      data: %{
+                        avg_diversity: 1,
+                        avg_fitness: [122.0000000000001],
+                        avg_neurons: 2.0,
+                        evaluations: 0,
+                        max_fitness: [122.0000000000001],
+                        min_fitness: [122.0000000000001],
+                        morphology: :dtm_morphology,
+                        specie_id: %{specie: 1.4371871231435058},
+                        std_fitness: :inf,
+                        std_neurons: 0.0,
+                        time_stamp: -576_460_447_388_161_000,
+                        validation_fitness: :void
+                      }
+                    }
+                  ],
+                  [
+                    %{
+                      data: %{
+                        avg_diversity: 1,
+                        avg_fitness: [122.0000000000001],
+                        avg_neurons: 2.0,
+                        evaluations: 5787.0,
+                        max_fitness: [122.0000000000001],
+                        min_fitness: [122.0000000000001],
+                        morphology: :dtm_morphology,
+                        specie_id: %{specie: 1.4371871231435058},
+                        std_fitness: :inf,
+                        std_neurons: 0.0,
+                        time_stamp: -576_460_448_175_023_000,
+                        validation_fitness: %{
+                          fitness: [118.00000000000011],
+                          agent: 1.3570186341785193
+                        }
+                      }
+                    },
+                    %{
+                      data: %{
+                        avg_diversity: 1,
+                        avg_fitness: [122.0000000000001],
+                        avg_neurons: 2.0,
+                        evaluations: 4091.0,
+                        max_fitness: [122.0000000000001],
+                        min_fitness: [122.0000000000001],
+                        morphology: :dtm_morphology,
+                        specie_id: %{specie: 1.4371871231435058},
+                        std_fitness: :inf,
+                        std_neurons: 0.0,
+                        time_stamp: -576_460_478_580_102_000,
+                        validation_fitness: %{
+                          fitness: [105.20000000000016],
+                          agent: 36.29493258331371
+                        }
+                      }
+                    }
+                  ],
+                  [
+                    %{
+                      data: %{
+                        avg_diversity: 1,
+                        avg_fitness: [122.0000000000001],
+                        avg_neurons: 2.0,
+                        evaluations: 4091.0,
+                        max_fitness: [122.0000000000001],
+                        min_fitness: [122.0000000000001],
+                        morphology: :dtm_morphology,
+                        specie_id: %{specie: 1.4371871231435058},
+                        std_fitness: :inf,
+                        std_neurons: 0.0,
+                        time_stamp: -576_460_478_580_102_000,
+                        validation_fitness: %{
+                          fitness: [105.20000000000016],
+                          agent: 36.29493258331371
+                        }
+                      }
+                    }
+                  ]
+                ],
+                step_size: 500,
+                tot_evaluations: 9863.0
+              }
+            },
+            %{
+              data: %{
+                stats: [
+                  [
+                    %{
+                      data: %{
+                        avg_diversity: 1,
+                        avg_fitness: [111.60000000000014],
+                        avg_neurons: 2.0,
+                        evaluations: 0,
+                        max_fitness: [111.60000000000014],
+                        min_fitness: [111.60000000000014],
+                        morphology: :dtm_morphology,
+                        specie_id: %{specie: 1.8214531913639145},
+                        std_fitness: :inf,
+                        std_neurons: 0.0,
+                        time_stamp: -576_460_500_880_041_000,
+                        validation_fitness: :void
+                      }
+                    }
+                  ],
+                  [
+                    %{
+                      data: %{
+                        avg_diversity: 1,
+                        avg_fitness: [111.60000000000014],
+                        avg_neurons: 2.0,
+                        evaluations: 4452.0,
+                        max_fitness: [111.60000000000014],
+                        min_fitness: [111.60000000000014],
+                        morphology: :dtm_morphology,
+                        specie_id: %{specie: 1.8214531913639145},
+                        std_fitness: :inf,
+                        std_neurons: 0.0,
+                        time_stamp: -576_460_501_715_080_000,
+                        validation_fitness: %{
+                          fitness: [111.60000000000014],
+                          agent: 1.229791395419694
+                        }
+                      }
+                    },
+                    %{
+                      data: %{
+                        avg_diversity: 1,
+                        avg_fitness: [111.60000000000014],
+                        avg_neurons: 1.0,
+                        evaluations: 3987.0,
+                        max_fitness: [111.60000000000014],
+                        min_fitness: [111.60000000000014],
+                        morphology: :dtm_morphology,
+                        specie_id: %{specie: 1.8214531913639145},
+                        std_fitness: :inf,
+                        std_neurons: 0.0,
+                        time_stamp: -576_460_525_941_047_000,
+                        validation_fitness: %{
+                          fitness: [110.80000000000014],
+                          agent: 1.3343012802318095
+                        }
+                      }
+                    }
+                  ],
+                  [
+                    %{
+                      data: %{
+                        avg_diversity: 1,
+                        avg_fitness: [111.60000000000014],
+                        avg_neurons: 1.0,
+                        evaluations: 3987.0,
+                        max_fitness: [111.60000000000014],
+                        min_fitness: [111.60000000000014],
+                        morphology: :dtm_morphology,
+                        specie_id: %{specie: 1.8214531913639145},
+                        std_fitness: :inf,
+                        std_neurons: 0.0,
+                        time_stamp: -576_460_525_941_047_000,
+                        validation_fitness: %{
+                          fitness: [110.80000000000014],
+                          agent: 1.3343012802318095
+                        }
+                      }
+                    }
+                  ]
+                ],
+                step_size: 500,
+                tot_evaluations: 8410.0
+              }
+            },
+            %{
+              data: %{
+                stats: [
+                  [
+                    %{
+                      data: %{
+                        avg_diversity: 1,
+                        avg_fitness: [110.20000000000013],
+                        avg_neurons: 1.0,
+                        evaluations: 5946.0,
+                        max_fitness: [110.20000000000013],
+                        min_fitness: [110.20000000000013],
+                        morphology: :dtm_morphology,
+                        specie_id: %{specie: 4.343880044146821},
+                        std_fitness: :inf,
+                        std_neurons: 0.0,
+                        time_stamp: -576_460_547_710_797_000,
+                        validation_fitness: :void
+                      }
+                    }
+                  ],
+                  [
+                    %{
+                      data: %{
+                        avg_diversity: 1,
+                        avg_fitness: [118.80000000000011],
+                        avg_neurons: 1.0,
+                        evaluations: 3747.0,
+                        max_fitness: [118.80000000000011],
+                        min_fitness: [118.80000000000011],
+                        morphology: :dtm_morphology,
+                        specie_id: %{specie: 4.343880044146821},
+                        std_fitness: :inf,
+                        std_neurons: 0.0,
+                        time_stamp: -576_460_579_658_012_000,
+                        validation_fitness: %{
+                          fitness: [110.80000000000014],
+                          agent: 1.8626167383518626
+                        }
+                      }
+                    }
+                  ]
+                ],
+                step_size: 500,
+                tot_evaluations: 9666.0
+              }
+            },
+            %{
+              data: %{
+                stats: [
+                  [
+                    %{
+                      data: %{
+                        avg_diversity: 1,
+                        avg_fitness: [122.0000000000001],
+                        avg_neurons: 2.0,
+                        evaluations: 0,
+                        max_fitness: [122.0000000000001],
+                        min_fitness: [122.0000000000001],
+                        morphology: :dtm_morphology,
+                        specie_id: %{specie: 2.4212499068997544},
+                        std_fitness: :inf,
+                        std_neurons: 0.0,
+                        time_stamp: -576_460_600_560_254_000,
+                        validation_fitness: :void
+                      }
+                    }
+                  ],
+                  [
+                    %{
+                      data: %{
+                        avg_diversity: 1,
+                        avg_fitness: [122.0000000000001],
+                        avg_neurons: 2.0,
+                        evaluations: 5417.0,
+                        max_fitness: [122.0000000000001],
+                        min_fitness: [122.0000000000001],
+                        morphology: :dtm_morphology,
+                        specie_id: %{specie: 2.4212499068997544},
+                        std_fitness: :inf,
+                        std_neurons: 0.0,
+                        time_stamp: -576_460_601_514_361_000,
+                        validation_fitness: %{
+                          fitness: [111.60000000000014],
+                          agent: 2.3645207756533715
+                        }
+                      }
+                    },
+                    %{
+                      data: %{
+                        avg_diversity: 1,
+                        avg_fitness: [121.2000000000001],
+                        avg_neurons: 2.0,
+                        evaluations: 3907.0,
+                        max_fitness: [121.2000000000001],
+                        min_fitness: [121.2000000000001],
+                        morphology: :dtm_morphology,
+                        specie_id: %{specie: 2.4212499068997544},
+                        std_fitness: :inf,
+                        std_neurons: 0.0,
+                        time_stamp: -576_460_634_053_245_000,
+                        validation_fitness: %{
+                          fitness: [121.2000000000001],
+                          agent: 8.657592343491151
+                        }
+                      }
+                    }
+                  ],
+                  [
+                    %{
+                      data: %{
+                        avg_diversity: 1,
+                        avg_fitness: [121.2000000000001],
+                        avg_neurons: 2.0,
+                        evaluations: 3907.0,
+                        max_fitness: [121.2000000000001],
+                        min_fitness: [121.2000000000001],
+                        morphology: :dtm_morphology,
+                        specie_id: %{specie: 2.4212499068997544},
+                        std_fitness: :inf,
+                        std_neurons: 0.0,
+                        time_stamp: -576_460_634_053_245_000,
+                        validation_fitness: %{
+                          fitness: [121.2000000000001],
+                          agent: 8.657592343491151
+                        }
+                      }
+                    }
+                  ]
+                ],
+                step_size: 500,
+                tot_evaluations: 9240.0
+              }
+            },
+            %{
+              data: %{
+                stats: [
+                  [
+                    %{
+                      data: %{
+                        avg_diversity: 1,
+                        avg_fitness: [111.80000000000014],
+                        avg_neurons: 1.0,
+                        evaluations: 0,
+                        max_fitness: [111.80000000000014],
+                        min_fitness: [111.80000000000014],
+                        morphology: :dtm_morphology,
+                        specie_id: %{specie: 7.283701082221204},
+                        std_fitness: :inf,
+                        std_neurons: 0.0,
+                        time_stamp: -576_460_654_891_967_000,
+                        validation_fitness: :void
+                      }
+                    }
+                  ],
+                  [
+                    %{
+                      data: %{
+                        avg_diversity: 1,
+                        avg_fitness: [111.80000000000014],
+                        avg_neurons: 1.0,
+                        evaluations: 4474.0,
+                        max_fitness: [111.80000000000014],
+                        min_fitness: [111.80000000000014],
+                        morphology: :dtm_morphology,
+                        specie_id: %{specie: 7.283701082221204},
+                        std_fitness: :inf,
+                        std_neurons: 0.0,
+                        time_stamp: -576_460_655_730_126_000,
+                        validation_fitness: %{
+                          fitness: [111.80000000000014],
+                          agent: 1.500341954669379
+                        }
+                      }
+                    },
+                    %{
+                      data: %{
+                        avg_diversity: 1,
+                        avg_fitness: [112.40000000000013],
+                        avg_neurons: 1.0,
+                        evaluations: 3370.0,
+                        max_fitness: [112.40000000000013],
+                        min_fitness: [112.40000000000013],
+                        morphology: :dtm_morphology,
+                        specie_id: %{specie: 7.283701082221204},
+                        std_fitness: :inf,
+                        std_neurons: 0.0,
+                        time_stamp: -576_460_677_736_102_000,
+                        validation_fitness: %{
+                          fitness: [110.80000000000014],
+                          agent: 1.564879436189423
+                        }
+                      }
+                    }
+                  ],
+                  [
+                    %{
+                      data: %{
+                        avg_diversity: 1,
+                        avg_fitness: [112.40000000000013],
+                        avg_neurons: 1.0,
+                        evaluations: 3370.0,
+                        max_fitness: [112.40000000000013],
+                        min_fitness: [112.40000000000013],
+                        morphology: :dtm_morphology,
+                        specie_id: %{specie: 7.283701082221204},
+                        std_fitness: :inf,
+                        std_neurons: 0.0,
+                        time_stamp: -576_460_677_736_102_000,
+                        validation_fitness: %{
+                          fitness: [110.80000000000014],
+                          agent: 1.564879436189423
+                        }
+                      }
+                    }
+                  ]
+                ],
+                step_size: 500,
+                tot_evaluations: 7813.0
+              }
+            }
           ]
         },
-        avg_diversity_vs_evaluations: %{
-          morphology: "some_morphology",
-          evaluation_index: [500, 1000, 1500, 2500, 3000],
-          avg_diversity: [122.00001, 56.0001, 115.52000012, 117.24000012, 149.12],
-          diversity_std: [
-            [118.1676, 132.4324001],
-            [126.15, 124.75],
-            [129.090400002]
+        graph_data: %{
+          graph_acc: [
+            %{
+              graph: %{
+                avg_fitness_vs_evaluations: %{
+                  morphology: "some_morphology",
+                  evaluation_index: [500, 1000, 1500, 2500, 3000],
+                  avg_fitness: [122.00001, 56.0001, 115.52000012, 117.24000012, 149.12],
+                  fitness_std: [
+                    [118.1676, 132.4324001],
+                    [126.15, 124.75],
+                    [129.090400002]
+                  ]
+                },
+                avg_neurons_vs_evaluations: %{
+                  morphology: "some_morphology",
+                  evaluation_index: [500, 1000, 1500, 2500, 3000],
+                  avg_neurons: [122.00001, 56.0001, 115.52000012, 117.24000012, 149.12],
+                  neurons_std: [
+                    [118.1676, 132.4324001],
+                    [126.15, 124.75],
+                    [129.090400002]
+                  ]
+                },
+                avg_diversity_vs_evaluations: %{
+                  morphology: "some_morphology",
+                  evaluation_index: [500, 1000, 1500, 2500, 3000],
+                  avg_diversity: [122.00001, 56.0001, 115.52000012, 117.24000012, 149.12],
+                  diversity_std: [
+                    [118.1676, 132.4324001],
+                    [126.15, 124.75],
+                    [129.090400002]
+                  ]
+                },
+                max_fitness_vs_evaluations: %{
+                  morphology: "some_morphology",
+                  evaluation_index: [500, 1000, 1500, 2500, 3000],
+                  max_fitness: [122.00001, 56.0001, 115.52000012, 117.24000012, 149.12]
+                },
+                avg_max_fitness_vs_evaluations: %{
+                  morphology: "some_morphology",
+                  evaluation_index: [500, 1000, 1500, 2500, 3000],
+                  maxavg_fitness: [122.00001, 56.0001, 115.52000012, 117.24000012, 149.12]
+                },
+                avg_min_fitness_vs_evaluations: %{
+                  morphology: "some_morphology",
+                  evaluation_index: [500, 1000, 1500, 2500, 3000],
+                  min_fitness: [122.00001, 56.0001, 115.52000012, 117.24000012, 149.12]
+                },
+                specie_pop_turnover_vs_evaluations: %{
+                  morphology: "some_morphology",
+                  evaluation_index: [500, 1000, 1500, 2500, 3000],
+                  evaluations: [122.00001, 56.0001, 115.52000012, 117.24000012, 149.12]
+                },
+                validation_avg_fitness_vs_evaluations: %{
+                  morphology: "some_morphology",
+                  evaluation_index: [500, 1000, 1500, 2500, 3000],
+                  validation_fitness: [122.00001, 56.0001, 115.52000012, 117.24000012, 149.12],
+                  validation_fitness_std: [
+                    [118.1676, 132.4324001],
+                    [126.15, 124.75],
+                    [129.090400002]
+                  ]
+                },
+                validation_max_fitness_vs_evaluations: %{
+                  morphology: "some_morphology",
+                  evaluation_index: [500, 1000, 1500, 2500, 3000],
+                  validationmax_fitness: [122.00001, 56.0001, 115.52000012, 117.24000012, 149.12]
+                },
+                validation_min_fitness_vs_evaluations: %{
+                  morphology: "some_morphology",
+                  evaluation_index: [500, 1000, 1500, 2500, 3000],
+                  validationmin_fitness: [122.00001, 56.0001, 115.52000012, 117.24000012, 149.12]
+                }
+              }
+            }
           ]
-        },
-        max_fitness_vs_evaluations: %{
-          morphology: "some_morphology",
-          evaluation_index: [500, 1000, 1500, 2500, 3000],
-          max_fitness: [122.00001, 56.0001, 115.52000012, 117.24000012, 149.12]
-        },
-        avg_max_fitness_vs_evaluations: %{
-          morphology: "some_morphology",
-          evaluation_index: [500, 1000, 1500, 2500, 3000],
-          maxavg_fitness: [122.00001, 56.0001, 115.52000012, 117.24000012, 149.12]
-        },
-        avg_min_fitness_vs_evaluations: %{
-          morphology: "some_morphology",
-          evaluation_index: [500, 1000, 1500, 2500, 3000],
-          min_fitness: [122.00001, 56.0001, 115.52000012, 117.24000012, 149.12]
-        },
-        specie_pop_turnover_vs_evaluations: %{
-          morphology: "some_morphology",
-          evaluation_index: [500, 1000, 1500, 2500, 3000],
-          evaluations_fitness: [122.00001, 56.0001, 115.52000012, 117.24000012, 149.12]
-        },
-        validation_avg_fitness_vs_evaluations: %{
-          morphology: "some_morphology",
-          evaluation_index: [500, 1000, 1500, 2500, 3000],
-          validation_fitness: [122.00001, 56.0001, 115.52000012, 117.24000012, 149.12],
-          validation_fitness_std: [
-            [118.1676, 132.4324001],
-            [126.15, 124.75],
-            [129.090400002]
-          ]
-        },
-        validation_max_fitness_vs_evaluations: %{
-          morphology: "some_morphology",
-          evaluation_index: [500, 1000, 1500, 2500, 3000],
-          validationmax_fitness: [122.00001, 56.0001, 115.52000012, 117.24000012, 149.12]
-        },
-        validation_min_fitness_vs_evaluations: %{
-          morphology: "some_morphology",
-          evaluation_index: [500, 1000, 1500, 2500, 3000],
-          validationmin_fitness: [122.00001, 56.0001, 115.52000012, 117.24000012, 149.12]
         }
-      }
-    }
+      },
+      attrs
+    )
   end
 
   def build_artifact(experiment_id, project_id) do

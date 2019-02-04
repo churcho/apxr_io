@@ -9,9 +9,9 @@ defmodule ApxrIo.Learn.Experiment do
 
     belongs_to :release, Release
     has_one :artifact, Artifact
-    embeds_one :meta, ExperimentMetadata, on_replace: :delete
+    embeds_one :meta, ExperimentMetadata, on_replace: :update
     embeds_one :trace, ExperimentTrace, on_replace: :delete
-    embeds_one :graph, ExperimentGraphData, on_replace: :delete
+    embeds_one :graph_data, ExperimentGraphData, on_replace: :delete
   end
 
   def build(release, params) do
@@ -32,7 +32,7 @@ defmodule ApxrIo.Learn.Experiment do
     |> validate_length(:description, max: 280)
     |> cast_embed(:meta)
     |> cast_embed(:trace)
-    |> cast_embed(:graph)
+    |> cast_embed(:graph_data)
   end
 
   defp changeset(experiment, :create, params) do
@@ -40,7 +40,7 @@ defmodule ApxrIo.Learn.Experiment do
     |> validate_length(:description, max: 280)
     |> cast_embed(:meta, required: true)
     |> cast_embed(:trace, required: false)
-    |> cast_embed(:graph, required: false)
+    |> cast_embed(:graph_data, required: false)
   end
 
   def all(project, page, count, sort) do
@@ -85,7 +85,7 @@ defmodule ApxrIo.Learn.Experiment do
 
   # Blacklist sensitive fields.
   defimpl Inspect do
-    @sensitive_fields [:meta, :trace, :graph]
+    @sensitive_fields [:meta, :trace, :graph_data]
     def inspect(experiment, opts) do
       experiment
       |> Map.drop(@sensitive_fields)

@@ -142,16 +142,15 @@ defmodule ApxrIoWeb.Router do
 
     for prefix <- ["/repos/:repository"] do
       scope prefix do
-        post "/publish", ReleaseController, :publish
         post "/projects/:name/releases", ReleaseController, :create
 
         post "/projects/:name/releases/:version/experiments", ExperimentController, :create
         post "/projects/:name/releases/:version/experiments/:id", ExperimentController, :update
 
         post "/projects/:name/artifacts", ArtifactController, :create
+        post "/projects/:name/artifacts/:artifact", ArtifactController, :update
         post "/projects/:name/artifacts/:artifact/unpublish", ArtifactController, :unpublish
         post "/projects/:name/artifacts/:artifact/republish", ArtifactController, :republish
-        post "/projects/:name/artifacts/:artifact", ArtifactController, :update
       end
     end
   end
@@ -171,7 +170,7 @@ defmodule ApxrIoWeb.Router do
         get "/projects/:name", ProjectController, :show
 
         get "/projects/:name/releases/:version", ReleaseController, :show
-        get "/projects/:name/releases/:version/tarballs/:ball", ReleaseController, :tarball
+        get "/projects/:name/releases/:version/tarball", ReleaseController, :tarball
         delete "/projects/:name/releases/:version", ReleaseController, :delete
 
         post "/projects/:name/releases/:version/retire", RetirementController, :create

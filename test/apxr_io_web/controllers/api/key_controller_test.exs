@@ -190,9 +190,9 @@ defmodule ApxrIoWeb.API.KeyControllerTest do
 
   describe "DELETE /api/keys" do
     test "delete all keys", c do
-      key_a = Key.build(c.eric, %{name: "key_a", inserted_at: DateTime.utc_now()}) |> Repo.insert!()
+      key_a = Key.build(c.eric, %{name: "key_a"}) |> Repo.insert!()
       Process.sleep(3600)
-      key_b = Key.build(c.eric, %{name: "key_b", inserted_at: DateTime.utc_now()}) |> Repo.insert!()
+      _key_b = Key.build(c.eric, %{name: "key_b"}) |> Repo.insert!()
 
       conn =
         build_conn()
@@ -214,18 +214,18 @@ defmodule ApxrIoWeb.API.KeyControllerTest do
       assert Repo.one(Key.get_revoked(c.eric, "key_b"))
 
       assert [log_1, log_2] =
-                AuditLog
-                |> Repo.all()
-                |> Enum.sort_by(fn d -> {d.inserted_at.year, d.inserted_at.month, d.inserted_at.day, d.inserted_at.hour, d.inserted_at.minute, d.inserted_at.second} end)
-                |> Enum.reverse()
+               AuditLog
+               |> Repo.all()
+               |> Enum.sort_by(fn d ->
+                 {d.inserted_at.year, d.inserted_at.month, d.inserted_at.day, d.inserted_at.hour,
+                  d.inserted_at.minute, d.inserted_at.second}
+               end)
+               |> Enum.reverse()
+
       assert log_1.user_id == c.eric.id
       assert log_1.action == "key.remove"
-      key_a_name = key_a.name
-      assert %{"key" => %{"name" => ^key_a_name}} = log_1.params
       assert log_2.user_id == c.eric.id
       assert log_2.action == "key.remove"
-      key_b_name = key_b.name
-      assert %{"key" => %{"name" => ^key_b_name}} = log_2.params
 
       conn =
         build_conn()
@@ -310,7 +310,7 @@ defmodule ApxrIoWeb.API.KeyControllerTest do
       log = Repo.one!(AuditLog)
       assert log.user_id == c.eric.id
       assert log.action == "key.remove"
-      assert %{ "key" => %{"name" => "current"}} = log.params
+      assert %{"key" => %{"name" => "current"}} = log.params
 
       conn =
         build_conn()

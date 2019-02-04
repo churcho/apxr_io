@@ -7,8 +7,8 @@ defmodule ApxrIo.Learn.ExperimentMetadata do
   interruptions exp_parameters pm_parameters init_constraints)a
 
   embedded_schema do
-    field :started, :string
-    field :completed, :string
+    field :started, :binary
+    field :completed, :binary
     field :duration, :integer
     field :progress, :string
     field :total_runs, :integer

@@ -14,11 +14,15 @@ defmodule ApxrIoWeb.API.ExperimentController do
 
   plug :authorize,
        [domain: "api", resource: "write", fun: [&maybe_project_owner/2, &team_billing_active/2]]
-       when action in [:create, :update, :pause, :continue, :stop]
+       when action in [:create, :pause, :continue, :stop]
 
   plug :authorize,
        [domain: "api", resource: "write", fun: [&project_owner/2, &team_billing_active/2]]
        when action in [:delete]
+
+  plug :authorize,
+       [with_jwt: true]
+       when action in [:update]
 
   @sort_params ~w(version inserted_at)
 
@@ -43,12 +47,12 @@ defmodule ApxrIoWeb.API.ExperimentController do
     |> handle_result(conn)
   end
 
-  def update(conn, %{"data" => experiment_body}) do
+  def update(conn, %{"experiment" => experiment_body}) do
     project = conn.assigns.project
     release = conn.assigns.release
     experiment = conn.assigns.experiment
 
-    Experiments.update(project, release, experiment, experiment_body, audit: audit_data(conn))
+    Experiments.update(project, release, experiment, experiment_body)
     |> handle_result(conn)
   end
 
@@ -125,8 +129,12 @@ defmodule ApxrIoWeb.API.ExperimentController do
     |> send_resp(204, Jason.encode!(%{}))
   end
 
+  defp handle_result({:error, %Ecto.Changeset{} = changeset}, conn) do
+    validation_failed(conn, changeset)
+  end
+
   defp handle_result({:error, errors}, conn) do
-    validation_failed(conn, errors)
+    render_error(conn, 400, errors: errors)
   end
 
   defp handle_result({:error, _, changeset, _}, conn) do

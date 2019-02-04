@@ -7,7 +7,7 @@
       <div class="field">
         <div class="control">
           <%= label f, :username, class: "label" %>
-          <%= text_input f, :usernam, class: "input", type: "text", placeholder: "e.g Alex" %>
+          <%= text_input f, :username, class: "input", type: "text", placeholder: "e.g Alex" %>
           <%= error_tag f, :username %>
         </div>
       </div>

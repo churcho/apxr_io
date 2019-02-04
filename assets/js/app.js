@@ -18,13 +18,76 @@ import "phoenix_html"
 // Local files can be imported directly using relative
 // paths "./socket" or full ones "web/static/js/socket".
 
-import socket from "./socket";
-
 // Highcharts
 import Highcharts from "highcharts";
 import HighchartsMore from "highcharts/highcharts-more";
 window.Highcharts = Highcharts;
 HighchartsMore(Highcharts);
+
+// Clipboard
+import Clipboard from "clipboard";
+function addCopyButtonToCode(){
+ // get all code elements
+ var allCodeBlocksElements = $( "div.highlight pre" );
+
+ // For each element, do the following steps
+ allCodeBlocksElements.each(function(ii) {
+ // define a unique id for this element and add it
+ var currentId = "codeblock" + (ii + 1);
+ $(this).attr('id', currentId);
+
+ // create a button that's configured for clipboard.js
+ // point it to the text that's in this code block
+ // add the button just after the text in the code block w/ jquery
+ var clipButton = '<button class="button is-light copybutton" data-clipboard-target="#' + currentId + '">copy</button>';
+    $(this).after(clipButton);
+ });
+
+ // tell clipboard.js to look for clicks that match this query
+ new Clipboard('.button');
+}
+
+// Websocket (tail logs)
+if ("WebSocket" in window && ((/experiments/.test(window.location.href)) && (/^((?!all).)*$/.test(window.location.href)))) {
+  'use strict';
+
+  var ws = null;
+
+  function wsStart(){
+    let messagesContainer = document.querySelector("#exp_log_messages")
+    
+    ws = new WebSocket(window.wsEndpoint + "/websocket?token=" + window.wsToken);
+    
+    ws.onopen = function(){
+      console.log('ws connected');
+    };
+    
+    ws.onmessage = function (evt) { 
+      let messageItem = document.createElement("li");
+      messageItem.innerText = evt.data;
+      let list = document.getElementById("logsList");
+      if (list.childElementCount >= 100) {
+        var last = list.lastElementChild;
+        list.removeChild(last);
+        list.insertBefore(messageItem, list.childNodes[0]);
+      } else {
+        list.insertBefore(messageItem, list.childNodes[0]);
+      }
+    };
+    
+    ws.onclose = function(){
+      console.log('ws closed');
+    };
+  }
+
+  function wsCheck(){
+    if(!ws || ws.readyState == 3) wsStart();
+  }
+
+  wsStart();
+
+  // setInterval(wsCheck, 5000);
+}
 
 export default class App {
   constructor() {
@@ -62,7 +125,6 @@ export default class App {
     });
 
     // Modals
-
     var rootEl = document.documentElement;
     var $modals = getAll('.modal');
     var $modalButtons = getAll('.modal-button');
@@ -108,6 +170,9 @@ export default class App {
     function getAll(selector) {
       return Array.prototype.slice.call(document.querySelectorAll(selector), 0);
     };
+
+    // Once the DOM is loaded for the page, attach clipboard buttons
+    addCopyButtonToCode();
   }
 }
 

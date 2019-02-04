@@ -94,6 +94,7 @@ defmodule ApxrIoWeb.Projects.ExperimentControllerTest do
     end
   end
 
+  @tag :skip
   describe "GET /projects/:name/releases/:version/experiments/:id" do
     test "show experiment", %{
       user1: user1,

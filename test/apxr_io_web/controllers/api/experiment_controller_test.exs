@@ -4,6 +4,7 @@ defmodule ApxrIoWeb.API.ExperimentControllerTest do
   alias ApxrIo.Accounts.AuditLog
   alias ApxrIo.Learn.Experiment
   alias ApxrIo.Learn.Experiments
+  alias ApxrIoWeb.ErlangFormat
 
   setup do
     user = insert(:user)
@@ -281,44 +282,78 @@ defmodule ApxrIoWeb.API.ExperimentControllerTest do
 
   describe "POST /api/repos/:repo/projects/:project/releases/:version/experiments/:id" do
     test "update experiment authorizes", %{
-      user: user,
       team: team,
       project: project,
       experiment: experiment,
       uexperiment: uexperiment,
       release: release
     } do
+      token =
+        ApxrIo.Token.generate_and_sign!(%{
+          "team" => project.team.name,
+          "project" => project.name,
+          "version" => release.version,
+          "id" => experiment.id,
+          "identifier" => "test",
+          "iss" => "bad",
+          "aud" => "bad"
+        })
+
       build_conn()
-      |> put_req_header("authorization", key_for(user))
-      |> json_post(
+      |> put_req_header("token", token)
+      |> put_req_header("content-type", "application/vnd.apxrsh+erlang")
+      |> post(
         "api/repos/#{team.name}/projects/#{project.name}/releases/#{release.version}/experiments/#{
           experiment.id
         }",
-        %{"data" => uexperiment}
+        ErlangFormat.encode_to_iodata!(uexperiment)
       )
-      |> json_response(403)
+      |> response(401)
     end
 
-    test "update experiment", %{
-      team: team,
-      project: project,
-      experiment: experiment,
-      uexperiment: uexperiment,
-      release: release
-    } do
+    test "update experiment", %{team: team} do
       user = insert(:user)
 
       insert(:team_user, team: team, user: user, role: "write")
 
+      project =
+        insert(
+          :project,
+          team: team,
+          project_owners: [build(:project_owner, user: user)]
+        )
+
+      release = insert(:release, project: project, version: "0.0.1")
+
+      experiment =
+        insert(
+          :experiment,
+          release: release
+        )
+
+      uexperiment = build_experiment(release.id)
+
+      token =
+        ApxrIo.Token.generate_and_sign!(%{
+          "team" => project.team.name,
+          "project" => project.name,
+          "version" => release.version,
+          "exp_id" => experiment.id,
+          "identifier" => "test",
+          "iss" => "apxr_run",
+          "aud" => "apxr_io"
+        })
+
       build_conn()
-      |> put_req_header("authorization", key_for(user))
-      |> json_post(
+      |> put_req_header("token", token)
+      |> put_req_header("content-type", "application/vnd.apxrsh+erlang")
+      |> post(
         "api/repos/#{team.name}/projects/#{project.name}/releases/#{release.version}/experiments/#{
           experiment.id
         }",
-        %{"data" => uexperiment}
+        ErlangFormat.encode_to_iodata!(%{"experiment" => uexperiment})
       )
-      |> json_response(201)
+      |> response(204)
     end
   end
 

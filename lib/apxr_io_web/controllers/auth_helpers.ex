@@ -6,14 +6,38 @@ defmodule ApxrIoWeb.AuthHelpers do
   alias ApxrIo.Repository.{Project, Projects}
   alias ApxrIo.Serve.Artifact
 
+  def authorized(conn, :with_jwt) do
+    [token] = get_req_header(conn, "token")
+    experiment = conn.assigns.experiment
+
+    cond do
+      is_nil(token) ->
+        error(conn, {:error, :invalid})
+
+      is_nil(experiment) ->
+        error(conn, {:error, :invalid})
+
+      not valid_token?(token, experiment) ->
+        error(conn, {:error, :invalid})
+
+      true ->
+        conn
+    end
+  end
+
   def authorized(conn, opts) do
     user_or_team_or_af =
       conn.assigns.current_user || conn.assigns.current_team || conn.assigns.artifact
 
-    if user_or_team_or_af do
-      authorized(conn, user_or_team_or_af, opts[:fun], opts)
-    else
-      error(conn, {:error, :missing})
+    cond do
+      opts[:with_jwt] ->
+        authorized(conn, :with_jwt)
+
+      user_or_team_or_af ->
+        authorized(conn, user_or_team_or_af, opts[:fun], opts)
+
+      true ->
+        error(conn, {:error, :missing})
     end
   end
 
@@ -43,6 +67,16 @@ defmodule ApxrIoWeb.AuthHelpers do
 
       true ->
         conn
+    end
+  end
+
+  defp valid_token?(token, experiment) do
+    case ApxrIo.Token.verify_and_validate(token) do
+      {:ok, %{"iss" => "apxr_run", "aud" => "apxr_io", "exp_id" => eid}} ->
+        if eid == experiment.id, do: true, else: false
+
+      _ ->
+        false
     end
   end
 

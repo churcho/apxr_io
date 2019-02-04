@@ -1,5 +1,6 @@
 @charset "utf-8";
 
+/* General */
 #apxr-hover:hover {
   background-color: #FFF;
   color: #0a0a0a;
@@ -28,5 +29,37 @@
   text-decoration: underline;
 }
 
+::-moz-selection { /* Code for Firefox */
+  color: hsl(0, 0%, 100%);
+  background: hsl(171, 100%, 41%);
+}
 
+/* Selection color */
+::selection {
+  color: hsl(0, 0%, 100%);
+  background: hsl(171, 100%, 41%);
+}
+
+/* Copy buttons */
+button.copybutton {
+  webkit-transition: opacity .3s ease-in-out;
+  -o-transition: opacity .3s ease-in-out;
+  transition: opacity .3s ease-in-out;
+  opacity: 0;
+  padding: 2px 6px;
+  position: absolute;
+  right: 4px;
+  top: 4px;
+}
+div.highlight:hover .copybutton, div.highlight .copybutton:focus {
+  opacity: .3;
+}
+div.highlight .copybutton:hover {
+  opacity: 1;
+}
+div.highlight {
+  position: relative;
+}
+
+/* Framework */
 @import "../node_modules/bulma/bulma.sass";

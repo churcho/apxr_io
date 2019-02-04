@@ -44,12 +44,20 @@ defmodule ApxrIo.Learn.Experiments do
     end
   end
 
-  def update(project, release, experiment, params, audit: audit_data) do
-    Multi.new()
-    |> Multi.update(:experiment, Experiment.update(experiment, params))
-    |> maybe_send_notification_email(experiment.meta.progress, project, release)
-    |> audit_update(audit_data, project, release)
-    |> Repo.transaction(timeout: @timeout)
+  def update(project, release, experiment, params) do
+    result =
+      Multi.new()
+      |> Multi.update(:experiment, Experiment.update(experiment, params))
+      |> Repo.transaction(timeout: @timeout)
+
+    case result do
+      {:error, :experiment, changeset, _} ->
+        {:error, changeset}
+
+      {:ok, %{experiment: experiment}} ->
+        maybe_send_notification_email(experiment, project, release)
+        :ok
+    end
   end
 
   def pause(project, version, experiment, audit: audit_data) do
@@ -90,26 +98,18 @@ defmodule ApxrIo.Learn.Experiments do
     end)
   end
 
-  defp audit_update(multi, audit_data, project, release) do
-    audit(multi, audit_data, "experiment.update", fn %{experiment: exp} ->
-      {project, release, exp}
-    end)
-  end
-
   defp audit_delete(multi, audit_data, project, release) do
     audit(multi, audit_data, "experiment.delete", fn %{experiment: exp} ->
       {project, release, exp}
     end)
   end
 
-  defp maybe_send_notification_email(multi, "complete", project, release) do
-    owners = Enum.map(Owners.all(project, user: :emails), & &1.user)
+  defp maybe_send_notification_email(experiment, project, release) do
+    if experiment.meta.progress == "completed" do
+      owners = Enum.map(Owners.all(project, user: :emails), & &1.user)
 
-    Emails.experiment_complete(project.name, release.version, owners)
-    |> Mailer.deliver_now_throttled()
-
-    multi
+      Emails.experiment_complete(project, release, experiment, owners)
+      |> Mailer.deliver_now_throttled()
+    end
   end
-
-  defp maybe_send_notification_email(multi, _status, _project, _release), do: multi
 end
