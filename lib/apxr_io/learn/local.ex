@@ -10,14 +10,13 @@ defmodule ApxrIo.Learn.Local do
     identifiers = {project, release.version, experiment.meta.exp_parameters["identifier"]}
 
     with {:ok, 204, _h, _b} <- post("/actions/polis/prep", tarball(identifiers), identifiers),
-         {:ok, 204, _h, _b} <-
-           post("/actions/polis/setup", config(identifiers, release), identifiers),
+         {:ok, 204, _h, _b} <- post("/actions/polis/setup", config(identifiers, release), identifiers),
          {:ok, 204, _h, _b} <- post("/actions/experiment/start", <<>>, identifiers) do
       AuditLog.audit(Multi.new(), audit_data, "experiment.start", identifiers)
       {:ok, %{experiment: experiment}}
     else
-      {:ok, _error, _headers, body} ->
-        {:error, body}
+      {:ok, error, _headers, _body} ->
+        {:error, [{:error, "created but failed to start experiment: #{error}"}]}
     end
   end
 

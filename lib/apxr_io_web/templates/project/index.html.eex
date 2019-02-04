@@ -4,7 +4,7 @@
     <%= if @project_count == 0 do %>
       <div>
         <h6 class="subtitle is-6">No projects found. Create a project <a href="<%= Routes.docs_path(Endpoint, :faq) %>">via the CLI</a> to get started.</h6>
-        <h6 class="subtitle is-6">If you have just registered via the CLI, you can <a href="<%= Routes.settings_key_path(Endpoint, :index) %>">create an API write key</a> to authenticate.</h6>
+        <h6 class="subtitle is-6">If you have just registered via the CLI, you can <a href="<%= Routes.settings_key_path(Endpoint, :index) %>">create an API write key here</a> to authenticate to your device.</h6>
         <h6 class="subtitle is-6"><strong>NOTE: </strong>You need to <a href="<%= Routes.team_path(Endpoint, :new) %>">create a team</a> before you can create your first project.</h6>
       </div>
     <% else %>
