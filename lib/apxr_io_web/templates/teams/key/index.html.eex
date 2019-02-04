@@ -27,16 +27,9 @@
               <td>
                 <small>
                   <%= if last_use = key.last_use do %>
-                    <a
-                      tabindex="0"
-                      role="button"
-                      data-toggle="popover"
-                      data-trigger="focus"
-                      data-placement="bottom"
-                      title="Last use"
-                      data-content="<strong>Used at:</strong> <%= last_use.used_at %><br><strong>IP:</strong> <%= last_use.ip %><br><strong>User agent:</strong> <%= last_use.user_agent %>">
-                        <%= pretty_datetime(last_use.used_at) %> ...
-                    </a>
+                    <div>
+                      <%= last_use.used_at %> <strong>IP:</strong> <%= last_use.ip %><strong> UA:</strong> <%= last_use.user_agent %>
+                    </div>
                   <% end %>
                 </small>
               </td>

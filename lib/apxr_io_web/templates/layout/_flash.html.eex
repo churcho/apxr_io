@@ -18,7 +18,7 @@
     </div>
   <% end %>
   <%= if flash = get_flash(@conn, :success) do %>
-    <div class="notification is-success">
+    <div class="notification is-black">
       <button class="delete notification-delete" style="top: auto;"></button>
       <%= flash %>
     </div>

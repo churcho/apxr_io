@@ -30,7 +30,7 @@ defmodule ApxrIoWeb.Teams.KeyControllerTest do
         |> post("/teams/#{c.team.name}/keys", %{key: %{name: "computer"}})
 
       assert redirected_to(conn) == "/teams/#{c.team.name}/keys"
-      assert get_flash(conn, :info) =~ "Success! Copy the secret"
+      assert get_flash(conn, :info) =~ "Copy the secret"
     end
   end
 

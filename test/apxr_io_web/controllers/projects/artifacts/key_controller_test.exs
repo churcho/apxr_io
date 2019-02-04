@@ -64,7 +64,7 @@ defmodule ApxrIoWeb.Projects.Artifacts.KeyControllerTest do
       assert redirected_to(conn) ==
                "/projects/#{c.project.name}/artifacts/#{c.artifact.name}/keys"
 
-      assert get_flash(conn, :info) =~ "Success! Copy the secret"
+      assert get_flash(conn, :info) =~ "Copy the secret"
     end
   end
 

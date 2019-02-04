@@ -14,8 +14,7 @@ defmodule ApxrIoWeb.Settings.KeyController do
     case Keys.create(user, key_params, audit: audit_data(conn)) do
       {:ok, %{key: key}} ->
         flash =
-          "Success! " <>
-            "Copy the secret \"#{key.user_secret}\". You won't be able to see it again."
+          "Copy the secret \"#{key.user_secret}\". You won't be able to see it again."
 
         conn
         |> put_flash(:info, flash)
