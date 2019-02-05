@@ -182,7 +182,7 @@ finish_unpack(#{metadata := Metadata, files := Files, output := Output}) ->
 	end.
 
 copy_metadata_config(Output, MetadataBinary) ->
-	ok = file:write_file(filename:join(Output, "apxr_metadata.config"), MetadataBinary).
+	ok = file:write_file(filename:join(Output, "apxr_sh_metadata.config"), MetadataBinary).
 
 check_files(#{files := Files} = State) ->
 	RequiredFiles = ["VERSION", "CHECKSUM", "metadata.config", "contents.tar.gz"],

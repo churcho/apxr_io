@@ -8,9 +8,11 @@ defmodule ApxrIo.Learn.Local do
 
   def start(project, release, experiment, audit: audit_data) do
     identifiers = {project, release.version, experiment.meta.exp_parameters["identifier"]}
+    tarball = tarball(release)
+    config = config(experiment, release)
 
-    with {:ok, 204, _h, _b} <- post("/actions/polis/prep", tarball(identifiers), identifiers),
-         {:ok, 204, _h, _b} <- post("/actions/polis/setup", config(identifiers, release), identifiers),
+    with {:ok, 204, _h, _b} <- post("/actions/polis/prep", tarball, identifiers),
+         {:ok, 204, _h, _b} <- post("/actions/polis/setup", config, identifiers),
          {:ok, 204, _h, _b} <- post("/actions/experiment/start", <<>>, identifiers) do
       AuditLog.audit(Multi.new(), audit_data, "experiment.start", identifiers)
       {:ok, %{experiment: experiment}}
@@ -121,31 +123,27 @@ defmodule ApxrIo.Learn.Local do
     end)
   end
 
-  defp config({project, version, identifier}, release) do
-    experiment = Experiments.get(project, version, identifier)
-
+  defp config(experiment, release) do
     exp_parameters =
       experiment.meta.exp_parameters
       |> Map.merge(%{build_tool: release.meta.build_tool})
 
-    %{
-      exp_parameters: exp_parameters,
-      pm_parameters: experiment.meta.pm_parameters,
-      init_constraints: experiment.meta.init_constraints
+    {
+      :config,
+      %{
+        exp_parameters: exp_parameters,
+        pm_parameters: experiment.meta.pm_parameters,
+        init_constraints: experiment.meta.init_constraints
+      }
     }
   end
 
-  defp tarball({project, version, _identifier}) do
-    ApxrIo.Store.get(nil, :s3_bucket, tarball_store_key(project, version), [])
-  end
-
-  defp tarball_store_key(project, version) do
-    "#{repository_store_key(project)}tarballs/#{project.name}-#{version}.tar"
-  end
-
-  defp repository_store_key(project) do
-    team = Teams.get_by_id(project.team_id)
-
-    "repos/#{team.name}/"
+  defp tarball(release) do
+    [_, _, _, {"contents.tar.gz", tarball_compressed}] = ApxrIo.Assets.get(release)
+    
+    {
+      :tarball,
+      tarball_compressed
+    }
   end
 end

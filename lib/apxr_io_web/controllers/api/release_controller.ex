@@ -1,7 +1,6 @@
 defmodule ApxrIoWeb.API.ReleaseController do
   use ApxrIoWeb, :controller
 
-  plug :parse_tarball when action in [:publish]
   plug :maybe_fetch_release when action in [:show, :tarball]
   plug :fetch_release when action in [:delete]
   plug :maybe_fetch_project when action in [:create, :publish]
@@ -19,39 +18,51 @@ defmodule ApxrIoWeb.API.ReleaseController do
        when action in [:delete]
 
   def publish(conn, %{"body" => body}) do
-    request_id = List.first(get_resp_header(conn, "x-request-id"))
+    case release_metadata(body) do
+      {:ok, meta, checksum} ->
+        params = Map.put(conn.params, "name", meta["name"])
+        conn = %{conn | params: params}
 
-    log_tarball(
-      conn.assigns.team.name,
-      conn.assigns.meta["name"],
-      conn.assigns.meta["version"],
-      request_id,
-      body
-    )
+        # TODO: pass around and store in DB as binary instead
+        checksum = :apxr_tarball.format_checksum(checksum)
 
-    # TODO: pass around and store in DB as binary instead
-    checksum = :apxr_tarball.format_checksum(conn.assigns.checksum)
+        Releases.publish(
+          conn.assigns.team,
+          conn.assigns.project,
+          conn.assigns.current_user,
+          body,
+          meta,
+          checksum,
+          audit: audit_data(conn)
+        )
+        |> handle_result(conn)
 
-    Releases.publish(
-      conn.assigns.team,
-      conn.assigns.project,
-      conn.assigns.current_user,
-      body,
-      conn.assigns.meta,
-      checksum,
-      audit: audit_data(conn)
-    )
-    |> publish_result(conn)
+      {:error, errors} ->
+        validation_failed(conn, %{tar: errors})
+    end
   end
 
   def create(conn, %{"body" => body}) do
-    handle_tarball(
-      conn,
-      conn.assigns.team,
-      conn.assigns.project,
-      conn.assigns.current_user,
-      body
-    )
+    case release_metadata(body) do
+      {:ok, meta, checksum} ->
+
+        # TODO: pass around and store in DB as binary instead
+        checksum = :apxr_tarball.format_checksum(checksum)
+
+        Releases.publish(
+          conn.assigns.team,,
+          conn.assigns.project,
+          conn.assigns.current_user,
+          body,
+          meta,
+          checksum,
+          audit: audit_data(conn)
+        )
+
+      {:error, errors} ->
+        {:error, %{tar: errors}}
+    end
+    |> handle_result(conn)
   end
 
   def show(conn, _params) do
@@ -66,9 +77,9 @@ defmodule ApxrIoWeb.API.ReleaseController do
     end
   end
 
-  def tarball(conn, %{"repository" => repository, "ball" => ball}) do
+  def tarball(conn, _params) do
     if conn.assigns.release do
-      tarball = ApxrIo.Store.get(nil, :s3_bucket, "repos/#{repository}/tarballs/#{ball}", [])
+      tarball = Assets.get_release(release)
 
       conn
       |> api_cache(:private)
@@ -93,75 +104,30 @@ defmodule ApxrIoWeb.API.ReleaseController do
     end
   end
 
-  defp parse_tarball(conn, _opts) do
-    case release_metadata(conn.params["body"]) do
-      {:ok, meta, checksum} ->
-        params = Map.put(conn.params, "name", meta["name"])
-
-        %{conn | params: params}
-        |> assign(:meta, meta)
-        |> assign(:checksum, checksum)
-
-      {:error, errors} ->
-        validation_failed(conn, %{tar: errors})
-    end
-  end
-
-  defp handle_tarball(conn, team, project, user, body) do
-    case release_metadata(body) do
-      {:ok, meta, checksum} ->
-        request_id = List.first(get_resp_header(conn, "x-request-id"))
-        log_tarball(team.name, meta["name"], meta["version"], request_id, body)
-
-        # TODO: pass around and store in DB as binary instead
-        checksum = :apxr_tarball.format_checksum(checksum)
-
-        Releases.publish(
-          team,
-          project,
-          user,
-          body,
-          meta,
-          checksum,
-          audit: audit_data(conn)
-        )
-
-      {:error, errors} ->
-        {:error, %{tar: errors}}
-    end
-    |> publish_result(conn)
-  end
-
-  defp publish_result({:ok, %{action: :insert, project: _project, release: release}}, conn) do
+  defp handle_result({:ok, %{action: :insert, project: _project, release: release}}, conn) do
     conn
     |> api_cache(:private)
     |> put_status(201)
     |> render(:show, release: release)
   end
 
-  defp publish_result({:ok, %{action: :update, release: release}}, conn) do
+  defp handle_result({:ok, %{action: :update, release: release}}, conn) do
     conn
     |> api_cache(:private)
     |> render(:show, release: release)
   end
 
-  defp publish_result({:error, errors}, conn) do
+  defp handle_result({:error, errors}, conn) do
     validation_failed(conn, errors)
   end
 
-  defp publish_result({:error, _, changeset, _}, conn) do
+  defp handle_result({:error, _, changeset, _}, conn) do
     validation_failed(conn, changeset)
-  end
-
-  defp log_tarball(team, project, version, request_id, body) do
-    filename = "#{team}-#{project}-#{version}-#{request_id}.tar.gz"
-    key = Path.join(["debug", "tarballs", filename])
-    ApxrIo.Store.put(nil, :s3_bucket, key, body, [])
   end
 
   defp release_metadata(tarball) do
     case :apxr_tarball.unpack(tarball, :memory) do
-      {:ok, %{checksum: checksum, metadata: metadata}} ->
+      {:ok, %{checksum: checksum, metadata: metadata, contents: _}} ->
         {:ok, metadata, checksum}
 
       {:error, reason} ->

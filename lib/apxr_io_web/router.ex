@@ -171,7 +171,7 @@ defmodule ApxrIoWeb.Router do
         get "/projects/:name", ProjectController, :show
 
         get "/projects/:name/releases/:version", ReleaseController, :show
-        get "/projects/:name/releases/:version/tarballs/:ball", ReleaseController, :tarball
+        get "/projects/:name/releases/:version/tarball", ReleaseController, :tarball
         delete "/projects/:name/releases/:version", ReleaseController, :delete
 
         post "/projects/:name/releases/:version/retire", RetirementController, :create

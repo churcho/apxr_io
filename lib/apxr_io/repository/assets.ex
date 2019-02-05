@@ -7,6 +7,10 @@ defmodule ApxrIo.Repository.Assets do
     ApxrIo.Store.put(nil, :s3_bucket, tarball_store_key(release), body, opts)
   end
 
+  def get_release(release) do
+    ApxrIo.Store.get(nil, :s3_bucket, tarball_store_key(release), [])
+  end
+
   def revert_release(release) do
     ApxrIo.Store.delete(nil, :s3_bucket, tarball_store_key(release))
   end
