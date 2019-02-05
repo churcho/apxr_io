@@ -140,11 +140,9 @@ defmodule ApxrIo.Learn.ApxrRun do
   end
 
   defp tarball(release) do
-    [_, _, _, {"contents.tar.gz", tarball_compressed}] = Assets.get_release(release)
-    
     {
       :tarball,
-      tarball_compressed
+      Assets.get_release(release)
     }
   end
 end

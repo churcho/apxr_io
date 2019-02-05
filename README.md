@@ -105,6 +105,16 @@ IEx.pry
 ```
 
 --------------------
+### Debugging
+
+For example:
+
+```
+t = Teams.get("apxr")
+ApxrIo.Repo.update!(change(t, billing_active: true))
+```
+
+--------------------
 ### Additional checks
 
 1. Run `mix format`

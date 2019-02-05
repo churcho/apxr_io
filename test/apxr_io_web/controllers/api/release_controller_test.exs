@@ -2,7 +2,7 @@ defmodule ApxrIoWeb.API.ReleaseControllerTest do
   use ApxrIoWeb.ConnCase, async: true
 
   alias ApxrIo.Accounts.AuditLog
-  alias ApxrIo.Repository.{Project, Release}
+  alias ApxrIo.Repository.Project
 
   setup do
     user = insert(:user)
@@ -31,12 +31,6 @@ defmodule ApxrIoWeb.API.ReleaseControllerTest do
         version: "1.0.0",
         description: "Domain-specific language."
       }
-
-      build_conn()
-      |> put_req_header("content-type", "application/octet-stream")
-      |> put_req_header("authorization", key_for(user))
-      |> post("api/repos/#{team.name}/publish", create_tar(meta, []))
-      |> json_response(403)
 
       build_conn()
       |> put_req_header("content-type", "application/octet-stream")
@@ -152,84 +146,7 @@ defmodule ApxrIoWeb.API.ReleaseControllerTest do
 
       assert result["errors"]["name"] == "has already been taken"
     end
-  end
-
-  describe "POST /api/repos/:repository/publish" do
-    test "create release and new project", %{user: user, team: team} do
-      insert(:team_user, team: team, user: user, role: "admin")
-
-      meta = %{
-        name: Fake.sequence(:project),
-        version: "1.0.0",
-        description: "Domain-specific language."
-      }
-
-      build_conn()
-      |> put_req_header("content-type", "application/octet-stream")
-      |> put_req_header("authorization", key_for(user))
-      |> post("api/repos/#{team.name}/publish", create_tar(meta, []))
-      |> json_response(201)
-
-      project = ApxrIo.Repo.get_by!(Project, name: meta.name)
-      project_owner = ApxrIo.Repo.one!(assoc(project, :owners))
-      assert project_owner.id == user.id
-
-      log = ApxrIo.Repo.one!(AuditLog)
-      assert log.user_id == user.id
-      assert log.team_id == team.id
-      assert log.action == "release.publish"
-      assert log.params["project"]["name"] == meta.name
-      assert log.params["release"]["version"] == "1.0.0"
-    end
-
-    test "create release authorizes existing project", %{team: team, project: project} do
-      other_user = insert(:user)
-
-      meta = %{name: project.name, version: "0.1.0", description: "description"}
-
-      build_conn()
-      |> put_req_header("content-type", "application/octet-stream")
-      |> put_req_header("authorization", key_for(other_user))
-      |> post("api/repos/#{team.name}/publish", create_tar(meta, []))
-      |> json_response(403)
-
-      build_conn()
-      |> put_req_header("content-type", "application/octet-stream")
-      |> put_req_header("authorization", "WRONG")
-      |> post("api/repos/#{team.name}/publish", create_tar(meta, []))
-      |> json_response(401)
-    end
-
-    test "update project authorizes", %{team: team, project: project} do
-      meta = %{name: project.name, version: "1.0.0", description: "Domain-specific language."}
-
-      build_conn()
-      |> put_req_header("content-type", "application/octet-stream")
-      |> put_req_header("authorization", "WRONG")
-      |> post("api/repos/#{team.name}/publish", create_tar(meta, []))
-      |> json_response(401)
-    end
-
-    test "create project validates", %{user: user, team: team} do
-      insert(:team_user, team: team, user: user, role: "admin")
-
-      meta = %{
-        name: Fake.sequence(:project),
-        version: "1.0.0",
-        links: "invalid",
-        description: "description"
-      }
-
-      result =
-        build_conn()
-        |> put_req_header("content-type", "application/octet-stream")
-        |> put_req_header("authorization", key_for(user))
-        |> post("api/repos/#{team.name}/publish", create_tar(meta, []))
-        |> json_response(422)
-
-      assert result["errors"]["meta"]["links"] == "expected type map(string)"
-    end
-
+  
     test "create project casts proplist metadata", %{user: user, team: team} do
       meta = %{
         name: Fake.sequence(:project),
@@ -244,47 +161,12 @@ defmodule ApxrIoWeb.API.ReleaseControllerTest do
       build_conn()
       |> put_req_header("content-type", "application/octet-stream")
       |> put_req_header("authorization", key_for(user))
-      |> post("api/repos/#{team.name}/publish", create_tar(meta, []))
+      |> post("api/repos/#{team.name}/projects/#{meta.name}/releases", create_tar(meta, []))
       |> json_response(201)
       
       project = ApxrIo.Repo.get_by!(Project, name: meta.name)
       assert project.meta.links == %{"link" => "http://localhost"}
       assert project.meta.extra == %{"key" => "value"}
-    end
-
-    test "create releases", %{user: user, team: team} do
-      insert(:team_user, team: team, user: user, role: "admin")
-
-      meta = %{
-        name: Fake.sequence(:project),
-        app: "other",
-        version: "0.0.1",
-        description: "description"
-      }
-
-      build_conn()
-      |> put_req_header("content-type", "application/octet-stream")
-      |> put_req_header("authorization", key_for(user))
-      |> post("api/repos/#{team.name}/publish", create_tar(meta, []))
-      |> json_response(201)
-
-      meta = %{name: meta.name, version: "0.0.2", description: "description"}
-
-      build_conn()
-      |> put_req_header("content-type", "application/octet-stream")
-      |> put_req_header("authorization", key_for(user))
-      |> post("api/repos/#{team.name}/projects/#{meta.name}/releases", create_tar(meta, []))
-      |> json_response(201)
-
-      project = ApxrIo.Repo.get_by!(Project, name: meta.name)
-      project_id = project.id
-
-      assert [
-               %Release{project_id: ^project_id, version: %Version{major: 0, minor: 0, patch: 2}},
-               %Release{project_id: ^project_id, version: %Version{major: 0, minor: 0, patch: 1}}
-             ] = Release.all(project) |> ApxrIo.Repo.all() |> Release.sort()
-
-      ApxrIo.Repo.get_by!(assoc(project, :releases), version: "0.0.1")
     end
 
     test "create release also creates project", %{user: user, team: team} do
@@ -295,37 +177,13 @@ defmodule ApxrIoWeb.API.ReleaseControllerTest do
       build_conn()
       |> put_req_header("content-type", "application/octet-stream")
       |> put_req_header("authorization", key_for(user))
-      |> post("api/repos/#{team.name}/publish", create_tar(meta, []))
+      |> post("api/repos/#{team.name}/projects/#{meta.name}/releases", create_tar(meta, []))
       |> json_response(201)
 
       ApxrIo.Repo.get_by!(Project, name: meta.name)
     end
 
-    test "update release", %{user: user, team: team} do
-      insert(:team_user, team: team, user: user, role: "admin")
-
-      meta = %{name: Fake.sequence(:project), version: "0.0.1", description: "description"}
-
-      build_conn()
-      |> put_req_header("content-type", "application/octet-stream")
-      |> put_req_header("authorization", key_for(user))
-      |> post("api/repos/#{team.name}/publish", create_tar(meta, []))
-      |> json_response(201)
-
-      build_conn()
-      |> put_req_header("content-type", "application/octet-stream")
-      |> put_req_header("authorization", key_for(user))
-      |> post("api/repos/#{team.name}/projects/#{meta.name}/releases", create_tar(meta, []))
-      |> json_response(200)
-
-      project = ApxrIo.Repo.get_by!(Project, name: meta.name)
-      ApxrIo.Repo.get_by!(assoc(project, :releases), version: "0.0.1")
-
-      assert [%AuditLog{action: "release.publish"}, %AuditLog{action: "release.publish"}] =
-               ApxrIo.Repo.all(AuditLog)
-    end
-
-    test "new project requries write permission", %{user: user, team: team} do
+    test "new project requires write permission", %{user: user, team: team} do
       insert(:team_user, team: team, user: user, role: "read")
 
       meta = %{
@@ -337,7 +195,7 @@ defmodule ApxrIoWeb.API.ReleaseControllerTest do
       build_conn()
       |> put_req_header("content-type", "application/octet-stream")
       |> put_req_header("authorization", key_for(user))
-      |> post("api/repos/#{team.name}/publish", create_tar(meta, []))
+      |> post("api/repos/#{team.name}/projects/#{meta.name}/releases", create_tar(meta, []))
       |> json_response(403)
 
       refute ApxrIo.Repo.get_by(Project, name: meta.name)
@@ -357,7 +215,7 @@ defmodule ApxrIoWeb.API.ReleaseControllerTest do
       build_conn()
       |> put_req_header("content-type", "application/octet-stream")
       |> put_req_header("authorization", key_for(user))
-      |> post("api/repos/#{team.name}/publish", create_tar(meta, []))
+      |> post("api/repos/#{team.name}/projects/#{meta.name}/releases", create_tar(meta, []))
       |> json_response(403)
 
       refute ApxrIo.Repo.get_by(Project, name: meta.name)

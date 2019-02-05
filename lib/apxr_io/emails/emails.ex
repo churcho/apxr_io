@@ -68,7 +68,7 @@ defmodule ApxrIo.Emails do
   end
 
   defp source() do
-    host = Application.get_env(:apxr_io, :email_host) || "approximatereality"
-    {"approximatereality", "noreply@#{host}"}
+    host = Application.get_env(:apxr_io, :email_host) || "approximatereality.com"
+    {"APXR", "noreply@#{host}"}
   end
 end

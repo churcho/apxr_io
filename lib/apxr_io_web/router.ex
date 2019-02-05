@@ -142,7 +142,6 @@ defmodule ApxrIoWeb.Router do
 
     for prefix <- ["/repos/:repository"] do
       scope prefix do
-        post "/publish", ReleaseController, :publish
         post "/projects/:name/releases", ReleaseController, :create
 
         post "/projects/:name/releases/:version/experiments", ExperimentController, :create

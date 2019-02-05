@@ -3,7 +3,7 @@ defmodule ApxrIoWeb.API.ReleaseController do
 
   plug :maybe_fetch_release when action in [:show, :tarball]
   plug :fetch_release when action in [:delete]
-  plug :maybe_fetch_project when action in [:create, :publish]
+  plug :maybe_fetch_project when action in [:create]
 
   plug :authorize,
        [domain: "api", resource: "read", fun: &team_access/2]
@@ -11,36 +11,11 @@ defmodule ApxrIoWeb.API.ReleaseController do
 
   plug :authorize,
        [domain: "api", resource: "write", fun: [&maybe_project_owner/2, &team_billing_active/2]]
-       when action in [:create, :publish]
+       when action in [:create]
 
   plug :authorize,
        [domain: "api", resource: "write", fun: [&project_owner/2, &team_billing_active/2]]
        when action in [:delete]
-
-  def publish(conn, %{"body" => body}) do
-    case release_metadata(body) do
-      {:ok, meta, checksum} ->
-        params = Map.put(conn.params, "name", meta["name"])
-        conn = %{conn | params: params}
-
-        # TODO: pass around and store in DB as binary instead
-        checksum = :apxr_tarball.format_checksum(checksum)
-
-        Releases.publish(
-          conn.assigns.team,
-          conn.assigns.project,
-          conn.assigns.current_user,
-          body,
-          meta,
-          checksum,
-          audit: audit_data(conn)
-        )
-        |> handle_result(conn)
-
-      {:error, errors} ->
-        validation_failed(conn, %{tar: errors})
-    end
-  end
 
   def create(conn, %{"body" => body}) do
     case release_metadata(body) do
