@@ -1,6 +1,6 @@
 defmodule ApxrIo.Learn.Local do
-  alias ApxrIo.Accounts.{AuditLog, Teams}
-  alias ApxrIo.Learn.Experiments
+  alias ApxrIo.Accounts.AuditLog
+  alias ApxrIo.Repository.Assets
   alias ApxrIoWeb.ErlangFormat
   alias Ecto.Multi
 
@@ -139,7 +139,7 @@ defmodule ApxrIo.Learn.Local do
   end
 
   defp tarball(release) do
-    [_, _, _, {"contents.tar.gz", tarball_compressed}] = ApxrIo.Assets.get(release)
+    [_, _, _, {"contents.tar.gz", tarball_compressed}] = Assets.get_release(release)
     
     {
       :tarball,

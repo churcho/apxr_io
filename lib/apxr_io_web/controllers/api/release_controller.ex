@@ -50,7 +50,7 @@ defmodule ApxrIoWeb.API.ReleaseController do
         checksum = :apxr_tarball.format_checksum(checksum)
 
         Releases.publish(
-          conn.assigns.team,,
+          conn.assigns.team,
           conn.assigns.project,
           conn.assigns.current_user,
           body,
@@ -78,7 +78,7 @@ defmodule ApxrIoWeb.API.ReleaseController do
   end
 
   def tarball(conn, _params) do
-    if conn.assigns.release do
+    if release = conn.assigns.release do
       tarball = Assets.get_release(release)
 
       conn

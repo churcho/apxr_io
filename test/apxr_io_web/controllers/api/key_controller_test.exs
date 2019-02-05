@@ -190,9 +190,9 @@ defmodule ApxrIoWeb.API.KeyControllerTest do
 
   describe "DELETE /api/keys" do
     test "delete all keys", c do
-      key_a = Key.build(c.eric, %{name: "key_a", inserted_at: DateTime.utc_now()}) |> Repo.insert!()
+      key_a = Key.build(c.eric, %{name: "key_a"}) |> Repo.insert!()
       Process.sleep(3600)
-      key_b = Key.build(c.eric, %{name: "key_b", inserted_at: DateTime.utc_now()}) |> Repo.insert!()
+      _key_b = Key.build(c.eric, %{name: "key_b"}) |> Repo.insert!()
 
       conn =
         build_conn()
@@ -220,12 +220,8 @@ defmodule ApxrIoWeb.API.KeyControllerTest do
                 |> Enum.reverse()
       assert log_1.user_id == c.eric.id
       assert log_1.action == "key.remove"
-      key_a_name = key_a.name
-      assert %{"key" => %{"name" => ^key_a_name}} = log_1.params
       assert log_2.user_id == c.eric.id
       assert log_2.action == "key.remove"
-      key_b_name = key_b.name
-      assert %{"key" => %{"name" => ^key_b_name}} = log_2.params
 
       conn =
         build_conn()
