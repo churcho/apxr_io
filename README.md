@@ -111,7 +111,7 @@ For example:
 
 ```
 t = Teams.get("apxr")
-ApxrIo.Repo.update!(change(t, billing_active: true))
+ApxrIo.Repo.update!(Ecto.Changeset.change(t, billing_active: true))
 ```
 
 --------------------

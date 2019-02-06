@@ -292,7 +292,7 @@ unpack_tarball(ContentsBinary, memory) ->
 unpack_tarball(ContentsBinary, Output) ->
 	case apxr_erl_tar:extract({binary, ContentsBinary}, [{cwd, Output}, compressed]) of
 		ok ->
-			[try_updating_mtime(filename:join(Output, Path)) || Path <- filelib:wildcard("**", Output)],
+			%[try_updating_mtime(filename:join(Output, Path)) || Path <- filelib:wildcard("**", Output)],
 			ok;
 		Other ->
 			Other

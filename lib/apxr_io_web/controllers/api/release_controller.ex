@@ -101,8 +101,11 @@ defmodule ApxrIoWeb.API.ReleaseController do
   end
 
   defp release_metadata(tarball) do
-    case :apxr_tarball.unpack(tarball, :memory) do
-      {:ok, %{checksum: checksum, metadata: metadata, contents: _}} ->
+    tmp_dir = Path.join([File.cwd!, "tmp/tarballs"])
+
+    case :apxr_tarball.unpack(tarball, tmp_dir) do
+      {:ok, %{checksum: checksum, metadata: metadata}} ->
+        File.rm_rf(tmp_dir)
         {:ok, metadata, checksum}
 
       {:error, reason} ->
