@@ -93,7 +93,7 @@ defmodule ApxrIoWeb.API.ReleaseController do
   end
 
   defp handle_result({:error, errors}, conn) do
-    validation_failed(conn, errors)
+    render_error(conn, 400, errors: errors)
   end
 
   defp handle_result({:error, _, changeset, _}, conn) do

@@ -12,11 +12,11 @@ defmodule ApxrIo.Learn.Local do
     config = config(experiment, release)
 
     with {:ok, 204, _h, _b} <- post("/actions/polis/prep", tarball, identifiers),
-         :ok <- :timer.sleep(500),
+         :ok <- :timer.sleep(100),
          {:ok, 204, _h, _b} <- post("/actions/polis/setup", config, identifiers),
-         :ok <- :timer.sleep(500),
+         :ok <- :timer.sleep(100),
          {:ok, 204, _h, _b} <- post("/actions/experiment/start", <<>>, identifiers) do
-      AuditLog.audit(Multi.new(), audit_data, "experiment.start", identifiers)
+      AuditLog.audit(Multi.new(), audit_data, "experiment.start", {project, release, experiment})
       {:ok, %{experiment: experiment}}
     else
       {:ok, error, _headers, _body} ->

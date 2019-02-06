@@ -12,9 +12,11 @@ defmodule ApxrIo.Learn.ApxrRun do
     config = config(experiment, release)
 
     with {:ok, 204, _h, _b} <- post("/actions/polis/prep", tarball, identifiers),
+         :ok <- :timer.sleep(100),
          {:ok, 204, _h, _b} <- post("/actions/polis/setup", config, identifiers),
+         :ok <- :timer.sleep(100),
          {:ok, 204, _h, _b} <- post("/actions/experiment/start", <<>>, identifiers) do
-      AuditLog.audit(Multi.new(), audit_data, "experiment.start", identifiers)
+      AuditLog.audit(Multi.new(), audit_data, "experiment.start", {project, release, experiment})
       {:ok, %{experiment: experiment}}
     else
       {:ok, error, _headers, _body} ->
@@ -68,7 +70,6 @@ defmodule ApxrIo.Learn.ApxrRun do
   end
 
   def delete(_project, _version, _identifier, audit: _audit_data) do
-    # TODO - delete snapshot/backup
     :ok
   end
 
