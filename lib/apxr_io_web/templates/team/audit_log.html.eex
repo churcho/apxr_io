@@ -69,15 +69,6 @@
                   <a class="pagination-link" aria-label="Goto page <%=counter%>" href="<%= Routes.team_path(Endpoint, :audit_log, @team, params(page: counter)) %>"><%=counter%></a>
                 </li>
               <% end %>
-              <%= if shown_audit_logs == 1 do %>
-                <li>
-                  <span class="pagination-ellipsis">Showing last log of <%= @audit_log_count %> total</span>
-                </li>
-              <% else %>
-                <li>
-                  <span class="pagination-ellipsis">Showing <%= range_start %>&ndash;<%= range_end %> logs of <%= @audit_log_count %> total</span>
-                </li>
-              <% end %>
             <% end %>
           </ul>
         </nav>

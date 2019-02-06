@@ -72,12 +72,12 @@
       <br />
       <nav class="pagination" role="navigation" aria-label="pagination">
         <%= if paginate[:prev] do %>
-          <a class="pagination-previous" href="<%= Routes.experiment_path(Endpoint, :index, @experiment.project, prev_page_params) %>">Previous</a>
+          <a class="pagination-previous" href="<%= Routes.experiment_path(Endpoint, :index, @project, prev_page_params) %>">Previous</a>
         <% else %>
           <a class="pagination-previous" disabled>Previous</a>
         <% end %>
         <%= if paginate[:next] do %>
-          <a class="pagination-next" href="<%= Routes.experiment_path(Endpoint, :index, @experiment.project, next_page_params) %>">Next</a>
+          <a class="pagination-next" href="<%= Routes.experiment_path(Endpoint, :index, @project, next_page_params) %>">Next</a>
         <% else %>
           <a class="pagination-next" disabled>Next</a>
         <% end %>
@@ -89,16 +89,7 @@
               </li>
             <% else %>
               <li>
-                <a class="pagination-link" aria-label="Goto page <%=counter%>" href="<%= Routes.experiment_path(Endpoint, :index, @experiment.project, params(page: counter, sort: @sort)) %>"><%=counter%></a>
-              </li>
-            <% end %>
-            <%= if shown_experiments == 1 do %>
-              <li>
-                <span class="pagination-ellipsis">Showing last experiment of <%= @experiment_count %> total</span>
-              </li>
-            <% else %>
-              <li>
-                <span class="pagination-ellipsis">Showing <%= range_start %>&ndash;<%= range_end %> experiments of <%= @experiment_count %> total</span>
+                <a class="pagination-link" aria-label="Goto page <%=counter%>" href="<%= Routes.experiment_path(Endpoint, :index, @project, params(page: counter, sort: @sort)) %>"><%=counter%></a>
               </li>
             <% end %>
           <% end %>

@@ -89,15 +89,6 @@
                 <a class="pagination-link" aria-label="Goto page <%=counter%>" href="<%= Routes.project_path(Endpoint, :index, params(page: counter, sort: @sort)) %>"><%=counter%></a>
               </li>
             <% end %>
-            <%= if shown_projects == 1 do %>
-              <li>
-                <span class="pagination-ellipsis">Showing last project of <%= @project_count %> total</span>
-              </li>
-            <% else %>
-              <li>
-                <span class="pagination-ellipsis">Showing <%= range_start %>&ndash;<%= range_end %> projects of <%= @project_count %> total</span>
-              </li>
-            <% end %>
           <% end %>
         </ul>
       </nav>
