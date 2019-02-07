@@ -92,6 +92,10 @@ defmodule ApxrIoWeb.API.ReleaseController do
     |> render(:show, release: release)
   end
 
+  defp handle_result({:error, %Ecto.Changeset{} = changeset}, conn) do
+    validation_failed(conn, changeset)
+  end
+
   defp handle_result({:error, errors}, conn) do
     render_error(conn, 400, errors: errors)
   end

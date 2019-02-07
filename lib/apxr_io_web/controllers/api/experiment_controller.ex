@@ -14,11 +14,15 @@ defmodule ApxrIoWeb.API.ExperimentController do
 
   plug :authorize,
        [domain: "api", resource: "write", fun: [&maybe_project_owner/2, &team_billing_active/2]]
-       when action in [:create, :update, :pause, :continue, :stop]
+       when action in [:create, :pause, :continue, :stop]
 
   plug :authorize,
        [domain: "api", resource: "write", fun: [&project_owner/2, &team_billing_active/2]]
        when action in [:delete]
+
+  plug :authorize,
+       [with_jwt: true]
+       when action in [:update]
 
   @sort_params ~w(version inserted_at)
 
@@ -123,6 +127,10 @@ defmodule ApxrIoWeb.API.ExperimentController do
     conn
     |> api_cache(:private)
     |> send_resp(204, Jason.encode!(%{}))
+  end
+
+  defp handle_result({:error, %Ecto.Changeset{} = changeset}, conn) do
+    validation_failed(conn, changeset)
   end
 
   defp handle_result({:error, errors}, conn) do

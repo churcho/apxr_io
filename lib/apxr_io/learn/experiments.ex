@@ -44,11 +44,10 @@ defmodule ApxrIo.Learn.Experiments do
     end
   end
 
-  def update(project, release, experiment, params, audit: audit_data) do
+  def update(project, release, experiment, params, _audit) do
     Multi.new()
     |> Multi.update(:experiment, Experiment.update(experiment, params))
     |> maybe_send_notification_email(experiment.meta.progress, project, release)
-    |> audit_update(audit_data, project, release)
     |> Repo.transaction(timeout: @timeout)
   end
 
@@ -86,12 +85,6 @@ defmodule ApxrIo.Learn.Experiments do
 
   defp audit_create(multi, audit_data, project, release) do
     audit(multi, audit_data, "experiment.create", fn %{experiment: exp} ->
-      {project, release, exp}
-    end)
-  end
-
-  defp audit_update(multi, audit_data, project, release) do
-    audit(multi, audit_data, "experiment.update", fn %{experiment: exp} ->
       {project, release, exp}
     end)
   end

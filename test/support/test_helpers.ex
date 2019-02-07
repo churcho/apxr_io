@@ -55,7 +55,10 @@ defmodule ApxrIo.TestHelpers do
   def params(params) when is_list(params), do: Enum.map(params, &params/1)
   def params(other), do: other
 
-  def build_experiment(release_id) do
+  def build_experiment(release_id, attrs \\ %{})
+
+  def build_experiment(release_id, attrs) do
+    Map.merge(
     %{
       description: "Experiment description goes here.",
       release_id: release_id,
@@ -607,7 +610,7 @@ defmodule ApxrIo.TestHelpers do
           validationmin_fitness: [122.00001, 56.0001, 115.52000012, 117.24000012, 149.12]
         }
       }
-    }
+    }, attrs)
   end
 
   def build_artifact(experiment_id, project_id) do

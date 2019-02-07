@@ -7,16 +7,16 @@ defmodule ApxrIo.Learn.Local do
   @behaviour ApxrIo.Learn
 
   def start(project, release, experiment, audit: audit_data) do
-    identifiers = {project, release.version, experiment.meta.exp_parameters["identifier"]}
     tarball = tarball(release)
     config = config(experiment, release)
+    identifiers = {project, release, experiment}
 
     with {:ok, 204, _h, _b} <- post("/actions/polis/prep", tarball, identifiers),
          :ok <- :timer.sleep(100),
          {:ok, 204, _h, _b} <- post("/actions/polis/setup", config, identifiers),
          :ok <- :timer.sleep(100),
          {:ok, 204, _h, _b} <- post("/actions/experiment/start", <<>>, identifiers) do
-      AuditLog.audit(Multi.new(), audit_data, "experiment.start", {project, release, experiment})
+      AuditLog.audit(Multi.new(), audit_data, "experiment.start", identifiers)
       {:ok, %{experiment: experiment}}
     else
       {:ok, error, _headers, _body} ->
@@ -88,11 +88,13 @@ defmodule ApxrIo.Learn.Local do
     |> read_request()
   end
 
-  defp token({project, version, exp}) do
+  defp token({project, release, experiment}) do
     ApxrIo.Token.generate_and_sign!(%{
       "project" => project.name,
-      "version" => version,
-      "experiment" => exp
+      "version" => release.version,
+      "id" => experiment.id,
+      "iss" => "apxr_io",
+      "aud" => "apxr_run"
     })
   end
 

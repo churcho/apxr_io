@@ -119,7 +119,9 @@ defmodule ApxrIoWeb.Plugs do
         ApxrIo.Token.generate_and_sign!(%{
           "project" => conn.params["name"],
           "version" => conn.params["version"],
-          "experiment" => conn.params["id"]
+          "experiment" => conn.params["id"],
+          "iss" => "apxr_io",
+          "aud" => "apxr_run"
         })
 
       endpoint = Application.get_env(:apxr_io, :ws_endpoint)

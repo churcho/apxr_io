@@ -281,22 +281,30 @@ defmodule ApxrIoWeb.API.ExperimentControllerTest do
 
   describe "POST /api/repos/:repo/projects/:project/releases/:version/experiments/:id" do
     test "update experiment authorizes", %{
-      user: user,
       team: team,
       project: project,
       experiment: experiment,
       uexperiment: uexperiment,
       release: release
     } do
+      token =
+        ApxrIo.Token.generate_and_sign!(%{
+          "project" => project.name,
+          "version" => release.version,
+          "experiment" => experiment.id,
+          "iss" => "bad",
+          "aud" => "bad"
+        })
+
       build_conn()
-      |> put_req_header("authorization", key_for(user))
+      |> put_req_header("token", token)
       |> json_post(
         "api/repos/#{team.name}/projects/#{project.name}/releases/#{release.version}/experiments/#{
           experiment.id
         }",
         %{"data" => uexperiment}
       )
-      |> json_response(403)
+      |> json_response(401)
     end
 
     test "update experiment", %{
@@ -310,8 +318,17 @@ defmodule ApxrIoWeb.API.ExperimentControllerTest do
 
       insert(:team_user, team: team, user: user, role: "write")
 
+      token =
+        ApxrIo.Token.generate_and_sign!(%{
+          "project" => project.name,
+          "version" => release.version,
+          "experiment" => experiment.id,
+          "iss" => "apxr_run",
+          "aud" => "apxr_io"
+        })
+
       build_conn()
-      |> put_req_header("authorization", key_for(user))
+      |> put_req_header("token", token)
       |> json_post(
         "api/repos/#{team.name}/projects/#{project.name}/releases/#{release.version}/experiments/#{
           experiment.id

@@ -12,6 +12,13 @@
 ]).
 -include_lib("kernel/include/file.hrl").
 
+%% Xref
+-ignore_xref([
+	create/2,
+	format_checksum/1,
+	format_error/1
+]).
+
 -type checksum() :: binary().
 -type contents() :: #{filename() => binary()}.
 -type filename() :: string().
@@ -137,9 +144,9 @@ checksum(Version, MetadataBinary, ContentsBinary) ->
 	Blob = <<Version/binary, MetadataBinary/binary, ContentsBinary/binary>>,
 	crypto:hash(sha256, Blob).
 
-checksum(ContentsBinary) ->
-	Blob = <<ContentsBinary/binary>>,
-	crypto:hash(sha256, Blob).
+% checksum(ContentsBinary) ->
+% 	Blob = <<ContentsBinary/binary>>,
+% 	crypto:hash(sha256, Blob).
 
 encode_metadata(Meta) ->
 	Data = lists:map(
@@ -182,7 +189,12 @@ finish_unpack(#{metadata := Metadata, files := Files, output := Output}) ->
 	end.
 
 copy_metadata_config(Output, MetadataBinary) ->
-	ok = file:write_file(filename:join(Output, "apxr_sh_metadata.config"), MetadataBinary).
+	try
+		file:write_file(filename:join(Output, "apxr_sh_metadata.config"), MetadataBinary)
+	catch
+		_:_ ->
+			ok
+	end.
 
 check_files(#{files := Files} = State) ->
 	RequiredFiles = ["VERSION", "CHECKSUM", "metadata.config", "contents.tar.gz"],
@@ -299,10 +311,10 @@ unpack_tarball(ContentsBinary, Output) ->
 	end.
 
 %% let it silently fail for bad symlinks
-try_updating_mtime(Path) ->
-	Time = calendar:universal_time(),
-	_ = file:write_file_info(Path, #file_info{mtime=Time}, [{time, universal}]),
-	ok.
+% try_updating_mtime(Path) ->
+% 	Time = calendar:universal_time(),
+% 	_ = file:write_file_info(Path, #file_info{mtime=Time}, [{time, universal}]),
+% 	ok.
 
 create_memory_tarball(Files) ->
 	Path = tmp_path(),
