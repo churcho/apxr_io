@@ -15,7 +15,7 @@
   <div class="column is-1"></div>
   <div class="column is-10">
     <header>
-      <h3 class="title is-3 is-spaced"><span class="tag is-dark heading"><%= @progress %></span></h3>
+      <h3 class="title is-3 is-spaced"><span class="tag is-dark heading"><%= @progress || "in_progress" %></span></h3>
       <%= if @experiment.description do %>
         <h5 class="subtitle is-5 has-text-weight-semi-bold has-text-grey"><%= text_length(@experiment.description, 500) |> text_to_html() %></h5>
       <% end %>

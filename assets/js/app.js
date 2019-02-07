@@ -18,13 +18,36 @@ import "phoenix_html"
 // Local files can be imported directly using relative
 // paths "./socket" or full ones "web/static/js/socket".
 
-import socket from "./socket";
-
 // Highcharts
 import Highcharts from "highcharts";
 import HighchartsMore from "highcharts/highcharts-more";
 window.Highcharts = Highcharts;
 HighchartsMore(Highcharts);
+
+if ("WebSocket" in window && ((/experiments/.test(window.location.href)) && (/^((?!all).)*$/.test(window.location.href)))) {
+  console.log("WebSocket is supported by your Browser!");
+
+  let messagesContainer = document.querySelector("#exp_log_messages")
+
+  let ws = new WebSocket(window.wsEndpoint + "/websocket?token=" + window.wsToken);
+
+  ws.onopen = function() {
+    console.log("WebSocket is connected");
+  };
+
+  ws.onmessage = function (data) { 
+    let messageItem = document.createElement("li")
+    messageItem.innerText = `${data.payload}`
+    messagesContainer.appendChild(messageItem)
+  };
+
+  ws.onclose = function() {  
+    console.log("WebSocket is closed..."); 
+  };
+} else {    
+  // The browser doesn't support WebSocket
+  console.log("WebSocket NOT supported by your Browser!");
+}
 
 export default class App {
   constructor() {

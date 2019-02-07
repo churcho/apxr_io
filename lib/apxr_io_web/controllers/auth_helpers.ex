@@ -8,12 +8,16 @@ defmodule ApxrIoWeb.AuthHelpers do
 
   def authorized(conn, :with_jwt) do
     [token] = get_req_header(conn, "token")
+    experiment = conn.assigns.experiment
 
     cond do
       is_nil(token) ->
         error(conn, {:error, :invalid})
 
-      not valid_token?(token) ->
+      is_nil(experiment) ->
+        error(conn, {:error, :invalid})
+
+      not valid_token?(token, experiment) ->
         error(conn, {:error, :invalid})
 
       true ->
@@ -66,10 +70,10 @@ defmodule ApxrIoWeb.AuthHelpers do
     end
   end
 
-  defp valid_token?(token) do
+  defp valid_token?(token, experiment) do
     case ApxrIo.Token.verify_and_validate(token) do
-      {:ok, %{"iss" => "apxr_run", "aud" => "apxr_io"}} ->
-        true
+      {:ok, %{"iss" => "apxr_run", "aud" => "apxr_io", "exp_id" => eid}} ->
+        if eid == experiment.id, do: true, else: false
 
       _ ->
         false

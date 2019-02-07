@@ -73,8 +73,8 @@ defmodule ApxrIo.Learn.ApxrRun do
     :ok
   end
 
-  defp post(url, body, identifiers) do
-    url = Application.get_env(:apxr_io, :apxr_run_url) <> url
+  defp post(path, body, identifiers) do
+    url = Application.get_env(:apxr_io, :apxr_run_url) <> path
 
     headers = [
       {"token", token(identifiers)},
@@ -87,12 +87,15 @@ defmodule ApxrIo.Learn.ApxrRun do
     :hackney.post(url, headers, body, [])
     |> read_request()
   end
-
+require IEx
   defp token({project, release, experiment}) do
+    IEx.pry
     ApxrIo.Token.generate_and_sign!(%{
+      "team" => project.team.name,
       "project" => project.name,
       "version" => release.version,
-      "id" => experiment.id,
+      "exp_id" => experiment.id,
+      "identifier" => experiment.meta.exp_parameters["identifier"],
       "iss" => "apxr_io",
       "aud" => "apxr_run"
     })

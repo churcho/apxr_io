@@ -289,9 +289,11 @@ defmodule ApxrIoWeb.API.ExperimentControllerTest do
     } do
       token =
         ApxrIo.Token.generate_and_sign!(%{
+          "team" => project.team.name,
           "project" => project.name,
           "version" => release.version,
-          "experiment" => experiment.id,
+          "id" => experiment.id,
+          "identifier" => "test",
           "iss" => "bad",
           "aud" => "bad"
         })
@@ -320,9 +322,11 @@ defmodule ApxrIoWeb.API.ExperimentControllerTest do
 
       token =
         ApxrIo.Token.generate_and_sign!(%{
+          "team" => project.team.name,
           "project" => project.name,
           "version" => release.version,
-          "experiment" => experiment.id,
+          "exp_id" => experiment.id,
+          "identifier" => "test",
           "iss" => "apxr_run",
           "aud" => "apxr_io"
         })
