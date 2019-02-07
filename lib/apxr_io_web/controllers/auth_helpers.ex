@@ -12,12 +12,12 @@ defmodule ApxrIoWeb.AuthHelpers do
     cond do
       is_nil(token) ->
         error(conn, {:error, :invalid})
-      
+
       not valid_token?(token) ->
         error(conn, {:error, :invalid})
 
       true ->
-        conn 
+        conn
     end
   end
 
@@ -28,8 +28,10 @@ defmodule ApxrIoWeb.AuthHelpers do
     cond do
       opts[:with_jwt] ->
         authorized(conn, :with_jwt)
+
       user_or_team_or_af ->
         authorized(conn, user_or_team_or_af, opts[:fun], opts)
+
       true ->
         error(conn, {:error, :missing})
     end
@@ -68,6 +70,7 @@ defmodule ApxrIoWeb.AuthHelpers do
     case ApxrIo.Token.verify_and_validate(token) do
       {:ok, %{"iss" => "apxr_run", "aud" => "apxr_io"}} ->
         true
+
       _ ->
         false
     end

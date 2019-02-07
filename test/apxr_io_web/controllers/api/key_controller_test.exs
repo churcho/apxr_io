@@ -214,10 +214,14 @@ defmodule ApxrIoWeb.API.KeyControllerTest do
       assert Repo.one(Key.get_revoked(c.eric, "key_b"))
 
       assert [log_1, log_2] =
-                AuditLog
-                |> Repo.all()
-                |> Enum.sort_by(fn d -> {d.inserted_at.year, d.inserted_at.month, d.inserted_at.day, d.inserted_at.hour, d.inserted_at.minute, d.inserted_at.second} end)
-                |> Enum.reverse()
+               AuditLog
+               |> Repo.all()
+               |> Enum.sort_by(fn d ->
+                 {d.inserted_at.year, d.inserted_at.month, d.inserted_at.day, d.inserted_at.hour,
+                  d.inserted_at.minute, d.inserted_at.second}
+               end)
+               |> Enum.reverse()
+
       assert log_1.user_id == c.eric.id
       assert log_1.action == "key.remove"
       assert log_2.user_id == c.eric.id
@@ -306,7 +310,7 @@ defmodule ApxrIoWeb.API.KeyControllerTest do
       log = Repo.one!(AuditLog)
       assert log.user_id == c.eric.id
       assert log.action == "key.remove"
-      assert %{ "key" => %{"name" => "current"}} = log.params
+      assert %{"key" => %{"name" => "current"}} = log.params
 
       conn =
         build_conn()

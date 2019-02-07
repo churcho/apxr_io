@@ -103,7 +103,7 @@ defmodule ApxrIoWeb.API.ReleaseControllerTest do
 
       meta = %{name: project.name, version: "1.0-dev", description: "not-so-awesome"}
 
-      result = 
+      result =
         build_conn()
         |> put_req_header("content-type", "application/octet-stream")
         |> put_req_header("authorization", key_for(user))
@@ -129,7 +129,7 @@ defmodule ApxrIoWeb.API.ReleaseControllerTest do
         |> put_req_header("authorization", key_for(user))
         |> post("api/repos/#{team.name}/projects/#{project.name}/releases", create_tar(meta, []))
         |> json_response(422)
-        
+
       assert result["errors"]["name"] == "metadata does not match project name"
 
       meta = %{name: project.name, version: "1.0.0", description: "description"}
@@ -146,7 +146,7 @@ defmodule ApxrIoWeb.API.ReleaseControllerTest do
 
       assert result["errors"]["name"] == "has already been taken"
     end
-  
+
     test "create project casts proplist metadata", %{user: user, team: team} do
       meta = %{
         name: Fake.sequence(:project),
@@ -163,7 +163,7 @@ defmodule ApxrIoWeb.API.ReleaseControllerTest do
       |> put_req_header("authorization", key_for(user))
       |> post("api/repos/#{team.name}/projects/#{meta.name}/releases", create_tar(meta, []))
       |> json_response(201)
-      
+
       project = ApxrIo.Repo.get_by!(Project, name: meta.name)
       assert project.meta.links == %{"link" => "http://localhost"}
       assert project.meta.extra == %{"key" => "value"}

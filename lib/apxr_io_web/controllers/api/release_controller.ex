@@ -20,7 +20,6 @@ defmodule ApxrIoWeb.API.ReleaseController do
   def create(conn, %{"body" => body}) do
     case release_metadata(body) do
       {:ok, meta, checksum} ->
-
         # TODO: pass around and store in DB as binary instead
         checksum = :apxr_tarball.format_checksum(checksum)
 
@@ -105,7 +104,7 @@ defmodule ApxrIoWeb.API.ReleaseController do
   end
 
   defp release_metadata(tarball) do
-    tmp_dir = Path.join([File.cwd!, "tmp/tarballs"])
+    tmp_dir = Path.join([File.cwd!(), "tmp/tarballs"])
 
     case :apxr_tarball.unpack(tarball, tmp_dir) do
       {:ok, %{checksum: checksum, metadata: metadata}} ->

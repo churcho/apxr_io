@@ -16,8 +16,7 @@ defmodule ApxrIoWeb.Teams.KeyController do
 
       case Keys.create(team, key_params, audit: audit_data(conn)) do
         {:ok, %{key: key}} ->
-          flash =
-            "Copy the secret \"#{key.user_secret}\". You won't be able to see it again."
+          flash = "Copy the secret \"#{key.user_secret}\". You won't be able to see it again."
 
           conn
           |> put_flash(:info, flash)
