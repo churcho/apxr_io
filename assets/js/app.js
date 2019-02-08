@@ -36,8 +36,14 @@ if ("WebSocket" in window && ((/experiments/.test(window.location.href)) && (/^(
   ws.onmessage = function (evt) { 
     let messageItem = document.createElement("li");
     messageItem.innerText = evt.data;
-    var list = document.getElementById("logsList");
-    list.insertBefore(messageItem, list.childNodes[0]);
+    let list = document.getElementById("logsList");
+    if (list.childElementCount >= 100) {
+      var last = list.lastElementChild;
+      list.removeChild(last);
+      list.insertBefore(messageItem, list.childNodes[0]);
+    } else {
+      list.insertBefore(messageItem, list.childNodes[0]);
+    }
   };
 
   ws.onclose = function() {  
