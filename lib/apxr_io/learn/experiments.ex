@@ -44,7 +44,7 @@ defmodule ApxrIo.Learn.Experiments do
     end
   end
 
-  def update(project, release, experiment, params, _audit) do
+  def update(project, release, experiment, params) do
     Multi.new()
     |> Multi.update(:experiment, Experiment.update(experiment, params))
     |> maybe_send_notification_email(experiment.meta.progress, project, release)

@@ -4,6 +4,7 @@ defmodule ApxrIoWeb.API.ExperimentControllerTest do
   alias ApxrIo.Accounts.AuditLog
   alias ApxrIo.Learn.Experiment
   alias ApxrIo.Learn.Experiments
+  alias ApxrIoWeb.ErlangFormat
 
   setup do
     user = insert(:user)
@@ -300,13 +301,14 @@ defmodule ApxrIoWeb.API.ExperimentControllerTest do
 
       build_conn()
       |> put_req_header("token", token)
-      |> json_post(
+      |> put_req_header("content-type", "application/vnd.apxrsh+erlang")
+      |> post(
         "api/repos/#{team.name}/projects/#{project.name}/releases/#{release.version}/experiments/#{
           experiment.id
         }",
-        %{"data" => uexperiment}
+        ErlangFormat.encode_to_iodata!(uexperiment)
       )
-      |> json_response(401)
+      |> response(401)
     end
 
     test "update experiment", %{
@@ -333,13 +335,14 @@ defmodule ApxrIoWeb.API.ExperimentControllerTest do
 
       build_conn()
       |> put_req_header("token", token)
-      |> json_post(
+      |> put_req_header("content-type", "application/vnd.apxrsh+erlang")
+      |> post(
         "api/repos/#{team.name}/projects/#{project.name}/releases/#{release.version}/experiments/#{
           experiment.id
         }",
-        %{"data" => uexperiment}
+        ErlangFormat.encode_to_iodata!(uexperiment)
       )
-      |> json_response(201)
+      |> response(201)
     end
   end
 

@@ -25,28 +25,23 @@ window.Highcharts = Highcharts;
 HighchartsMore(Highcharts);
 
 if ("WebSocket" in window && ((/experiments/.test(window.location.href)) && (/^((?!all).)*$/.test(window.location.href)))) {
-  console.log("WebSocket is supported by your Browser!");
-
   let messagesContainer = document.querySelector("#exp_log_messages")
 
   let ws = new WebSocket(window.wsEndpoint + "/websocket?token=" + window.wsToken);
 
   ws.onopen = function() {
-    console.log("WebSocket is connected");
+    console.log("WebSocket connected");
   };
 
-  ws.onmessage = function (data) { 
+  ws.onmessage = function (evt) { 
     let messageItem = document.createElement("li")
-    messageItem.innerText = `${data.payload}`
+    messageItem.innerText = `${JSON.parse(evt.data)}`
     messagesContainer.appendChild(messageItem)
   };
 
   ws.onclose = function() {  
-    console.log("WebSocket is closed..."); 
+    console.log("WebSocket closed"); 
   };
-} else {    
-  // The browser doesn't support WebSocket
-  console.log("WebSocket NOT supported by your Browser!");
 }
 
 export default class App {

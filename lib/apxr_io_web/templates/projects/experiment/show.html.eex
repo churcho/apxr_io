@@ -33,6 +33,7 @@
           <li><a class="tab heading is-size-6" data-tab="init_constraints">Initial Constraints</a></li>
           <li><a class="tab heading is-size-6" data-tab="trace">Trace</a></li>
           <li><a class="tab heading is-size-6" data-tab="graphs">Graphs</a></li>
+          <li><a class="tab heading is-size-6" data-tab="exp_log_messages">Stream</a></li>
         </ul>
       </div>
     </div>
@@ -114,8 +115,10 @@ pm_parameters: <%= Poison.encode_to_iodata!(@experiment.meta.pm_parameters, pret
           </div>
         </div>
       </div>
+      <div id="exp_log_messages" class="tab-content has-background-black has-text-white" style="padding: 2rem;">
+        <ul></ul>
+      </div>
     </div>
   </div>
   <div class="column is-1"></div>
 </div>
-<div id="exp_log_messages"></div>
