@@ -34,9 +34,10 @@ if ("WebSocket" in window && ((/experiments/.test(window.location.href)) && (/^(
   };
 
   ws.onmessage = function (evt) { 
-    let messageItem = document.createElement("li")
-    messageItem.innerText = `${JSON.parse(evt.data)}`
-    messagesContainer.appendChild(messageItem)
+    let messageItem = document.createElement("li");
+    messageItem.innerText = evt.data;
+    var list = document.getElementById("logsList");
+    list.insertBefore(messageItem, list.childNodes[0]);
   };
 
   ws.onclose = function() {  
