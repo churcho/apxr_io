@@ -71,8 +71,10 @@ pm_parameters: <%= Poison.encode_to_iodata!(@experiment.meta.pm_parameters, pret
 </pre>
       </div>
       <div id="graphs" class="tab-content">
-        <%= if @experiment.graph do %>
-          <%= charts(@experiment.graph) %>
+        <%= if @experiment.graph_data && @experiment.graph_data.graph_acc do %>
+          <%= for graph_acc <- @experiment.graph_data.graph_acc do %>
+            <%= charts(graph_acc["graph"]) %>
+          <% end %>
         <% end %>
         <div class="columns">
           <div class="column is-half">

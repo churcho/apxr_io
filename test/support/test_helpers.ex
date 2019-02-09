@@ -538,77 +538,83 @@ defmodule ApxrIo.TestHelpers do
             }
           ]
         },
-        graph: %{
-          avg_fitness_vs_evaluations: %{
-            morphology: "some_morphology",
-            evaluation_index: [500, 1000, 1500, 2500, 3000],
-            avg_fitness: [122.00001, 56.0001, 115.52000012, 117.24000012, 149.12],
-            fitness_std: [
-              [118.1676, 132.4324001],
-              [126.15, 124.75],
-              [129.090400002]
-            ]
-          },
-          avg_neurons_vs_evaluations: %{
-            morphology: "some_morphology",
-            evaluation_index: [500, 1000, 1500, 2500, 3000],
-            avg_neurons: [122.00001, 56.0001, 115.52000012, 117.24000012, 149.12],
-            neurons_std: [
-              [118.1676, 132.4324001],
-              [126.15, 124.75],
-              [129.090400002]
-            ]
-          },
-          avg_diversity_vs_evaluations: %{
-            morphology: "some_morphology",
-            evaluation_index: [500, 1000, 1500, 2500, 3000],
-            avg_diversity: [122.00001, 56.0001, 115.52000012, 117.24000012, 149.12],
-            diversity_std: [
-              [118.1676, 132.4324001],
-              [126.15, 124.75],
-              [129.090400002]
-            ]
-          },
-          max_fitness_vs_evaluations: %{
-            morphology: "some_morphology",
-            evaluation_index: [500, 1000, 1500, 2500, 3000],
-            max_fitness: [122.00001, 56.0001, 115.52000012, 117.24000012, 149.12]
-          },
-          avg_max_fitness_vs_evaluations: %{
-            morphology: "some_morphology",
-            evaluation_index: [500, 1000, 1500, 2500, 3000],
-            maxavg_fitness: [122.00001, 56.0001, 115.52000012, 117.24000012, 149.12]
-          },
-          avg_min_fitness_vs_evaluations: %{
-            morphology: "some_morphology",
-            evaluation_index: [500, 1000, 1500, 2500, 3000],
-            min_fitness: [122.00001, 56.0001, 115.52000012, 117.24000012, 149.12]
-          },
-          specie_pop_turnover_vs_evaluations: %{
-            morphology: "some_morphology",
-            evaluation_index: [500, 1000, 1500, 2500, 3000],
-            evaluations_fitness: [122.00001, 56.0001, 115.52000012, 117.24000012, 149.12]
-          },
-          validation_avg_fitness_vs_evaluations: %{
-            morphology: "some_morphology",
-            evaluation_index: [500, 1000, 1500, 2500, 3000],
-            validation_fitness: [122.00001, 56.0001, 115.52000012, 117.24000012, 149.12],
-            validation_fitness_std: [
-              [118.1676, 132.4324001],
-              [126.15, 124.75],
-              [129.090400002]
-            ]
-          },
-          validation_max_fitness_vs_evaluations: %{
-            morphology: "some_morphology",
-            evaluation_index: [500, 1000, 1500, 2500, 3000],
-            validationmax_fitness: [122.00001, 56.0001, 115.52000012, 117.24000012, 149.12]
-          },
-          validation_min_fitness_vs_evaluations: %{
-            morphology: "some_morphology",
-            evaluation_index: [500, 1000, 1500, 2500, 3000],
-            validationmin_fitness: [122.00001, 56.0001, 115.52000012, 117.24000012, 149.12]
-          }
+        graph_data: %{
+          graph_acc: [
+            %{
+              graph: %{
+                avg_fitness_vs_evaluations: %{
+                  morphology: "some_morphology",
+                  evaluation_index: [500, 1000, 1500, 2500, 3000],
+                  avg_fitness: [122.00001, 56.0001, 115.52000012, 117.24000012, 149.12],
+                  fitness_std: [
+                    [118.1676, 132.4324001],
+                    [126.15, 124.75],
+                    [129.090400002]
+                  ]
+                },
+                avg_neurons_vs_evaluations: %{
+                  morphology: "some_morphology",
+                  evaluation_index: [500, 1000, 1500, 2500, 3000],
+                  avg_neurons: [122.00001, 56.0001, 115.52000012, 117.24000012, 149.12],
+                  neurons_std: [
+                    [118.1676, 132.4324001],
+                    [126.15, 124.75],
+                    [129.090400002]
+                  ]
+                },
+                avg_diversity_vs_evaluations: %{
+                  morphology: "some_morphology",
+                  evaluation_index: [500, 1000, 1500, 2500, 3000],
+                  avg_diversity: [122.00001, 56.0001, 115.52000012, 117.24000012, 149.12],
+                  diversity_std: [
+                    [118.1676, 132.4324001],
+                    [126.15, 124.75],
+                    [129.090400002]
+                  ]
+                },
+                max_fitness_vs_evaluations: %{
+                  morphology: "some_morphology",
+                  evaluation_index: [500, 1000, 1500, 2500, 3000],
+                  max_fitness: [122.00001, 56.0001, 115.52000012, 117.24000012, 149.12]
+                },
+                avg_max_fitness_vs_evaluations: %{
+                  morphology: "some_morphology",
+                  evaluation_index: [500, 1000, 1500, 2500, 3000],
+                  maxavg_fitness: [122.00001, 56.0001, 115.52000012, 117.24000012, 149.12]
+                },
+                avg_min_fitness_vs_evaluations: %{
+                  morphology: "some_morphology",
+                  evaluation_index: [500, 1000, 1500, 2500, 3000],
+                  min_fitness: [122.00001, 56.0001, 115.52000012, 117.24000012, 149.12]
+                },
+                specie_pop_turnover_vs_evaluations: %{
+                  morphology: "some_morphology",
+                  evaluation_index: [500, 1000, 1500, 2500, 3000],
+                  evaluations_fitness: [122.00001, 56.0001, 115.52000012, 117.24000012, 149.12]
+                },
+                validation_avg_fitness_vs_evaluations: %{
+                  morphology: "some_morphology",
+                  evaluation_index: [500, 1000, 1500, 2500, 3000],
+                  validation_fitness: [122.00001, 56.0001, 115.52000012, 117.24000012, 149.12],
+                  validation_fitness_std: [
+                    [118.1676, 132.4324001],
+                    [126.15, 124.75],
+                    [129.090400002]
+                  ]
+                },
+                validation_max_fitness_vs_evaluations: %{
+                  morphology: "some_morphology",
+                  evaluation_index: [500, 1000, 1500, 2500, 3000],
+                  validationmax_fitness: [122.00001, 56.0001, 115.52000012, 117.24000012, 149.12]
+                },
+                validation_min_fitness_vs_evaluations: %{
+                  morphology: "some_morphology",
+                  evaluation_index: [500, 1000, 1500, 2500, 3000],
+                  validationmin_fitness: [122.00001, 56.0001, 115.52000012, 117.24000012, 149.12]
+                }
+              }
+            }
+          ]
         }
       },
       attrs

@@ -340,9 +340,9 @@ defmodule ApxrIoWeb.API.ExperimentControllerTest do
         "api/repos/#{team.name}/projects/#{project.name}/releases/#{release.version}/experiments/#{
           experiment.id
         }",
-        ErlangFormat.encode_to_iodata!(uexperiment)
+        ErlangFormat.encode_to_iodata!(%{"experiment" => uexperiment})
       )
-      |> response(201)
+      |> response(204)
     end
   end
 
