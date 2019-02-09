@@ -30,7 +30,7 @@
       <div class="tabs is-centered is-medium">
         <ul>
           <li class="is-active"><a class="tab heading is-size-6" data-tab="overview">Overview</a></li>
-          <li><a class="tab heading is-size-6" data-tab="init_constraints">Initial Constraints</a></li>
+          <li><a class="tab heading is-size-6" data-tab="init_constraints">Constraints</a></li>
           <li><a class="tab heading is-size-6" data-tab="trace">Trace</a></li>
           <li><a class="tab heading is-size-6" data-tab="graphs">Graphs</a></li>
           <li><a class="tab heading is-size-6" data-tab="exp_log_messages">Tail</a></li>
@@ -44,30 +44,27 @@
   <div class="column is-1"></div>
   <div class="column is-10">
     <div>
-      <div id="overview" class="tab-content is-active-tab">
+      <div id="overview" class="tab-content is-active-tab highlight">
 <pre>
-<code>identifier: <%= @experiment.meta.exp_parameters["identifier"] %>
-started: <%= @experiment.meta.started %>
-completed: <%= @experiment.meta.completed %>
-duration: <%= @experiment.meta.duration %>
+<code id="codeblock1">identifier: <%= @experiment.meta.exp_parameters["identifier"] %>
+started: <%= if @experiment.meta.started, do: inspect Jason.decode!(@experiment.meta.started) %>
+completed: <%= if @experiment.meta.started, do: inspect Jason.decode!(@experiment.meta.completed) %>
+duration: <%= @experiment.meta.duration %> (seconds)
 progress: <%= @experiment.meta.progress %>
 interruptions: <%= @experiment.meta.interruptions %>
 total_runs: <%= @experiment.meta.total_runs %>
 exp_parameters: <%= Poison.encode_to_iodata!(@experiment.meta.exp_parameters, pretty: true) %>
-pm_parameters: <%= Poison.encode_to_iodata!(@experiment.meta.pm_parameters, pretty: true) %>
-</code>
+pm_parameters: <%= Poison.encode_to_iodata!(@experiment.meta.pm_parameters, pretty: true) %></code>
 </pre>
       </div>
-      <div id="init_constraints" class="tab-content">
+      <div id="init_constraints" class="tab-content highlight">
 <pre>
-<code>initial_constraints: <%= Poison.encode_to_iodata!(@experiment.meta.init_constraints, pretty: true) %>
-</code>
+<code id="codeblock2">initial_constraints: <%= Poison.encode_to_iodata!(@experiment.meta.init_constraints, pretty: true) %></code>
 </pre>
       </div>
-      <div id="trace" class="tab-content">
+      <div id="trace" class="tab-content highlight">
 <pre>
-<code><%= if @experiment.trace do %><%= Poison.encode_to_iodata!(@experiment.trace.trace_acc, pretty: true) %><% end %>
-</code>
+<code id="codeblock3"><%= if @experiment.trace do %><%= Poison.encode_to_iodata!(@experiment.trace.trace_acc, pretty: true) %><% end %></code>
 </pre>
       </div>
       <div id="graphs" class="tab-content">
@@ -76,43 +73,43 @@ pm_parameters: <%= Poison.encode_to_iodata!(@experiment.meta.pm_parameters, pret
             <%= charts(graph_acc["graph"]) %>
           <% end %>
         <% end %>
-        <div class="columns">
-          <div class="column is-half">
+        <div class="columns is-multiline">
+          <div class="column is-full">
             <div id="avg_fitness_vs_evaluations"></div>
           </div>
-          <div class="column is-half">
+          <div class="column is-full">
             <div id="avg_neurons_vs_evaluations"></div>
           </div>
         </div>
-        <div class="columns">
-          <div class="column is-half">
+        <div class="columns is-multiline">
+          <div class="column is-full">
             <div id="avg_diversity_vs_evaluations"></div>
           </div>
-          <div class="column is-half">
+          <div class="column is-full">
             <div id="max_fitness_vs_evaluations"></div>
           </div>
         </div>
-        <div class="columns">
-          <div class="column is-half">
+        <div class="columns is-multiline">
+          <div class="column is-full">
             <div id="avg_max_fitness_vs_evaluations"></div>
           </div>
-          <div class="column is-half">
+          <div class="column is-full">
             <div id="avg_min_fitness_vs_evaluations"></div>
           </div>
         </div>
-        <div class="columns">
-          <div class="column is-half">
+        <div class="columns is-multiline">
+          <div class="column is-full">
             <div id="specie_pop_turnover_vs_evaluations"></div>
           </div>
-          <div class="column is-half">
+          <div class="column is-full">
             <div id="validation_avg_fitness_vs_evaluations"></div>
           </div>
         </div>    
-        <div class="columns">
-          <div class="column is-half">
+        <div class="columns is-multiline">
+          <div class="column is-full">
             <div id="validation_max_fitness_vs_evaluations"></div>
           </div>
-          <div class="column is-half">
+          <div class="column is-full">
             <div id="validation_min_fitness_vs_evaluations"></div>
           </div>
         </div>

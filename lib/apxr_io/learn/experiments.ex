@@ -48,14 +48,14 @@ defmodule ApxrIo.Learn.Experiments do
     result =
       Multi.new()
       |> Multi.update(:experiment, Experiment.update(experiment, params))
-      |> maybe_send_notification_email(experiment.meta.progress, project, release)
       |> Repo.transaction(timeout: @timeout)
 
     case result do
       {:error, :experiment, changeset, _} ->
         {:error, changeset}
 
-      {:ok, %{experiment: _experiment}} ->
+      {:ok, %{experiment: experiment}} ->
+        maybe_send_notification_email(experiment, project, release)
         :ok
     end
   end
@@ -104,14 +104,12 @@ defmodule ApxrIo.Learn.Experiments do
     end)
   end
 
-  defp maybe_send_notification_email(multi, "complete", project, release) do
-    owners = Enum.map(Owners.all(project, user: :emails), & &1.user)
+  defp maybe_send_notification_email(experiment, project, release) do
+    if experiment.meta.progress == "completed" do
+      owners = Enum.map(Owners.all(project, user: :emails), & &1.user)
 
-    Emails.experiment_complete(project.name, release.version, owners)
-    |> Mailer.deliver_now_throttled()
-
-    multi
+      Emails.experiment_complete(project, release, experiment, owners)
+      |> Mailer.deliver_now_throttled()
+    end
   end
-
-  defp maybe_send_notification_email(multi, _status, _project, _release), do: multi
 end
