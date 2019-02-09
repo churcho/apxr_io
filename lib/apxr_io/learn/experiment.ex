@@ -11,7 +11,7 @@ defmodule ApxrIo.Learn.Experiment do
     has_one :artifact, Artifact
     embeds_one :meta, ExperimentMetadata, on_replace: :delete
     embeds_one :trace, ExperimentTrace, on_replace: :delete
-    embeds_one :graph, ExperimentGraphData, on_replace: :delete
+    embeds_many :graph, ExperimentGraphData, on_replace: :delete
   end
 
   def build(release, params) do

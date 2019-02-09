@@ -47,7 +47,7 @@ defmodule ApxrIoWeb.API.ExperimentController do
     |> handle_result(conn)
   end
 
-  def update(conn, experiment_body) do
+  def update(conn, %{"experiment" => experiment_body}) do
     project = conn.assigns.project
     release = conn.assigns.release
     experiment = conn.assigns.experiment

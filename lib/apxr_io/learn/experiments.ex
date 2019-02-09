@@ -45,10 +45,19 @@ defmodule ApxrIo.Learn.Experiments do
   end
 
   def update(project, release, experiment, params) do
-    Multi.new()
-    |> Multi.update(:experiment, Experiment.update(experiment, params))
-    |> maybe_send_notification_email(experiment.meta.progress, project, release)
-    |> Repo.transaction(timeout: @timeout)
+    result =
+      Multi.new()
+      |> Multi.update(:experiment, Experiment.update(experiment, params))
+      |> maybe_send_notification_email(experiment.meta.progress, project, release)
+      |> Repo.transaction(timeout: @timeout)
+
+    case result do
+      {:error, :experiment, changeset, _} ->
+        {:error, changeset}
+
+      {:ok, %{experiment: _experiment}} ->
+        :ok
+    end
   end
 
   def pause(project, version, experiment, audit: audit_data) do
