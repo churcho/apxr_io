@@ -87,9 +87,8 @@ defmodule ApxrIo.Learn.ApxrRun do
     :hackney.post(url, headers, body, [])
     |> read_request()
   end
-require IEx
+
   defp token({project, release, experiment}) do
-    IEx.pry
     ApxrIo.Token.generate_and_sign!(%{
       "team" => project.team.name,
       "project" => project.name,

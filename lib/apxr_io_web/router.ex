@@ -144,7 +144,7 @@ defmodule ApxrIoWeb.Router do
       scope prefix do
         post "/projects/:name/releases", ReleaseController, :create
 
-        post "/projects/:name/releases/:version/experiments", ExperimentController, :create        
+        post "/projects/:name/releases/:version/experiments", ExperimentController, :create
         post "/projects/:name/releases/:version/experiments/:id", ExperimentController, :update
 
         post "/projects/:name/artifacts", ArtifactController, :create

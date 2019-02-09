@@ -311,16 +311,27 @@ defmodule ApxrIoWeb.API.ExperimentControllerTest do
       |> response(401)
     end
 
-    test "update experiment", %{
-      team: team,
-      project: project,
-      experiment: experiment,
-      uexperiment: uexperiment,
-      release: release
-    } do
+    test "update experiment", %{team: team} do
       user = insert(:user)
 
       insert(:team_user, team: team, user: user, role: "write")
+
+      project =
+        insert(
+          :project,
+          team: team,
+          project_owners: [build(:project_owner, user: user)]
+        )
+
+      release = insert(:release, project: project, version: "0.0.1")
+
+      experiment =
+        insert(
+          :experiment,
+          release: release
+        )
+
+      uexperiment = build_experiment(release.id)
 
       token =
         ApxrIo.Token.generate_and_sign!(%{

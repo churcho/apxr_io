@@ -139,8 +139,8 @@ source part will be the billing service."
 
   def experiment_metadata_factory do
     %ApxrIo.Learn.ExperimentMetadata{
-      started: "{{2018,9,7},-576460748933985000}",
-      completed: "{{2018,9,8},-576460429400119000}",
+      started: nil,
+      completed: nil,
       duration: 80_600_000,
       progress: "completed",
       total_runs: 5,
@@ -672,7 +672,7 @@ source part will be the billing service."
             specie_pop_turnover_vs_evaluations: %{
               morphology: "some_morphology",
               evaluation_index: [500, 1000, 1500, 2500, 3000],
-              evaluations_fitness: [122.00001, 56.0001, 115.52000012, 117.24000012, 149.12]
+              evaluations: [122.00001, 56.0001, 115.52000012, 117.24000012, 149.12]
             },
             validation_avg_fitness_vs_evaluations: %{
               morphology: "some_morphology",
