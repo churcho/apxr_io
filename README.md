@@ -16,21 +16,27 @@ API server and website
 
 After this succeeds you should be good to go!
 
-See [`setup` alias in mix.exs](./mix.exs) and the sections below for more information or when you run into issues.
+See [`setup` alias in mix.exs](./mix.exs) and the sections below for more
+information or when you run into issues.
 
 --------------------
 ### PostgreSQL modules & version
 
-PostgreSQL version should be >= 9.4, as apxr_io uses the `jsonb` type, that is available from PostgreSQL 9.4 onward.
+PostgreSQL version should be >= 9.4, as apxr_io uses the `jsonb` type, that is
+available from PostgreSQL 9.4 onward.
 
-apxr_io requires the PostgreSQL modules [pg_trgm](http://www.postgresql.org/docs/9.4/static/pgtrgm.html) and [pgcrypto](http://www.postgresql.org/docs/9.4/static/pgcrypto.html) to be available.
+apxr_io requires the PostgreSQL modules [pg_trgm](http://www.postgresql.org/docs/9.4/static/pgtrgm.html) and [pgcrypto](http://www.postgresql.org/docs/9.4/static/pgcrypto.html)
+to be available.
 
-This is located in the "postgresql-contrib" project, however the project name can vary depending on your operating system. If the module is not installed the ecto migrations will fail.
+This is located in the "postgresql-contrib" project, however the project name
+can vary depending on your operating system. If the module is not installed the
+ecto migrations will fail.
 
 --------------------
 ### Database
 
-By default, apxr_io connects to a localhost PostgreSQL database `apxr_io_dev` using the username `postgres` with the password `postgres`.
+By default, apxr_io connects to a localhost PostgreSQL database `apxr_io_dev`
+using the username `postgres` with the password `postgres`.
 
 Create the database and user 'postgres' if not already done:
 
@@ -55,7 +61,8 @@ mix ecto.migrate
 --------------------
 ### Sample data
 
-Using the following command you can seed your local apxr_io instance with some sample data:
+Using the following command you can seed your local apxr_io instance with some
+sample data:
 
 ```shell
 mix run priv/repo/seeds.exs
@@ -70,7 +77,9 @@ For assets compilation we need to install Node dependencies:
 cd assets && yarn install
 ```
 
-If you don't have yarn installed, run `brew install yarn --without-node` (if you use nvm or similar, you should exclude installing Node.js so that nvm’s version of Node.js is used) or `cd assets && npm install` will work too.
+If you don't have yarn installed, run `brew install yarn --without-node` (if you
+use nvm or similar, you should exclude installing Node.js so that nvm’s version
+of Node.js is used) or `cd assets && npm install` will work too.
 
 --------------------
 ### Running apxr_io
@@ -105,13 +114,20 @@ IEx.pry
 ```
 
 --------------------
-### Debugging
+### Modifying objects via the terminal
 
 For example:
 
 ```
 t = Teams.get("apxr")
 ApxrIo.Repo.update!(Ecto.Changeset.change(t, billing_active: true))
+```
+
+--------------------
+### Static analysis scan
+
+```
+mix sobelow
 ```
 
 --------------------
