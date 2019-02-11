@@ -29,6 +29,23 @@ defmodule ApxrIo.Accounts.Teams do
     Repo.one(Team.has_access(team, user, role))
   end
 
+  def can_start_experiment?(%Team{} = team, experiment_params) do
+    machine_type_selected = experiment_params["machine_type"]
+    experiments_in_progress = team.experiments_in_progress
+    billing = ApxrIo.Billing.teams(team.name)
+    seats = billing["quantity"]
+
+    if seats > experiments_in_progress do
+      if machine_type_selected > 3 do
+        billing["plan_id"] == "team-monthly-ss2" || billing["plan_id"] == "team-annually-ss2"
+      else
+        true
+      end
+    else
+      false
+    end
+  end
+
   def create(user, params, audit: audit_data) do
     multi =
       Multi.new()

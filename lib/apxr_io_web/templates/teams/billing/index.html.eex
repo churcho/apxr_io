@@ -11,11 +11,7 @@
           <dd>
             <%= plan(@plan_id) %>
             <button type="button" class="button is-dark modal-button" data-target="change-plan">
-              <%= if @plan_id == "team-monthly" do %>
-                Switch to annual plan
-              <% else %>
-                Switch to monthly plan
-              <% end %>
+              Switch plan
             </button>
           </dd>
           <dt>Payment</dt>
@@ -70,7 +66,6 @@
           <div class="modal-background"></div>
           <div class="modal-card">
             <%= form_tag(Routes.billing_path(Endpoint, :add_seats, @team)) do %>
-              <input type="hidden" name="current-seats" value="<%= @quantity %>">
               <header class="modal-card-head">
                 <p class="modal-card-title">Add seats</p>
                 <button class="delete" data-dismiss="modal" aria-label="close"></button>
@@ -135,11 +130,7 @@
         Subscription cost is <strong>$7.00 per user / month</strong> + local VAT when applicable.<br /><br />
         <%= raw(@checkout_html) %>
         <button type="button" class="button is-black modal-button" data-target="change-plan">
-          <%= if @plan_id == "team-monthly" do %>
-            Switch to annual plan
-          <% else %>
-            Switch to monthly plan
-          <% end %>
+          Switch plan
         </button>
       <% end %>
     </div>
@@ -235,38 +226,39 @@
 <div class="modal" id="change-plan">
   <div class="modal-background"></div>
   <div class="modal-card">
-    <div class="modal-content"> 
-      <input type="hidden" name="current-seats" value="<%= @quantity %>">
+    <div class="modal-content">
       <header class="modal-card-head">
-        <%= if @plan_id == "team-monthly" do %>
-          <p class="modal-card-title">Switch to annual plan</p>
-        <% else %>
-          <p class="modal-card-title">Switch to monthly plan</p>
-        <% end %>
+        <p class="modal-card-title">Switch plan</p>
         <button class="delete" data-dismiss="modal" aria-label="close"></button>
       </header>
       <section class="modal-card-body">
-        <%= if @plan_id == "team-monthly" do %>
-          The annual plan is billed each year for a price of <strong>$70 per user / year</strong>.
-        <% else %>
-          The monthly plan is billed each month for a price of <strong>$7 per user / month</strong>.
-        <% end %>
+        The annual plans are billed each year for a price of
+        <strong>$4990 and $9990 per user / year</strong> respectively.
+        <br />
+        The monthly plans are billed each month for a price of
+        <strong>$499 and $999 per user / month</strong> respectively.
         <br /><br />
         <%= if @subscription do %>
           You will receive the first invoice at the end of your current billing period on
           <%= payment_date(@subscription["current_period_end"]) %>.
         <% else %>
           You do not have an active subscription, after changing plan you will have to
-          activate your subscription get started.
+          activate your subscription to get started.
         <% end %>   
       </section>
       <footer class="modal-card-foot">
         <%= form_tag(Routes.billing_path(Endpoint, :change_plan, @team)) do %>
-          <%= if @plan_id == "team-monthly" do %>
-            <input type="hidden" name="plan_id" value="team-annually">
-          <% else %>
-            <input type="hidden" name="plan_id" value="team-monthly">
-          <% end %>
+          <div class="field">
+            <div class="control">
+              <span class="select">
+                <select name="plan_id" required>
+                  <%= for {plan_id, plan} <- plans() do %>
+                    <option value="<%= plan_id %>" <%= if plan_id == @plan_id do %>selected<% end %>><%= plan %></option>
+                  <% end %>
+                </select>
+              </span>
+            </div>
+          </div>
         <% end %>
         <button type="submit" class="button is-black">Change plan</button>
         <button data-dismiss="modal" class="button">Cancel</button>

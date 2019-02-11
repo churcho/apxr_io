@@ -1,7 +1,7 @@
 defmodule ApxrIoWeb.API.ExperimentControllerTest do
   use ApxrIoWeb.ConnCase, async: true
 
-  alias ApxrIo.Accounts.AuditLog
+  alias ApxrIo.Accounts.{AuditLog, Teams}
   alias ApxrIo.Learn.Experiment
   alias ApxrIo.Learn.Experiments
   alias ApxrIoWeb.ErlangFormat
@@ -10,7 +10,7 @@ defmodule ApxrIoWeb.API.ExperimentControllerTest do
     user = insert(:user)
     unauthorized_user = insert(:user)
 
-    team = insert(:team)
+    team = insert(:team, experiments_in_progress: 2)
     nbteam = insert(:team, billing_active: false)
     other_team = insert(:team)
 
@@ -214,12 +214,86 @@ defmodule ApxrIoWeb.API.ExperimentControllerTest do
       assert experiment_count == Experiments.count(project3)
     end
 
+    test "team needs to have correct plan", %{
+      team: team,
+      project: project,
+      release2: release2
+    } do
+      Mox.stub(ApxrIo.Billing.Mock, :teams, fn _ ->
+        %{
+          "checkout_html" => "",
+          "invoices" => [],
+          "quantity" => 4,
+          "plan_id" => "team-monthly-ss1"
+        }
+      end)
+
+      experiment = build_experiment(release2.id, %{machine_type: 5})
+
+      user = insert(:user)
+
+      insert(:team_user, team: team, user: user, role: "write")
+
+      experiment_count = Experiments.count(project)
+
+      build_conn()
+      |> put_req_header("authorization", key_for(user))
+      |> json_post(
+        "api/repos/#{team.name}/projects/#{project.name}/releases/#{release2.version}/experiments",
+        %{"experiment" => experiment}
+      )
+      |> json_response(400)
+
+      assert experiment_count == Experiments.count(project)
+    end
+
+    test "team needs to have seats available", %{
+      team: team,
+      project: project,
+      experiment2: experiment2,
+      release2: release2
+    } do
+      Mox.stub(ApxrIo.Billing.Mock, :teams, fn _ ->
+        %{
+          "checkout_html" => "",
+          "invoices" => [],
+          "quantity" => 2,
+          "plan_id" => "team-monthly-ss1"
+        }
+      end)
+
+      user = insert(:user)
+
+      insert(:team_user, team: team, user: user, role: "write")
+
+      experiment_count = Experiments.count(project)
+
+      build_conn()
+      |> put_req_header("authorization", key_for(user))
+      |> json_post(
+        "api/repos/#{team.name}/projects/#{project.name}/releases/#{release2.version}/experiments",
+        %{"experiment" => experiment2}
+      )
+      |> json_response(400)
+
+      assert experiment_count == Experiments.count(project)
+    end
+
     test "create experiment validates parameters", %{
       team: team,
       project: project,
       invalid_experiment: invalid_experiment,
       release2: release2
     } do
+      Mox.stub(ApxrIo.Billing.Mock, :teams, fn _ ->
+        %{
+          "checkout_html" => "",
+          "invoices" => [],
+          "quantity" => 4,
+          "plan_id" => "team-monthly-ss1"
+        }
+      end)
+
       invalid_experiment1 =
         put_in(invalid_experiment, [:meta, :exp_parameters, :runs], "wrong value")
 
@@ -251,11 +325,21 @@ defmodule ApxrIoWeb.API.ExperimentControllerTest do
       experiment2: experiment2,
       release2: release2
     } do
-      Mox.stub(ApxrIo.Learn.Mock, :start, fn _proj, _v, experiment, _audit_data ->
-        {:ok, %{experiment: experiment}}
+      Mox.stub(ApxrIo.Learn.Mock, :start, fn _proj, _v, _experiment ->
+        {:ok, %{learn_start: :ok}}
+      end)
+
+      Mox.stub(ApxrIo.Billing.Mock, :teams, fn _ ->
+        %{
+          "checkout_html" => "",
+          "invoices" => [],
+          "quantity" => 4,
+          "plan_id" => "team-monthly-ss1"
+        }
       end)
 
       experiment_count = Experiments.count(project)
+      experiments_in_progress_count = Teams.get_by_id(team.id).experiments_in_progress
 
       user = insert(:user)
 
@@ -270,8 +354,11 @@ defmodule ApxrIoWeb.API.ExperimentControllerTest do
       |> json_response(201)
 
       assert experiment_count + 1 == Experiments.count(project)
+      assert experiments_in_progress_count + 1 == Teams.get_by_id(team.id).experiments_in_progress
 
-      log = ApxrIo.Repo.one!(AuditLog)
+      logs = ApxrIo.Repo.all(AuditLog)
+      assert length(logs) == 2
+      log = List.first(logs)
       assert log.user_id == user.id
       assert log.team_id == team.id
       assert log.action == "experiment.create"
@@ -333,6 +420,8 @@ defmodule ApxrIoWeb.API.ExperimentControllerTest do
 
       uexperiment = build_experiment(release.id)
 
+      experiments_in_progress_count = Teams.get_by_id(team.id).experiments_in_progress
+
       token =
         ApxrIo.Token.generate_and_sign!(%{
           "team" => project.team.name,
@@ -354,6 +443,8 @@ defmodule ApxrIoWeb.API.ExperimentControllerTest do
         ErlangFormat.encode_to_iodata!(%{"experiment" => uexperiment})
       )
       |> response(204)
+
+      assert experiments_in_progress_count - 1 == Teams.get_by_id(team.id).experiments_in_progress
     end
   end
 
@@ -472,13 +563,15 @@ defmodule ApxrIoWeb.API.ExperimentControllerTest do
       experiment: experiment,
       release: release
     } do
-      Mox.stub(ApxrIo.Learn.Mock, :stop, fn _proj, _v, _eid, _audit_data ->
-        :ok
+      Mox.stub(ApxrIo.Learn.Mock, :stop, fn _proj, _v, _eid ->
+        {:ok, %{learn_stop: :ok}}
       end)
 
       user = insert(:user)
 
       insert(:team_user, team: team, user: user, role: "write")
+
+      experiments_in_progress_count = Teams.get_by_id(team.id).experiments_in_progress
 
       build_conn()
       |> put_req_header("authorization", key_for(user))
@@ -489,6 +582,8 @@ defmodule ApxrIoWeb.API.ExperimentControllerTest do
         %{}
       )
       |> response(204)
+
+      assert experiments_in_progress_count - 1 == Teams.get_by_id(team.id).experiments_in_progress
     end
   end
 
@@ -518,8 +613,8 @@ defmodule ApxrIoWeb.API.ExperimentControllerTest do
       experiment: experiment,
       release: release
     } do
-      Mox.stub(ApxrIo.Learn.Mock, :delete, fn _proj, _v, _eid, _audit_data ->
-        :ok
+      Mox.stub(ApxrIo.Learn.Mock, :delete, fn _proj, _v, _eid ->
+        {:ok, %{learn_delete: :ok}}
       end)
 
       experiment_count = Experiments.count(project)

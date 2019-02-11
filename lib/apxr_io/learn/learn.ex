@@ -9,21 +9,19 @@ defmodule ApxrIo.Learn do
   @type experiment_id() :: String.t()
   @type audit_data() :: map()
 
-  @callback start(project(), release(), map(), audit: audit_data()) ::
+  @callback start(project(), release(), map()) ::
               {:ok, %{experiment: experiment()}} | {:error, map()}
   @callback pause(project(), version(), experiment_id(), audit: audit_data()) ::
               :ok | {:error, map()}
   @callback continue(project(), version(), experiment_id(), audit: audit_data()) ::
               :ok | {:error, map()}
-  @callback stop(project(), version(), experiment_id(), audit: audit_data()) ::
-              :ok | {:error, map()}
-  @callback delete(project(), version(), experiment_id(), audit: audit_data()) ::
-              :ok | {:error, map()}
+  @callback stop(project(), version(), experiment_id()) :: :ok | {:error, map()}
+  @callback delete(project(), version(), experiment_id()) :: :ok | {:error, map()}
 
   defp impl(), do: Application.get_env(:apxr_io, :learn_impl)
 
-  def start(project, release, experiment, audit: audit_data) do
-    impl().start(project, release, experiment, audit: audit_data)
+  def start(project, release, experiment) do
+    impl().start(project, release, experiment)
   end
 
   def pause(project, version, identifier, audit: audit_data) do
@@ -34,11 +32,11 @@ defmodule ApxrIo.Learn do
     impl().continue(project, version, identifier, audit: audit_data)
   end
 
-  def stop(project, version, identifier, audit: audit_data) do
-    impl().stop(project, version, identifier, audit: audit_data)
+  def stop(project, version, identifier) do
+    impl().stop(project, version, identifier)
   end
 
-  def delete(project, version, identifier, audit: audit_data) do
-    impl().delete(project, version, identifier, audit: audit_data)
+  def delete(project, version, identifier) do
+    impl().delete(project, version, identifier)
   end
 end

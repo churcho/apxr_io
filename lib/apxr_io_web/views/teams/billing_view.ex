@@ -2,12 +2,25 @@ defmodule ApxrIoWeb.Teams.BillingView do
   use ApxrIoWeb, :view
   alias ApxrIoWeb.TeamView
 
-  defp plan("team-monthly"), do: "Team, monthly billed ($7.00 per user / month)"
-  defp plan("team-annually"), do: "Team, annually billed ($70.00 per user / year)"
-  defp plan_price("team-monthly"), do: "$7.00"
-  defp plan_price("team-annually"), do: "$70.00"
+  defp plan("team-monthly-ss1"), do: "Team, monthly billed ($499.00 per user / month)"
+  defp plan("team-monthly-ss2"), do: "Team, monthly billed ($999.00 per user / month)"
+  defp plan("team-annually-ss1"), do: "Team, annually billed ($4990.00 per user / year)"
+  defp plan("team-annually-ss2"), do: "Team, annually billed ($9990.00 per user / year)"
+  defp plan_price("team-monthly-ss1"), do: "$499.00"
+  defp plan_price("team-monthly-ss2"), do: "$999.00"
+  defp plan_price("team-annually-ss1"), do: "$4990.00"
+  defp plan_price("team-annually-ss2"), do: "$9990.00"
 
-  defp proration_description("team-monthly", price, days, quantity, quantity) do
+  defp plans() do
+    [
+      {"team-monthly-ss1", "APXR SS1 (monthly)"},
+      {"team-monthly-ss2", "APXR SS2 (monthly)"},
+      {"team-annually-ss1", "APXR SS1 (annually)"},
+      {"team-annually-ss2", "APXR SS2 (annually)"}
+    ]
+  end
+
+  defp proration_description("team-monthly-ss1", price, days, quantity, quantity) do
     """
     Each new seat will be prorated on the next invoice for
     <strong>#{days}</strong> day(s) @ <strong>$#{money(price)}</strong>.
@@ -15,7 +28,15 @@ defmodule ApxrIoWeb.Teams.BillingView do
     |> raw()
   end
 
-  defp proration_description("team-annually", price, days, quantity, quantity) do
+  defp proration_description("team-monthly-ss2", price, days, quantity, quantity) do
+    """
+    Each new seat will be prorated on the next invoice for
+    <strong>#{days}</strong> day(s) @ <strong>$#{money(price)}</strong>.
+    """
+    |> raw()
+  end
+
+  defp proration_description("team-annually-ss1", price, days, quantity, quantity) do
     """
     Each new seat will be charged a proration for
     <strong>#{days}</strong> day(s) @ <strong>$#{money(price)}</strong>.
@@ -23,7 +44,15 @@ defmodule ApxrIoWeb.Teams.BillingView do
     |> raw()
   end
 
-  defp proration_description("team-monthly", price, days, quantity, max_period_quantity)
+  defp proration_description("team-annually-ss2", price, days, quantity, quantity) do
+    """
+    Each new seat will be charged a proration for
+    <strong>#{days}</strong> day(s) @ <strong>$#{money(price)}</strong>.
+    """
+    |> raw()
+  end
+
+  defp proration_description("team-monthly-ss1", price, days, quantity, max_period_quantity)
        when quantity < max_period_quantity do
     """
     You have already used <strong>#{max_period_quantity}</strong> seats in your current billing period.
@@ -33,7 +62,27 @@ defmodule ApxrIoWeb.Teams.BillingView do
     |> raw()
   end
 
-  defp proration_description("team-annually", price, days, quantity, max_period_quantity)
+  defp proration_description("team-monthly-ss2", price, days, quantity, max_period_quantity)
+       when quantity < max_period_quantity do
+    """
+    You have already used <strong>#{max_period_quantity}</strong> seats in your current billing period.
+    If adding seats over this amount, each new seat will be prorated on the next invoice for
+    <strong>#{days}</strong> day(s) @ <strong>$#{money(price)}</strong>.
+    """
+    |> raw()
+  end
+
+  defp proration_description("team-annually-ss1", price, days, quantity, max_period_quantity)
+       when quantity < max_period_quantity do
+    """
+    You have already used <strong>#{max_period_quantity}</strong> seats in your current billing period.
+    If adding seats over this amount, each new seat will be charged a proration for
+    <strong>#{days}</strong> day(s) @ <strong>$#{money(price)}</strong>.
+    """
+    |> raw()
+  end
+
+  defp proration_description("team-annually-ss2", price, days, quantity, max_period_quantity)
        when quantity < max_period_quantity do
     """
     You have already used <strong>#{max_period_quantity}</strong> seats in your current billing period.
@@ -117,7 +166,7 @@ defmodule ApxrIoWeb.Teams.BillingView do
 
   defp invoice_status(%{"paid" => false, "attempted" => true, "id" => invoice_id}, _team) do
     form_tag(Routes.team_path(Endpoint, :pay_invoice, invoice_id)) do
-      submit("Pay now", class: "btn btn-primary")
+      submit("Pay now", class: "button is-black")
     end
   end
 

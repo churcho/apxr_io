@@ -4,7 +4,7 @@ defmodule ApxrIoWeb.Router do
 
   @accepted_formats ~w(json elixir erlang)
 
-  @csp  "default-src 'self';\
+  @csp "default-src 'self';\
         connect-src 'self' ws://localhost:8080 wss://apxr.io;\
         script-src 'self' 'unsafe-inline' 'unsafe-eval';\
         style-src 'self' 'unsafe-inline' 'unsafe-eval';\

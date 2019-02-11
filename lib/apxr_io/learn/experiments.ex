@@ -33,14 +33,19 @@ defmodule ApxrIo.Learn.Experiments do
       Multi.new()
       |> Multi.insert(:experiment, Experiment.build(release, params))
       |> audit_create(audit_data, project, release)
+      |> Ecto.Multi.run(:learn_start, fn _repo, %{experiment: experiment1} ->
+        Learn.start(project, release, experiment1)
+      end)
+      |> Multi.update(:team, Team.increment_experiments_in_progress(project.team))
+      |> audit_start(audit_data, project, release)
       |> Repo.transaction(timeout: @timeout)
 
     case result do
-      {:error, :experiment, changeset, _} ->
+      {:error, _op, changeset, _others} ->
         {:error, changeset}
 
       {:ok, %{experiment: experiment}} ->
-        Learn.start(project, release, experiment, audit: audit_data)
+        {:ok, %{experiment: experiment}}
     end
   end
 
@@ -48,14 +53,19 @@ defmodule ApxrIo.Learn.Experiments do
     result =
       Multi.new()
       |> Multi.update(:experiment, Experiment.update(experiment, params))
+      |> Ecto.Multi.run(:decrement, fn _repo, %{experiment: experiment1} ->
+        maybe_decrement_experiment_in_progress(experiment1, project)
+      end)
+      |> Ecto.Multi.run(:notify, fn _repo, %{experiment: experiment1} ->
+        maybe_send_notification_email(experiment1, project, release)
+      end)
       |> Repo.transaction(timeout: @timeout)
 
     case result do
-      {:error, :experiment, changeset, _} ->
+      {:error, _op, changeset, _others} ->
         {:error, changeset}
 
-      {:ok, %{experiment: experiment}} ->
-        maybe_send_notification_email(experiment, project, release)
+      {:ok, %{experiment: _experiment}} ->
         :ok
     end
   end
@@ -70,30 +80,52 @@ defmodule ApxrIo.Learn.Experiments do
     )
   end
 
-  def stop(project, version, experiment, audit: audit_data) do
-    Learn.stop(project, version, experiment.meta.exp_parameters["identifier"], audit: audit_data)
+  def stop(project, release, experiment, audit: audit_data) do
+    result =
+      Multi.new()
+      |> Ecto.Multi.run(:learn_stop, fn _repo, _other ->
+        Learn.stop(project, release.version, experiment.meta.exp_parameters["identifier"])
+      end)
+      |> Multi.update(:team, Team.decrement_experiments_in_progress(project.team))
+      |> audit_stop(audit_data, project, release, experiment)
+      |> Repo.transaction(timeout: @timeout)
+
+    case result do
+      {:error, _op, changeset, _others} ->
+        {:error, changeset}
+
+      {:ok, _} ->
+        :ok
+    end
   end
 
   def delete(project, release, experiment, audit: audit_data) do
     result =
       Multi.new()
       |> Multi.delete(:experiment, Experiment.delete(experiment))
+      |> Ecto.Multi.run(:learn_delete, fn _repo, %{experiment: experiment1} ->
+        Learn.delete(project, release.version, experiment1.meta.exp_parameters["identifier"])
+      end)
       |> audit_delete(audit_data, project, release)
       |> Repo.transaction(timeout: @timeout)
 
     case result do
-      {:error, :experiment, changeset, _} ->
+      {:error, _op, changeset, _others} ->
         {:error, changeset}
 
-      {:ok, %{experiment: experiment}} ->
-        Learn.delete(project, release.version, experiment.meta.exp_parameters["identifier"],
-          audit: audit_data
-        )
+      {:ok, %{experiment: _experiment}} ->
+        :ok
     end
   end
 
   defp audit_create(multi, audit_data, project, release) do
     audit(multi, audit_data, "experiment.create", fn %{experiment: exp} ->
+      {project, release, exp}
+    end)
+  end
+
+  defp audit_start(multi, audit_data, project, release) do
+    audit(multi, audit_data, "experiment.start", fn %{experiment: exp} ->
       {project, release, exp}
     end)
   end
@@ -104,6 +136,20 @@ defmodule ApxrIo.Learn.Experiments do
     end)
   end
 
+  defp audit_stop(multi, audit_data, project, release, experiment) do
+    audit(multi, audit_data, "experiment.stop", fn _ ->
+      {project, release, experiment}
+    end)
+  end
+
+  defp maybe_decrement_experiment_in_progress(experiment, project) do
+    if experiment.meta.progress == "completed" do
+      Repo.update(Team.decrement_experiments_in_progress(project.team))
+    end
+
+    {:ok, %{decrement: :ok}}
+  end
+
   defp maybe_send_notification_email(experiment, project, release) do
     if experiment.meta.progress == "completed" do
       owners = Enum.map(Owners.all(project, user: :emails), & &1.user)
@@ -111,5 +157,7 @@ defmodule ApxrIo.Learn.Experiments do
       Emails.experiment_complete(project, release, experiment, owners)
       |> Mailer.deliver_now_throttled()
     end
+
+    {:ok, %{notify: :ok}}
   end
 end

@@ -130,6 +130,7 @@ source part will be the billing service."
   def experiment_factory do
     %ApxrIo.Learn.Experiment{
       description: "Experiment description goes here.",
+      machine_type: 2,
       release: build(:release),
       meta: build(:experiment_metadata),
       trace: build(:experiment_trace),

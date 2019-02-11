@@ -5,6 +5,7 @@ defmodule ApxrIo.RepoBase.Migrations.AddTeamsTable do
     create table(:teams) do
       add(:name, :string, null: false)
       add(:billing_active, :boolean, default: false, null: false)
+      add(:experiments_in_progress, :integer, default: 0, null: false)
 
       timestamps()
     end

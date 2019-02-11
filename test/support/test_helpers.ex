@@ -61,6 +61,7 @@ defmodule ApxrIo.TestHelpers do
     Map.merge(
       %{
         description: "Experiment description goes here.",
+        machine_type: 2,
         release_id: release_id,
         meta: %{
           started: nil,

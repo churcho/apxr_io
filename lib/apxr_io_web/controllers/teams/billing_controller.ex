@@ -121,7 +121,8 @@ defmodule ApxrIoWeb.Teams.BillingController do
   def add_seats(conn, %{"team" => team} = params) do
     TeamController.access_team(conn, team, "admin", fn team ->
       members_count = Teams.members_count(team)
-      current_seats = String.to_integer(params["current-seats"])
+      billing = ApxrIo.Billing.teams(team.name)
+      current_seats = billing["quantity"]
       add_seats = String.to_integer(params["add-seats"])
       seats = current_seats + add_seats
       user = conn.assigns.current_user
@@ -142,10 +143,11 @@ defmodule ApxrIoWeb.Teams.BillingController do
     end)
   end
 
-  def remove_seats(conn, %{"team" => team} = params) do
+  def remove_seats(conn, %{"team" => team}) do
     TeamController.access_team(conn, team, "admin", fn team ->
       members_count = Teams.members_count(team)
-      seats = String.to_integer(params["seats"])
+      billing = ApxrIo.Billing.teams(team.name)
+      seats = billing["quantity"]
       user = conn.assigns.current_user
 
       if seats >= members_count do
@@ -178,8 +180,10 @@ defmodule ApxrIoWeb.Teams.BillingController do
     end)
   end
 
-  defp plan_name("team-monthly"), do: "monthly team"
-  defp plan_name("team-annually"), do: "annual team"
+  defp plan_name("team-monthly-ss1"), do: "monthly SS1 team"
+  defp plan_name("team-monthly-ss2"), do: "monthly SS2 team"
+  defp plan_name("team-annually-ss1"), do: "annual SS1 team"
+  defp plan_name("team-annually-ss2"), do: "annual SS2 team"
 
   defp update_billing(conn, team, params, fun) do
     billing_params =
@@ -238,7 +242,7 @@ defmodule ApxrIoWeb.Teams.BillingController do
       billing_started?: false,
       checkout_html: nil,
       billing_email: nil,
-      plan_id: "team-monthly",
+      plan_id: "team-monthly-ss1",
       subscription: nil,
       monthly_cost: nil,
       amount_with_tax: nil,

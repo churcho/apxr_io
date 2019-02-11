@@ -9,7 +9,7 @@
       <%
       paginate = paginate(@page, @experiment_count, items_per_page: @per_page, page_links: 5)
       page = if @page == 1, do: nil, else: @page
-      sort_version_params = params(page: page, sort: "Version")
+      sort_version_params = params(page: page, sort: "version")
       sort_created_params = params(page: page, sort: "inserted_at")
       prev_page_params = params(page: @page-1, sort: @sort)
       next_page_params = params(page: @page+1, sort: @sort)
@@ -50,10 +50,11 @@
           <thead>
             <tr>
               <th>Version</th>
+              <th>Description</th>
+              <th>Progress</th>
               <th>Started</th>
               <th>Completed</th>
               <th>Duration</th>
-              <th>Progress</th>
               <th>Runs</th>
             </tr>
           </thead>

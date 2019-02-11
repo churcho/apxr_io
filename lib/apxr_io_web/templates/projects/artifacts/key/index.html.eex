@@ -47,7 +47,7 @@
                 <td>
                   <%= form_tag(Routes.artifacts_key_path(Endpoint, :delete, @artifact.project, @artifact, key), method: :delete, class: "action") do %>
                     <input type="hidden" name="name" value="<%= key.name %>">
-                    <button type="submit" class="btn btn-danger btn-xs">Revoke</button>
+                    <button type="submit" class="button is-danger is-small">Revoke</button>
                   <% end %>
                 </td>
               </tr>
@@ -92,7 +92,7 @@
               <%= error_tag f, :resource %>
             </div>
           <% end %>
-          <button type="submit" class="btn btn-primary btn-black">Generate</button>
+          <button type="submit" class="button is-black">Generate</button>
         <% end %>
       </div>
     </div> 

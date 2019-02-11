@@ -201,9 +201,18 @@ defmodule ApxrIoWeb.Teams.BillingControllerTest do
 
   describe "POST /teams/:team/add-seats" do
     test "increase number of seats", %{team: team, user: user} do
+      Mox.stub(ApxrIo.Billing.Mock, :teams, fn _ ->
+        %{
+          "checkout_html" => "",
+          "invoices" => [],
+          "quantity" => 4,
+          "plan_id" => "team-monthly-ss1"
+        }
+      end)
+
       Mox.stub(ApxrIo.Billing.Mock, :update, fn token, _user, params, _audit_data ->
         assert team.name == token.name
-        assert params == %{"quantity" => 3}
+        assert params == %{"quantity" => 6}
         {:ok, %{}}
       end)
 
@@ -213,7 +222,6 @@ defmodule ApxrIoWeb.Teams.BillingControllerTest do
         build_conn()
         |> test_login(user)
         |> post("/teams/#{team.name}/add-seats", %{
-          "current-seats" => "1",
           "add-seats" => "2"
         })
 
@@ -222,7 +230,14 @@ defmodule ApxrIoWeb.Teams.BillingControllerTest do
     end
 
     test "seats cannot be less than number of members", %{team: team, user: user} do
-      mock_billing_teams(team)
+      Mox.stub(ApxrIo.Billing.Mock, :teams, fn _ ->
+        %{
+          "checkout_html" => "",
+          "invoices" => [],
+          "quantity" => 0,
+          "plan_id" => "team-monthly-ss1"
+        }
+      end)
 
       insert(:team_user, team: team, user: user, role: "admin")
       insert(:team_user, team: team, user: build(:user))
@@ -232,7 +247,6 @@ defmodule ApxrIoWeb.Teams.BillingControllerTest do
         build_conn()
         |> test_login(user)
         |> post("/teams/#{team.name}/add-seats", %{
-          "current-seats" => "1",
           "add-seats" => "1"
         })
 
@@ -245,9 +259,18 @@ defmodule ApxrIoWeb.Teams.BillingControllerTest do
 
   describe "POST /teams/:team/remove-seats" do
     test "increase number of seats", %{team: team, user: user} do
+      Mox.stub(ApxrIo.Billing.Mock, :teams, fn _ ->
+        %{
+          "checkout_html" => "",
+          "invoices" => [],
+          "quantity" => 4,
+          "plan_id" => "team-monthly-ss1"
+        }
+      end)
+
       Mox.stub(ApxrIo.Billing.Mock, :update, fn token, _user, params, _audit_data ->
         assert team.name == token.name
-        assert params == %{"quantity" => 3}
+        assert params == %{"quantity" => 4}
         {:ok, %{}}
       end)
 
@@ -265,7 +288,14 @@ defmodule ApxrIoWeb.Teams.BillingControllerTest do
     end
 
     test "seats cannot be less than number of members", %{team: team, user: user} do
-      mock_billing_teams(team)
+      Mox.stub(ApxrIo.Billing.Mock, :teams, fn _ ->
+        %{
+          "checkout_html" => "",
+          "invoices" => [],
+          "quantity" => 0,
+          "plan_id" => "team-monthly-ss1"
+        }
+      end)
 
       insert(:team_user, team: team, user: build(:user))
       insert(:team_user, team: team, user: user, role: "admin")
@@ -288,7 +318,7 @@ defmodule ApxrIoWeb.Teams.BillingControllerTest do
     test "change plan", %{team: team, user: user} do
       Mox.stub(ApxrIo.Billing.Mock, :change_plan, fn token, _user, params, _audit_data ->
         assert team.name == token.name
-        assert params == %{"plan_id" => "team-annually"}
+        assert params == %{"plan_id" => "team-annually-ss1"}
         {:ok, %{}}
       end)
 
@@ -298,11 +328,11 @@ defmodule ApxrIoWeb.Teams.BillingControllerTest do
         build_conn()
         |> test_login(user)
         |> post("/teams/#{team.name}/change-plan", %{
-          "plan_id" => "team-annually"
+          "plan_id" => "team-annually-ss1"
         })
 
       assert redirected_to(conn) == "/teams/#{team.name}/billing"
-      assert get_flash(conn, :info) == "You have switched to the annual team plan."
+      assert get_flash(conn, :info) == "You have switched to the annual SS1 team plan."
     end
   end
 end

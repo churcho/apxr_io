@@ -6,7 +6,7 @@ defmodule ApxrIo.Learn.ApxrRun do
 
   @behaviour ApxrIo.Learn
 
-  def start(project, release, experiment, audit: audit_data) do
+  def start(project, release, experiment) do
     tarball = tarball(release)
     config = config(experiment, release)
     identifiers = {project, release, experiment}
@@ -16,11 +16,10 @@ defmodule ApxrIo.Learn.ApxrRun do
          {:ok, 204, _h, _b} <- post("/actions/polis/setup", config, identifiers),
          :ok <- :timer.sleep(100),
          {:ok, 204, _h, _b} <- post("/actions/experiment/start", <<>>, identifiers) do
-      AuditLog.audit(Multi.new(), audit_data, "experiment.start", identifiers)
-      {:ok, %{experiment: experiment}}
+      {:ok, %{learn_start: :ok}}
     else
       {:ok, error, _headers, _body} ->
-        {:error, [{:error, "created but failed to start experiment: #{error}"}]}
+        {:error, [{:error, "failed to start experiment: #{error}"}]}
     end
   end
 
@@ -36,8 +35,8 @@ defmodule ApxrIo.Learn.ApxrRun do
 
         :ok
 
-      {:ok, 422, _headers, body} ->
-        {:error, body}
+      {:ok, error, _headers, _body} ->
+        {:error, [{:error, "failed to pause experiment: #{error}"}]}
     end
   end
 
@@ -53,24 +52,23 @@ defmodule ApxrIo.Learn.ApxrRun do
 
         :ok
 
-      {:ok, 422, _headers, body} ->
-        {:error, body}
+      {:ok, error, _headers, _body} ->
+        {:error, [{:error, "failed to continue experiment: #{error}"}]}
     end
   end
 
-  def stop(project, version, identifier, audit: audit_data) do
+  def stop(project, version, identifier) do
     case post("/actions/polis/stop", <<>>, {project, version, identifier}) do
       {:ok, 204, _headers, _body} ->
-        AuditLog.audit(Multi.new(), audit_data, "experiment.stop", {project, version, identifier})
-        :ok
+        {:ok, %{learn_stop: :ok}}
 
-      {:ok, 422, _headers, body} ->
-        {:error, body}
+      {:ok, error, _headers, _body} ->
+        {:error, [{:error, "failed to stop experiment: #{error}"}]}
     end
   end
 
-  def delete(_project, _version, _identifier, audit: _audit_data) do
-    :ok
+  def delete(_project, _version, _identifier) do
+    {:ok, %{learn_delete: :ok}}
   end
 
   defp post(path, body, identifiers) do

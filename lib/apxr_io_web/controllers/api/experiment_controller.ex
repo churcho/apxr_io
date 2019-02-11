@@ -43,8 +43,13 @@ defmodule ApxrIoWeb.API.ExperimentController do
     project = conn.assigns.project
     release = conn.assigns.release
 
-    Experiments.start(project, release, experiment, audit: audit_data(conn))
-    |> handle_result(conn)
+    if Teams.can_start_experiment?(project.team, experiment) do
+      Experiments.start(project, release, experiment, audit: audit_data(conn))
+      |> handle_result(conn)
+    else
+      error_msg = "failed to start experiment: not enough seats or machine type not allowed"
+      handle_result({:error, error_msg}, conn)
+    end
   end
 
   def update(conn, %{"experiment" => experiment_body}) do
@@ -79,7 +84,7 @@ defmodule ApxrIoWeb.API.ExperimentController do
     release = conn.assigns.release
     experiment = conn.assigns.experiment
 
-    Experiments.stop(project, release.version, experiment, audit: audit_data(conn))
+    Experiments.stop(project, release, experiment, audit: audit_data(conn))
     |> handle_result(conn)
   end
 
