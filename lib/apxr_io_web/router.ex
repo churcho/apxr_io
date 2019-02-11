@@ -4,12 +4,19 @@ defmodule ApxrIoWeb.Router do
 
   @accepted_formats ~w(json elixir erlang)
 
+  @csp  "default-src 'self';\
+        connect-src 'self' ws://localhost:8080 wss://apxr.io;\
+        script-src 'self' 'unsafe-inline' 'unsafe-eval';\
+        style-src 'self' 'unsafe-inline' 'unsafe-eval';\
+        img-src 'self' 'unsafe-inline' 'unsafe-eval';\
+        font-src 'self' 'unsafe-inline' 'unsafe-eval';"
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_flash
     plug :protect_from_forgery
-    plug :put_secure_browser_headers
+    plug :put_secure_browser_headers, %{"content-security-policy" => @csp}
     plug :web_user_agent
     plug :validate_url
     plug :login
