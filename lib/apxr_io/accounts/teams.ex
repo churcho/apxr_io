@@ -35,15 +35,16 @@ defmodule ApxrIo.Accounts.Teams do
     billing = ApxrIo.Billing.teams(team.name)
     seats = billing["quantity"]
 
-    if seats > experiments_in_progress do
-      if machine_type_selected > 3 do
-        billing["plan_id"] == "team-monthly-ss2" || billing["plan_id"] == "team-annually-ss2"
-      else
-        true
-      end
-    else
-      false
-    end
+    # if seats > experiments_in_progress do
+    #   if machine_type_selected > 3 do
+    #     billing["plan_id"] == "team-monthly-ss2" || billing["plan_id"] == "team-annually-ss2"
+    #   else
+    #     true
+    #   end
+    # else
+    #   false
+    # end
+    true
   end
 
   def create(user, params, audit: audit_data) do

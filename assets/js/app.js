@@ -47,46 +47,56 @@ function addCopyButtonToCode(){
  new Clipboard('.button');
 }
 
-// Websocket (tail logs)
-if ("WebSocket" in window && ((/experiments/.test(window.location.href)) && (/^((?!all).)*$/.test(window.location.href)))) {
-  'use strict';
+// Experiment show
+if ((/experiments/.test(window.location.href)) && (/^((?!all).)*$/.test(window.location.href))) {
 
-  var ws = null;
-
-  function wsStart(){
-    let messagesContainer = document.querySelector("#exp_log_messages")
-    
-    ws = new WebSocket(window.wsEndpoint + "/websocket?token=" + window.wsToken);
-    
-    ws.onopen = function(){
-      console.log('ws connected');
+  // Websocket (tail logs)
+  if ("WebSocket" in window) {
+    'use strict';
+  
+    var ws = null;
+  
+    function wsStart(){
+      let messagesContainer = document.querySelector("#logs_container")
+      
+      ws = new WebSocket(window.wsEndpoint + "/websocket?token=" + window.wsToken);
+      
+      ws.onopen = function(){
+        console.log('ws connected');
+      };
+      
+      ws.onmessage = function (evt) { 
+        let messageItem = document.createElement("li");
+        messageItem.innerText = evt.data;
+        let list = document.getElementById("logs_list");
+        if (list.childElementCount >= 100) {
+          var last = list.lastElementChild;
+          list.removeChild(last);
+          list.insertBefore(messageItem, list.childNodes[0]);
+        } else {
+          list.insertBefore(messageItem, list.childNodes[0]);
+        }
+      };
+      
+      ws.onclose = function(){
+        console.log('ws closed');
+      };
+    }
+  
+    function wsCheck(){
+      if(!ws || ws.readyState == 3) wsStart();
+    }
+  
+    window.onbeforeunload = function() {
+      ws.onclose = function () {}; // disable onclose handler first
+      ws.close();
     };
-    
-    ws.onmessage = function (evt) { 
-      let messageItem = document.createElement("li");
-      messageItem.innerText = evt.data;
-      let list = document.getElementById("logsList");
-      if (list.childElementCount >= 100) {
-        var last = list.lastElementChild;
-        list.removeChild(last);
-        list.insertBefore(messageItem, list.childNodes[0]);
-      } else {
-        list.insertBefore(messageItem, list.childNodes[0]);
-      }
-    };
-    
-    ws.onclose = function(){
-      console.log('ws closed');
-    };
+  
+    $("#tail_logs").click(function() {
+      wsStart();
+      setInterval(wsCheck, 5000);
+    });
   }
-
-  function wsCheck(){
-    if(!ws || ws.readyState == 3) wsStart();
-  }
-
-  wsStart();
-
-  // setInterval(wsCheck, 5000);
 }
 
 export default class App {

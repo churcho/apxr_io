@@ -33,7 +33,8 @@
           <li><a class="tab heading is-size-6" data-tab="init_constraints">Constraints</a></li>
           <li><a class="tab heading is-size-6" data-tab="trace">Trace</a></li>
           <li><a class="tab heading is-size-6" data-tab="graphs">Graphs</a></li>
-          <li><a class="tab heading is-size-6" data-tab="exp_log_messages">Tail</a></li>
+          <li><a class="tab heading is-size-6" data-tab="metrics_container">Machine</a></li>
+          <li><a id="tail_logs" class="tab heading is-size-6" data-tab="logs_container">Tail</a></li>
         </ul>
       </div>
     </div>
@@ -114,8 +115,12 @@ pm_parameters: <%= Poison.encode_to_iodata!(@experiment.meta.pm_parameters, pret
           </div>
         </div>
       </div>
-      <div id="exp_log_messages" class="tab-content has-background-black has-text-white" style="padding: 2rem;">
-        <ul id="logsList" style="list-style: circle;"></ul>
+      <div id="logs_container" class="tab-content has-background-black has-text-white" style="padding: 2rem;">
+        <ul id="logs_list" style="list-style: circle;"></ul>
+      </div>
+      <div class="tab-content highlight">
+        <div>
+        </div>
       </div>
     </div>
   </div>

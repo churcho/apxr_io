@@ -12,7 +12,7 @@ defmodule ApxrIo.Learn.ExperimentMetadata do
     field :duration, :integer
     field :progress, :string
     field :total_runs, :integer
-    field :interruptions, {:array, :integer}
+    field :interruptions, {:array, :any}
     field :exp_parameters, :map
     field :pm_parameters, :map
     field :init_constraints, {:array, :map}
