@@ -47,8 +47,10 @@ defmodule ApxrIoWeb.API.ExperimentController do
       Experiments.start(project, release, experiment, audit: audit_data(conn))
       |> handle_result(conn)
     else
-      error_msg = 
-        %{"Denied" => "Not enough seats and/or machine type not available on your current plan."}
+      error_msg = %{
+        "Denied" => "Not enough seats and/or machine type not available on your current plan."
+      }
+
       handle_result({:error, error_msg}, conn)
     end
   end

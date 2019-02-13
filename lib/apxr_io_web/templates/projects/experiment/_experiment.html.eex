@@ -1,9 +1,14 @@
 <tr>
-  <td><a href="<%= path_for_experiment(@project, @experiment)%>"><%= @experiment.release.version %></a></td>
+  <td><%= @experiment.release.version %></td>
   <td><%= text_length(@experiment.description, 50) %></td>
   <td><%= if @experiment.meta.progress, do: @experiment.meta.progress, else: "in_progress" %></td>
   <td><%= if is_nil(@experiment.meta.started), do: pretty_datetime(@experiment.inserted_at), else: inspect Jason.decode!(@experiment.meta.started) %></td>
   <td><%= if @experiment.meta.completed, do: inspect Jason.decode!(@experiment.meta.completed) %></td>
   <td><%= @experiment.meta.duration %></td>
   <td><%= @experiment.meta.total_runs %></td>
+  <td>
+    <a class="button is-small is-success" href="<%= path_for_experiment(@project, @experiment)%>">
+      <strong>Inspect</strong>
+    </a>  
+  </td>
 </tr>

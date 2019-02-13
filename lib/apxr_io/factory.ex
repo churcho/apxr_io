@@ -134,7 +134,8 @@ source part will be the billing service."
       release: build(:release),
       meta: build(:experiment_metadata),
       trace: build(:experiment_trace),
-      graph_data: build(:experiment_graph_data)
+      graph_data: build(:experiment_graph_data),
+      system_metrics: build(:experiment_system_metrics)
     }
   end
 
@@ -698,6 +699,18 @@ source part will be the billing service."
           }
         }
       ]
+    }
+  end
+
+  def experiment_system_metrics_factory do
+    %ApxrIo.Learn.ExperimentSystemMetrics{
+      memory: [
+        [:used, 12321],
+        [:allocated, 3243],
+        [:unused, 123_123],
+        [:usage, 0.23]
+      ],
+      scheduler_usage: [34.23, 34.23, 23.34, 23.023]
     }
   end
 

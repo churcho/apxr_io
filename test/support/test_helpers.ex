@@ -616,6 +616,15 @@ defmodule ApxrIo.TestHelpers do
               }
             }
           ]
+        },
+        system_metrics: %{
+          memory: [
+            [:used, 12321],
+            [:allocated, 3243],
+            [:unused, 123_123],
+            [:usage, 0.23]
+          ],
+          scheduler_usage: [34.23, 34.23, 23.34, 23.023]
         }
       },
       attrs

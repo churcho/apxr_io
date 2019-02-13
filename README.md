@@ -119,7 +119,7 @@ IEx.pry
 For example:
 
 ```
-t = Teams.get("apxr")
+t = Teams.get("bobs")
 ApxrIo.Repo.update!(Ecto.Changeset.change(t, billing_active: true))
 ```
 

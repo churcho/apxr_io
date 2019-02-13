@@ -56,6 +56,7 @@
               <th>Completed</th>
               <th>Duration</th>
               <th>Runs</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>

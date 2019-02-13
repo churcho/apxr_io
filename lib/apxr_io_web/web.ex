@@ -127,6 +127,7 @@ defmodule ApxrIoWeb do
         Learn.ExperimentMetadata,
         Learn.ExperimentTrace,
         Learn.ExperimentGraphData,
+        Learn.ExperimentSystemMetrics,
         Repository.Assets,
         Repository.Owners,
         Repository.Project,
