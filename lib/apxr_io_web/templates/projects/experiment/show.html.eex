@@ -15,10 +15,10 @@
   <div class="column is-1"></div>
   <div class="column is-10">
     <header>
-      <h3 class="title is-3 is-spaced"><span class="tag is-dark heading"><%= @progress || "in_progress" %></span></h3>
-      <%= if @progress != "completed" do %>
-        <progress class="progress is-small is-primary" max="100"></progress>
-      <% end %>
+      <h3 class="title is-3 is-spaced">
+        <span class="tag is-dark heading"><%= @progress || "in_progress" %></span>
+        <span class="tag is-warning heading">run: <%= @experiment.meta.run_index %>/<%= @experiment.meta.total_runs %></span>
+      </h3>
       <%= if @experiment.description do %>
         <h5 class="subtitle is-5 has-text-weight-semi-bold has-text-grey"><%= text_length(@experiment.description, 500) |> text_to_html() %></h5>
       <% end %>
@@ -32,16 +32,20 @@
     <div>
       <div class="tabs is-centered is-medium">
         <ul>
-          <li class="is-active"><a class="tab heading is-size-6" data-tab="overview">Overview</a></li>
-          <li><a class="tab heading is-size-6" data-tab="init_constraints">Constraints</a></li>
-          <li><a class="tab heading is-size-6" data-tab="trace">Trace</a></li>
-          <li><a class="tab heading is-size-6" data-tab="graphs">Graphs</a></li>
-          <%= if @progress == "completed" do %>
-            <li><a class="tab heading is-size-6" data-tab="metrics_container">Machine</a></li>
-            <li><a id="tail_logs" class="tab heading is-size-6" data-tab="logs_container">Tail</a></li>
-          <% end %>
+          <li class="is-active"><a href="#overview" class="tab heading is-size-6" data-exp-tab="overview">Overview</a></li>
+          <li><a href="#constraints" class="tab heading is-size-6" data-exp-tab="constraints">Constraints</a></li>
+          <li><a href="#trace" class="tab heading is-size-6" data-exp-tab="trace">Trace</a></li>
+          <li><a href="#graphs" class="tab heading is-size-6" data-exp-tab="graphs">Graphs</a></li>
+          <li><a href="#machine" class="tab heading is-size-6" data-exp-tab="machine">Machine</a></li>
+          <li><a href="#tail" class="tab heading is-size-6" data-exp-tab="tail">Tail</a></li>
         </ul>
       </div>
+    </div>
+    <br />
+    <div>
+      <%= if @progress != "completed" do %>
+        <progress class="progress is-small is-primary" max="100"></progress>
+      <% end %>
     </div>
   </div>
   <div class="column is-1"></div>
@@ -59,11 +63,12 @@ duration: <%= @experiment.meta.duration %> (seconds)
 progress: <%= @experiment.meta.progress %>
 interruptions: <%= @experiment.meta.interruptions %>
 total_runs: <%= @experiment.meta.total_runs %>
+run_index: <%= @experiment.meta.run_index %>
 exp_parameters: <%= Poison.encode_to_iodata!(@experiment.meta.exp_parameters, pretty: true) %>
 pm_parameters: <%= Poison.encode_to_iodata!(@experiment.meta.pm_parameters, pretty: true) %></code>
 </pre>
       </div>
-      <div id="init_constraints" class="tab-content highlight">
+      <div id="constraints" class="tab-content highlight">
 <pre>
 <code id="codeblock2">initial_constraints: <%= Poison.encode_to_iodata!(@experiment.meta.init_constraints, pretty: true) %></code>
 </pre>
@@ -120,10 +125,10 @@ pm_parameters: <%= Poison.encode_to_iodata!(@experiment.meta.pm_parameters, pret
           </div>
         </div>
       </div>
-      <div id="logs_container" class="tab-content has-background-black has-text-white" style="padding: 2rem;">
+      <div id="tail" class="tab-content has-background-black has-text-white" style="padding: 2rem;">
         <ul id="logs_list" style="list-style: circle;"></ul>
       </div>
-      <div id="metrics_container" class="tab-content highlight">
+      <div id="machine" class="tab-content highlight">
         <div class="columns">
           <div class="column is-half" style="border-right: 2px solid whitesmoke;">
             <div>

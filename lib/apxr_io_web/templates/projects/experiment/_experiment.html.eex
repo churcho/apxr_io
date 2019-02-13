@@ -5,7 +5,7 @@
   <td><%= if is_nil(@experiment.meta.started), do: pretty_datetime(@experiment.inserted_at), else: inspect Jason.decode!(@experiment.meta.started) %></td>
   <td><%= if @experiment.meta.completed, do: inspect Jason.decode!(@experiment.meta.completed) %></td>
   <td><%= @experiment.meta.duration %></td>
-  <td><%= @experiment.meta.total_runs %></td>
+  <td><%= @experiment.meta.run_index %>/<%= @experiment.meta.total_runs %></td>
   <td>
     <a class="button is-small is-success" href="<%= path_for_experiment(@project, @experiment)%>">
       <strong>Inspect</strong>

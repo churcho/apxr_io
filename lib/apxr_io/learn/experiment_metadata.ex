@@ -3,7 +3,7 @@ defmodule ApxrIo.Learn.ExperimentMetadata do
 
   @derive ApxrIoWeb.Stale
 
-  @params ~w(started completed duration progress total_runs
+  @params ~w(started completed duration progress total_runs run_index
   interruptions exp_parameters pm_parameters init_constraints)a
 
   embedded_schema do
@@ -12,6 +12,7 @@ defmodule ApxrIo.Learn.ExperimentMetadata do
     field :duration, :integer
     field :progress, :string
     field :total_runs, :integer
+    field :run_index, :integer
     field :interruptions, {:array, :any}
     field :exp_parameters, :map
     field :pm_parameters, :map

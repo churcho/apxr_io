@@ -62,7 +62,7 @@ if ((/experiments/.test(window.location.href)) && (/^((?!all).)*$/.test(window.l
       ws = new WebSocket(window.wsEndpoint + "/websocket?token=" + window.wsToken);
       
       ws.onopen = function(){
-        console.log('ws connected');
+        console.log('APXR ws connected');
       };
       
       ws.onmessage = function (evt) { 
@@ -79,12 +79,8 @@ if ((/experiments/.test(window.location.href)) && (/^((?!all).)*$/.test(window.l
       };
       
       ws.onclose = function(){
-        console.log('ws closed');
+        console.log('APXR ws closed');
       };
-    }
-  
-    function wsCheck(){
-      if(!ws || ws.readyState == 3) wsStart();
     }
   
     window.onbeforeunload = function() {
@@ -92,11 +88,65 @@ if ((/experiments/.test(window.location.href)) && (/^((?!all).)*$/.test(window.l
       ws.close();
     };
   
-    $("#tail_logs").click(function() {
-      wsStart();
-      setInterval(wsCheck, 5000);
-    });
+    wsStart();
   }
+  
+  // Tabs  
+  if (location.hash) {
+    var tab_id = location.hash;
+    $('.tabs li').removeClass('is-active');
+    $('.tab-content').removeClass('is-active-tab');
+    $('a[href=\'' + location.hash + '\']').parent().addClass('is-active');
+    $(tab_id).addClass('is-active-tab');
+  }
+  
+  var activeTab = localStorage.getItem('activeTab');
+  if (activeTab) {
+    
+    var tab_id = activeTab;
+    $('.tabs li').removeClass('is-active');
+    $('.tab-content').removeClass('is-active-tab');
+    $('a[href="' + activeTab + '"]').parent().addClass('is-active');
+    $(tab_id).addClass('is-active-tab');
+  }
+  
+  $('body').on('click', 'a[data-exp-tab=\'tab\']', function (e) {
+    e.preventDefault()
+  
+    var tab_name = this.getAttribute('href')
+    
+    if (history.pushState) {
+      history.pushState(null, null, tab_name)
+    }
+    else {
+      location.hash = tab_name
+    }
+    
+    localStorage.setItem('activeTab', tab_name)
+  
+    var tab_id = $(this).attr('data-exp-tab');
+    $('.tabs li').removeClass('is-active');
+    $('.tab-content').removeClass('is-active-tab');
+    $(this).parent().addClass('is-active');
+    $("#"+tab_id).addClass('is-active-tab');
+  
+    return false;
+  });
+  $(window).on('popstate', function () {
+    var anchor = location.hash || $('a[data-exp-tab=\'tab\']').first().attr('href');
+    
+    var tab_id = $('a[href=\'' + anchor + '\']').attr('data-exp-tab');
+    $('.tabs li').removeClass('is-active');
+    $('.tab-content').removeClass('is-active-tab');
+    $('a[href=\'' + anchor + '\']').parent().addClass('is-active');
+    $("#"+tab_id).addClass('is-active-tab');
+  });
+
+  function refreshPage(){
+    location.reload();
+  }
+  
+  setInterval(refreshPage, 90000);
 }
 
 export default class App {

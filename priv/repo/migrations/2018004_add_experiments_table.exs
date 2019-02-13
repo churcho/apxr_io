@@ -10,7 +10,7 @@ defmodule ApxrIo.RepoBase.Migrations.AddExperimentsTable do
       add(:meta, :jsonb,
         null: false,
         default: fragment("json_build_object('id', uuid_generate_v4(),
-          'started', 'completed', 'duration', 'progress', 'total_runs',
+          'started', 'completed', 'duration', 'progress', 'total_runs', 'run_index',
           'interruptions', 'exp_parameters', 'pm_parameters', 'init_constraints')::jsonb")
       )
 

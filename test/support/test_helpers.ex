@@ -69,6 +69,7 @@ defmodule ApxrIo.TestHelpers do
           duration: 80_600_000,
           progress: "completed",
           total_runs: 5,
+          run_index: 5,
           interruptions: [],
           exp_parameters: %{
             identifier: "local_test",
