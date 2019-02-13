@@ -43,13 +43,13 @@ defmodule ApxrIo.MixProject do
   defp deps do
     [
       # Email library - MIT
-      {:bamboo, "~> 1.0"},
+      {:bamboo, "~> 1.2"},
       # Encrypted fields for Ecto - MIT
       {:cloak, "~> 0.9.1"},
       # Plug-based swiss-army knife for CORS requests - MIT
       {:corsica, "~> 1.0"},
       # static code analysis tool - MIT
-      {:credo, "~> 0.10.0", only: [:dev, :test], runtime: false},
+      {:credo, "~> 1.0", only: [:dev, :test], runtime: false},
       # Mix tasks to simplify use of Dialyzer in Elixir projects - Apache 2.0
       {:dialyxir, "~> 1.0.0-rc.4", only: [:dev], runtime: false},
       # Build releases tool - MIT
@@ -64,12 +64,10 @@ defmodule ApxrIo.MixProject do
       {:excoveralls, "~> 0.10", only: :test},
       # Factory library - MIT
       {:ex_machina, "~> 2.0"},
-      # Data mapping and language integrated query - Apache 2.0
-      {:ecto, "~> 3.0", override: true},
       # SQL-based adapters for Ecto and database migrations - Apache 2.0
-      {:ecto_sql, "~> 3.0"},
+      {:ecto_sql, "~> 3.0.5"},
       # Simple HTTP client - Apache 2.0
-      {:hackney, "~> 1.7"},
+      {:hackney, "~> 1.15"},
       # JSON parser and generator - Apache 2.0
       {:jason, "~> 1.1"},
       # Elixir JWT library - Apache 2.0
@@ -79,9 +77,9 @@ defmodule ApxrIo.MixProject do
       # Easily parsable single line, plain text and JSON logger - MIT
       {:logster, "~> 0.10.0"},
       # Mocks and explicit contracts for Elixir - Apache 2.0
-      {:mox, "~> 0.3.1", only: :test},
+      {:mox, "~> 0.5.0", only: :test},
       # Integration between Phoenix & Ecto - Apache 2.0
-      {:phoenix_ecto, "~> 3.1"},
+      {:phoenix_ecto, "~> 4.0"},
       # Functions for working with HTML strings and templates - MIT
       {:phoenix_html, "~> 2.3"},
       # Live-reload functionality for Phoenix - MIT
@@ -89,13 +87,15 @@ defmodule ApxrIo.MixProject do
       # Distributed PubSub and Presence platform - MIT
       {:phoenix_pubsub, "~> 1.0"},
       # Web framework - MIT
-      {:phoenix, "~> 1.3"},
+      {:phoenix, "~> 1.4.0"},
       # Plug building toolkit for blocking and throttling - Apache 2.0
       {:plug_attack, "~> 0.3"},
-      # Plug adapter for Cowboy - Apache 2.0
-      {:plug_cowboy, "~> 1.0"},
+      # A Plug adapter for Cowboy - Apache 2.0
+      {:plug_cowboy, "~> 2.0"},
       # Specification and conveniences for composable modules between web applications - Apache 2.0
-      {:plug, "~> 1.2"},
+      {:plug, "~> 1.7"},
+      # An incredibly fast, pure Elixir JSON library - CC0-1.0
+      {:poison, "~> 3.0"},
       # PostgreSQL driver - Apache 2.0
       {:postgrex, "~> 0.14"},
       # Wrapper of :xmerl to help query xml docs - Apache 2.0

@@ -1,4 +1,7 @@
 [
+  import_deps: [
+    :phoenix
+  ],
   inputs: [
     "*.exs",
     "config/*.exs",

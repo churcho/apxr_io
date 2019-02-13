@@ -44,6 +44,8 @@ config :phoenix, :format_encoders,
   erlang: ApxrIoWeb.ErlangFormat,
   json: Jason
 
+config :phoenix, :json_library, Jason
+
 config :phoenix, :filter_parameters, [
   "password",
   "password_confirmation",
