@@ -7,8 +7,8 @@ config :apxr_io,
   store_impl: ApxrIo.Store.Local,
   billing_impl: ApxrIo.Billing.Local,
   learn_impl: ApxrIo.Learn.Local,
-  ws_endpoint: "ws://localhost:8080",
-  apxr_run_url: "http://localhost:8080"
+  ws_endpoint: "wss://localhost:8443",
+  apxr_run_url: "https://localhost:8443"
 
 config :joken, default_signer: "0adm3lg3uLZTQSD23QSFsaFKjydfqFGR3sd7ZZp"
 

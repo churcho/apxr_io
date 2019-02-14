@@ -3,12 +3,12 @@ use Mix.Config
 config :apxr_io,
   tmp_dir: Path.expand("tmp/dev"),
   private_key: File.read!("test/fixtures/private.pem"),
-  billing_url: "http://localhost:4001",
+  billing_url: "https://localhost:4002",
   billing_key: "apxr_io_billing_key"
 
 config :apxr_io, ApxrIoWeb.Endpoint,
   https: [
-    port: 4000,
+    port: 4001,
     cipher_suite: :strong,
     certfile: "priv/cert/selfsigned.pem",
     keyfile: "priv/cert/selfsigned_key.pem"
