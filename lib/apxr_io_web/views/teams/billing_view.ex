@@ -164,8 +164,8 @@ defmodule ApxrIoWeb.Teams.BillingView do
   defp invoice_status(%{"forgiven" => true}, _team), do: "Forgiven"
   defp invoice_status(%{"paid" => false, "attempted" => false}, _team), do: "Pending"
 
-  defp invoice_status(%{"paid" => false, "attempted" => true, "id" => invoice_id}, _team) do
-    form_tag(Routes.team_path(Endpoint, :pay_invoice, invoice_id)) do
+  defp invoice_status(%{"paid" => false, "attempted" => true, "id" => invoice_id}, team) do
+    form_tag(Routes.billing_path(Endpoint, :pay_invoice, team, invoice_id)) do
       submit("Pay now", class: "button is-black")
     end
   end

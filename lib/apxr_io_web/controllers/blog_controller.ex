@@ -14,12 +14,14 @@ defmodule ApxrIoWeb.BlogController do
   end
 
   def show(conn, %{"id" => slug}) do
-    if post = %Post{slug: slug, published: true} = Blog.get(slug) do
+    blog_post = Blog.get(slug)
+
+    if blog_post && blog_post.published do
       render(
         conn,
         "show.html",
         title: title(slug),
-        post: post
+        post: blog_post
       )
     else
       not_found(conn)

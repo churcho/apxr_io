@@ -6,17 +6,19 @@ defmodule ApxrIo.Learn do
   @type release() :: %Release{}
   @type version() :: map()
   @type experiment() :: %Experiment{}
-  @type experiment_id() :: String.t()
+  @type eidentifier() :: String.t() | any()
   @type audit_data() :: map()
 
   @callback start(project(), release(), map()) ::
-              {:ok, %{experiment: experiment()}} | {:error, map()}
-  @callback pause(project(), version(), experiment_id(), audit: audit_data()) ::
-              :ok | {:error, map()}
-  @callback continue(project(), version(), experiment_id(), audit: audit_data()) ::
-              :ok | {:error, map()}
-  @callback stop(project(), version(), experiment_id()) :: :ok | {:error, map()}
-  @callback delete(project(), version(), experiment_id()) :: :ok | {:error, map()}
+              {:ok, %{learn_start: :ok}} | {:error, [map()]}
+  @callback pause(project(), version(), eidentifier(), audit: audit_data()) ::
+              :ok | {:error, [map()]}
+  @callback continue(project(), version(), eidentifier(), audit: audit_data()) ::
+              :ok | {:error, [map()]}
+  @callback stop(project(), version(), eidentifier()) ::
+              {:ok, %{learn_stop: :ok}} | {:error, [map()]}
+  @callback delete(project(), version(), eidentifier()) ::
+              {:ok, %{learn_delete: :ok}} | {:error, [map()]}
 
   defp impl(), do: Application.get_env(:apxr_io, :learn_impl)
 

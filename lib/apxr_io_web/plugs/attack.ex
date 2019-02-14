@@ -130,10 +130,18 @@ defmodule ApxrIoWeb.Plugs.Attack do
   # From https://github.com/michalmuskala/plug_attack/blob/812ff857d0958f1a00a711273887d7187ae80a23/lib/rule.ex#L62
   # Adding an option for `now`
   defp timed_throttle(key, opts) do
-    if key do
-      do_throttle(key, opts)
-    else
-      nil
+    case key do
+      {_, nil} ->
+        nil
+
+      {:ip, _} ->
+        do_throttle(key, opts)
+
+      {:team, _} ->
+        do_throttle(key, opts)
+
+      {:user, _} ->
+        do_throttle(key, opts)
     end
   end
 

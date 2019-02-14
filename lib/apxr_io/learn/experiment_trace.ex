@@ -1,8 +1,6 @@
 defmodule ApxrIo.Learn.ExperimentTrace do
   use ApxrIoWeb, :schema
 
-  @derive ApxrIoWeb.Stale
-
   embedded_schema do
     field :trace_acc, {:array, :map}
   end

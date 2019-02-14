@@ -227,26 +227,6 @@ defmodule ApxrIo.Accounts.Users do
     end
   end
 
-  def accessible_user(username, user) do
-    if other_user = Users.get_by_username(username, [:emails, owned_projects: :team]) do
-      other_teams = other_user.teams
-      other_team_ids = Enum.map(other_teams, & &1.id)
-
-      teams = user.teams
-      team_ids = Enum.map(teams, & &1.id)
-
-      case MapSet.size(MapSet.intersection(team_ids, other_team_ids)) do
-        0 ->
-          false
-
-        _ ->
-          other_user
-      end
-    else
-      false
-    end
-  end
-
   defp email_flag_multi(multi, _user, %{"email" => nil}, _flag, _opts) do
     multi
   end

@@ -143,6 +143,16 @@ mix sobelow
 5. Run `mix hex.outdated`
 6. Run `mix dialyzer` (release candidate)
 
+or
+
+1. Run `mix check`
+
+which runs the following:
+
+```
+["compile", "format", "xref unreachable", "dialyzer", "test"]
+```
+
 --------------------
 ### Proto
 

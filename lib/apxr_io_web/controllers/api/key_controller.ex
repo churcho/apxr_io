@@ -38,11 +38,9 @@ defmodule ApxrIoWeb.API.KeyController do
     key = Keys.get(user_or_team, name)
 
     if key do
-      when_stale(conn, key, fn conn ->
-        conn
-        |> api_cache(:private)
-        |> render(:show, key: key, authing_key: authing_key)
-      end)
+      conn
+      |> api_cache(:private)
+      |> render(:show, key: key, authing_key: authing_key)
     else
       not_found(conn)
     end

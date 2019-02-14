@@ -24,11 +24,9 @@ defmodule ApxrIoWeb.API.UserController do
     if user = conn.assigns.current_user do
       user = Users.put_teams(user)
 
-      when_stale(conn, user, fn conn ->
-        conn
-        |> api_cache(:private)
-        |> render(:me, user: user)
-      end)
+      conn
+      |> api_cache(:private)
+      |> render(:me, user: user)
     else
       not_found(conn)
     end

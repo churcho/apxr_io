@@ -41,11 +41,9 @@ defmodule ApxrIoWeb.API.ReleaseController do
 
   def show(conn, _params) do
     if release = conn.assigns.release do
-      when_stale(conn, release, fn conn ->
-        conn
-        |> api_cache(:private)
-        |> render(:show, release: release)
-      end)
+      conn
+      |> api_cache(:private)
+      |> render(:show, release: release)
     else
       not_found(conn)
     end

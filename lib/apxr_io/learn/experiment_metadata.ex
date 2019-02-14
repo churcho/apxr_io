@@ -1,8 +1,6 @@
 defmodule ApxrIo.Learn.ExperimentMetadata do
   use ApxrIoWeb, :schema
 
-  @derive ApxrIoWeb.Stale
-
   @params ~w(started completed duration progress total_runs run_index
   interruptions exp_parameters pm_parameters init_constraints)a
 

@@ -26,19 +26,6 @@ config :apxr_io, ApxrIoWeb.Endpoint,
 
 config :apxr_io, ApxrIo.RepoBase, ssl: true
 
-config :apxr_io,
-  topologies: [
-    kubernetes: [
-      strategy: Cluster.Strategy.Kubernetes,
-      config: [
-        mode: :dns,
-        kubernetes_node_basename: "apxr_io",
-        kubernetes_selector: "app=apxr_io",
-        polling_interval: 10_000
-      ]
-    ]
-  ]
-
 config :phoenix, :serve_endpoints, true
 
 config :sasl, sasl_error_logger: false

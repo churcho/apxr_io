@@ -1,8 +1,6 @@
 defmodule ApxrIo.Repository.ReleaseMetadata do
   use ApxrIoWeb, :schema
 
-  @derive ApxrIoWeb.Stale
-
   embedded_schema do
     field :build_tool, :string
     field :build_tool_version, :float

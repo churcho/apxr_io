@@ -32,11 +32,9 @@ defmodule ApxrIoWeb.API.ExperimentController do
     sort = sort(params["sort"])
     experiments = Experiments.all(project, page, 100, sort)
 
-    when_stale(conn, experiments, [modified: false], fn conn ->
-      conn
-      |> api_cache(:private)
-      |> render(:index, experiments: experiments)
-    end)
+    conn
+    |> api_cache(:private)
+    |> render(:index, experiments: experiments)
   end
 
   def create(conn, %{"experiment" => experiment}) do
@@ -93,11 +91,9 @@ defmodule ApxrIoWeb.API.ExperimentController do
 
   def show(conn, _params) do
     if experiment = conn.assigns.experiment do
-      when_stale(conn, experiment, fn conn ->
-        conn
-        |> api_cache(:private)
-        |> render(:show, experiment: experiment)
-      end)
+      conn
+      |> api_cache(:private)
+      |> render(:show, experiment: experiment)
     else
       not_found(conn)
     end
@@ -116,7 +112,7 @@ defmodule ApxrIoWeb.API.ExperimentController do
           |> api_cache(:private)
           |> send_resp(204, "")
 
-        {:error, _, changeset, _} ->
+        {:error, changeset} ->
           validation_failed(conn, changeset)
       end
     else

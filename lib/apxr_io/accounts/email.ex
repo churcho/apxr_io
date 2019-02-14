@@ -1,7 +1,6 @@
 defmodule ApxrIo.Accounts.Email do
   use ApxrIoWeb, :schema
 
-  @derive ApxrIoWeb.Stale
   @email_regex ~r"^.+@.+\..+$"
 
   schema "emails" do

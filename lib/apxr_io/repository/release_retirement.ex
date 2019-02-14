@@ -1,8 +1,6 @@
 defmodule ApxrIo.Repository.ReleaseRetirement do
   use ApxrIoWeb, :schema
 
-  @derive ApxrIoWeb.Stale
-
   embedded_schema do
     field :reason, :string
     field :message, :string

@@ -1,7 +1,6 @@
 defmodule ApxrIo.Accounts.User do
   use ApxrIoWeb, :schema
 
-  @derive {ApxrIoWeb.Stale, assocs: [:emails, :owned_projects, :teams, :keys]}
   @derive {Phoenix.Param, key: :username}
 
   schema "users" do

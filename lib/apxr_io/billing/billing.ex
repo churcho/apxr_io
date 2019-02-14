@@ -4,9 +4,9 @@ defmodule ApxrIo.Billing do
 
   @type team() :: %Team{}
   @type user() :: %User{}
-  @type audit_data() :: map()
+  @type audit_data() :: any()
 
-  @callback checkout(team(), data :: map()) :: map()
+  @callback checkout(team(), data :: map()) :: {:ok, map()}
   @callback teams(team()) :: map() | nil
   @callback create(team(), user(), map(), audit: audit_data()) :: {:ok, map()} | {:error, map()}
   @callback update(team(), user(), map(), audit: audit_data()) :: {:ok, map()} | {:error, map()}

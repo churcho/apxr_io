@@ -1,8 +1,6 @@
 defmodule ApxrIo.Serve.ArtifactStats do
   use ApxrIoWeb, :schema
 
-  @derive ApxrIoWeb.Stale
-
   embedded_schema do
     field :invocation_rate, {:array, {:array, :integer}}
     field :replica_scaling, {:array, {:array, :integer}}

@@ -1,7 +1,6 @@
 defmodule ApxrIo.Accounts.KeyPermission do
   use ApxrIoWeb, :schema
 
-  @derive ApxrIoWeb.Stale
   @domains ~w(api repository repositories artifact)
 
   embedded_schema do

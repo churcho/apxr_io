@@ -5,7 +5,7 @@ defmodule ApxrIo.MixProject do
     [
       app: :apxr_io,
       version: "0.0.1",
-      elixir: "~> 1.6",
+      elixir: "~> 1.8",
       elixirc_paths: elixirc_paths(Mix.env()),
       xref: xref(),
       compilers: [:phoenix] ++ Mix.compilers(),
@@ -13,8 +13,14 @@ defmodule ApxrIo.MixProject do
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
+      dialyzer: [
+        plt_add_apps: [:ex_unit],
+        ignore_warnings: ".dialyzer_ignore.exs",
+        list_unused_filters: true
+      ],
       test_coverage: [tool: ExCoveralls],
       preferred_cli_env: [
+        check: :test,
         coveralls: :test,
         "coveralls.detail": :test,
         "coveralls.post": :test,
@@ -51,7 +57,7 @@ defmodule ApxrIo.MixProject do
       # static code analysis tool - MIT
       {:credo, "~> 1.0", only: [:dev, :test], runtime: false},
       # Mix tasks to simplify use of Dialyzer in Elixir projects - Apache 2.0
-      {:dialyxir, "~> 1.0.0-rc.4", only: [:dev], runtime: false},
+      {:dialyxir, "~> 1.0.0-rc.4", only: [:dev, :test], runtime: false},
       # Build releases tool - MIT
       {:distillery, "~> 1.5", runtime: false},
       # S3 service package - MIT
@@ -106,10 +112,11 @@ defmodule ApxrIo.MixProject do
   # Aliases are shortcuts or tasks specific to the current project.
   defp aliases() do
     [
-      setup: ["deps.get", "ecto.setup", &setup_yarn/1],
       "ecto.setup": ["ecto.reset", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.create", "ecto.migrate"],
-      test: ["ecto.create --quiet", "ecto.migrate", "test"]
+      setup: ["deps.get", "ecto.setup", &setup_yarn/1],
+      test: ["ecto.reset", "test"],
+      check: ["compile", "format", "xref unreachable", "dialyzer", "test"]
     ]
   end
 

@@ -233,6 +233,13 @@ defmodule ApxrIoWeb.ViewHelpers do
   defp rel_from_now({day, {_, _, _}}) when day < 0, do: "about now"
   defp rel_from_now({day, {_, _, _}}), do: "#{day} days ago"
 
+  def pretty_datetime(
+        {:ok, %DateTime{year: year, month: month, day: day, hour: hr, minute: min, second: sec},
+         _}
+      ) do
+    "#{pretty_month(month)} #{day} #{year} #{hr}:#{min}:#{sec}"
+  end
+
   def pretty_datetime(%{year: year, month: month, day: day, hour: hr, minute: min, second: sec}) do
     "#{pretty_month(month)} #{day} #{year} #{hr}:#{min}:#{sec}"
   end

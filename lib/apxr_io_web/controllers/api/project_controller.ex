@@ -16,24 +16,20 @@ defmodule ApxrIoWeb.API.ProjectController do
     sort = sort(params["sort"])
     projects = Projects.with_versions(teams, page, 100, sort)
 
-    when_stale(conn, projects, [modified: false], fn conn ->
-      conn
-      |> api_cache(:private)
-      |> render(:index, projects: projects)
-    end)
+    conn
+    |> api_cache(:private)
+    |> render(:index, projects: projects)
   end
 
   def show(conn, _params) do
     if project = conn.assigns.project do
-      when_stale(conn, project, fn conn ->
-        project = Projects.preload(project)
-        owners = Enum.map(Owners.all(project, user: :emails), & &1.user)
-        project = %{project | owners: owners}
+      project = Projects.preload(project)
+      owners = Enum.map(Owners.all(project, user: :emails), & &1.user)
+      project = %{project | owners: owners}
 
-        conn
-        |> api_cache(:private)
-        |> render(:show, project: project)
-      end)
+      conn
+      |> api_cache(:private)
+      |> render(:show, project: project)
     else
       not_found(conn)
     end

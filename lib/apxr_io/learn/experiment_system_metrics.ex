@@ -1,8 +1,6 @@
 defmodule ApxrIo.Learn.ExperimentSystemMetrics do
   use ApxrIoWeb, :schema
 
-  @derive ApxrIoWeb.Stale
-
   @params ~w(memory scheduler_usage)a
 
   embedded_schema do

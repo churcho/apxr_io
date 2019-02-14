@@ -1,8 +1,6 @@
 defmodule ApxrIo.Repository.ProjectMetadata do
   use ApxrIoWeb, :schema
 
-  @derive ApxrIoWeb.Stale
-
   embedded_schema do
     field :description, :string
     field :licenses, {:array, :string}

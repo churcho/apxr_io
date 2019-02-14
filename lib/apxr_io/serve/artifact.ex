@@ -1,7 +1,6 @@
 defmodule ApxrIo.Serve.Artifact do
   use ApxrIoWeb, :schema
 
-  @derive ApxrIoWeb.Stale
   @derive {Phoenix.Param, key: :name}
 
   schema "artifacts" do

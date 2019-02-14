@@ -2,7 +2,7 @@ defmodule ApxrIo.Repository.Assets do
   alias ApxrIo.Accounts.Teams
 
   def push_release(release, body) do
-    opts = [cache_control: "private, max-age=60"]
+    opts = [cache_control: "private, max-age=0"]
 
     ApxrIo.Store.put(nil, :s3_bucket, tarball_store_key(release), body, opts)
   end

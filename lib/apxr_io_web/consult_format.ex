@@ -23,8 +23,8 @@ defmodule ApxrIoWeb.ConsultFormat do
             {:error, "not in key-value format"}
         end
 
-      {:error, reason} ->
-        {:error, inspect(reason)}
+      {:error, {_, :safe_erl_term, {_, _}}, _} ->
+        {:error, "safe_erl_term error"}
     end
   end
 end

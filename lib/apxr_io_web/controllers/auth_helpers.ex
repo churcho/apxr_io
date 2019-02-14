@@ -7,21 +7,23 @@ defmodule ApxrIoWeb.AuthHelpers do
   alias ApxrIo.Serve.Artifact
 
   def authorized(conn, :with_jwt) do
-    [token] = get_req_header(conn, "token")
-    experiment = conn.assigns.experiment
+    case get_req_header(conn, "token") do
+      [token] ->
+        experiment = conn.assigns.experiment
 
-    cond do
-      is_nil(token) ->
-        error(conn, {:error, :invalid})
+        cond do
+          is_nil(experiment) ->
+            error(conn, {:error, :invalid})
 
-      is_nil(experiment) ->
-        error(conn, {:error, :invalid})
+          not valid_token?(token, experiment) ->
+            error(conn, {:error, :invalid})
 
-      not valid_token?(token, experiment) ->
-        error(conn, {:error, :invalid})
+          true ->
+            conn
+        end
 
-      true ->
-        conn
+      _ ->
+        error(conn, {:error, :missing})
     end
   end
 

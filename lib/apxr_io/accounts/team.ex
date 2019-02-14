@@ -1,7 +1,6 @@
 defmodule ApxrIo.Accounts.Team do
   use ApxrIoWeb, :schema
 
-  @derive ApxrIoWeb.Stale
   @derive {Phoenix.Param, key: :name}
 
   schema "teams" do

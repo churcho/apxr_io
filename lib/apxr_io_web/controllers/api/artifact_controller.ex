@@ -27,11 +27,9 @@ defmodule ApxrIoWeb.API.ArtifactController do
     sort = sort(params["sort"])
     artifacts = Artifacts.all(project, page, 100, sort)
 
-    when_stale(conn, artifacts, [modified: false], fn conn ->
-      conn
-      |> api_cache(:private)
-      |> render(:index, artifacts: artifacts)
-    end)
+    conn
+    |> api_cache(:private)
+    |> render(:index, artifacts: artifacts)
   end
 
   def create(conn, %{"artifact" => params}) do
@@ -72,13 +70,11 @@ defmodule ApxrIoWeb.API.ArtifactController do
 
   def show(conn, _params) do
     if artifact = conn.assigns.artifact do
-      when_stale(conn, artifact, fn conn ->
-        artifact = Artifacts.preload(artifact)
+      artifact = Artifacts.preload(artifact)
 
-        conn
-        |> api_cache(:private)
-        |> render(:show, artifact: artifact)
-      end)
+      conn
+      |> api_cache(:private)
+      |> render(:show, artifact: artifact)
     else
       not_found(conn)
     end

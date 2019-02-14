@@ -1,7 +1,6 @@
 defmodule ApxrIo.CMS.Post do
   use ApxrIoWeb, :schema
 
-  @derive ApxrIoWeb.Stale
   @derive {Phoenix.Param, key: :slug}
 
   schema "posts" do

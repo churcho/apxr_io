@@ -45,7 +45,7 @@
 %%     %%=> <<40,32,...>>
 %% '''
 %% @end
--spec create(metadata(), files()) -> {ok, {tarball(), checksum()}}.
+-spec create(metadata(), files()) -> {ok, {tarball(), checksum()}} | {error, {tarball, too_big}}.
 create(Metadata, Files) ->
 	MetadataBinary = encode_metadata(Metadata),
 	ContentsTarball = create_memory_tarball(Files),
@@ -87,12 +87,6 @@ create(Metadata, Files) ->
 %%     %%=> {ok,#{checksum => <<...>>,
 %%     %%=>       metadata => #{<<"name">> => <<"foo">>, ...}}}
 %% '''
--spec unpack(tarball(), memory) ->
-				{ok, #{checksum => checksum(), metadata => metadata(), contents => contents()}} |
-				{error, term()};
-			(tarball(), filename()) ->
-				{ok, #{checksum => checksum(), metadata => metadata()}} |
-				{error, term()}.
 unpack(Tarball, _) when byte_size(Tarball) > ?TARBALL_MAX_SIZE ->
 	{error, {tarball, too_big}};
 

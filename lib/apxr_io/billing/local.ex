@@ -2,7 +2,7 @@ defmodule ApxrIo.Billing.Local do
   @behaviour ApxrIo.Billing
 
   def checkout(_team, _data) do
-    %{}
+    {:ok, %{}}
   end
 
   def teams(_team) do
@@ -38,7 +38,7 @@ defmodule ApxrIo.Billing.Local do
   end
 
   def invoice(_id) do
-    %{}
+    ApxrIoWeb.ErlangFormat.encode_to_iodata!(%{})
   end
 
   def pay_invoice(_id, _team, _user, audit: _audit_data) do

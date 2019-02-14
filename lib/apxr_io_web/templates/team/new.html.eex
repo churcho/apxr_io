@@ -26,7 +26,7 @@
   <div class="column is-10">
     <div>
       <div id="person" class="tab-content <%= if !@params["company"] do %>is-active-tab<% end %>">
-        <%= form_for @changeset, Routes.team_path(Endpoint, :create), fn f -> %>
+        <%= form_for @changeset, Routes.team_path(Endpoint, :create), [], fn f -> %>
           <div class="field">
             <label class="label">Team name</label>
             <div class="control">
@@ -44,7 +44,7 @@
         <% end %>
       </div>
       <div id="company" class="tab-content <%= if @params["company"] do %>is-active-tab<% end %>">
-        <%= form_for @changeset, Routes.team_path(Endpoint, :create), fn f -> %>
+        <%= form_for @changeset, Routes.team_path(Endpoint, :create), [], fn f -> %>
           <div class="field">
             <label class="label">Team name</label>
             <div class="control">

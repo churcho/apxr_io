@@ -10,7 +10,7 @@ defmodule ApxrIo.Store do
   @callback get(region, bucket, key, opts) :: body
   @callback put(region, bucket, key, body, opts) :: term
   @callback delete(region, bucket, key) :: term
-  @callback delete_many(region, bucket, [key]) :: [term]
+  @callback delete_many(region, bucket, [key]) :: :ok
 
   defp impl(), do: Application.get_env(:apxr_io, :store_impl)
 

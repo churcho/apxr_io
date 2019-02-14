@@ -1,8 +1,6 @@
 defmodule ApxrIo.Repository.Release do
   use ApxrIoWeb, :schema
 
-  @derive ApxrIoWeb.Stale
-
   schema "releases" do
     field :version, ApxrIo.Version
     field :checksum, :string

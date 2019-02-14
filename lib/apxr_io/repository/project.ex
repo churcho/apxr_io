@@ -2,7 +2,6 @@ defmodule ApxrIo.Repository.Project do
   use ApxrIoWeb, :schema
   import Ecto.Query, only: [from: 2, where: 3]
 
-  @derive {ApxrIoWeb.Stale, assocs: [:releases, :owners]}
   @derive {Phoenix.Param, key: :name}
 
   schema "projects" do

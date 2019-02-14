@@ -14,21 +14,17 @@ defmodule ApxrIoWeb.API.RepositoryController do
   def index(conn, _params) do
     teams = Teams.all_by_user(conn.assigns.current_user) ++ all_by_team(conn.assigns.current_team)
 
-    when_stale(conn, teams, [modified: false], fn conn ->
-      conn
-      |> api_cache(:private)
-      |> render(:index, teams: teams)
-    end)
+    conn
+    |> api_cache(:private)
+    |> render(:index, teams: teams)
   end
 
   def show(conn, _params) do
     team = conn.assigns.team
 
-    when_stale(conn, team, fn conn ->
-      conn
-      |> api_cache(:private)
-      |> render(:show, team: team)
-    end)
+    conn
+    |> api_cache(:private)
+    |> render(:show, team: team)
   end
 
   defp all_by_team(nil), do: []

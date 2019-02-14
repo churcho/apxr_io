@@ -1,8 +1,6 @@
 defmodule ApxrIo.Learn.ExperimentGraphData do
   use ApxrIoWeb, :schema
 
-  @derive ApxrIoWeb.Stale
-
   embedded_schema do
     field :graph_acc, {:array, :map}
   end

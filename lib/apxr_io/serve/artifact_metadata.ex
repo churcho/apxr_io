@@ -1,8 +1,6 @@
 defmodule ApxrIo.Serve.ArtifactMetadata do
   use ApxrIoWeb, :schema
 
-  @derive ApxrIoWeb.Stale
-
   @locations [
     "TOR",
     "SFO",

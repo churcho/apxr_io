@@ -15,21 +15,17 @@ defmodule ApxrIoWeb.ProjectController do
     page = ApxrIo.Utils.safe_page(page_param, project_count, @projects_per_page)
     projects = fetch_projects(teams, page, @projects_per_page, sort)
 
-    if projects do
-      render(
-        conn,
-        "index.html",
-        title: "Projects",
-        container: "container",
-        per_page: @projects_per_page,
-        sort: sort,
-        project_count: project_count,
-        page: page,
-        projects: projects
-      )
-    else
-      not_found(conn)
-    end
+    render(
+      conn,
+      "index.html",
+      title: "Projects",
+      container: "container",
+      per_page: @projects_per_page,
+      sort: sort,
+      project_count: project_count,
+      page: page,
+      projects: projects
+    )
   end
 
   def show(conn, %{"name" => name} = params) do

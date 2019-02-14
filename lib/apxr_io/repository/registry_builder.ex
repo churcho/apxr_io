@@ -206,10 +206,8 @@ defmodule ApxrIo.Repository.RegistryBuilder do
     |> Stream.run()
   end
 
-  defp objects(nil, _team), do: []
-
   defp objects({names, versions, projects}, team) do
-    opts = [cache_control: "private, max-age=60"]
+    opts = [cache_control: "private, max-age=0"]
 
     names_object = {team_store_key(team, "names"), names, opts}
     versions_object = {team_store_key(team, "versions"), versions, opts}

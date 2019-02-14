@@ -1,7 +1,6 @@
 defmodule ApxrIo.Accounts.Key do
   use ApxrIoWeb, :schema
 
-  @derive ApxrIoWeb.Stale
   @derive {Phoenix.Param, key: :name}
 
   schema "keys" do

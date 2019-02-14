@@ -1,8 +1,6 @@
 defmodule ApxrIo.Learn.Experiment do
   use ApxrIoWeb, :schema
 
-  @derive {ApxrIoWeb.Stale, assocs: [:artifact]}
-
   @valid_machine_types [1, 2, 3, 4, 5]
 
   schema "experiments" do

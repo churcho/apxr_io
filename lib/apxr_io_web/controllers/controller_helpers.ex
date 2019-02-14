@@ -8,7 +8,7 @@ defmodule ApxrIoWeb.ControllerHelpers do
   alias ApxrIo.Repository.{Projects, Releases}
   alias ApxrIoWeb.Router.Helpers, as: Routes
 
-  @max_cache_age 60
+  @max_cache_age 0
 
   def cache(conn, control, vary) do
     conn
@@ -111,99 +111,6 @@ defmodule ApxrIoWeb.ControllerHelpers do
   def not_found(conn) do
     render_error(conn, 404)
   end
-
-  def when_stale(conn, entities, opts \\ [], fun) do
-    etag = etag(entities)
-    modified = if Keyword.get(opts, :modified, true), do: last_modified(entities)
-
-    conn =
-      conn
-      |> put_etag(etag)
-      |> put_last_modified(modified)
-
-    if fresh?(conn, etag: etag, modified: modified) do
-      send_resp(conn, 304, "")
-    else
-      fun.(conn)
-    end
-  end
-
-  defp put_etag(conn, nil) do
-    conn
-  end
-
-  defp put_etag(conn, etag) do
-    put_resp_header(conn, "etag", etag)
-  end
-
-  defp put_last_modified(conn, nil) do
-    conn
-  end
-
-  defp put_last_modified(conn, modified) do
-    put_resp_header(conn, "last-modified", :cowboy_clock.rfc1123(modified))
-  end
-
-  defp fresh?(conn, opts) do
-    not expired?(conn, opts)
-  end
-
-  defp expired?(conn, opts) do
-    modified_since = List.first(get_req_header(conn, "if-modified-since"))
-    none_match = List.first(get_req_header(conn, "if-none-match"))
-
-    if modified_since || none_match do
-      modified_since?(modified_since, opts[:modified]) or none_match?(none_match, opts[:etag])
-    else
-      true
-    end
-  end
-
-  defp modified_since?(header, last_modified) do
-    if header && last_modified do
-      modified_since = :cowboy_http.rfc1123_date(header)
-      modified_since = :calendar.datetime_to_gregorian_seconds(modified_since)
-      last_modified = :calendar.datetime_to_gregorian_seconds(last_modified)
-      last_modified > modified_since
-    else
-      false
-    end
-  end
-
-  defp none_match?(none_match, etag) do
-    if none_match && etag do
-      none_match = Plug.Conn.Utils.list(none_match)
-      not (etag in none_match) and not ("*" in none_match)
-    else
-      false
-    end
-  end
-
-  defp etag(schemas) do
-    binary =
-      schemas
-      |> List.wrap()
-      |> Enum.map(&ApxrIoWeb.Stale.etag/1)
-      |> List.flatten()
-      |> :erlang.term_to_binary()
-
-    :crypto.hash(:md5, binary)
-    |> Base.encode16(case: :lower)
-  end
-
-  def last_modified(schemas) do
-    schemas
-    |> List.wrap()
-    |> Enum.map(&ApxrIoWeb.Stale.last_modified/1)
-    |> List.flatten()
-    |> Enum.reject(&is_nil/1)
-    |> Enum.map(&time_to_erl/1)
-    |> Enum.max()
-  end
-
-  defp time_to_erl(%NaiveDateTime{} = datetime), do: NaiveDateTime.to_erl(datetime)
-  defp time_to_erl(%DateTime{} = datetime), do: NaiveDateTime.to_erl(datetime)
-  defp time_to_erl(%Date{} = date), do: {Date.to_erl(date), {0, 0, 0}}
 
   def fetch_repository(conn, _opts) do
     fetch_team_param(conn, "repository")
