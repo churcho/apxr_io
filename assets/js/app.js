@@ -1,5 +1,8 @@
+// Import jQuery
+import $ from "jquery"
+
 // Import CSS
-import css from '../css/app.css';
+import css from '../css/app.scss';
 
 // Import dependencies
 import "phoenix_html"

@@ -12,7 +12,7 @@ API server and website
 
 1. Run `mix setup` to install dependencies, create and seed database etc
 2. Run `mix test` (--cover)
-3. Run `iex -S mix phx.server` and visit [http://localhost:4000/](http://localhost:4000/)
+3. Run `iex -S mix phx.server` and visit [https://localhost:4000/](https://localhost:4000/)
 
 After this succeeds you should be good to go!
 
@@ -94,9 +94,12 @@ iex -S mix phx.server
 mix phx.server
 ```
 
-apxr_io will be available at [http://localhost:4000/](http://localhost:4000/)
+apxr_io will be available at [https://localhost:4000/](https://localhost:4000/)
 
-emails will be available at [http://localhost:4000/sent_emails](http://localhost:4000/sent_emails)
+emails will be available at [https://localhost:4000/sent_emails](https://localhost:4000/sent_emails)
+
+NOTE: when using Google Chrome, open chrome://flags/#allow-insecure-localhost
+to enable the use of self-signed certificates on `localhost`.
 
 --------------------
 ### Debugging
