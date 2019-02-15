@@ -84,6 +84,8 @@ defmodule ApxrIo.MixProject do
       {:logster, "~> 0.10.0"},
       # Mocks and explicit contracts for Elixir - Apache 2.0
       {:mox, "~> 0.5.0", only: :test},
+      # Visualize Erlang/Elixir Nodes On The Command Line - MIT
+      {:observer_cli, "~> 1.4"},
       # Integration between Phoenix & Ecto - Apache 2.0
       {:phoenix_ecto, "~> 4.0"},
       # Functions for working with HTML strings and templates - MIT

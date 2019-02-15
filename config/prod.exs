@@ -31,3 +31,7 @@ config :phoenix, :serve_endpoints, true
 config :sasl, sasl_error_logger: false
 
 config :logger, level: :info
+
+config :logger,
+  backends: [:console, {LoggerErrorMail, :error_mail}],
+  level: :info

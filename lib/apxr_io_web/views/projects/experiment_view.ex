@@ -1,10 +1,9 @@
 defmodule ApxrIoWeb.Projects.ExperimentView do
   use ApxrIoWeb, :view
 
-  def show_sort_info(nil), do: show_sort_info(:version)
   def show_sort_info(:version), do: "Sort: Version"
   def show_sort_info(:inserted_at), do: "Sort: Recently created"
-  def show_sort_info(_param), do: nil
+  def show_sort_info(_param), do: "Sort by"
 
   def charts(data) do
     raw("""

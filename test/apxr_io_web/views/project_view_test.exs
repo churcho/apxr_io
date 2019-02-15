@@ -13,11 +13,7 @@ defmodule ApxrIoWeb.ProjectViewTest do
     assert ProjectView.show_sort_info(:name) == "Sort: Name"
     assert ProjectView.show_sort_info(:inserted_at) == "Sort: Recently created"
     assert ProjectView.show_sort_info(:updated_at) == "Sort: Recently updated"
-    assert ProjectView.show_sort_info(nil) == "Sort: Name"
-  end
-
-  test "show sort info when sort param is not available" do
-    assert ProjectView.show_sort_info("some param") == nil
+    assert ProjectView.show_sort_info(nil) == "Sort by"
   end
 
   describe "retirement_message/1" do

@@ -10,8 +10,9 @@ build_tool = @current_release && @current_release.meta.build_tool
   <div class="column is-10">
     <nav class="breadcrumb" aria-label="breadcrumbs">
       <ul>
-        <li><a href="<%= Routes.project_path(Endpoint, :index) %>"><%= @project.team.name %></a></li>
-        <li><a href="#"><%= @project.name %></a></li>
+        <li><a href="<%= Routes.project_path(Endpoint, :index) %>">projects</a></li>
+        <li><a href="<%= Routes.team_path(Endpoint, :members, @project.team) %>" class="is-text"><%= @project.team.name %></a></li>
+        <li><a href="<%= path_for_release(@project, @current_release) %>"><%= @project.name %></a></li>
         <%= if @current_release do %>
           <%= if @current_release.retirement do %>
             <li class="is-active"><a href="#" aria-current="page"><%= @current_release.version %> (retired)</a></li>

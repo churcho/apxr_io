@@ -37,7 +37,9 @@ config :apxr_io, ApxrIoWeb.Endpoint,
     ]
   ]
 
-config :logger, :console, format: "[$level] $message\n"
+config :logger,
+  backends: [:console, {LoggerErrorMail, :error_mail}],
+  format: "[$level] $message\n"
 
 config :phoenix, :stacktrace_depth, 20
 

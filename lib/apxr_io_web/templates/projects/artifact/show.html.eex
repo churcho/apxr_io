@@ -3,8 +3,8 @@
   <div class="column is-10">
     <nav class="breadcrumb" aria-label="breadcrumbs">
       <ul>
-        <li><a href="<%= Routes.project_path(Endpoint, :index) %>"><%= @project.team.name %></a></li>
-        <li><a href="<%= path_for_project(@project) %>"><%= @project.name %></a></li>
+        <li><a href="<%= Routes.project_path(Endpoint, :index) %>">projects</a></li>
+        <li><a href="<%= Routes.team_path(Endpoint, :members, @project.team) %>" class="is-text"><%= @project.team.name %></a></li>
         <li ><a href="<%= path_for_release(@project, @artifact.experiment.release) %>"><%= @artifact.experiment.release.version %></a></li>
         <li ><a href="<%= Routes.artifact_path(Endpoint, :index, @project) %>">artifacts</a></li>
         <li class="is-active"><a href="#"><%= @artifact.name %></a></li>

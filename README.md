@@ -154,6 +154,13 @@ which runs the following:
 ```
 
 --------------------
+### Monitoring (production safe)
+
+```
+iex(1)> :observer_cli.start
+```
+
+--------------------
 ### Proto
 
 Files should be generated with the following library `https://github.com/tsloughter/grpcbox`.

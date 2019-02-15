@@ -57,6 +57,14 @@ defmodule ApxrIo.Emails do
     |> render("experiment_complete.html")
   end
 
+  def error_notification(msg) do
+    new_email()
+    |> to("approximatereality@gmail.com")
+    |> from(source())
+    |> subject("ApxrIoError")
+    |> text_body(msg)
+  end
+
   defp email_to(email, to) do
     to = to |> List.wrap() |> Enum.sort()
     to(email, to)

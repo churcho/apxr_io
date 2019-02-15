@@ -1,11 +1,10 @@
 defmodule ApxrIoWeb.ProjectView do
   use ApxrIoWeb, :view
 
-  def show_sort_info(nil), do: show_sort_info(:name)
   def show_sort_info(:name), do: "Sort: Name"
   def show_sort_info(:inserted_at), do: "Sort: Recently created"
   def show_sort_info(:updated_at), do: "Sort: Recently updated"
-  def show_sort_info(_param), do: nil
+  def show_sort_info(_param), do: "Sort by"
 
   def retirement_message(retirement) do
     reason = ReleaseRetirement.reason_text(retirement.reason)
