@@ -118,7 +118,15 @@ defmodule ApxrIo.MixProject do
       "ecto.reset": ["ecto.drop", "ecto.create", "ecto.migrate"],
       setup: ["deps.get", "ecto.setup", &setup_yarn/1],
       test: ["ecto.reset", "test"],
-      check: ["compile", "format", "xref unreachable", "dialyzer", "test"]
+      check: [
+        "deps.get",
+        "hex.outdated",
+        "compile",
+        "format",
+        "xref unreachable",
+        "dialyzer",
+        "test --cover"
+      ]
     ]
   end
 

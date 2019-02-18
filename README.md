@@ -150,7 +150,7 @@ or
 which runs the following:
 
 ```
-["compile", "format", "xref unreachable", "dialyzer", "test"]
+["deps.get", "hex.outdated", compile", "format", "xref unreachable", "dialyzer", "test --cover"]
 ```
 
 --------------------
