@@ -14,6 +14,7 @@ defmodule ApxrIo.MixProject do
       aliases: aliases(),
       deps: deps(),
       dialyzer: [
+        plt_add_deps: :transitive,
         plt_add_apps: [:ex_unit],
         ignore_warnings: ".dialyzer_ignore.exs",
         list_unused_filters: true
@@ -59,7 +60,7 @@ defmodule ApxrIo.MixProject do
       # Mix tasks to simplify use of Dialyzer in Elixir projects - Apache 2.0
       {:dialyxir, "~> 1.0.0-rc.4", only: [:dev, :test], runtime: false},
       # Build releases tool - MIT
-      {:distillery, "~> 1.5", runtime: false},
+      {:distillery, "~> 2.0.3"},
       # S3 service package - MIT
       {:ex_aws_s3, "~> 2.0"},
       # SES service package - MIT
@@ -73,27 +74,23 @@ defmodule ApxrIo.MixProject do
       # SQL-based adapters for Ecto and database migrations - Apache 2.0
       {:ecto_sql, "~> 3.0.5"},
       # Simple HTTP client - Apache 2.0
-      {:hackney, "~> 1.15"},
+      {:hackney, "~> 1.15.1"},
       # JSON parser and generator - Apache 2.0
       {:jason, "~> 1.1"},
       # Elixir JWT library - Apache 2.0
-      {:joken, "~> 2.0"},
-      # Automatic Erlang cluster formation and management for - Apache 2.0
-      {:libcluster, "~> 3.0"},
+      {:joken, "~> 2.0.1"},
       # Easily parsable single line, plain text and JSON logger - MIT
       {:logster, "~> 0.10.0"},
       # Mocks and explicit contracts for Elixir - Apache 2.0
       {:mox, "~> 0.5.0", only: :test},
       # Visualize Erlang/Elixir Nodes On The Command Line - MIT
-      {:observer_cli, "~> 1.4"},
+      {:observer_cli, "~> 1.4.2"},
       # Integration between Phoenix & Ecto - Apache 2.0
       {:phoenix_ecto, "~> 4.0"},
       # Functions for working with HTML strings and templates - MIT
       {:phoenix_html, "~> 2.3"},
       # Live-reload functionality for Phoenix - MIT
       {:phoenix_live_reload, "~> 1.0", only: :dev},
-      # Distributed PubSub and Presence platform - MIT
-      {:phoenix_pubsub, "~> 1.0"},
       # Web framework - MIT
       {:phoenix, "~> 1.4.0"},
       # Plug building toolkit for blocking and throttling - Apache 2.0
@@ -107,7 +104,7 @@ defmodule ApxrIo.MixProject do
       # PostgreSQL driver - Apache 2.0
       {:postgrex, "~> 0.14"},
       # Wrapper of :xmerl to help query xml docs - Apache 2.0
-      {:sweet_xml, "~> 0.5"}
+      {:sweet_xml, "~> 0.6.6"}
     ]
   end
 

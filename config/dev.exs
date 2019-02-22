@@ -4,7 +4,10 @@ config :apxr_io,
   tmp_dir: Path.expand("tmp/dev"),
   private_key: File.read!("test/fixtures/private.pem"),
   billing_url: "https://localhost:4002",
-  billing_key: "apxr_io_billing_key"
+  billing_key: "apxr_io_billing_key",
+  secret: "qSsR0LzzK+3uLZTF7P/DjwHaFKjyiKbQGjExcI7ZZp"
+
+config :joken, default_signer: "0adm3lg3uLZTQSD23QSFsaFKjydfqFGR3sd7ZZp"
 
 config :apxr_io, ApxrIoWeb.Endpoint,
   https: [
@@ -13,6 +16,7 @@ config :apxr_io, ApxrIoWeb.Endpoint,
     certfile: "priv/cert/selfsigned.pem",
     keyfile: "priv/cert/selfsigned_key.pem"
   ],
+  secret_key_base: "prV6O0adm3lgdpuFLXXZORelFyse/8+xjzObP6uCRnx",
   debug_errors: true,
   code_reloader: true,
   cache_static_lookup: false,

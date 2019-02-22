@@ -13,8 +13,11 @@ defmodule ApxrIo.Store.S3 do
     S3.get_object(bucket(bucket), key, opts)
     |> ExAws.request(region: region(region))
     |> case do
-      {:ok, %{body: body}} -> body
-      {:error, {:http_error, 404, _}} -> nil
+      {:ok, %{body: body}} ->
+        body
+
+      {:error, {:http_error, 404, _}} ->
+        nil
     end
   end
 
@@ -47,7 +50,7 @@ defmodule ApxrIo.Store.S3 do
   end
 
   defp region(nil) do
-    "us-east-1"
+    "eu-west-3"
   end
 
   defp region(binary) when is_binary(binary) do

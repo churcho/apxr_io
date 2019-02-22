@@ -5,7 +5,7 @@ defmodule ApxrIo.Vault do
   def init(config) do
     config =
       Keyword.put(config, :ciphers,
-        default: {Cloak.Ciphers.AES.GCM, tag: "AES.GCM.V1", key: decode_env!("APXR_CLOAK_KEY")}
+        default: {Cloak.Ciphers.AES.GCM, tag: "AES.GCM.V1", key: decode_env!("APXR_IO_CLOAK_KEY")}
       )
 
     {:ok, config}

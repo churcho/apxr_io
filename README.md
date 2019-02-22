@@ -150,7 +150,7 @@ or
 which runs the following:
 
 ```
-["deps.get", "hex.outdated", compile", "format", "xref unreachable", "dialyzer", "test --cover"]
+["deps.get", "hex.outdated", "compile", "format", "mix sobelow", "xref unreachable", "dialyzer", "test --cover"]
 ```
 
 --------------------
@@ -172,7 +172,7 @@ You need a CLOAK_KEY environment variable containing a key in Base64 encoding.
 
 For example:
 
-`export APXR_CLOAK_KEY="A7x+qcFD9yeRfl3GohiOFZM5bNCdHNu27B0Ozv8X4dE="`
+`export APXR_IO_CLOAK_KEY="A7x+qcFD9yeRfl3GohiOFZM5bNCdHNu27B0Ozv8X4dE="`
 
 --------------------
 ### License

@@ -52,7 +52,7 @@ defmodule ApxrIo.Store.Local do
   end
 
   defp region(nil) do
-    "us-east-1"
+    "eu-west-3"
   end
 
   defp region(binary) when is_binary(binary) do

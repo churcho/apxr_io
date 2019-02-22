@@ -36,7 +36,7 @@ defmodule ApxrIo.Accounts.Teams do
     seats = billing["quantity"]
 
     if seats > experiments_in_progress do
-      if machine_type_selected > 3 do
+      if machine_type_selected > 2 do
         billing["plan_id"] == "team-monthly-ss2" || billing["plan_id"] == "team-annually-ss2"
       else
         true

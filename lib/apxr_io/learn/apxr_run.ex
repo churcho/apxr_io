@@ -72,7 +72,7 @@ defmodule ApxrIo.Learn.ApxrRun do
   end
 
   defp post(path, body, identifiers) do
-    url = Application.get_env(:apxr_io, :apxr_run_url) <> path
+    url = "TODO" <> path
 
     headers = [
       {"token", token(identifiers)},

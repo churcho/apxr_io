@@ -20,7 +20,6 @@ defmodule ApxrIoWeb.Router do
     plug :web_user_agent
     plug :validate_url
     plug :login
-    plug :put_ws_params
   end
 
   pipeline :upload do

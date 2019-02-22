@@ -1,0 +1,17 @@
+# Web system setup
+#
+# ansible-playbook -u $USER -v -l web-servers playbooks/setup-web.yml -D
+
+- name: Manage users
+  hosts: '*'
+  become: true
+  roles:
+    - users
+
+- name: Install common
+  hosts: '*'
+  become: true
+  roles:
+    - common-minimal
+    - iptables
+    - iptables-http

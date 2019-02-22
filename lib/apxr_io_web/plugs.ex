@@ -2,8 +2,6 @@ defmodule ApxrIoWeb.Plugs do
   import Plug.Conn, except: [read_body: 1]
 
   alias ApxrIoWeb.ControllerHelpers
-  alias ApxrIo.Learn.Experiments
-  alias ApxrIo.Repository.Projects
 
   # Max filesize: ~10mb
   # Min upload speed: ~10kb/s
@@ -112,46 +110,6 @@ defmodule ApxrIoWeb.Plugs do
 
       {:error, _} = error ->
         ApxrIoWeb.AuthHelpers.error(conn, error)
-    end
-  end
-
-  def put_ws_params(conn, _) do
-    if String.contains?(conn.request_path, "/experiments/") && conn.params["id"] &&
-         conn.params["id"] != "all" do
-      {team_name, identifier, eid} =
-        if experiment = Experiments.get_by_id(conn.params["id"]) do
-          project = Projects.get_by_id(experiment.release.project_id, :team)
-
-          {
-            project.team.name,
-            experiment.meta.exp_parameters["identifier"],
-            experiment.id
-          }
-        else
-          {
-            "undefined",
-            "undefined",
-            "undefined"
-          }
-        end
-
-      token =
-        ApxrIo.Token.generate_and_sign!(%{
-          "team" => team_name,
-          "project" => conn.params["project"],
-          "version" => conn.params["version"],
-          "identifier" => identifier,
-          "exp_id" => eid,
-          "iss" => "apxr_io",
-          "aud" => "apxr_run"
-        })
-
-      endpoint = Application.get_env(:apxr_io, :ws_endpoint)
-
-      assign(conn, :ws_endpoint, endpoint)
-      |> assign(:ws_token, token)
-    else
-      conn
     end
   end
 end
