@@ -1,3 +1,3 @@
 #!/bin/sh
 
-bin/apxr_io command Elixir.ApxrIo.ReleaseTasks migrate
+release_ctl eval --mfa "ApxrIo.ReleaseTasks.migrate/0"

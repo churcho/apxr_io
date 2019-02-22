@@ -1,22 +1,9 @@
 use Mix.Config
 
 config :apxr_io,
-  secret: "${APXR_SECRET}",
-  private_key: "${APXR_SIGNING_KEY}",
-  s3_bucket: "${APXR_S3_BUCKET}",
-  logs_buckets: "${APXR_LOGS_BUCKETS}",
-  email_host: "${APXR_EMAIL_HOST}",
-  ses_rate: "${APXR_SES_RATE}",
-  billing_key: "${APXR_BILLING_KEY}",
-  billing_url: "${APXR_BILLING_URL}",
   billing_impl: ApxrIo.Billing.ApxrIo,
   store_impl: ApxrIo.Store.S3,
-  learn_impl: ApxrIo.Learn.ApxrRun,
-  tmp_dir: "tmp",
-  ws_endpoint: "${WS_ENDPOINT}",
-  apxr_run_url: "${APXR_RUN_URL}"
-
-config :joken, default_signer: "${WS_SECRET}"
+  learn_impl: ApxrIo.Learn.ApxrRun
 
 config :apxr_io, ApxrIoWeb.Endpoint,
   http: [compress: true],

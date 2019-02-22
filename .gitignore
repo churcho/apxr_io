@@ -30,3 +30,6 @@ npm-debug.log
 /logs
 
 .DS_Store
+
+# Ansible
+*/vault.key

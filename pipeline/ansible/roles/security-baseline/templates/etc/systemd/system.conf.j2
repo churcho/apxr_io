@@ -1,0 +1,9 @@
+# {{ ansible_managed }}
+
+[Manager]
+DumpCore=no
+CrashShell=no
+CtrlAltDelBurstAction=none
+DefaultLimitCORE=0
+DefaultLimitNOFILE={{ limit_nofile_soft }}
+DefaultLimitNPROC={{ limit_nproc_soft }}

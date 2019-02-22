@@ -59,7 +59,7 @@ defmodule ApxrIo.MixProject do
       # Mix tasks to simplify use of Dialyzer in Elixir projects - Apache 2.0
       {:dialyxir, "~> 1.0.0-rc.4", only: [:dev, :test], runtime: false},
       # Build releases tool - MIT
-      {:distillery, "~> 1.5", runtime: false},
+      {:distillery, "~> 2.0.3"},
       # S3 service package - MIT
       {:ex_aws_s3, "~> 2.0"},
       # SES service package - MIT

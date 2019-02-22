@@ -6,11 +6,15 @@ config :apxr_io,
   private_key: File.read!("test/fixtures/private.pem"),
   public_key: File.read!("test/fixtures/public.pem"),
   billing_impl: ApxrIo.Billing.Mock,
-  learn_impl: ApxrIo.Learn.Mock
+  learn_impl: ApxrIo.Learn.Mock,
+  secret: "qSsR0LzzK+3uLZTF7P/DjwHaFKjyiKbQGjExcI7ZZp"
+
+config :joken, default_signer: "0adm3lg3uLZTQSD23QSFsaFKjydfqFGR3sd7ZZp"
 
 config :apxr_io, ApxrIoWeb.Endpoint,
   http: [port: 5000],
-  server: false
+  server: false,
+  secret_key_base: "prV6O0adm3lgdpuFLXXZORelFyse/8+xjzObP6uCRnx"
 
 config :apxr_io, ApxrIo.Emails.Mailer, adapter: Bamboo.TestAdapter
 

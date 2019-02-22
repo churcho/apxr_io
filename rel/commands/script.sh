@@ -1,3 +1,3 @@
 #!/bin/sh
 
-bin/apxr_io command Elixir.ApxrIo.ReleaseTasks script "$@"
+release_ctl eval --mfa "ApxrIo.ReleaseTasks.script/1" --argv -- "$@"
