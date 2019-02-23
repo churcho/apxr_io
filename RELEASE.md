@@ -5,6 +5,7 @@ Sources:
   - https://www.cogini.com/blog/deploying-your-phoenix-app-to-digital-ocean-for-beginners
   - https://github.com/cogini/elixir-deploy-template
   - https://github.com/konstruktoid/ansible-role-hardening
+  - https://www.digitalocean.com/community/tutorials/how-to-use-terraform-with-digitalocean
 
 --------------------
 ### Quickstart
