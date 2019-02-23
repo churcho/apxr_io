@@ -13,5 +13,4 @@ config :joken, default_signer: System.get_env("JOKEN_SECRET")
 
 config :ex_aws,
   access_key_id: System.get_env("APXR_AWS_ACCESS_KEY_ID"),
-  secret_access_key: System.get_env("APXR_AWS_ACCESS_KEY_SECRET"),
-  json_codec: Jason
+  secret_access_key: System.get_env("APXR_AWS_ACCESS_KEY_SECRET")

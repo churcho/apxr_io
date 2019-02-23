@@ -106,6 +106,30 @@
     - ssh
     - security
 
+- name: allow 443 tcp ufw
+  become: 'yes'
+  become_method: sudo
+  ufw:
+    rule: allow
+    port: 443
+  when: ansible_os_family == "Debian"
+  tags:
+    - ufw
+    - tcp
+    - security
+
+- name: allow 4001 tcp ufw
+  become: 'yes'
+  become_method: sudo
+  ufw:
+    rule: allow
+    port: 4001
+  when: ansible_os_family == "Debian"
+  tags:
+    - ufw
+    - tcp
+    - security
+
 - name: enable ufw
   become: 'yes'
   become_method: sudo
@@ -116,6 +140,23 @@
   when: ansible_os_family == "Debian"
   tags:
     - ufw
+    - security
+
+- name: forward port 443 to 4001
+  become: yes
+  become_method: sudo
+  iptables:
+    table: nat
+    chain: PREROUTING
+    in_interface: eth0
+    protocol: tcp
+    match: tcp
+    destination_port: 443
+    jump: REDIRECT
+    to_ports: 4001
+  when: ansible_os_family == "Debian"
+  tags:
+    - iptables
     - security
 
 - name: stat firewalld conf
@@ -161,6 +202,49 @@
     permanent: true
     state: enabled
     zone: public
+  when: ansible_os_family == "RedHat"
+  tags:
+    - firewalld
+    - security
+
+- name: allow 443 tcp firewalld
+  become: 'yes'
+  become_method: sudo
+  firewalld:
+    service: https
+    permanent: true
+    state: enabled
+    zone: public
+  when: ansible_os_family == "RedHat"
+  tags:
+    - firewalld
+    - security
+
+- name: allow 4001 tcp firewalld
+  become: 'yes'
+  become_method: sudo
+  firewalld:
+    port: 4001/tcp
+    permanent: true
+    state: enabled
+    zone: internal
+  when: ansible_os_family == "RedHat"
+  tags:
+    - firewalld
+    - security
+
+- name: Redirect port 443 to 4001 with Rich Rule
+  become: 'yes'
+  become_method: sudo
+  firewalld:
+    rich_rule: rule family={{ item }} forward-port port=443 protocol=tcp to-port=4001
+    zone:      public
+    permanent: yes
+    immediate: yes
+    state:     enabled
+  with_items:
+    - ipv4
+    - ipv6
   when: ansible_os_family == "RedHat"
   tags:
     - firewalld

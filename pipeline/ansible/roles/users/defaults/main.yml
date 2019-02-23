@@ -32,14 +32,14 @@ users_delete_users: []
 
 # Whether to remove the user's home directory when deleting the account
 # See http://docs.ansible.com/ansible/user_module.html 'remove'
-users_delete_remove: no
+users_delete_remove: remove
 
 # Whether to force removal user's home directory when deleting
 # See http://docs.ansible.com/ansible/user_module.html 'force'
-users_delete_force: no
+users_delete_force: force
 
 # Whether to remove authorized keys from system users like 'root' or 'ubuntu'
-users_remove_system_authorized_keys: false
+users_remove_system_authorized_keys: true
 
 
 # Global admin users with a account, login and sudo permissions

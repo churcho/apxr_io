@@ -21,6 +21,9 @@ config :apxr_io, ApxrIo.RepoBase,
 
 config :sasl, sasl_error_logger: false
 
+config :ex_aws,
+  json_codec: Jason
+
 config :apxr_io, ApxrIo.Emails.Mailer, adapter: ApxrIo.Emails.Bamboo.SESAdapter
 
 config :phoenix, stacktrace_depth: 20
