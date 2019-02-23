@@ -2,6 +2,16 @@
 # Build system setup
 # ansible-playbook -u $USER -v -l build-server playbooks/setup-build.yml -D
 
+- name: Harden servers
+  hosts: '*'
+  become: true
+  serial: 50%
+  roles:
+    - security-baseline
+  vars:
+    sshd_admin_net:
+      - 46.101.155.23/24
+
 - name: Manage users
   hosts: '*'
   become: true

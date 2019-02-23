@@ -16,8 +16,8 @@ end
 release :apxr_io do
   set version: current_version(:apxr_io)
   set commands: [
-    script: "rel/commands/script.sh",
     migrate: "rel/commands/migrate.sh",
+    rollback: "rel/commands/rollback.sh",
     seed: "rel/commands/seed.sh"
   ]
   set cookie: ""
