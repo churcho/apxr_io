@@ -75,16 +75,6 @@
     mode: "0700"
   when: elixir_release_cache_dir is defined
 
-# Obsolete
-# - name: Create var dir
-#   file: path={{ elixir_release_var_dir }} state=directory owner={{ elixir_release_app_user }} group={{ elixir_release_app_group }} mode=0700
-#   when: elixir_release_var_dir is defined
-
-# Obsolete
-# - name: Create data dir
-#   file: path={{ elixir_release_data_dir }} state=directory owner={{ elixir_release_app_user }} group={{ elixir_release_app_group }} mode=0700
-#   when: elixir_release_data_dir is defined
-
 - name: Create remote_console.sh
   template:
     src: scripts/remote_console.sh.j2

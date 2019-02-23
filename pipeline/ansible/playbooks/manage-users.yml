@@ -29,4 +29,4 @@
   hosts: '*'
   become: true
   roles:
-    - cogini.users
+    - users

@@ -18,10 +18,6 @@ elixir_release_dir_prefix: "{{ elixir_release_org }}/{{ elixir_release_name }}"
 
 elixir_release_name_code: "{{ elixir_release_name }}"
 
-# Version of the app in the release
-# Default is to read from file
-# elixir_release_version: "0.1.0"
-
 # App environment
 elixir_release_mix_env: prod
 
@@ -62,32 +58,17 @@ elixir_release_conf_dir_base: "/etc"
 # elixir_release_conf_dir: "{{ elixir_release_name }}"
 elixir_release_conf_dir_mode: "0750"
 
-# Path to conform conf file
-# elixir_release_conform_conf_path: "{{ elixir_release_conf_dir }}/{{ elixir_release_name_code }}.conf"
-
 # Location of runtime logs
 elixir_release_log_dir_base: "/var/log"
-# elixir_release_log_dir: "{{ elixir_release_name }}"
 elixir_release_log_dir_mode: "0750"
 
 # Location for app state data, under /var/lib
 elixir_release_state_dir_base: "/var/lib"
-# elixir_release_state_dir: "{{ elixir_release_dir_prefix }}"
 elixir_release_state_dir_mode: "0750"
 
 # Location for app cache data, under /var/cache
 elixir_release_cache_dir_base: "/var/cache"
-# elixir_release_cache_dir: "{{ elixir_release_dir_prefix }}"
 elixir_release_cache_dir_mode: "0750"
-
-# Location of app data files (obsolete)
-# elixir_release_data_dir: "{{ elixir_release_state_dir }}/data"
-
-# Location of app state files (obsolete)
-# elixir_release_state_dir: "{{ elixir_release_state_dir }}/state"
-
-# Location of app data files (obsolete)
-# elixir_release_var_dir: "/var/tmp/{{ elixir_release_dir_prefix }}"
 
 # Make additional paths accessible in chroot
 elixir_release_read_write_paths: []
@@ -99,8 +80,6 @@ elixir_release_restart_flag_dir: "{{ elixir_release_deploy_dir }}/deploy"
 elixir_release_restart_flag_file: "{{ elixir_release_restart_flag_dir }}/restart.flag"
 
 # Location of flag dir for shutdown_flag module
-# elixir_release_shutdown_flag_dir: "/var/tmp/{{ elixir_release_deploy_user }}/{{ elixir_release_name }}"
-# elixir_release_shutdown_flag_dir: "{{ elixir_release_runtime_dir }}"
 elixir_release_shutdown_flag_dir: "{{ elixir_release_deploy_dir }}/deploy"
 elixir_release_shutdown_flag_file: "{{ app_shutdown_flag_dir }}/shutdown.flag"
 

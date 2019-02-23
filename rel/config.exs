@@ -20,6 +20,6 @@ release :apxr_io do
     migrate: "rel/commands/migrate.sh",
     seed: "rel/commands/seed.sh"
   ]
-  set cookie: File.read!("config/cookie.txt") |> String.to_atom
+  set cookie: ""
   set vm_args: "rel/vm.args"
 end
