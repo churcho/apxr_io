@@ -1,5 +1,5 @@
-data "digitalocean_image" "example1" {
-  name = "example-1.0.0"
+data "digitalocean_image" "apxr_io" {
+  name = "apxr_io-1.0.0"
 }
 
 resource "digitalocean_tag" "apxr_io" {
@@ -15,10 +15,12 @@ resource "digitalocean_tag" "blue" {
 }
 
 resource "digitalocean_droplet" "axpr_io" {
-  image  = "${data.digitalocean_image.example1.image}"
-  name = "${var.droplet_name}"
-  region = "${var.droplet_region}"
-  size = "${var.droplet_size}"
+  image  = "${data.digitalocean_image.apxr_io.image}"
+  name = "apxr_io"
+  region = "ams2"
+  size = "s-1vcpu-2gb"
+  monitoring = true
+  ipv6 = true
   private_networking = true
   tags               = [
     "${digitalocean_tag.apxr_io.id}",

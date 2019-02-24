@@ -1,41 +1,47 @@
 {
   "variables": {
-    "digitalocean_api_token":"{{ env `DIGITAL_OCEAN_API_TOKEN` }}",
-    "droplet_name":"{{ env `DROPLET_NAME` }}",
-    "droplet_region":"{{ env `DROPLET_REGION` }}",
-    "droplet_size":"{{ env `DROPLET_SIZE` }}",
-    "droplet_image": "ubuntu-16-04-x64"
+    "do_token": "{{ ${DO_TOKEN} }}",
+    "droplet_name": "apxr_io",
+    "droplet_region": "ams2",
+    "droplet_size": "s-1vcpu-2gb",
+    "droplet_image": "ubuntu-18-04-x64"
   },
   "builders": [
     {
       "type": "digitalocean",
       "ssh_username": "root",
-      "api_token": "{{ user `digitalocean_api_token` }}",
+      "api_token": "{{ user `do_token` }}",
       "image": "{{ user `droplet_image` }}",
       "region": "{{ user `droplet_region` }}",
       "size": "{{ user `droplet_size` }}",
-      "droplet_name": "{{ user `droplet_name` }}"
+      "droplet_name": "{{ user `droplet_name` }}",
+      "monitoring": true,
+      "ipv6": true,
+      "private_networking": true
     }
   ],
   "provisioners": [
     {
-      "type": "shell",
-      "script": "scripts/ansible.sh"
+      "type": "ansible",
+      "playbook_file": "../ansible/playbooks/setup-web.yml",
+      "groups": ["web-servers"],
+      "inventory_file": "../ansible/inventory/group_vars/web-servers",
+      "inventory_directory": "../ansible/inventory"
     },
     {
-      "type": "ansible-local",
-      "playbook_file": "../ansible/site.yml",
-      "role_paths": [
-        "../ansible/roles/git",
-        "../ansible/roles/mysql",
-        "../ansible/roles/nginx",
-        "../ansible/roles/growlerfriday"
-      ],
-      "group_vars": "../ansible/group_vars"
+      "type": "ansible",
+      "playbook_file": "../ansible/playbooks/deploy-app.yml",
+      "groups": ["web-servers"],
+      "inventory_file": "../ansible/inventory/group_vars/web-servers",
+      "inventory_directory": "../ansible/inventory",
+      "extra_arguments": ["--skip-tags", "deploy"]
     },
     {
-      "type": "shell",
-      "script": "scripts/cleanup.sh"
+      "type": "ansible",
+      "playbook_file": "../ansible/playbooks/setup-build.yml",
+      "groups": ["build-servers"],
+      "inventory_file": "../ansible/inventory/group_vars/build-servers",
+      "inventory_directory": "../ansible/inventory"
     }
   ]
 }

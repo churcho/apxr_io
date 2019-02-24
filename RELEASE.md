@@ -8,7 +8,7 @@ Sources:
   - https://www.digitalocean.com/community/tutorials/how-to-use-terraform-with-digitalocean
 
 --------------------
-### Quickstart
+### Ansible quickstart
 
 Once you have configured Ansible, set up the servers:
 
@@ -22,10 +22,10 @@ Build and deploy the code:
 
 ```
 # Check out latest code and build release on server
-ssh -A deploy@build-server build/deploy-template/scripts/build-release.sh
+ssh -A deploy@build-server build/apxr_io/scripts/build-release.sh
 
 # Deploy release
-ssh -A deploy@build-server build/deploy-template/scripts/deploy-local.sh
+ssh -A deploy@build-server build/apxr_io/scripts/deploy-local.sh
 ```
 
 --------------------
@@ -42,10 +42,10 @@ The actual work of checking out and deploying is handled by simple shell scripts
 
 ```
 # Check out latest code and build release on server
-ssh -A deploy@build-server build/deploy-template/scripts/build-release.sh
+ssh -A deploy@build-server build/apxr_io/scripts/build-release.sh
 
 # Deploy release
-ssh -A deploy@build-server build/deploy-template/scripts/deploy-local.sh
+ssh -A deploy@build-server build/apxr_io/scripts/deploy-local.sh
 ```
 
 --------------------
@@ -60,7 +60,7 @@ When building a release, Elixir is just another library dependency and we normal
 
 In order to reliably upgrade and roll back systems, we need to be able to precisely specify Erlang and Elixir versions.
 
-We use ASDF to manage the versions of Erlang, Elixir and Node.js. ASDF looks at the .tool-versions file and automatically sets the path to point to the specified version used by each project. Install ASDF as described here: https://github.com/cogini/elixir-deploy-template#set-up-asdf
+We use ASDF to manage the versions of Erlang, Elixir and Node.js. ASDF looks at the .tool-versions file and automatically sets the path to point to the specified version used by each project.
 
 --------------------
 ### Building and testing
@@ -175,7 +175,7 @@ The `inventory/group_vars/all/elixir-release.yml` file specifies the app setting
 The `inventory/group_vars/build-servers/vars.yml` file specifies the build settings. It specifies the project's git repo, which the Ansible playbook will check out on the build server.
 
 --------------------
-### Listening directly on port 80
+### Listening directly on port 443
 
 Normally, in order to listen on a port less than 1024, an app needs to be running as root or have elevated capabilities. That's a security problem waiting to happen, though, so we run the app on a normal port, e.g. 4001, and redirect traffic from port 443 to 4001 in the firewall.
 
@@ -222,7 +222,7 @@ Log into the deploy user on the build machine:
 
 ```
 ssh -A deploy@build-server
-cd ~/build/deploy-template
+cd ~/build/apxr_io
 ```
 
 The -A flag on the ssh command gives the session on the server access to your local ssh keys. If your local user can access a GitHub repo, then the server can do it, without having to put keys on the server. Similarly, if the prod server is set up to accept your ssh key, then you can push code from the build server using Ansible without the web server needing to trust the build server.
@@ -263,7 +263,7 @@ On the build server:
 
 ```
 ssh -A deploy@build-server
-cd ~/build/deploy-template/ansible
+cd ~/build/apxr_io/ansible
 ```
 
 Add the servers in ansible/inventory/hosts to ~/.ssh/config:
@@ -320,5 +320,115 @@ That script runs:
 MIX_ENV=prod mix ecto.migrate
 ```
 
+--------------------
+### Terraform and Packer
 
+Prior to running, make sure you have both packer and terraform installed. For example, on macOS:
 
+```
+brew install terraform
+brew install packer
+```
+
+From inside the `pipeline` directory
+
+packer-build:
+
+```
+cd packer && \
+packer build template.json && \
+cd -
+
+# This will take about 5 minutes. Copy the Snapshot ID you get at the end.
+```
+
+terraform-init:
+
+```
+cd terraform && \
+terraform init \
+  -var "do_token=${DO_TOKEN}" \
+  -var "pub_key=$HOME/.ssh/id_rsa.pub" \
+  -var "ssh_fingerprint=${DO_SSH_FINGERPRINT"} \
+&& cd -
+
+# Only have to do this once
+```
+
+terraform-plan:
+
+```
+cd terraform && \
+terraform plan \
+  -var "do_token=${DO_TOKEN}" \
+  -var "pub_key=$HOME/.ssh/id_rsa.pub" \
+  -var "ssh_fingerprint=${DO_SSH_FINGERPRINT"} \
+&& cd -
+```
+
+If all looks good, then:
+
+terraform-apply:
+
+```
+cd terraform && \
+terraform apply \
+  -var "do_token=${DO_TOKEN}" \
+  -var "pub_key=$HOME/.ssh/id_rsa.pub" \
+  -var "ssh_fingerprint=${DO_SSH_FINGERPRINT"} \
+&& cd -
+
+# This will take about a minute. At this point, Terraform will have created a new droplet.
+```
+
+Show State
+
+Terraform updates the state file every time it executes a plan or "refreshes" its state. Note that if you modify your infrastructure outside of Terraform, your state file will be out of date.
+
+To view the current state of your environment, use the following command:
+
+```
+cd terraform && \
+terraform show terraform.tfstate \
+&& cd -
+```
+
+Refresh State
+
+If your resources are modified outside of Terraform, you may refresh the state file to bring it up to date. This command will pull the updated resource information from your provider(s):
+
+```
+cd terraform && \
+terraform refresh \
+  -var "do_token=${DO_TOKEN}" \
+  -var "pub_key=$HOME/.ssh/id_rsa.pub" \
+  -var "ssh_fingerprint=${DO_SSH_FINGERPRINT"} \
+&& cd -
+```
+
+Destroy Infrastructure
+
+Although not commonly used in production environments, Terraform can also destroy infrastructures that it creates. This is mainly useful in development environments that are built and destroyed multiple times. It is a two-step process and is described below.
+
+1. Create an execution plan to destroy the infrastructure:
+
+```
+cd terraform && \
+terraform plan -destroy -out=terraform.tfplan \
+  -var "do_token=${DO_TOKEN}" \
+  -var "pub_key=$HOME/.ssh/id_rsa.pub" \
+  -var "ssh_fingerprint=${DO_SSH_FINGERPRINT"} \
+&& cd -
+```
+
+Terraform will output a plan with resources marked in red, and prefixed with a minus sign, indicating that it will delete the resources in your infrastructure.
+
+2. Apply destroy:
+
+```
+cd terraform && \
+terraform apply terraform.tfplan \
+&& cd -
+```
+
+Terraform will destroy the resources, as indicated in the destroy plan.
