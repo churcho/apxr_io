@@ -73,12 +73,12 @@ defmodule ApxrIoWeb.Endpoint do
 
   def init(_key, config) do
     if config[:load_from_system_env] do
-      port = System.get_env("APXR_PORT")
+      port = System.get_env("APXR_IO_PORT")
 
       case Integer.parse(port) do
         {_int, ""} ->
-          host = System.get_env("APXR_HOST")
-          secret_key_base = System.get_env("APXR_SECRET_KEY_BASE")
+          host = System.get_env("APXR_IO_HOST")
+          secret_key_base = System.get_env("APXR_IO_SECRET_KEY_BASE")
           config = put_in(config[:http][:port], port)
           config = put_in(config[:url][:host], host)
           config = put_in(config[:secret_key_base], secret_key_base)

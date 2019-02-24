@@ -355,6 +355,12 @@ terraform init \
 # Only have to do this once
 ```
 
+Assuming that your private key is located at ~/.ssh/id_rsa, use the following command to get the MD5 fingerprint of your public key:
+
+```
+ssh-keygen -E md5 -lf ~/.ssh/id_rsa.pub | awk '{print $2}' | sed 's/^MD5://g'
+```
+
 terraform-plan:
 
 ```

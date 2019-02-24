@@ -17,10 +17,10 @@ resource "digitalocean_tag" "blue" {
 resource "digitalocean_droplet" "axpr_io" {
   image  = "${data.digitalocean_image.apxr_io.image}"
   name = "apxr_io"
-  region = "ams2"
+  region = "ams3"
   size = "s-1vcpu-2gb"
   monitoring = true
-  ipv6 = true
+  ipv6 = false
   private_networking = true
   tags               = [
     "${digitalocean_tag.apxr_io.id}",

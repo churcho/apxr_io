@@ -5,7 +5,6 @@ defmodule ApxrIoWeb.Plugs.Attack do
   import ApxrIoWeb.ControllerHelpers
   import Plug.Conn
   alias ApxrIo.BlockAddress
-  alias ApxrIoWeb.RateLimitPubSub
 
   @storage {PlugAttack.Storage.Ets, ApxrIoWeb.Plugs.Attack.Storage}
 
@@ -88,7 +87,6 @@ defmodule ApxrIoWeb.Plugs.Attack do
   def user_throttle(user_id, opts \\ []) do
     key = {:user, user_id}
     time = opts[:time] || System.system_time(:millisecond)
-    unless opts[:time], do: RateLimitPubSub.broadcast(key, time)
 
     timed_throttle(
       key,
@@ -102,7 +100,6 @@ defmodule ApxrIoWeb.Plugs.Attack do
   def team_throttle(team_id, opts \\ []) do
     key = {:team, team_id}
     time = opts[:time] || System.system_time(:millisecond)
-    unless opts[:time], do: RateLimitPubSub.broadcast(key, time)
 
     timed_throttle(
       key,
@@ -116,7 +113,6 @@ defmodule ApxrIoWeb.Plugs.Attack do
   def ip_throttle(ip, opts \\ []) do
     key = {:ip, ip}
     time = opts[:time] || System.system_time(:millisecond)
-    unless opts[:time], do: RateLimitPubSub.broadcast(key, time)
 
     timed_throttle(
       key,

@@ -2,21 +2,15 @@ defmodule ApxrIo.Application do
   use Application
 
   def start(_type, _args) do
-    topologies = cluster_topologies()
     ApxrIo.BlockAddress.start()
 
     children = [
       ApxrIo.RepoBase,
       {Task.Supervisor, name: ApxrIo.Tasks},
-      {Cluster.Supervisor, [topologies, [name: ApxrIo.ClusterSupervisor]]},
-      {Phoenix.PubSub.PG2, name: ApxrIo.PubSub},
-      ApxrIoWeb.RateLimitPubSub,
       {PlugAttack.Storage.Ets, name: ApxrIoWeb.Plugs.Attack.Storage, clean_period: 60_000},
       {ApxrIo.Throttle, name: ApxrIo.SESThrottle, rate: ses_rate(), unit: 1000},
       {ApxrIo.Billing.Report, name: ApxrIo.Billing.Report, interval: 60_000},
-      # 30 days
-      {ApxrIo.Accounts.PruneAuditLogs,
-       name: ApxrIo.Accounts.PruneAuditLogs, interval: 2_592_000_000},
+      {ApxrIo.Accounts.PruneAuditLogs, name: ApxrIo.Accounts.PruneAuditLogs, interval: 2_592_000_000},
       ApxrIoWeb.Endpoint,
       ApxrIo.Vault
     ]
@@ -50,13 +44,5 @@ defmodule ApxrIo.Application do
     end
   else
     def shutdown_on_eof(), do: nil
-  end
-
-  defp cluster_topologies() do
-    if System.get_env("APXR_CLUSTER") == "1" do
-      Application.get_env(:apxr_io, :topologies) || []
-    else
-      []
-    end
   end
 end

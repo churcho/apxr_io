@@ -17,8 +17,8 @@ fs_modules_blacklist: [cramfs, freevxfs, hfs, hfsplus, jffs2, squashfs, udf, vfa
 misc_modules_blacklist: [bluetooth, bnep, btusb, firewire-core, n_hdlc, net-pf-31, pcspkr, soundcore, thunderbolt, usb-midi, usb-storage]
 limit_nofile_soft: 65536
 limit_nofile_hard: 65536
-limit_nproc_soft: 6553600
-limit_nproc_hard: 6553600
+limit_nproc_soft: 100
+limit_nproc_hard: 150
 grub_cmdline: audit=1 audit_backlog_limit=8192
 auditd_mode: 1
 ...

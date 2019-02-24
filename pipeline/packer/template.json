@@ -2,7 +2,7 @@
   "variables": {
     "do_token": "{{ ${DO_TOKEN} }}",
     "droplet_name": "apxr_io",
-    "droplet_region": "ams2",
+    "droplet_region": "ams3",
     "droplet_size": "s-1vcpu-2gb",
     "droplet_image": "ubuntu-18-04-x64"
   },
@@ -16,7 +16,7 @@
       "size": "{{ user `droplet_size` }}",
       "droplet_name": "{{ user `droplet_name` }}",
       "monitoring": true,
-      "ipv6": true,
+      "ipv6": false,
       "private_networking": true
     }
   ],

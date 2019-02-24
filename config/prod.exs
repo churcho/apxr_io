@@ -6,6 +6,7 @@ config :apxr_io,
   learn_impl: ApxrIo.Learn.ApxrRun
 
 config :apxr_io, ApxrIoWeb.Endpoint,
+  code_reloader: false,
   http: [compress: true],
   url: [scheme: "https", port: 443],
   load_from_system_env: true,

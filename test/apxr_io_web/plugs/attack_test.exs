@@ -2,7 +2,6 @@ defmodule ApxrIoWeb.Plugs.AttackTest do
   use ExUnit.Case, async: true
   use Plug.Test
   import ApxrIo.Factory
-  alias ApxrIoWeb.RateLimitPubSub
 
   defmodule Hello do
     # need to use Phoenix.Controller because RateLimit.Plug uses ErrorView
@@ -43,7 +42,6 @@ defmodule ApxrIoWeb.Plugs.AttackTest do
       Phoenix.PubSub.broadcast!(ApxrIo.PubSub, "ratelimit", {:throttle, {:user, user.id}, time})
       Phoenix.PubSub.broadcast!(ApxrIo.PubSub, "ratelimit", {:throttle, {:user, -1}, time})
       Process.sleep(100)
-      :sys.get_state(RateLimitPubSub)
 
       conn = request_user(user)
       assert conn.status == 200
@@ -67,7 +65,6 @@ defmodule ApxrIoWeb.Plugs.AttackTest do
       )
 
       Process.sleep(100)
-      :sys.get_state(RateLimitPubSub)
 
       conn = request_ip({3, 3, 3, 3})
       assert conn.status == 200

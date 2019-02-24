@@ -78,8 +78,6 @@ defmodule ApxrIo.MixProject do
       {:jason, "~> 1.1"},
       # Elixir JWT library - Apache 2.0
       {:joken, "~> 2.0"},
-      # Automatic Erlang cluster formation and management for - Apache 2.0
-      {:libcluster, "~> 3.0"},
       # Easily parsable single line, plain text and JSON logger - MIT
       {:logster, "~> 0.10.0"},
       # Mocks and explicit contracts for Elixir - Apache 2.0
