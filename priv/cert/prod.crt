@@ -1,31 +1,3 @@
-<div>
-  <h2 class="title is-2">
-    Active keys
-  </h2>
-  <h4 class="title is-4">
-    Why is my project documentation returning "page not found"?
-  </h4>
-  <p>
-This page lists the public keys used by approximatereality.com. APXR uses those public keys to
-guarantee developers can safely fetch the registry hosted by approximatereality.com. If you
-have been linked to this page from an error message, it means the public key that ships with
-your ApxrIo client has been revoked. Below you can find up to date keys and instructions on
-how to install it for your client.
-  </p>
-  <br />
-  <p>
-<strong>Remember to only install public keys from sources you trust!</strong>
-  </p>
-  <br />      
-  <p>
-<strong>Public key released:</strong> 01/Mar/2019
-  </p>
-  <br />      
-  <p>
-<strong>Last changed:</strong> never
-  </p>
-  <br />
-  <div class="box">
 -----BEGIN CERTIFICATE-----
 MIIDijCCAnICCQDFql6uqXyMtTANBgkqhkiG9w0BAQsFADCBhjELMAkGA1UEBhMC
 RlIxDjAMBgNVBAgMBVBhcmlzMQ4wDAYDVQQHDAVQYXJpczENMAsGA1UECgwEQVBY
@@ -47,11 +19,3 @@ EvaR/lY8rYuK/qK0C8BhDwdryc1eoA+ScXBHNoNaIOBP6HOXTPdW1EX0LQkWHI9b
 VTqE8mNVrF/4C8ogNNj6CQmM8rUEldKOa6NrFm09Ywk9v3VSENBr1P8l2px+NvFf
 lk53WP8Cds0ADptpCpWF89jeMJlTM2B6zo+b0lI6lBejWBcxT5xbxznrXOwtSw==
 -----END CERTIFICATE-----
-  </div>
-  <h2 class="title is-2">
-    Revoked keys
-  </h2>
-  <p>
-No public keys have been revoked yet.
-  </p>
-</div>

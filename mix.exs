@@ -121,6 +121,7 @@ defmodule ApxrIo.MixProject do
         "hex.outdated",
         "compile",
         "format",
+        "mix sobelow",
         "xref unreachable",
         "dialyzer",
         "test --cover"

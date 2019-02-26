@@ -1,7 +1,7 @@
 defmodule ApxrIo.Learn.Experiment do
   use ApxrIoWeb, :schema
 
-  @valid_machine_types [1, 2, 3, 4, 5]
+  @valid_machine_types [1, 2, 3, 4]
 
   schema "experiments" do
     field :description, :string
@@ -11,7 +11,7 @@ defmodule ApxrIo.Learn.Experiment do
     belongs_to :release, Release
     has_one :artifact, Artifact
     embeds_one :meta, ExperimentMetadata, on_replace: :update
-    embeds_one :trace, ExperimentTrace, on_replace: :delete
+    embeds_one :trace, ExperimentTrace, on_replace: :update
     embeds_one :graph_data, ExperimentGraphData, on_replace: :delete
     embeds_one :system_metrics, ExperimentSystemMetrics, on_replace: :delete
   end

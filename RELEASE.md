@@ -7,7 +7,6 @@ Sources:
   - https://github.com/konstruktoid/ansible-role-hardening
   - https://www.digitalocean.com/community/tutorials/how-to-use-terraform-with-digitalocean
 
---------------------
 ### Ansible quickstart
 
 Once you have configured Ansible, set up the servers:
@@ -28,10 +27,9 @@ ssh -A deploy@build-server build/apxr_io/scripts/build-release.sh
 ssh -A deploy@build-server build/apxr_io/scripts/deploy-local.sh
 ```
 
---------------------
 ### Overview
 
-We deploy Erlang "releases" using systemd for process supervision. We run in cloud or dedicated server instances running Ubuntu Linux (CentOS supported but not tested) equipped with a security focused systemd configuration. We deploy using a combination of Terraform (Handles deploying an actual server), Packer (Builds images of a configured server, but doesn't actually deploy it) and Ansible (Automates server configuration) on immutable infrastructure.
+We deploy Erlang "releases" using systemd for process supervision. We run in cloud or dedicated server instances running Ubuntu Linux 18.0.04 Bionic (CentOS supported but not tested) equipped with a security focused systemd configuration. We deploy using Ansible (Automates server configuration) on immutable Scaleway infrastructure.
 
 1. Set up the web server
 2. Set up build server
@@ -48,12 +46,10 @@ ssh -A deploy@build-server build/apxr_io/scripts/build-release.sh
 ssh -A deploy@build-server build/apxr_io/scripts/deploy-local.sh
 ```
 
---------------------
 ### Locking dependency versions
 
 The process starts in your dev environment. When you run mix deps.get, mix fetches the dependencies listed in the mix.exs. Mix records the specific versions that it fetched in the mix.lock file. Later, on the build machine, mix uses the specific package version or git reference in the lock file to build the release.
 
---------------------
 ### Managing build tool versions
 
 When building a release, Elixir is just another library dependency and we normally package the Erlang virtual machine with the release too.
@@ -62,7 +58,6 @@ In order to reliably upgrade and roll back systems, we need to be able to precis
 
 We use ASDF to manage the versions of Erlang, Elixir and Node.js. ASDF looks at the .tool-versions file and automatically sets the path to point to the specified version used by each project.
 
---------------------
 ### Building and testing
 
 We normally develop on macOS and deploy to Linux. Erlang does not rely much on the operating system, and mix manages library dependencies tightly, so we don't find it necessary to use Vagrant or Docker to isolate projects.
@@ -73,7 +68,6 @@ We typically build on the same server that runs the app e.g. check out the code 
 
 Like your dev machine, the build server runs ASDF. When you make a build, it uses the versions of Erlang and Elixir specified in the .tool-versions file.
 
---------------------
 ### Erlang releases
 
 The most important part of the deployment process is using Erlang "releases". A release combines the Erlang VM, your application, and the libraries it depends on into a tarball, which you deploy as a unit.
@@ -82,7 +76,6 @@ The release has a script to start the app, launched and supervised by the OS ini
 
 Releases also support one of Erlang's cool features, hot code updates. If you are not keeping state in GenServers, then they are easy. If not, you need to write an upgrade function, like a database migration but for your state. We follow the "immutable infrastructure" paradigm so this does not really concern us.
 
---------------------
 ### Distillery
 
 The Distillery library makes it easy to build releases.
@@ -99,7 +92,6 @@ This creates a tarball with everything you need to deploy in e.g.
 _build/prod/rel/apxr_io/releases/0.1.0/apxr_io.tar.gz
 ```
 
---------------------
 ### Supervising your app
 
 In the Erlang OTP framework, we use supervisors to start and stop processes, restarting them in case of problems. It's turtles all the way down: you need a supervisor to make sure your Erlang VM is running, restarting it if there is a problem.
@@ -114,7 +106,6 @@ Following that philosophy, we use a separate OS user (e.g. deploy) to upload the
 
 If you are running systemd, then it will capture early startup error messages. Systemd captures any messages sent to the console and puts them in the system journal. journald handles log rotation, and the app doesn't need permissions to write log files, which is a security win.
 
---------------------
 ### Deploying the code
 
 We use a structure like Capistrano to manage the release files. We first create a base directory named for the organization and app, e.g. `/opt/apxr/apxr_io`. Under that we create a releases directory to hold the release files.
@@ -131,7 +122,6 @@ The actual deployment process works like this:
 
 4. Restart the app using the systemd unit
 
---------------------
 ### Deploying locally
 
 Since this is a simple app, we build on the same server.
@@ -144,7 +134,6 @@ MIX_ENV=prod mix deploy.local
 
 They handle the process of creating the timestamped directory, finding and extracting the release tarball, extracting it to the target dir, and making the symlink.
 
---------------------
 ### Rolling back
 
 If there is a problem with the release, then it's easy to roll back. Just update the current symlink to point to the previous working release, then restart.
@@ -155,7 +144,6 @@ This task automates the process of rolling back to last release:
 MIX_ENV=prod mix deploy.local.rollback
 ```
 
---------------------
 ### Deploying with Ansible
 
 We use Ansible to set up the system and to deploy the code. It's a lightweight general-purpose tool which is easy for both devs and ops to understand.
@@ -174,12 +162,10 @@ The `inventory/group_vars/all/elixir-release.yml` file specifies the app setting
 
 The `inventory/group_vars/build-servers/vars.yml` file specifies the build settings. It specifies the project's git repo, which the Ansible playbook will check out on the build server.
 
---------------------
 ### Listening directly on port 443
 
 Normally, in order to listen on a port less than 1024, an app needs to be running as root or have elevated capabilities. That's a security problem waiting to happen, though, so we run the app on a normal port, e.g. 4001, and redirect traffic from port 443 to 4001 in the firewall.
 
---------------------
 ### 1. Set up web server
 
 Run the following Ansible commands from the `pipeline/ansible` dir in the project.
@@ -202,7 +188,6 @@ ansible-playbook -u root -v -l web-servers playbooks/deploy-app.yml --skip-tags 
 
 At this point, the web server is set up, but we need to build and deploy the app code to it.
 
---------------------
 ### 2. Set up build server
 
 This can be the same as the web server or a separate server.
@@ -215,7 +200,6 @@ ansible-playbook -u root -v -l build-servers playbooks/setup-build.yml -D
 
 This sets up the build environment, e.g. installing ASDF.
 
---------------------
 ### 3. Build the app
 
 Log into the deploy user on the build machine:
@@ -237,7 +221,6 @@ scripts/build-release.sh
 
 Note: `asdf install` builds Erlang from source, so the first time it runs it can take a long time. If it fails due to a lost connection, delete /home/deploy/.asdf/installs/erlang/[version] and try again. You may want to run it under `tmux`.
 
---------------------
 ### 4. Deploy the release (local)
 
 If you are building on the web-server, then you can use the custom mix tasks in lib/mix/tasks/deploy.ex to deploy locally.
@@ -252,7 +235,6 @@ scripts/deploy-local.sh
 
 The build is being done under the deploy user, who owns the files under `/opt/apxr/apxr_io` and has a special `/etc/sudoers.d` config which allows it to run the `/bin/systemctl restart apxr_io` command.
 
---------------------
 ### 4. Deploy the release (remote)
 
 Install Ansible on the build machine
@@ -289,7 +271,6 @@ That script runs:
 ansible-playbook -u deploy -v -l web-servers playbooks/deploy-app.yml --tags deploy --extra-vars ansible_become=false -D
 ```
 
---------------------
 ### Verify it works
 
 Have a look at the logs:
@@ -303,7 +284,6 @@ You can get a console on the running app by logging in (via ssh) as the `apxr_io
 
 /opt/apxr/apxr_io/scripts/remote_console.sh
 
---------------------
 ### 4. Database
 
 Whenever you change the db schema, you need to run migrations on the server.
@@ -319,122 +299,3 @@ That script runs:
 ```
 MIX_ENV=prod mix ecto.migrate
 ```
-
---------------------
-### Terraform and Packer
-
-Prior to running, make sure you have both packer and terraform installed. For example, on macOS:
-
-```
-brew install terraform
-brew install packer
-```
-
-From inside the `pipeline` directory
-
-packer-build:
-
-```
-cd packer && \
-packer build template.json && \
-cd -
-
-# This will take about 5 minutes. Copy the Snapshot ID you get at the end.
-```
-
-terraform-init:
-
-```
-cd terraform && \
-terraform init \
-  -var "do_token=${DO_TOKEN}" \
-  -var "pub_key=$HOME/.ssh/id_rsa.pub" \
-  -var "ssh_fingerprint=${DO_SSH_FINGERPRINT"} \
-&& cd -
-
-# Only have to do this once
-```
-
-Assuming that your private key is located at ~/.ssh/id_rsa, use the following command to get the MD5 fingerprint of your public key:
-
-```
-ssh-keygen -E md5 -lf ~/.ssh/id_rsa.pub | awk '{print $2}' | sed 's/^MD5://g'
-```
-
-terraform-plan:
-
-```
-cd terraform && \
-terraform plan \
-  -var "do_token=${DO_TOKEN}" \
-  -var "pub_key=$HOME/.ssh/id_rsa.pub" \
-  -var "ssh_fingerprint=${DO_SSH_FINGERPRINT"} \
-&& cd -
-```
-
-If all looks good, then:
-
-terraform-apply:
-
-```
-cd terraform && \
-terraform apply \
-  -var "do_token=${DO_TOKEN}" \
-  -var "pub_key=$HOME/.ssh/id_rsa.pub" \
-  -var "ssh_fingerprint=${DO_SSH_FINGERPRINT"} \
-&& cd -
-
-# This will take about a minute. At this point, Terraform will have created a new droplet.
-```
-
-Show State
-
-Terraform updates the state file every time it executes a plan or "refreshes" its state. Note that if you modify your infrastructure outside of Terraform, your state file will be out of date.
-
-To view the current state of your environment, use the following command:
-
-```
-cd terraform && \
-terraform show terraform.tfstate \
-&& cd -
-```
-
-Refresh State
-
-If your resources are modified outside of Terraform, you may refresh the state file to bring it up to date. This command will pull the updated resource information from your provider(s):
-
-```
-cd terraform && \
-terraform refresh \
-  -var "do_token=${DO_TOKEN}" \
-  -var "pub_key=$HOME/.ssh/id_rsa.pub" \
-  -var "ssh_fingerprint=${DO_SSH_FINGERPRINT"} \
-&& cd -
-```
-
-Destroy Infrastructure
-
-Although not commonly used in production environments, Terraform can also destroy infrastructures that it creates. This is mainly useful in development environments that are built and destroyed multiple times. It is a two-step process and is described below.
-
-1. Create an execution plan to destroy the infrastructure:
-
-```
-cd terraform && \
-terraform plan -destroy -out=terraform.tfplan \
-  -var "do_token=${DO_TOKEN}" \
-  -var "pub_key=$HOME/.ssh/id_rsa.pub" \
-  -var "ssh_fingerprint=${DO_SSH_FINGERPRINT"} \
-&& cd -
-```
-
-Terraform will output a plan with resources marked in red, and prefixed with a minus sign, indicating that it will delete the resources in your infrastructure.
-
-2. Apply destroy:
-
-```
-cd terraform && \
-terraform apply terraform.tfplan \
-&& cd -
-```
-
-Terraform will destroy the resources, as indicated in the destroy plan.

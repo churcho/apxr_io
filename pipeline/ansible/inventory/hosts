@@ -1,5 +1,14 @@
 [web-servers]
-apxr_io
+apxr-io-db1
 
 [build-servers]
-apxr_io
+apxr-io-db1
+
+[py3-hosts]
+apxr-io-db1
+
+[py3-hosts:vars]
+ansible_python_interpreter=/usr/bin/python3
+
+[local]
+localhost ansible_sudo=false

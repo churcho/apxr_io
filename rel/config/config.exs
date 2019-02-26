@@ -6,7 +6,6 @@ config :apxr_io,
   ses_rate: System.get_env("APXR_IO_SES_RATE"),
   billing_key: System.get_env("APXR_IO_BILLING_KEY"),
   billing_url: System.get_env("APXR_IO_BILLING_URL"),
-  apxr_run_url: System.get_env("APXR_IO_RUN_URL")
 
 config :joken, default_signer: System.get_env("APXR_IO_JOKEN_SECRET")
 

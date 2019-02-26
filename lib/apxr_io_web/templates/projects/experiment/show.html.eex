@@ -51,7 +51,6 @@
           <li><a href="#trace" class="tab heading is-size-6" data-exp-tab="trace">Trace</a></li>
           <li><a href="#graphs" class="tab heading is-size-6" data-exp-tab="graphs">Graphs</a></li>
           <li><a href="#machine" class="tab heading is-size-6" data-exp-tab="machine">Machine</a></li>
-          <li><a href="#tail" class="tab heading is-size-6" data-exp-tab="tail">Tail</a></li>
         </ul>
       </div>
     </div>
@@ -138,9 +137,6 @@ pm_parameters: <%= Poison.encode_to_iodata!(@experiment.meta.pm_parameters, pret
             <div id="validation_min_fitness_vs_evaluations"></div>
           </div>
         </div>
-      </div>
-      <div id="tail" class="tab-content has-background-black has-text-white" style="padding: 2rem;">
-        <ul id="logs_list" style="list-style: circle;"></ul>
       </div>
       <div id="machine" class="tab-content highlight">
         <div class="columns">
