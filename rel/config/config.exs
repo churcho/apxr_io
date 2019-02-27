@@ -12,3 +12,9 @@ config :joken, default_signer: System.get_env("APXR_IO_JOKEN_SECRET")
 config :ex_aws,
   access_key_id: System.get_env("APXR_IO_AWS_ACCESS_KEY_ID"),
   secret_access_key: System.get_env("APXR_IO_AWS_ACCESS_KEY_SECRET")
+
+config :apxr_io, ApxrIo.RepoBase,
+  database: System.get_env("APXR_IO_DATABASE"),
+  username: System.get_env("APXR_IO_DATABASE_USERNAME"),
+  password: System.get_env("APXR_IO_DATABASE_PASSWORD"),
+  hostname: System.get_env("APXR_IO_DATABASE_HOSTNAME")

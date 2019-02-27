@@ -2,14 +2,11 @@
 
 Sources:
   - https://www.cogini.com/blog/best-practices-for-deploying-elixir-apps
-  - https://www.cogini.com/blog/deploying-your-phoenix-app-to-digital-ocean-for-beginners
   - https://github.com/cogini/elixir-deploy-template
-  - https://github.com/konstruktoid/ansible-role-hardening
-  - https://www.digitalocean.com/community/tutorials/how-to-use-terraform-with-digitalocean
 
-### Ansible quickstart
+### Quickstart
 
-Once you have configured Ansible, set up the servers:
+Once you have created a server and configured your hosts file, set up the server:
 
 ```
 ansible-playbook -u root -v -l web-servers playbooks/setup-web.yml -D
@@ -29,7 +26,7 @@ ssh -A deploy@build-server build/apxr_io/scripts/deploy-local.sh
 
 ### Overview
 
-We deploy Erlang "releases" using systemd for process supervision. We run in cloud or dedicated server instances running Ubuntu Linux 18.0.04 Bionic (CentOS supported but not tested) equipped with a security focused systemd configuration. We deploy using Ansible (Automates server configuration) on immutable Scaleway infrastructure.
+We deploy Erlang "releases" using systemd for process supervision. We run in the cloud or dedicated server instances running Ubuntu Linux 18.04 Bionic. We deploy using Ansible (Automates server configuration) on immutable infrastructure.
 
 1. Set up the web server
 2. Set up build server
@@ -168,7 +165,7 @@ Normally, in order to listen on a port less than 1024, an app needs to be runnin
 
 ### 1. Set up web server
 
-Run the following Ansible commands from the `pipeline/ansible` dir in the project.
+Run the following Ansible commands from the `ansible` dir in the project.
 
 Initial server setup:
 
@@ -239,7 +236,7 @@ The build is being done under the deploy user, who owns the files under `/opt/ap
 
 Install Ansible on the build machine
 
-Run the script found under `pipeline/ansible/provision/setup.sh` (on your dev machine) to install Ansible on the build machine.
+Run the script found under `ansible/provision/setup.sh` (on your dev machine) to install Ansible on the build machine.
 
 On the build server:
 

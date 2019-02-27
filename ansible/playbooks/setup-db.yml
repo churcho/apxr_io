@@ -1,0 +1,25 @@
+---
+# Build system setup
+# ansible-playbook -u $USER -v -l build-server playbooks/setup-build.yml -D
+
+- name: Manage users
+  hosts: '*'
+  become: true
+  roles:
+    - users
+
+- name: Install common
+  hosts: '*'
+  become: true
+  gather_facts: true
+  vars:
+    tools_other_packages:
+      - git
+      - vim
+      - tmux
+      - htop
+      - curl
+  roles:
+    - common-minimal
+    - tools-other
+    - iptables

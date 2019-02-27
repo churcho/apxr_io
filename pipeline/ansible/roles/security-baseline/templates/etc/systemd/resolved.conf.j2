@@ -1,9 +1,0 @@
-# {{ ansible_managed }}
-
-[Resolve]
-DNS={{ dns }}
-FallbackDNS={{ fallback_dns }}
-DNSSEC={{ dnssec }}
-{% if ansible_local.systemd_version >= 239 %}
-DNSOverTLS=opportunistic
-{% endif %}
