@@ -26,7 +26,7 @@ ssh -A deploy@build-server build/apxr_io/scripts/deploy-local.sh
 
 ### Overview
 
-We deploy Erlang "releases" using systemd for process supervision. We run in the cloud or dedicated server instances running Ubuntu Linux 18.04 Bionic. We deploy using Ansible (Automates server configuration) on immutable infrastructure.
+We deploy Erlang "releases" using systemd for process supervision. We run in the cloud or dedicated server instances running Ubuntu Linux 18.04 Bionic. We deploy using Ansible (Automates server configuration).
 
 1. Set up the web server
 2. Set up build server

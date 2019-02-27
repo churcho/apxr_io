@@ -10,13 +10,26 @@ Sources:
 2. Initial server setup:
 
 ```
-ansible-playbook -u root -v -l web-servers playbooks/setup-db.yml -D
+ansible-playbook -u root -v -l db-servers playbooks/setup-db.yml -D
 ```
 
 3. Configuring UFW
 
+First, open this file:
+
 ```
-sudo ufw allow from 46.101.155.23 to any port 5432
+sudo vim /etc/default/ufw
+```
+
+And make sure the value of IPV6 is yes.
+
+```
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw allow 22
+sudo ufw allow from apxr-io-app-private-ip to any port 5432
+sudo ufw enable
+sudo ufw status verbose
 ```
 
 ### Step 1 — Installing PostgreSQL
@@ -61,7 +74,7 @@ sudo vim /etc/postgresql/10/main/postgresql.conf
 Find the listen_addresses line and below it, define your listen addresses, being sure to substitute the hostname or IP address of your database host. You may want to double-check that you're using the public or private IP of the database server, not the connecting client:
 
 ```
-listen_addresses = 'localhost, 10.21.127.157'
+listen_addresses = 'localhost, apxr-io-db-private-ip'
 ```
 
 ### Step 4 — Restarting PostgreSQL
@@ -95,7 +108,7 @@ server directory
 Let’s create the first file — private key:
 
 ```
-openssl genrsa -des3 -out /var/lib/postgresql/10/main/server.key 1024
+sudo openssl genrsa -des3 -out /var/lib/postgresql/10/main/server.key 1024
 ```
 
 During the server.key generation, you’ll be asked for a passphrase — specify any and confirm it to finish creation.
@@ -103,26 +116,26 @@ During the server.key generation, you’ll be asked for a passphrase — specify
 Now, in order to work with this key further, it’s required remove the passphrase you’ve added previously. Execute the following command for this:
 
 ```
-openssl rsa -in /var/lib/postgresql/10/main/server.key -out /var/lib/postgresql/10/main/server.key
+sudo openssl rsa -in /var/lib/postgresql/10/main/server.key -out /var/lib/postgresql/10/main/server.key
 ```
 
 Set the appropriate permission and ownership rights for your private key file with the next commands:
 
 ```
-chmod 400 /var/lib/postgresql/10/main/server.key
-chown postgres.postgres /var/lib/postgresql/10/main/server.key
+sudo chmod 400 /var/lib/postgresql/10/main/server.key
+sudo chown postgres.postgres /var/lib/postgresql/10/main/server.key
 ```
 
 Create server certificate based on your server.key file
 
 ```
-openssl req -new -key /var/lib/postgresql/10/main/server.key -days 3650 -out /var/lib/postgresql/10/main/server.crt -x509 -subj '/C=FR/ST=Paris/L=Paris/O=APXR/CN=approximatereality.com/emailAddress=approximatereality@gmail.com'
+sudo openssl req -new -key /var/lib/postgresql/10/main/server.key -days 3650 -out /var/lib/postgresql/10/main/server.crt -x509 -subj '/C=FR/ST=Paris/L=Paris/O=APXR/CN=approximatereality.com/emailAddress=approximatereality@gmail.com'
 ```
 
 Since we are going to sign certs by ourselves, the generated server certificate can be used as a trusted root certificate as well, so just make its copy with the appropriate name:
 
 ```
-cp /var/lib/postgresql/10/main/server.crt /var/lib/postgresql/10/main/root.crt
+sudo cp /var/lib/postgresql/10/main/server.crt /var/lib/postgresql/10/main/root.crt
 ```
 
 Open the pg_hba.conf file:
@@ -131,13 +144,17 @@ Open the pg_hba.conf file:
 sudo vim /etc/postgresql/10/main/pg_hba.conf
 ```
 
-Add/replace with the following
+Add the following
 
 ```
 hostssl apxr_io_prod    apxr_io         0.0.0.0/0               md5 clientcert=1
 ```
 
 To finish configurations, you need to apply some more changes to the postgresql.conf file. 
+
+```
+sudo vim /etc/postgresql/10/main/postgresql.conf
+```
 
 Navigate to its Security and Authentication section (approximately at the 80th line) and activate SSL usage itself, through uncommenting the same-named setting and changing its value to “on”. Also, add the new ssl_ca_file parameter below:
 
@@ -153,13 +170,22 @@ sudo systemctl restart postgresql
 sudo systemctl status postgresql
 ```
 
-And exit the server.
+Copy the root.crt and server.key files to your local machine as you will need them in the next step.
+
+```
+sudo cat '/var/lib/postgresql/10/main/server.key'
+sudo cat '/var/lib/postgresql/10/main/root.crt'
+```
+
+Place them under ansible/files e.g. apxr-io-db_server.key and apxr-io-db_root.crt
+
+Exit the server.
 
 ---
 
-Now, let’s create one more set of SSL certificate files for client instance, in order to support secure connection on both sides.
+Now, on your local machine, in the ansible/files directory let’s create one more set of SSL certificate files for client instance, in order to support secure connection on both sides.
 
-1. Generate a private key for client (also without a passphrase, just as it was done in the previous section):
+1. Generate a private key for the client (also without a passphrase, just as it was done in the previous section):
 
 ```
 openssl genrsa -des3 -out postgresql.key 1024
@@ -170,11 +196,11 @@ openssl rsa -in postgresql.key -out postgresql.key
 
 ```
 openssl req -new -key postgresql.key -out postgresql.csr -subj '/C=FR/ST=Paris/L=Paris/O=APXR/CN=apxr_io'
-openssl x509 -req -in postgresql.csr -days 365 -CA apxr-io-db1_root.crt -CAkey apxr-io-db1_server.key -out postgresql.crt -CAcreateserial
+openssl x509 -req -in postgresql.csr -days 365 -CA apxr-io-db_root.crt -CAkey apxr-io-db_server.key -out postgresql.crt -CAcreateserial
 ```
 
 Note: 
 
 The Common Name (/CN=) must be equal to database user name you’ve set during the first certificate generation in server configuration file (apxr_io in our case)
 
-3. The postgresql.key, postgresql.crt, apxr-io-db1_root.crt files are now now ready for use by the client
+3. The postgresql.key, postgresql.crt, apxr-io-db_root.crt files are now now ready for use by the client.

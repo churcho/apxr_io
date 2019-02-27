@@ -1,6 +1,6 @@
 ---
 # Build system setup
-# ansible-playbook -u $USER -v -l build-server playbooks/setup-build.yml -D
+# ansible-playbook -u $USER -v -l nginx-server playbooks/setup-nginx.yml -D
 
 - name: Manage users
   hosts: '*'
@@ -19,7 +19,7 @@
       - tmux
       - htop
       - curl
+      - sudo
   roles:
     - common-minimal
     - tools-other
-    - iptables

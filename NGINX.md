@@ -14,13 +14,7 @@ Sources:
 2. Initial server setup:
 
 ```
-ansible-playbook -u root -v -l web-servers playbooks/setup-nginx.yml -D
-```
-
-3. Configuring UFW
-
-```
-sudo ufw allow 'Nginx HTTP'
+ansible-playbook -u root -v -l nginx-servers playbooks/setup-nginx.yml -D
 ```
 
 ### Step 1 — Installing Nginx
@@ -30,15 +24,23 @@ sudo apt update
 sudo apt install nginx
 ```
 
-```
-sudo apt update
-sudo apt install nginx
-```
+### Step 2 — Configuring UFW
 
-You can verify the change by typing:
+First, open this file:
 
 ```
-sudo ufw status
+sudo vim /etc/default/ufw
+```
+
+And make sure the value of IPV6 is yes.
+
+```
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw allow 22
+sudo ufw allow 'Nginx HTTP'
+sudo ufw enable
+sudo ufw status verbose
 ```
 
 ### Step 3 – Checking your Web Server
@@ -50,8 +52,6 @@ We can check with the systemd init system to make sure the service is running by
 ```
 systemctl status nginx
 ```
-
-You should see the default Nginx landing page: This page is included with Nginx to show you that the server is running correctly.
 
 ### Step 4 – Managing the Nginx Process
 
@@ -119,15 +119,13 @@ vim /var/www/approximatereality.com/html/index.html
 
 Inside, add the following sample HTML:
 
-/var/www/approximatereality.com/html/index.html
-
 ```
 <html>
     <head>
         <title>ApproximateReality</title>
     </head>
     <body>
-      <p>Something`s not right.</p>
+      <p>Something is not right.</p>
     </body>
 </html>
 ```
@@ -189,13 +187,13 @@ http {
 ...
 ```
 
+Save and close the file.
+
 Next, test to make sure that there are no syntax errors in any of your Nginx files:
 
 ```
 sudo nginx -t
 ```
-
-Save and close the file when you are finished.
 
 If there aren't any problems, restart Nginx to enable your changes:
 
@@ -223,15 +221,13 @@ Server Logs
 
 ### Step 1 — Installing Certbot
 
-Certbot is in very active development, so the Certbot packages provided by Ubuntu tend to be outdated. However, the Certbot developers maintain a Ubuntu software repository with up-to-date versions, so we'll use that repository instead.
+Certbot is in active development, so the Certbot packages provided by Ubuntu tend to be outdated. However, the Certbot developers maintain a Ubuntu software repository with up-to-date versions, so we'll use that repository instead.
 
 First, add the repository:
 
 ```
 sudo add-apt-repository ppa:certbot/certbot
 ```
-
-You'll need to press ENTER to accept.
 
 Install Certbot's Nginx package with apt:
 
@@ -302,7 +298,7 @@ sudo certbot --nginx -d approximatereality.com -d www.approximatereality.com
 
 This runs certbot with the --nginx plugin, using -d to specify the names we'd like the certificate to be valid for.
 
-Follow the instructions and Nginx will reload to pick up the new settings. certbot will wrap up with a message telling you the process was successful and where your certificates are stored.
+Follow the instructions, selecting to redirectd to hhtps, and Nginx will reload to pick up the new settings. certbot will wrap up with a message telling you the process was successful and where your certificates are stored.
 
 Try reloading the website using https:// and notice your browser's security indicator. It should indicate that the site is properly secured, usually with a green lock icon. You can test the server using the SSL Labs Server Test, you should get an A grade.
 
@@ -358,29 +354,6 @@ curl -I http://localhost
 
 You should see less information
 
-The next thing to do is to change the 4xx (client-side) error pages, the information from which could be used by an attacker. Commonly, these are Unauthorized 401 and Forbidden 403 error pages. Unless you are debugging a problem, usually there is no need to show these errors to regular visitors. If you need to know about these errors, you will be still able to find them in the Nginx error log (/var/log/nginx/error.log).
-
-To change these two error pages open the configuration file for your server block, for example the default one:
-
-```
-sudo vim /etc/nginx/sites-enabled/default
-```
-
-Inside the main server server configuration part specify:
-
-```
-server {
-...
-        error_page 401 403 404 /404.html;
-...
-```
-
-After saving the changes to the file, make sure to reload Nginx so that it takes effect with the command:
-
-```
-sudo service nginx reload
-```
-
 ## Nginx with HTTP/2
 
 ### Step 1 — Enabling HTTP/2 Support
@@ -409,7 +382,7 @@ Modify each listen directive to include http2:
 ...
 ```
 
-his tells Nginx to use HTTP/2 with supported browsers.
+this tells Nginx to use HTTP/2 with supported browsers.
 
 Save the configuration file and edit the text editor.
 
@@ -417,13 +390,6 @@ Whenever you make changes to Nginx configuration files, you should check the con
 
 ```
 sudo nginx -t
-```
-
-If the syntax is error-free, you will see the following output:
-
-```
-nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
-nginx: configuration file /etc/nginx/nginx.conf test is successful
 ```
 
 ### Step 2 — Removing Old and Insecure Cipher Suites
@@ -460,16 +426,6 @@ Once you see no syntax errors, restart Nginx:
 
 ```
 sudo systemctl reload nginx
-```
-
-With the server restarted, let's verify that it works.
-
-### Step 3 — Verifying that HTTP/2 is Enabled
-
-Use the curl command to make a request to your site and view the headers:
-
-```
-curl -I -L https://approximatereality.com
 ```
 
 At this point, you're ready to serve content through the HTTP/2 protocol. Let's improve security and performance by enabling HSTS.
@@ -553,7 +509,7 @@ location / {
   proxy_set_header Upgrade $http_upgrade;
   proxy_set_header Connection "upgrade";
 
-  proxy_pass https://111.111.111.111:4001;
+  proxy_pass https://10.22.8.9:4001;
 }
 
 ```
