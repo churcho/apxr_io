@@ -15,6 +15,7 @@ defmodule ApxrIo.Store.S3 do
     |> case do
       {:ok, %{body: body}} ->
         body
+
       {:error, {:http_error, 404, _}} ->
         nil
     end

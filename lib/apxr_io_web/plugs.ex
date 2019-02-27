@@ -2,8 +2,6 @@ defmodule ApxrIoWeb.Plugs do
   import Plug.Conn, except: [read_body: 1]
 
   alias ApxrIoWeb.ControllerHelpers
-  alias ApxrIo.Learn.Experiments
-  alias ApxrIo.Repository.Projects
 
   # Max filesize: ~10mb
   # Min upload speed: ~10kb/s

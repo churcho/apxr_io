@@ -72,7 +72,7 @@ defmodule ApxrIoWeb.Endpoint do
   plug ApxrIoWeb.Router
 
   def init(_key, config) do
-    if config[:load_from_system_env] do
+    if Mix.env() == :prod do
       port = System.get_env("APXR_IO_PORT")
 
       case Integer.parse(port) do

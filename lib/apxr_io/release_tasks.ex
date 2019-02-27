@@ -65,7 +65,18 @@ defmodule ApxrIo.ReleaseTasks do
   end
 
   defp run_migrations() do
-    Enum.each(@repos, &run_migrations_for/1)
+    Enum.each(@repos, fn repo ->
+      app = Keyword.get(repo.config(), :otp_app)
+      IO.puts("Running migrations for #{app}")
+
+      case argv() do
+        ["--step", n] -> migrate(repo, :up, step: String.to_integer(n))
+        ["-n", n] -> migrate(repo, :up, step: String.to_integer(n))
+        ["--to", to] -> migrate(repo, :up, to: to)
+        ["--all"] -> migrate(repo, :up, all: true)
+        [] -> migrate(repo, :up, all: true)
+      end
+    end)
   end
 
   defp run_rollback() do
@@ -83,11 +94,9 @@ defmodule ApxrIo.ReleaseTasks do
     end)
   end
 
-  defp run_migrations_for(repo) do
-    app = Keyword.get(repo.config(), :otp_app)
-    IO.puts("Running migrations for #{app}")
+  defp migrate(repo, direction, opts) do
     migrations_path = priv_path_for(repo, "migrations")
-    Ecto.Migrator.run(repo, migrations_path, :up, all: true)
+    Ecto.Migrator.run(repo, migrations_path, direction, opts)
   end
 
   defp run_seeds() do
@@ -108,18 +117,6 @@ defmodule ApxrIo.ReleaseTasks do
     app = Keyword.get(repo.config(), :otp_app)
     priv_dir = Application.app_dir(app, "priv")
     Path.join([priv_dir, "repo", filename])
-  end
-
-  defp run_script() do
-    [script | args] = argv()
-    System.argv(args)
-
-    priv_dir = Application.app_dir(:apxr_io, "priv")
-    script_dir = Path.join(priv_dir, "scripts")
-
-    Logger.info("[script] running #{script} #{inspect(args)}")
-    Code.eval_file(script, script_dir)
-    Logger.info("[script] finished #{script} #{inspect(args)}")
   end
 
   defp argv() do

@@ -123,7 +123,7 @@ The actual deployment process works like this:
 
 Since this is a simple app, we build on the same server.
 
-There are mix tasks help you copy the release files to a standard location on the local machine.
+There are mix tasks that help you copy the release files to a standard location on the local machine.
 
 ```
 MIX_ENV=prod mix deploy.local

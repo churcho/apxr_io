@@ -37,41 +37,6 @@ defmodule ApxrIoWeb.Plugs.AttackTest do
       assert get_resp_header(conn, "x-ratelimit-remaining") == ["499"]
     end
 
-    test "broadcasts user rate limits", %{user: user} do
-      time = System.system_time(:millisecond)
-      Phoenix.PubSub.broadcast!(ApxrIo.PubSub, "ratelimit", {:throttle, {:user, user.id}, time})
-      Phoenix.PubSub.broadcast!(ApxrIo.PubSub, "ratelimit", {:throttle, {:user, -1}, time})
-      Process.sleep(100)
-
-      conn = request_user(user)
-      assert conn.status == 200
-      assert get_resp_header(conn, "x-ratelimit-limit") == ["500"]
-      assert get_resp_header(conn, "x-ratelimit-remaining") == ["498"]
-    end
-
-    test "broadcasts ip rate limits" do
-      time = System.system_time(:millisecond)
-
-      Phoenix.PubSub.broadcast!(
-        ApxrIo.PubSub,
-        "ratelimit",
-        {:throttle, {:ip, {3, 3, 3, 3}}, time}
-      )
-
-      Phoenix.PubSub.broadcast!(
-        ApxrIo.PubSub,
-        "ratelimit",
-        {:throttle, {:ip, {4, 4, 4, 4}}, time}
-      )
-
-      Process.sleep(100)
-
-      conn = request_ip({3, 3, 3, 3})
-      assert conn.status == 200
-      assert get_resp_header(conn, "x-ratelimit-limit") == ["100"]
-      assert get_resp_header(conn, "x-ratelimit-remaining") == ["98"]
-    end
-
     test "halts requests when ip limit is exceeded" do
       Enum.each(99..0, fn i ->
         conn = request_ip({1, 1, 1, 1})

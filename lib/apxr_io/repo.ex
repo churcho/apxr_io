@@ -62,7 +62,8 @@ defmodule ApxrIo.RepoBase do
   }
 
   def init(_reason, opts) do
-    if url = System.get_env("APXR_IO_DATABASE_URL") do
+    if Mix.env() == :prod do
+      url = System.get_env("APXR_IO_DATABASE_URL")
       pool_size_env = System.get_env("APXR_IO_DATABASE_POOL_SIZE")
       pool_size = if pool_size_env, do: String.to_integer(pool_size_env), else: opts[:pool_size]
       ca_cert = System.get_env("APXR_IO_DATABASE_CA_CERT")
