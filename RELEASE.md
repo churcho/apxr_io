@@ -18,10 +18,10 @@ Build and deploy the code:
 
 ```
 # Check out latest code and build release on server
-ssh -A deploy@build-server build/apxr_io/scripts/build-release.sh
+ssh -A deploy@apxr-io-app build/apxr-io-app/scripts/build-release.sh
 
 # Deploy release
-ssh -A deploy@build-server build/apxr_io/scripts/deploy-local.sh
+ssh -A deploy@apxr-io-app build/apxr-io-app/scripts/deploy-local.sh
 ```
 
 ### Overview
@@ -37,10 +37,10 @@ The actual work of checking out and deploying is handled by simple shell scripts
 
 ```
 # Check out latest code and build release on server
-ssh -A deploy@build-server build/apxr_io/scripts/build-release.sh
+ssh -A deploy@apxr-io-app build/apxr-io-app/scripts/build-release.sh
 
 # Deploy release
-ssh -A deploy@build-server build/apxr_io/scripts/deploy-local.sh
+ssh -A deploy@apxr-io-app build/apxr-io-app/scripts/deploy-local.sh
 ```
 
 ### Locking dependency versions
@@ -86,7 +86,7 @@ MIX_ENV=prod mix release
 This creates a tarball with everything you need to deploy in e.g.
 
 ```
-_build/prod/rel/apxr_io/releases/0.1.0/apxr_io.tar.gz
+_build/prod/rel/apxr-io-app/releases/0.1.0/apxr-io-app.tar.gz
 ```
 
 ### Supervising your app
@@ -99,23 +99,23 @@ Systemd handles all the things that "well behaved" daemons need to do. Instead o
 
 For security, following the principle of least privilege, we limit the app to only what it really needs to do its job. That way if the app is compromised, the attacker is limited in what they can do.
 
-Following that philosophy, we use a separate OS user (e.g. deploy) to upload the release files from the user that the app runs under (e.g. apxr_io).
+Following that philosophy, we use a separate OS user (e.g. deploy) to upload the release files from the user that the app runs under (e.g. apxr-io-app).
 
 If you are running systemd, then it will capture early startup error messages. Systemd captures any messages sent to the console and puts them in the system journal. journald handles log rotation, and the app doesn't need permissions to write log files, which is a security win.
 
 ### Deploying the code
 
-We use a structure like Capistrano to manage the release files. We first create a base directory named for the organization and app, e.g. `/opt/apxr/apxr_io`. Under that we create a releases directory to hold the release files.
+We use a structure like Capistrano to manage the release files. We first create a base directory named for the organization and app, e.g. `/opt/apxr/apxr-io-app`. Under that we create a releases directory to hold the release files.
 
 The actual deployment process works like this:
 
 1. Create a new directory for the release with a timestamp
 
-  `/opt/apxr/apxr_io/releases/20171114T072116`
+  `/opt/apxr/apxr-io-app/releases/20171114T072116`
 
 2. Upload the new release tarball to the server and unpack it
 
-3. Make a symlink from `/opt/apxr/apxr_io/current` to the new release dir
+3. Make a symlink from `/opt/apxr/apxr-io-app/current` to the new release dir
 
 4. Restart the app using the systemd unit
 
@@ -192,23 +192,32 @@ This can be the same as the web server or a separate server.
 Set up the server:
 
 ```
-ansible-playbook -u root -v -l build-servers playbooks/setup-build.yml -D
+ansible-playbook -u ubuntu -v -l build-servers playbooks/setup-build.yml -D
 ```
 
 This sets up the build environment, e.g. installing ASDF.
+
+Check out project from git to build directory that was created at the end of the last step.
+
+```
+ssh -A deploy@apxr-io-app
+git clone -branch master git@github.com:Rober-t/apxr_io.git "/home/deploy/build/apxr-io-app-app
+```
 
 ### 3. Build the app
 
 Log into the deploy user on the build machine:
 
 ```
-ssh -A deploy@build-server
-cd ~/build/apxr_io
+ssh -A deploy@apxr-io-app
+cd ~/build/apxr-io-app
 ```
 
-The -A flag on the ssh command gives the session on the server access to your local ssh keys. If your local user can access a GitHub repo, then the server can do it, without having to put keys on the server. Similarly, if the prod server is set up to accept your ssh key, then you can push code from the build server using Ansible without the web server needing to trust the build server.
+The -A flag on the ssh command gives the session on the server access to your local ssh keys. If your local user can access a GitHub repo, then the server can do it, without having to put keys on the server. 
 
-If you are using a CI server to build and deploy code, then it runs in the background. Create a deploy key in GitHub so it can access to your source and add the ssh key on the build server to the deploy user account on the web servers so the CI server can push releases.
+Similarly, if the prod server is set up to accept your ssh key, then you can push code from the build server using Ansible without the web server needing to trust the build server.
+
+If you are using a CI server to build and deploy code, then it runs in the background. Create a deploy key in GitHub so it can access your source and add the ssh key on the build server to the deploy user account on the web servers so the CI server can push releases.
 
 Build the production release:
 
@@ -222,7 +231,7 @@ Note: `asdf install` builds Erlang from source, so the first time it runs it can
 
 If you are building on the web-server, then you can use the custom mix tasks in lib/mix/tasks/deploy.ex to deploy locally.
 
-In mix.exs, set deploy_dir to match Ansible, i.e. deploy_dir: `/opt/apxr/apxr_io`:
+In mix.exs, set deploy_dir to match Ansible, i.e. deploy_dir: `/opt/apxr/apxr-io-app`:
 
 Deploy the release:
 
@@ -230,7 +239,7 @@ Deploy the release:
 scripts/deploy-local.sh
 ```
 
-The build is being done under the deploy user, who owns the files under `/opt/apxr/apxr_io` and has a special `/etc/sudoers.d` config which allows it to run the `/bin/systemctl restart apxr_io` command.
+The build is being done under the deploy user, who owns the files under `/opt/apxr/apxr-io-app` and has a special `/etc/sudoers.d` config which allows it to run the `/bin/systemctl restart apxr-io-app` command.
 
 ### 4. Deploy the release (remote)
 
@@ -241,8 +250,8 @@ Run the script found under `ansible/provision/setup.sh` (on your dev machine) to
 On the build server:
 
 ```
-ssh -A deploy@build-server
-cd ~/build/apxr_io/ansible
+ssh -A deploy@apxr-io-app
+cd ~/build/apxr-io-app/ansible
 ```
 
 Add the servers in ansible/inventory/hosts to ~/.ssh/config:
@@ -273,13 +282,13 @@ ansible-playbook -u deploy -v -l web-servers playbooks/deploy-app.yml --tags dep
 Have a look at the logs:
 
 ```
-systemctl status apxr_io
-journalctl -r -u apxr_io
+systemctl status apxr-io-app
+journalctl -r -u apxr-io-app
 ```
 
-You can get a console on the running app by logging in (via ssh) as the `apxr_io` user the app runs under and executing:
+You can get a console on the running app by logging in (via ssh) as the `apxr-io-app` user the app runs under and executing:
 
-/opt/apxr/apxr_io/scripts/remote_console.sh
+/opt/apxr/apxr-io-app/scripts/remote_console.sh
 
 ### 4. Database
 

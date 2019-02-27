@@ -26,6 +26,16 @@ defmodule ApxrIo.MixProject do
         "coveralls.detail": :test,
         "coveralls.post": :test,
         "coveralls.html": :test
+      ],
+      mix_deploy: [
+        deploy_dir: "/opt/apxr/apxr-io-app/",
+      ],
+      mix_systemd: [
+        restart_flag: true,
+        chroot: true,
+        paranoia: true,
+        base_dir: "/opt",
+        deploy_dir: "/opt/apxr/apxr-io-app",
       ]
     ]
   end
@@ -81,6 +91,10 @@ defmodule ApxrIo.MixProject do
       {:joken, "~> 2.0.1"},
       # Easily parsable single line, plain text and JSON logger - MIT
       {:logster, "~> 0.10.0"},
+      # Mix tasks to deploy an Elixir release - Apache 2.0
+      {:mix_deploy, github: "cogini/mix_deploy"},
+      # Mix tasks to generate a systemd unit file for an Elixir project - Apache 2.0
+      {:mix_systemd, github: "cogini/mix_systemd"},
       # Mocks and explicit contracts for Elixir - Apache 2.0
       {:mox, "~> 0.5.0", only: :test},
       # Visualize Erlang/Elixir Nodes On The Command Line - MIT
@@ -103,6 +117,8 @@ defmodule ApxrIo.MixProject do
       {:poison, "~> 3.0"},
       # PostgreSQL driver - Apache 2.0
       {:postgrex, "~> 0.14"},
+      # Elixir application which performs an orderly shutdown when a flag file appears - Apache 2.0
+      {:shutdown_flag, github: "cogini/shutdown_flag"},
       # Wrapper of :xmerl to help query xml docs - Apache 2.0
       {:sweet_xml, "~> 0.6.6"}
     ]
@@ -111,9 +127,9 @@ defmodule ApxrIo.MixProject do
   # Aliases are shortcuts or tasks specific to the current project.
   defp aliases() do
     [
-      "ecto.setup": ["ecto.reset", "run priv/repo/seeds.exs"],
-      "ecto.reset": ["ecto.drop", "ecto.create", "ecto.migrate"],
-      setup: ["deps.get", "ecto.setup", &setup_yarn/1],
+      "ecto.setup": ["ecto.create", "ecto.migrate"],
+      "ecto.reset": ["ecto.drop", "ecto.setup"],
+      setup: ["deps.get", "ecto.setup", "run priv/repo/seeds.ex", &setup_yarn/1],
       test: ["ecto.reset", "test"],
       check: [
         "deps.get",

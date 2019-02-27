@@ -23,3 +23,7 @@ config :logger, level: :info
 config :logger,
   backends: [:console, {LoggerErrorMail, :error_mail}],
   level: :info
+
+config :shutdown_flag,
+  flag_file: "/var/tmp/deploy/apxr-io-app/shutdown.flag",
+  check_delay: 10_000

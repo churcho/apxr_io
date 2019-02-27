@@ -19,6 +19,7 @@
       - tmux
       - htop
       - curl
+      - sudo
   roles:
     - common-minimal
     - tools-other
@@ -29,7 +30,7 @@
   become: true
   gather_facts: true
   vars:
-    asdf_version: v0.4.3
+    asdf_version: v0.6.3
     asdf_user: "{{ users_deploy_user }}"
     asdf_plugins:
       - name: erlang
@@ -69,9 +70,3 @@
 
     - name: Create build dir
       file: path="{{ build_base_dir }}" state=directory owner={{ users_deploy_user }} group={{ users_deploy_group }} mode=0755
-
-    - name: Check out project from git
-      git:
-        repo: "{{ app_repo }}"
-        dest: "{{ build_dir }}"
-        version: "{{ app_version | default('HEAD') }}"
