@@ -26,9 +26,6 @@ defmodule ApxrIo.MixProject do
         "coveralls.detail": :test,
         "coveralls.post": :test,
         "coveralls.html": :test
-      ],
-      mix_deploy: [
-        deploy_dir: "/opt/apxr/apxr-io/"
       ]
     ]
   end
@@ -84,8 +81,6 @@ defmodule ApxrIo.MixProject do
       {:joken, "~> 2.0.1"},
       # Easily parsable single line, plain text and JSON logger - MIT
       {:logster, "~> 0.10.0"},
-      # Generates deployment scripts from template  - Apache 2.0
-      {:mix_deploy, "~> 0.1.0"},
       # Generates systemd unit file from template - Apache 2.0
       {:mix_systemd, "~> 0.1.0"},
       # Mocks and explicit contracts for Elixir - Apache 2.0

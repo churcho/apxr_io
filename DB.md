@@ -53,6 +53,7 @@ Once logged in:
 create database apxr_io_prod;
 create user apxr_io with encrypted password 'password';
 grant all privileges on database apxr_io_prod to apxr_io;
+alter user apxr_io with createdb;
 ```
 
 Now, that we've created a user and database, we'll exit the monitor

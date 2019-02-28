@@ -8,5 +8,8 @@
   {"test/support/test_helpers.ex:6:no_return Function create_tar/2 has no local return."},
   {"test/support/test_helpers.ex:14:call The function call will fail."},
   {":0:unknown_function Function Mix.env/0 does not exist."},
-  {":0:unknown_function Function :http_uri.parse/1 does not exist."}
+  {":0:unknown_function Function :http_uri.parse/1 does not exist."},
+  {":0:unknown_function Function Mix.Project.config/0 does not exist."},
+  {"lib/apxr_io/release_tasks.ex:13:no_return Function deploy_release/0 has no local return."},
+  {"lib/apxr_io/release_tasks.ex:23:call The function call will fail."}
 ]

@@ -10,6 +10,8 @@ end
 release :apxr_io do
   set version: current_version(:apxr_io)
   set commands: [
+    deploy_release: "rel/commands/deploy_release.sh",
+    rollback_release: "rel/commands/rollback_release.sh",
     migrate: "rel/commands/migrate.sh",
     rollback: "rel/commands/rollback.sh",
     seed: "rel/commands/seed.sh"

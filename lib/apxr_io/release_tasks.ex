@@ -10,6 +10,33 @@ defmodule ApxrIo.ReleaseTasks do
 
   @repos Application.get_env(:apxr_io, :ecto_repos, [])
 
+  def deploy_release() do
+    config = deploy_release_config()
+
+    ts = create_timestamp()
+
+    release_dir = Path.join(config.release_base, ts)
+    Logger.info("Deploying release to #{release_dir}")
+    File.mkdir_p!(release_dir)
+
+    Logger.info("Extracting tarball #{config.tarball}")
+    :ok = :erl_tar.extract(config.tarball, [{:cwd, release_dir}, :compressed])
+
+    current_link = config.current_link
+
+    if File.exists?(current_link) do
+      File.rm!(current_link)
+    end
+
+    File.ln_s(release_dir, current_link)
+  end
+
+  def rollback_release() do
+    config = deploy_release_config()
+    dirs = config.release_base |> File.ls!() |> Enum.sort() |> Enum.reverse()
+    rollback_release(dirs, config)
+  end
+
   def migrate() do
     {:ok, _} = Application.ensure_all_started(:logger)
     Logger.info("[task] running migrate")
@@ -121,5 +148,73 @@ defmodule ApxrIo.ReleaseTasks do
 
   defp argv() do
     Enum.map(:init.get_plain_arguments(), &List.to_string/1)
+  end
+
+  defp create_timestamp do
+    {{year, month, day}, {hour, minute, second}} =
+      :calendar.now_to_universal_time(:os.timestamp())
+
+    timestamp =
+      :io_lib.format("~4..0B~2..0B~2..0B~2..0B~2..0B~2..0B", [
+        year,
+        month,
+        day,
+        hour,
+        minute,
+        second
+      ])
+
+    timestamp |> List.flatten() |> to_string
+  end
+
+  defp deploy_release_config() do
+    app_name = Mix.Project.config()[:app] |> Atom.to_string()
+    version = Mix.Project.config()[:version]
+    deploy_base = "/opt"
+    deploy_dir = Path.join(deploy_base, app_name)
+    release_base = Path.join(deploy_dir, "releases")
+    current_link = Path.join(deploy_dir, "current")
+
+    tarball =
+      Path.join([
+        "_build",
+        to_string(Mix.env()),
+        "rel",
+        app_name,
+        "releases",
+        version,
+        "#{app_name}.tar.gz"
+      ])
+
+    %{
+      app_name: app_name,
+      deploy_base: deploy_base,
+      deploy_dir: deploy_dir,
+      release_base: release_base,
+      current_link: current_link,
+      tarball: tarball
+    }
+  end
+
+  defp rollback_release([_current, prev | _rest], config) do
+    release_dir = Path.join(config.release_base, prev)
+    remove_current_link(config)
+    Logger.info("Making link from #{release_dir} to #{config.current_link}")
+    File.ln_s(release_dir, config.current_link)
+  end
+
+  defp rollback_release(dirs, _config) do
+    Logger.info("Nothing to roll back to: releases = #{inspect(dirs)}")
+  end
+
+  defp remove_current_link(config) do
+    case File.read_link(config.current_link) do
+      {:ok, target} ->
+        Logger.info("Removing link from #{target} to #{config.current_link}")
+        :ok = File.rm(config.current_link)
+
+      {:error, _reason} ->
+        Logger.info("No current link #{config.current_link}")
+    end
   end
 end
