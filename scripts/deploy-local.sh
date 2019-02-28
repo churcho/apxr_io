@@ -15,4 +15,4 @@ source "$HOME/.asdf/asdf.sh"
 
 echo "Deploying local"
 
-mix deploy.local
+_build/prod/rel/apxr_io/bin/apxr_io deploy_release

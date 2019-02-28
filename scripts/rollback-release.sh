@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-
 export MIX_ENV=prod
 
 # Exit on errors
@@ -15,6 +13,4 @@ cd "$BASEDIR"
 
 source "$HOME/.asdf/asdf.sh"
 
-echo "Running database migrations"
-
-_build/prod/rel/apxr_io/bin/apxr_io migrate
+_build/prod/rel/apxr_io/bin/apxr_io rollback_release

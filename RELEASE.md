@@ -57,6 +57,13 @@ Check out project from git to build directory that was created at the end of the
 git clone -branch master git@github.com:Rober-t/apxr_io.git "/home/deploy/build/apxr-io"
 ```
 
+or, if previously cloned:
+
+```
+cd build/apxr-io/
+git pull
+```
+
 ### 3. Build the app
 
 Make sure you have added the necessary environment variables before running the commands
