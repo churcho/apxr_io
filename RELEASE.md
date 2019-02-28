@@ -69,7 +69,8 @@ vim ~/.bash_profile
 Build the production release:
 
 ```
-build/apxr-io/scripts/build-release.sh
+cd build/apxr-io/
+scripts/build-release.sh
 ```
 
 Note: `asdf install` builds Erlang from source, so the first time it runs it can take a long time. If it fails due to a lost connection, delete /home/deploy/.asdf/installs/erlang/[version] and try again. You may want to run it under `tmux`.
@@ -77,27 +78,24 @@ Note: `asdf install` builds Erlang from source, so the first time it runs it can
 Next, generate a systemd unit file to manage the application:
 
 ```
-MIX_ENV=prod mix systemd.init
-MIX_ENV=prod mix systemd.generate
+scripts/build-systemd.sh
 ```
 
 ### 4. Deploy the release
-
-In mix.exs, set deploy_dir to match Ansible, i.e. deploy_dir: `/opt/apxr/apxr-io`:
 
 Whenever you change the db schema, you need to run migrations on the server.
 
 After building the release, but before deploying the code, update the db to match the code:
 
 ```
-# MIX_ENV=prod mix ecto.setup
-MIX_ENV=prod mix ecto.migrate
+#scripts/db-setup.sh
+scripts/db-migrate.sh
 ```
 
 Deploy the release:
 
 ```
-MIX_ENV=prod mix deploy.local
+scripts/deploy-local.sh
 ```
 
 The build is being done under the deploy user, who owns the files under `/opt/apxr/apxr-io`.

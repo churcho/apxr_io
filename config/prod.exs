@@ -47,7 +47,6 @@ config :mix_systemd,
   app_group: "apxr-io",
   base_dir: "/opt",
   deploy_dir: "/opt/apxr/apxr-io",
-  # Ubuntu 18.04
   systemd_version: 237,
   restart_method: :touch,
   paranoia: true,
