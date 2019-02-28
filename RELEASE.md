@@ -48,39 +48,40 @@ This sets up the build environment, e.g. installing ASDF.
 Log into the build machine:
 
 ```
-ssh -A rob@apxr-io
+ssh -A deploy@apxr-io
 ```
 
 Check out project from git to build directory that was created at the end of the last step.
 
 ```
-ssh -A deploy@apxr-io
-git clone -branch master git@github.com:Rober-t/apxr_io.git "/home/deploy/build/apxr-io-app
+git clone -branch master git@github.com:Rober-t/apxr_io.git "/home/deploy/build/apxr-io"
 ```
 
 ### 3. Build the app
 
 Make sure you have added the necessary environment variables before running the commands
-below.
-
-Set up the app (create dirs, etc.) and generate a systemd unit file to manage the application:
+below. You can set them here:
 
 ```
-cd ~/build/apxr-io
-scripts/build-systemd.sh
+vim ~/.bash_profile
 ```
 
 Build the production release:
 
 ```
-scripts/build-release.sh
+build/apxr-io/scripts/build-release.sh
 ```
 
 Note: `asdf install` builds Erlang from source, so the first time it runs it can take a long time. If it fails due to a lost connection, delete /home/deploy/.asdf/installs/erlang/[version] and try again. You may want to run it under `tmux`.
 
-### 4. Deploy the release
+Next, generate a systemd unit file to manage the application:
 
-If you are building on the web-server, then you can use the custom mix tasks in lib/mix/tasks/deploy.ex to deploy locally.
+```
+MIX_ENV=prod mix systemd.init
+MIX_ENV=prod mix systemd.generate
+```
+
+### 4. Deploy the release
 
 In mix.exs, set deploy_dir to match Ansible, i.e. deploy_dir: `/opt/apxr/apxr-io`:
 
@@ -89,17 +90,17 @@ Whenever you change the db schema, you need to run migrations on the server.
 After building the release, but before deploying the code, update the db to match the code:
 
 ```
-# scripts/db-setup.sh
-scripts/db-migrate.sh
+# MIX_ENV=prod mix ecto.setup
+MIX_ENV=prod mix ecto.migrate
 ```
 
 Deploy the release:
 
 ```
-scripts/deploy-local.sh
+MIX_ENV=prod mix deploy.local
 ```
 
-The build is being done under the deploy user, who owns the files under `/opt/apxr/apxr-io` and has a special `/etc/sudoers.d` config which allows it to run the `/bin/systemctl restart apxr-io` command.
+The build is being done under the deploy user, who owns the files under `/opt/apxr/apxr-io`.
 
 ### Verify it works
 
