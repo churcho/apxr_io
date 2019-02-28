@@ -27,7 +27,7 @@ And make sure the value of IPV6 is yes.
 sudo ufw default deny incoming
 sudo ufw default allow outgoing
 sudo ufw allow 22
-sudo ufw allow from apxr-io-app-private-ip to any port 5432
+sudo ufw allow from apxr-io-private-ip to any port 5432
 sudo ufw enable
 sudo ufw status verbose
 ```

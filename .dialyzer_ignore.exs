@@ -8,11 +8,5 @@
   {"test/support/test_helpers.ex:6:no_return Function create_tar/2 has no local return."},
   {"test/support/test_helpers.ex:14:call The function call will fail."},
   {":0:unknown_function Function Mix.env/0 does not exist."},
-  {":0:unknown_function Function Mix.shell/0 does not exist."},
-  {":0:unknown_function Function Mix.Project.config/0 does not exist."},
-  {":0:unknown_function Function :http_uri.parse/1 does not exist."},
-  {"lib/mix/tasks/deploy.ex:4:callback_info_missing Callback info about the Mix.Task behaviour is not available."},
-  {"lib/mix/tasks/deploy.ex:40:no_return Function run/1 has no local return."},
-  {"lib/mix/tasks/deploy.ex:51:no_return Function deploy_release/1 has no local return."},
-  {"lib/mix/tasks/deploy.ex:138:callback_info_missing Callback info about the Mix.Task behaviour is not available."}
+  {":0:unknown_function Function :http_uri.parse/1 does not exist."}
 ]

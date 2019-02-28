@@ -28,14 +28,7 @@ defmodule ApxrIo.MixProject do
         "coveralls.html": :test
       ],
       mix_deploy: [
-        deploy_dir: "/opt/apxr/apxr-io-app/",
-      ],
-      mix_systemd: [
-        restart_flag: true,
-        chroot: true,
-        paranoia: true,
-        base_dir: "/opt",
-        deploy_dir: "/opt/apxr/apxr-io-app",
+        deploy_dir: "/opt/apxr/apxr-io/"
       ]
     ]
   end
@@ -91,10 +84,10 @@ defmodule ApxrIo.MixProject do
       {:joken, "~> 2.0.1"},
       # Easily parsable single line, plain text and JSON logger - MIT
       {:logster, "~> 0.10.0"},
-      # Mix tasks to deploy an Elixir release - Apache 2.0
-      {:mix_deploy, github: "cogini/mix_deploy"},
-      # Mix tasks to generate a systemd unit file for an Elixir project - Apache 2.0
-      {:mix_systemd, github: "cogini/mix_systemd"},
+      # Generates deployment scripts from template  - Apache 2.0
+      {:mix_deploy, "~> 0.1.0"},
+      # Generates systemd unit file from template - Apache 2.0
+      {:mix_systemd, "~> 0.1.0"},
       # Mocks and explicit contracts for Elixir - Apache 2.0
       {:mox, "~> 0.5.0", only: :test},
       # Visualize Erlang/Elixir Nodes On The Command Line - MIT
@@ -117,8 +110,6 @@ defmodule ApxrIo.MixProject do
       {:poison, "~> 3.0"},
       # PostgreSQL driver - Apache 2.0
       {:postgrex, "~> 0.14"},
-      # Elixir application which performs an orderly shutdown when a flag file appears - Apache 2.0
-      {:shutdown_flag, github: "cogini/shutdown_flag"},
       # Wrapper of :xmerl to help query xml docs - Apache 2.0
       {:sweet_xml, "~> 0.6.6"}
     ]

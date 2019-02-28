@@ -1,8 +1,8 @@
 [web-servers]
-apxr-io-app
+apxr-io
 
 [build-servers]
-apxr-io-app
+apxr-io
 
 [nginx-servers]
 apxr-io-nginx
@@ -11,7 +11,7 @@ apxr-io-nginx
 apxr-io-db
 
 [py3-hosts]
-apxr-io-app
+apxr-io
 apxr-io-nginx
 apxr-io-db
 

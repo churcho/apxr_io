@@ -5,12 +5,6 @@ use Mix.Releases.Config,
 environment :prod do
   set include_erts: true
   set include_src: false
-  set config_providers: [
-    {Mix.Releases.Config.Providers.Elixir, ["${RELEASE_ROOT_DIR}/etc/config.exs"]}
-  ]
-  set overlays: [
-    {:copy, "rel/config/config.exs", "etc/config.exs"}
-  ]
 end
 
 release :apxr_io do

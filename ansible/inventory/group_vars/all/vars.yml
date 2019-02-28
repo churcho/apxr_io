@@ -4,3 +4,14 @@
 users_deploy_user: deploy
 # OS group for deploy
 users_deploy_group: "{{ users_deploy_user }}"
+
+# External name of the app, used to name directories
+elixir_release_name: apxr-io
+
+# OS user the app runs under
+elixir_release_app_user: apxr-io
+elixir_release_app_group: "{{ elixir_release_app_user }}"
+
+# OS user for deploy
+elixir_release_deploy_user: deploy
+elixir_release_deploy_group: "{{ elixir_release_deploy_user }}"

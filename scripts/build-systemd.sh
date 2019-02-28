@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Deploy app to remote servers
+# Generate a systemd unit file
 
 export MIX_ENV=prod
 
@@ -13,6 +13,12 @@ BINDIR=$(dirname "$0")
 cd "$BINDIR"; BINDIR="$PWD"; cd "$CURDIR"
 
 BASEDIR="$BINDIR/.."
-cd "$BASEDIR/ansible"
+cd "$BASEDIR"
 
-ansible-playbook -u deploy -v -l web-servers playbooks/deploy-app.yml --tags deploy --extra-vars ansible_become=false -D
+source "$HOME/.asdf/asdf.sh"
+
+echo "Generating systemd unit file"
+
+mix systemd.init
+mix systemd.generate
+

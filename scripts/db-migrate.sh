@@ -17,6 +17,6 @@ cd "$BASEDIR"
 
 source "$HOME/.asdf/asdf.sh"
 
-echo "Running database migrationse"
+echo "Running database migrations"
 
 mix ecto.migrate
