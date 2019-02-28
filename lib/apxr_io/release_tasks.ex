@@ -180,7 +180,7 @@ defmodule ApxrIo.ReleaseTasks do
     build_path = build_path()
     deploy_base = "/srv"
     ext_name = app_name |> String.replace("_", "-")
-    deploy_dir = Path.join([File.cwd!(), deploy_base, ext_name])
+    deploy_dir = Path.join(deploy_base, ext_name)
     release_dir = Path.join(deploy_dir, "releases")
     current_link = Path.join(deploy_dir, "current")
 
