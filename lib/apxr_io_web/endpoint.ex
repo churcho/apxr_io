@@ -60,14 +60,14 @@ defmodule ApxrIoWeb.Endpoint do
   plug Plug.Session,
     store: ApxrIoWeb.Session,
     key: "_apxr_io_key",
-    max_age: 60 * 60 * 12
-
-  plug ApxrIoWeb.Plugs.Status
+    max_age: 60 * 60 * 12,
+    secure: true
 
   if Mix.env() == :prod do
     plug Plug.SSL, rewrite_on: [:x_forwarded_proto]
-    plug Plug.Session, secure: true
   end
+
+  plug ApxrIoWeb.Plugs.Status
 
   plug ApxrIoWeb.Router
 
