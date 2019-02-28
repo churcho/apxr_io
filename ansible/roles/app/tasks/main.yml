@@ -1,0 +1,13 @@
+---
+
+# Dirs owned by deploy user
+- name: Create deploy dirs
+  file: path={{ item }} state=directory owner={{ elixir_release_deploy_user }} group={{ elixir_release_app_group }} mode=0750
+  with_items:
+    - "{{ elixir_release_deploy_dir }}"
+    - "{{ elixir_release_releases_dir }}"
+
+- name: Enable service
+  service: name={{ elixir_release_name }} enabled=yes
+  environment:
+    PATH: /sbin:{{ ansible_env.PATH }}

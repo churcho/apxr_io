@@ -15,3 +15,7 @@ elixir_release_app_group: "{{ elixir_release_app_user }}"
 # OS user for deploy
 elixir_release_deploy_user: deploy
 elixir_release_deploy_group: "{{ elixir_release_deploy_user }}"
+
+# Base directory for deploy files
+elixir_release_deploy_dir: "/srv/{{ elixir_release_name }}"
+elixir_release_releases_dir: "{{ elixir_release_deploy_dir }}/releases"

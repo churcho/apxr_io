@@ -22,11 +22,15 @@ defmodule ApxrIo.ReleaseTasks do
     :ok = File.mkdir_p(release_dir)
 
     app = config.app_name
-    tar_file = Path.join([config.build_path, "rel", app, "releases", config.version, "#{app}.tar.gz"])
+
+    tar_file =
+      Path.join([config.build_path, "rel", app, "releases", config.version, "#{app}.tar.gz"])
+
     Logger.info("Extracting tar #{tar_file}")
     :ok = :erl_tar.extract(to_charlist(tar_file), [{:cwd, release_dir}, :compressed])
 
     current_link = config.current_link
+
     if File.exists?(current_link) do
       File.rm(current_link)
     end

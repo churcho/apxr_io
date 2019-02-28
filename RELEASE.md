@@ -31,7 +31,7 @@ In this command, `web-servers` is the group of servers, but you could also speci
 
 The -u flag specifies which user account to use on the server. We have to use root to do the initial bootstrap, but you should generally use your own user account, assuming it has sudo. The -v flag controls verbosity, you can add more v's to get more debug info. The -D flag shows diffs of the changes Ansible makes on the server. If you add --check to the Ansible command, it will show you the changes it is planning to do, but doesn't actually run them. These scripts are safe to run in check mode, but may give an error during the play if required OS packages are not installed.
 
-At this point, the web server is set up, but we need to build and deploy the app code to it.
+At this point, the web server is set up, but we need to build and deploy the app.
 
 ### 2. Set up build server
 
@@ -86,6 +86,12 @@ Next, generate a systemd unit file to manage the application:
 
 ```
 scripts/build-systemd.sh
+```
+
+Create directories, enable systemd unit, etc:
+
+```
+ansible-playbook -u root -v -l web-servers playbooks/setup-app.yml -D
 ```
 
 ### 4. Deploy the release

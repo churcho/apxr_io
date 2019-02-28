@@ -10,6 +10,5 @@
   {":0:unknown_function Function Mix.env/0 does not exist."},
   {":0:unknown_function Function :http_uri.parse/1 does not exist."},
   {":0:unknown_function Function Mix.Project.config/0 does not exist."},
-  {"lib/apxr_io/release_tasks.ex:13:no_return Function deploy_release/0 has no local return."},
-  {"lib/apxr_io/release_tasks.ex:25:call The function call will fail."}
+  {"lib/apxr_io/release_tasks.ex:17:no_return Function deploy_release/0 has no local return."}
 ]

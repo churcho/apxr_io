@@ -13,4 +13,4 @@ cd "$BASEDIR"
 
 source "$HOME/.asdf/asdf.sh"
 
-_build/prod/rel/apxr_io/bin/apxr_io remote_console
+/srv/apxr-io/current/bin/apxr_io remote_console
