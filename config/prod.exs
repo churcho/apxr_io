@@ -45,4 +45,5 @@ config :logger,
 config :mix_systemd,
   systemd_version: 237,
   paranoia: true,
-  env_port: 4001
+  env_port: 4001,
+  restart_method: :systemd_flag

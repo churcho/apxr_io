@@ -105,7 +105,7 @@ Deploy the release:
 scripts/deploy-local.sh
 ```
 
-The build is being done under the deploy user, who owns the files under `/opt/apxr/apxr-io`.
+The build is being done under the deploy user, who owns the files under `/srv/apxr-io`.
 
 ### Verify it works
 

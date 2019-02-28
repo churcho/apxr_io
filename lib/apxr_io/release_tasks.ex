@@ -3,7 +3,7 @@ defmodule ApxrIo.ReleaseTasks do
 
   @app_name Mix.Project.config()[:app]
   @version Mix.Project.config()[:version]
-  @env Mix.env()
+  @build_path Mix.Project.build_path()
 
   @repo_apps [
     :crypto,
@@ -21,11 +21,12 @@ defmodule ApxrIo.ReleaseTasks do
     Logger.info("Deploying release to #{release_dir}")
     :ok = File.mkdir_p(release_dir)
 
-    Logger.info("Extracting tarball #{config.tarball}")
-    :ok = :erl_tar.extract(config.tarball, [{:cwd, release_dir}, :compressed])
+    app = config.app_name
+    tar_file = Path.join([config.build_path, "rel", app, "releases", config.version, "#{app}.tar.gz"])
+    Logger.info("Extracting tar #{tar_file}")
+    :ok = :erl_tar.extract(to_charlist(tar_file), [{:cwd, release_dir}, :compressed])
 
     current_link = config.current_link
-
     if File.exists?(current_link) do
       File.rm(current_link)
     end
@@ -171,36 +172,26 @@ defmodule ApxrIo.ReleaseTasks do
 
   defp app_name(), do: @app_name |> to_string
   defp version(), do: @version |> to_string
-  defp env(), do: @env |> to_string
+  defp build_path(), do: @build_path |> to_string
 
   defp deploy_release_config() do
     app_name = app_name()
     version = version()
-    env = env()
+    build_path = build_path()
     deploy_base = "/srv"
     ext_name = app_name |> String.replace("_", "-")
-    deploy_dir = Path.join(deploy_base, ext_name)
+    deploy_dir = Path.join([File.cwd!(), deploy_base, ext_name])
     release_dir = Path.join(deploy_dir, "releases")
     current_link = Path.join(deploy_dir, "current")
 
-    tarball =
-      Path.join([
-        "_build",
-        env,
-        "rel",
-        app_name,
-        "releases",
-        version,
-        "#{app_name}.tar.gz"
-      ])
-
     %{
       app_name: app_name,
-      deploy_base: deploy_base,
+      ext_name: ext_name,
+      version: version,
+      build_path: build_path,
       deploy_dir: deploy_dir,
       release_dir: release_dir,
-      current_link: current_link,
-      tarball: tarball
+      current_link: current_link
     }
   end
 
