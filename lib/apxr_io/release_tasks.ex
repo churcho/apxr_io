@@ -11,10 +11,9 @@ defmodule ApxrIo.ReleaseTasks do
   @repos Application.get_env(:apxr_io, :ecto_repos, [])
 
   def deploy_release() do
+    start_app()
     config = deploy_release_config()
-
     ts = create_timestamp()
-
     release_dir = Path.join(config.release_base, ts)
     Logger.info("Deploying release to #{release_dir}")
     File.mkdir_p!(release_dir)
@@ -32,6 +31,7 @@ defmodule ApxrIo.ReleaseTasks do
   end
 
   def rollback_release() do
+    start_app()
     config = deploy_release_config()
     dirs = config.release_base |> File.ls!() |> Enum.sort() |> Enum.reverse()
     rollback_release(dirs, config)
@@ -119,6 +119,12 @@ defmodule ApxrIo.ReleaseTasks do
         [] -> migrate(repo, :down, step: 1)
       end
     end)
+  end
+
+  defp start_app() do
+    IO.puts("Starting app...")
+    Application.put_env(:phoenix, :serve_endpoints, false, persistent: true)
+    {:ok, _} = Application.ensure_all_started(:apxr_io)
   end
 
   defp migrate(repo, direction, opts) do
