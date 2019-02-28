@@ -118,4 +118,6 @@ journalctl -r -u apxr-io
 
 You can get a console on the running app by logging in (via ssh) as the `apxr-io` user the app runs under and executing:
 
-???
+```
+scripts/remote-console.sh
+```

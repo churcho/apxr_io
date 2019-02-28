@@ -43,11 +43,6 @@ config :logger,
   level: :info
 
 config :mix_systemd,
-  app_user: "apxr-io",
-  app_group: "apxr-io",
-  base_dir: "/opt",
-  deploy_dir: "/opt/apxr-io",
   systemd_version: 237,
-  restart_method: :touch,
   paranoia: true,
   env_port: 4001

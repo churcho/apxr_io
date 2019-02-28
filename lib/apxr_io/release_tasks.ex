@@ -1,6 +1,10 @@
 defmodule ApxrIo.ReleaseTasks do
   require Logger
 
+  @app_name Mix.Project.config()[:app]
+  @version Mix.Project.config()[:version]
+  @env Mix.env()
+
   @repo_apps [
     :crypto,
     :ssl,
@@ -11,12 +15,11 @@ defmodule ApxrIo.ReleaseTasks do
   @repos Application.get_env(:apxr_io, :ecto_repos, [])
 
   def deploy_release() do
-    start_app()
     config = deploy_release_config()
     ts = create_timestamp()
-    release_dir = Path.join(config.release_base, ts)
+    release_dir = Path.join(config.release_dir, ts)
     Logger.info("Deploying release to #{release_dir}")
-    File.mkdir_p!(release_dir)
+    :ok = File.mkdir_p(release_dir)
 
     Logger.info("Extracting tarball #{config.tarball}")
     :ok = :erl_tar.extract(config.tarball, [{:cwd, release_dir}, :compressed])
@@ -24,16 +27,15 @@ defmodule ApxrIo.ReleaseTasks do
     current_link = config.current_link
 
     if File.exists?(current_link) do
-      File.rm!(current_link)
+      File.rm(current_link)
     end
 
     File.ln_s(release_dir, current_link)
   end
 
   def rollback_release() do
-    start_app()
     config = deploy_release_config()
-    dirs = config.release_base |> File.ls!() |> Enum.sort() |> Enum.reverse()
+    dirs = config.release_dir |> File.ls!() |> Enum.sort() |> Enum.reverse()
     rollback_release(dirs, config)
   end
 
@@ -121,12 +123,6 @@ defmodule ApxrIo.ReleaseTasks do
     end)
   end
 
-  defp start_app() do
-    IO.puts("Starting app...")
-    Application.put_env(:phoenix, :serve_endpoints, false, persistent: true)
-    {:ok, _} = Application.ensure_all_started(:apxr_io)
-  end
-
   defp migrate(repo, direction, opts) do
     migrations_path = priv_path_for(repo, "migrations")
     Ecto.Migrator.run(repo, migrations_path, direction, opts)
@@ -173,18 +169,24 @@ defmodule ApxrIo.ReleaseTasks do
     timestamp |> List.flatten() |> to_string
   end
 
+  defp app_name(), do: @app_name |> to_string
+  defp version(), do: @version |> to_string
+  defp env(), do: @env |> to_string
+
   defp deploy_release_config() do
-    app_name = Mix.Project.config()[:app] |> Atom.to_string()
-    version = Mix.Project.config()[:version]
-    deploy_base = "/opt"
-    deploy_dir = Path.join(deploy_base, app_name)
-    release_base = Path.join(deploy_dir, "releases")
+    app_name = app_name()
+    version = version()
+    env = env()
+    deploy_base = "/srv"
+    ext_name = app_name |> String.replace("_", "-")
+    deploy_dir = Path.join(deploy_base, ext_name)
+    release_dir = Path.join(deploy_dir, "releases")
     current_link = Path.join(deploy_dir, "current")
 
     tarball =
       Path.join([
         "_build",
-        to_string(Mix.env()),
+        env,
         "rel",
         app_name,
         "releases",
@@ -196,14 +198,14 @@ defmodule ApxrIo.ReleaseTasks do
       app_name: app_name,
       deploy_base: deploy_base,
       deploy_dir: deploy_dir,
-      release_base: release_base,
+      release_dir: release_dir,
       current_link: current_link,
       tarball: tarball
     }
   end
 
   defp rollback_release([_current, prev | _rest], config) do
-    release_dir = Path.join(config.release_base, prev)
+    release_dir = Path.join(config.release_dir, prev)
     remove_current_link(config)
     Logger.info("Making link from #{release_dir} to #{config.current_link}")
     File.ln_s(release_dir, config.current_link)
