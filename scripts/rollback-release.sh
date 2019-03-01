@@ -14,3 +14,4 @@ cd "$BASEDIR"
 source "$HOME/.asdf/asdf.sh"
 
 _build/prod/rel/apxr_io/bin/apxr_io rollback_release
+sudo /bin/systemctl restart apxr-io

@@ -1,2 +1,3 @@
 # Allow admins to run all commands without a password
+root    ALL=(ALL:ALL) ALL
 %{{ users_admin_group }}	ALL=(ALL)	NOPASSWD: ALL

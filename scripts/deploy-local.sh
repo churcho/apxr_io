@@ -16,3 +16,4 @@ source "$HOME/.asdf/asdf.sh"
 echo "Deploying local"
 
 _build/prod/rel/apxr_io/bin/apxr_io deploy_release
+sudo /bin/systemctl restart apxr-io

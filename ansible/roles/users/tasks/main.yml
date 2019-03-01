@@ -197,3 +197,6 @@
     - /home/ubuntu
     - /home/centos
   when: users_remove_system_authorized_keys
+
+- name: Create sudoers config for deploy user
+  template: src=etc/sudoers.d/app.j2 dest=/etc/sudoers.d/{{ elixir_release_deploy_user }}-{{ elixir_release_name }} owner=root group=root mode=0600
