@@ -16,6 +16,6 @@ release :apxr_io do
     rollback: "rel/commands/rollback.sh",
     seed: "rel/commands/seed.sh"
   ]
-  set cookie: ""
+  set cookie: System.get_env("APXR_IO_COOKIE") |> String.to_atom
   set vm_args: "rel/vm.args"
 end
