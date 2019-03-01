@@ -5,6 +5,7 @@ config :apxr_io,
   private_key: File.read!("test/fixtures/private.pem"),
   billing_url: "https://localhost:4002",
   billing_key: "apxr_io_billing_key",
+  tmp_dir: Path.expand("tmp/dev"),
   secret: "qSsR0LzzK+3uLZTF7P/DjwHaFKjyiKbQGjExcI7ZZp"
 
 config :joken, default_signer: "0adm3lg3uLZTQSD23QSFsaFKjydfqFGR3sd7ZZp"

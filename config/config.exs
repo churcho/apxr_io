@@ -1,6 +1,7 @@
 use Mix.Config
 
 config :apxr_io,
+  tmp_dir: Path.expand("tmp/apxr_io"),
   user_confirm: true,
   user_agent_req: true,
   store_impl: ApxrIo.Store.Local,

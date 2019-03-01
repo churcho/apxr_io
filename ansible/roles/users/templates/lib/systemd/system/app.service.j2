@@ -14,6 +14,8 @@ ExecStop=/srv/apxr-io/current/bin/apxr_io stop
 Environment=LANG=en_US.UTF-8
 Environment=HOME=/srv/apxr-io
 Environment=MIX_ENV=prod
+Environment=RELEASE_MUTABLE_DIR=/run/apxr-io
+Environment=DEFAULT_COOKIE_FILE=/etc/apxr-io/erlang.cookie
 Environment=PORT=4001
 EnvironmentFile=-/etc/apxr-io/environment
 LimitNOFILE=65535
