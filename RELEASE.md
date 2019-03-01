@@ -76,7 +76,6 @@ vim ~/.bash_profile
 Build the production release:
 
 ```
-cd build/apxr-io/
 scripts/build-release.sh
 ```
 

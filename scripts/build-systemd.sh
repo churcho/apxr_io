@@ -25,6 +25,5 @@ mix systemd.generate
 
 echo "Copying systemd unit files for $SERVICE_NAME"
 
-mkdir -p "${DESTDIR}/lib/systemd/system"
 cp _build/${MIX_ENV}/systemd/lib/systemd/system/* "${DESTDIR}/lib/systemd/system/"
 chmod 644 ${DESTDIR}/lib/systemd/system/${SERVICE_NAME}*

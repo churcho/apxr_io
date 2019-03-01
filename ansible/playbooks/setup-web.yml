@@ -26,3 +26,4 @@
       with_items:
         - "{{ elixir_release_deploy_dir }}"
         - "{{ elixir_release_releases_dir }}"
+        - "{{ elixir_release_deploy_dir }}/lib/systemd/system/{{ elixir_release_name }}"
