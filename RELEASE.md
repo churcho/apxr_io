@@ -21,7 +21,7 @@ The actual work of checking out and deploying is handled by simple shell scripts
 
 Run the following Ansible commands from the `ansible` dir in the project.
 
-Initial server setup:
+Initial server setup, create directories, etc:
 
 ```
 ansible-playbook -u root -v -l web-servers playbooks/setup-web.yml -D
@@ -54,7 +54,7 @@ ssh -A deploy@apxr-io
 Check out project from git to build directory that was created at the end of the last step.
 
 ```
-git clone -branch master git@github.com:Rober-t/apxr_io.git "/home/deploy/build/apxr-io"
+git clone git@github.com:Rober-t/apxr_io.git "/home/deploy/build/apxr-io"
 ```
 
 or, if previously cloned:
@@ -82,16 +82,11 @@ scripts/build-release.sh
 
 Note: `asdf install` builds Erlang from source, so the first time it runs it can take a long time. If it fails due to a lost connection, delete /home/deploy/.asdf/installs/erlang/[version] and try again. You may want to run it under `tmux`.
 
-Next, generate a systemd unit file to manage the application:
+Next, generate and enable a systemd unit file to manage the application:
 
 ```
 scripts/build-systemd.sh
-```
-
-Create directories, enable systemd unit, etc:
-
-```
-ansible-playbook -u root -v -l web-servers playbooks/setup-app.yml -D
+scripts/enable-systemd.sh
 ```
 
 ### 4. Deploy the release

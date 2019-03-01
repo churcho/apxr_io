@@ -1,9 +1,0 @@
-# App setup
-#
-# ansible-playbook -u $USER -v -l web-servers playbooks/setup-app.yml -D
-
-- name: Setup app
-  hosts: '*'
-  become: true
-  roles:
-    - app
