@@ -81,8 +81,6 @@ defmodule ApxrIo.MixProject do
       {:joken, "~> 2.0.1"},
       # Easily parsable single line, plain text and JSON logger - MIT
       {:logster, "~> 0.10.0"},
-      # Generates systemd unit file from template - Apache 2.0
-      {:mix_systemd, "~> 0.1.0"},
       # Mocks and explicit contracts for Elixir - Apache 2.0
       {:mox, "~> 0.5.0", only: :test},
       # Visualize Erlang/Elixir Nodes On The Command Line - MIT

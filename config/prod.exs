@@ -41,8 +41,3 @@ config :logger, level: :info
 config :logger,
   backends: [:console, {LoggerErrorMail, :error_mail}],
   level: :info
-
-config :mix_systemd,
-  systemd_version: 237,
-  paranoia: true,
-  env_port: 4001

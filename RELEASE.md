@@ -72,37 +72,6 @@ scripts/build-release.sh
 
 Note: `asdf install` builds Erlang from source, so the first time it runs it can take a long time. If it fails due to a lost connection, delete /home/deploy/.asdf/installs/erlang/[version] and try again. You may want to run it under `tmux`.
 
-Next, generate a systemd unit file to manage the application:
-
-```
-scripts/build-systemd.sh
-```
-
-Exit.
-
-Login as an admin:
-
-```
-ssh rob@apxr-io
-```
-
-Create the necessary systemd directories:
-
-```
-sudo mkdir -p /etc/systemd/system
-sudo cp /home/deploy/build/apxr-io/_build/prod/systemd/lib/systemd/system/apxr-io.service "/etc/systemd/system/"
-sudo chmod 644 /etc/systemd/system/apxr-io.service
-sudo /bin/systemctl enable apxr-io
-```
-
-Exit.
-
-Log into the build machine:
-
-```
-ssh -A deploy@apxr-io
-```
-
 ### 4. Deploy the release
 
 Whenever you change the db schema, you need to run migrations on the server.
@@ -111,14 +80,12 @@ After building the release, but before deploying the code, update the db to matc
 
 ```
 #scripts/db-setup.sh
-cd build/apxr-io
 scripts/db-migrate.sh
 ```
 
 Deploy the release:
 
 ```
-cd build/apxr-io
 scripts/deploy-local.sh
 ```
 

@@ -1,0 +1,43 @@
+# {{ ansible_managed }}
+
+[Unit]
+Description=apxr-io service
+After=network.target
+
+[Service]
+Type=simple
+User=apxr-io
+Group=apxr-io
+WorkingDirectory=/srv/apxr-io/current
+ExecStart=/srv/apxr-io/current/bin/apxr_io foreground
+ExecStop=/srv/apxr-io/current/bin/apxr_io stop
+Environment=LANG=en_US.UTF-8
+Environment=HOME=/srv/apxr-io
+Environment=MIX_ENV=prod
+Environment=PORT=4001
+EnvironmentFile=-/etc/apxr-io/environment
+LimitNOFILE=65535
+UMask=0027
+SyslogIdentifier=apxr-io
+Restart=on-failure
+RestartSec=5
+RuntimeDirectory=apxr-io
+RuntimeDirectoryMode=750
+RuntimeDirectoryPreserve=no
+# Not supported on CentOS 7, Ubuntu 16.04 or Debian 9
+ConfigurationDirectory=apxr-io
+# Not supported on CentOS 7, Ubuntu 16.04 or Debian 9
+ConfigurationDirectoryMode=750
+NoNewPrivileges=yes
+PrivateDevices=yes
+PrivateTmp=yes
+ProtectSystem=full
+ProtectHome=yes
+PrivateUsers=yes
+ProtectKernelModules=yes
+ProtectKernelTunables=yes
+ProtectControlGroups=yes
+MountAPIVFS=yes
+
+[Install]
+WantedBy=multi-user.target
