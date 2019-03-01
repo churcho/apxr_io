@@ -19,7 +19,6 @@ cd "$BASEDIR"
 
 source "$HOME/.asdf/asdf.sh"
 
-echo "Copying systemd unit files for $SERVICE_NAME"
+echo "Generating systemd config"
 
-cp _build/${MIX_ENV}/systemd/lib/systemd/system/* "${DESTDIR}/lib/systemd/system/"
-chmod 644 ${DESTDIR}/lib/systemd/system/${SERVICE_NAME}*
+mix systemd.generate

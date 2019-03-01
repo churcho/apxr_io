@@ -11,28 +11,21 @@
 - name: Install common
   hosts: '*'
   become: true
+  vars:
+    tools_other_packages:
+      - sudo
   roles:
     - common-minimal
+    - tools-other
     - iptables
     - iptables-http
 
 - name: Set up web app
   hosts: '*'
   become: true
-  become_user: "{{ users_deploy_user }}"
   tasks:
     - name: Create deploy dirs
       file: path={{ item }} state=directory owner={{ elixir_release_deploy_user }} group={{ elixir_release_app_group }} mode=0750
       with_items:
         - "{{ elixir_release_deploy_dir }}"
         - "{{ elixir_release_releases_dir }}"
-
-- name: Set up systemd dir
-  hosts: '*'
-  become: true
-  become_user: "{{ users_deploy_user }}"
-  tasks:
-    - name: Create systemd dirs
-      file: path={{ item }} state=directory owner={{ elixir_release_deploy_user }} group={{ elixir_release_deploy_user }} mode=0644
-      with_items:
-        - "srv/lib/systemd/system"

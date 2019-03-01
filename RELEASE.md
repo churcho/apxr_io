@@ -1,10 +1,7 @@
 # Release process
 
 Sources:
-  - https://www.cogini.com/blog/best-practices-for-deploying-elixir-apps
   - https://github.com/cogini/elixir-deploy-template
-  - https://github.com/cogini/mix_systemd
-  - https://github.com/cogini/mix_deploy
 
 ### Overview
 
@@ -57,13 +54,6 @@ Check out project from git to build directory that was created at the end of the
 git clone git@github.com:Rober-t/apxr_io.git "/home/deploy/build/apxr-io"
 ```
 
-or, if previously cloned:
-
-```
-cd build/apxr-io/
-git pull
-```
-
 ### 3. Build the app
 
 Make sure you have added the necessary environment variables before running the commands
@@ -76,15 +66,43 @@ vim ~/.bash_profile
 Build the production release:
 
 ```
+cd build/apxr-io
 scripts/build-release.sh
 ```
 
 Note: `asdf install` builds Erlang from source, so the first time it runs it can take a long time. If it fails due to a lost connection, delete /home/deploy/.asdf/installs/erlang/[version] and try again. You may want to run it under `tmux`.
 
-Next, generate and enable a systemd unit file to manage the application:
+Next, generate a systemd unit file to manage the application:
 
 ```
-scripts/build-systemd.sh
+scripts/enable-systemd.sh
+```
+
+Login as an admin:
+
+```
+ssh rob@apxr-io
+```
+
+Create the necessary directories:
+
+```
+sudo mkdir -p /srv/lib/systemd/system
+sudo cp /home/deploy/build/apxr-io/_build/prod/systemd/lib/systemd/system/* "/srv/lib/systemd/system/"
+sudo chmod 644 /srv/lib/systemd/system/apxr-io*
+```
+
+Exit.
+
+Log into the build machine:
+
+```
+ssh -A deploy@apxr-io
+```
+
+Next, enable a systemd unit file to manage the application:
+
+```
 scripts/enable-systemd.sh
 ```
 
