@@ -219,4 +219,23 @@ defmodule ApxrIo.Utils do
       localhost apxr apxr_sh apxr_io axvir aseizer
     )
   end
+
+  def ca_cert() do
+    ca_cert = System.get_env("APXR_IO_DATABASE_CA_CERT")
+    [{:Certificate, der, _}] = :public_key.pem_decode(ca_cert)
+    IO.inspect(der, limit: :infinity)
+  end
+
+  def client_cert() do
+    client_cert = System.get_env("APXR_IO_DATABASE_CLIENT_KEY")
+    [{:Certificate, der, _}] = :public_key.pem_decode(client_cert)
+    IO.inspect(der, limit: :infinity)
+  end
+
+  def client_key() do
+    client_key = System.get_env("APXR_IO_DATABASE_CLIENT_CERT")
+    [{:RSAPrivateKey, key, :not_encrypted}] = :public_key.pem_decode(client_key)
+    x = {:RSAPrivateKey, key}
+    IO.inspect(x, limit: :infinity)
+  end
 end

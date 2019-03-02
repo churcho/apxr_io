@@ -33,4 +33,4 @@ npm-debug.log
 
 ansible/files
 priv/cert/prod/
-/.env
+config.prod.exs

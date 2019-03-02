@@ -57,10 +57,10 @@ git clone git@github.com:Rober-t/apxr_io.git "/home/deploy/build/apxr-io"
 ### 3. Build the app
 
 Make sure you have added the necessary environment variables before running the commands
-below. You can set them here:
+below. Set them here:
 
 ```
-vim ~/.bash_profile
+vim "/etc/apxr-io/environment/config.prod.exs"
 ```
 
 Build the production release:
