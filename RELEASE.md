@@ -54,37 +54,18 @@ Check out project from git to build directory that was created at the end of the
 git clone git@github.com:Rober-t/apxr_io.git "/home/deploy/build/apxr-io"
 ```
 
-Exit.
-
 ### 3. Build the app
 
-Make sure you have added the necessary environment variables before running the commands
-below.
-
-Log as an admin:
+Make sure you have added the necessary environment variables:
 
 ```
-ssh -A rob@apxr-io
-```
-
-Set the environment variables here:
-
-```
-sudo vim "/home/deploy/build/apxr-io/config/prod.exs"
-```
-
-Exit.
-
-Log back into the build machine:
-
-```
-ssh -A deploy@apxr-io
+cd build/apxr-io
+vim "config/prod.exs"
 ```
 
 Build the production release:
 
 ```
-cd build/apxr-io
 scripts/build-release.sh
 ```
 
@@ -97,6 +78,8 @@ Whenever you change the db schema, you need to run migrations on the server.
 After building the release, but before deploying the code, update the db to match the code:
 
 ```
+scripts/db-setup.sh
+# or
 scripts/db-migrate.sh
 ```
 
@@ -110,11 +93,24 @@ The build is being done under the deploy user, who owns the files under `/srv/ap
 
 ### Verify it works
 
-Have a look at the logs:
+Check status:
 
 ```
 systemctl status apxr-io
+```
+
+Have a look at the logs:
+
+```
+journalctl -f -u apxr-io
+# or
 journalctl -r -u apxr-io
+```
+
+Stop:
+
+```
+sudo systemctl stop apxr-io
 ```
 
 You can get a console on the running app by logging in (via ssh) as the `apxr-io` user the app runs under and executing:

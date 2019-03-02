@@ -2,6 +2,15 @@
 #
 # ansible-playbook -u $USER -v -l web-servers playbooks/setup-web.yml -D
 
+- name: Install sudo
+  hosts: '*'
+  become: true
+  vars:
+    tools_other_packages:
+      - sudo
+  roles:
+    - tools-other
+
 - name: Manage users
   hosts: '*'
   become: true
@@ -14,12 +23,8 @@
 - name: Install common
   hosts: '*'
   become: true
-  vars:
-    tools_other_packages:
-      - sudo
   roles:
     - common-minimal
-    - tools-other
     - iptables
     - iptables-http
 

@@ -2,7 +2,7 @@
 -name <%= release_name %>@127.0.0.1
 
 ## Cookie for distributed erlang
--setcookie <%= System.get_env("APXR_IO_COOKIE") %>
+-setcookie <%= release.profile.cookie %>
 
 ## Enable kernel poll and a few async threads
 +K true
