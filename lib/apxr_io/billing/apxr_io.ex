@@ -119,7 +119,7 @@ defmodule ApxrIo.Billing.ApxrIo do
   end
 
   defp auth() do
-    Application.get_env(:apxr_io, :billing_key)
+    "bearer #{Application.get_env(:apxr_io, :billing_key)}"
   end
 
   defp post(url, body, opts) do

@@ -9,7 +9,6 @@ defmodule ApxrIo.Application do
       {Task.Supervisor, name: ApxrIo.Tasks},
       {PlugAttack.Storage.Ets, name: ApxrIoWeb.Plugs.Attack.Storage, clean_period: 60_000},
       {ApxrIo.Throttle, name: ApxrIo.SESThrottle, rate: 10, unit: 1000},
-      {ApxrIo.Billing.Report, name: ApxrIo.Billing.Report, interval: 60_000},
       {ApxrIo.Accounts.PruneAuditLogs,
        name: ApxrIo.Accounts.PruneAuditLogs, interval: 2_592_000_000},
       ApxrIoWeb.Endpoint,
