@@ -20,7 +20,7 @@ config :apxr_io, ApxrIo.Vault,
   ciphers: [
     default:
       {Cloak.Ciphers.AES.GCM,
-       tag: "AES.GCM.V1", key: Base.decode64!("7vizSLH7AO4BbIn04Zgut+Ba35KUZIElfz8C2qvLmG0=")}
+       tag: "AES.GCM.V1", key: Base.decode64!("rAgO2QdyWNSmS7U8V5YrUWeFWD01JHCEYECxkx9VuAk=")}
   ]
 
 config :apxr_io, ApxrIo.RepoBase,
