@@ -33,12 +33,7 @@ config :apxr_io, ApxrIo.RepoBase,
   hostname: "${APXR_IO_DATABASE_HOSTNAME}",
   url: "${APXR_IO_DATABASE_URL}",
   ssl: true,
-  pool_size: 10,
-  ssl_opts: [
-    cacertfile: "${APXR_IO_DATABASE_CA_CERT}",
-    keyfile: "${APXR_IO_DATABASE_CLIENT_KEY}",
-    certfile: "${APXR_IO_DATABASE_CLIENT_CERT}"
-  ]
+  pool_size: 10
 
 config :phoenix, :serve_endpoints, true
 

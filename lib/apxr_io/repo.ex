@@ -62,7 +62,34 @@ defmodule ApxrIo.RepoBase do
   }
 
   def init(_reason, opts) do
+    ca_cert = System.get_env("APXR_IO_DATABASE_CA_CERT")
+    client_key = System.get_env("APXR_IO_DATABASE_CLIENT_KEY")
+    client_cert = System.get_env("APXR_IO_DATABASE_CLIENT_CERT")
+
+    ssl_opts =
+      if ca_cert do
+        [
+          cacerts: [decode_cert(ca_cert)],
+          key: decode_key(client_key),
+          cert: decode_cert(client_cert)
+        ]
+      end
+
+    opts =
+      opts
+      |> Keyword.put(:ssl_opts, ssl_opts)
+
     {:ok, opts}
+  end
+
+  defp decode_cert(cert) do
+    [{:Certificate, der, _}] = :public_key.pem_decode(cert)
+    der
+  end
+
+  defp decode_key(cert) do
+    [{:RSAPrivateKey, key, :not_encrypted}] = :public_key.pem_decode(cert)
+    {:RSAPrivateKey, key}
   end
 
   def refresh_view(schema) do
