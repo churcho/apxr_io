@@ -15,4 +15,4 @@ source "$HOME/.asdf/asdf.sh"
 
 echo "Setting up database"
 
-mix ecto.setup
+MIX_ENV=prod mix ecto.setup

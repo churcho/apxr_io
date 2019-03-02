@@ -79,7 +79,6 @@ Whenever you change the db schema, you need to run migrations on the server.
 After building the release, but before deploying the code, update the db to match the code:
 
 ```
-#scripts/db-setup.sh
 scripts/db-migrate.sh
 ```
 

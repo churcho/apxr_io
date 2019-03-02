@@ -29,7 +29,8 @@ Then set the following:
 sudo ufw default deny incoming
 sudo ufw default allow outgoing
 sudo ufw allow 22
-sudo ufw allow 5432
+sudo ufw allow from public-ip to any port 5432
+sudo ufw allow from private-ip to any port 5432
 sudo ufw enable
 sudo ufw status verbose
 ```
@@ -55,7 +56,7 @@ Once logged in:
 create database apxr_io_prod;
 create user apxr_io with encrypted password 'password';
 grant all privileges on database apxr_io_prod to apxr_io;
-alter user apxr_io with createdb;
+alter user apxr_io with superuser;
 ```
 
 Now, that we've created a user and database, we'll exit the monitor
@@ -77,7 +78,7 @@ sudo vim /etc/postgresql/10/main/postgresql.conf
 Find the listen_addresses line and below it, define your listen addresses, being sure to substitute the hostname or IP address of your database host. You may want to double-check that you're using the public or private IP of the database server, not the connecting client:
 
 ```
-listen_addresses = 'localhost, 51.15.111.161'
+listen_addresses = 'localhost, public-ip, private-ip'
 ```
 
 ### Step 4 — Restarting PostgreSQL
@@ -92,7 +93,7 @@ Since systemctl doesn't provide feedback, we'll check the status to make sure th
 sudo systemctl status postgresql@10-main
 ```
 
-If the output contains "Active: active" then the PostgreSQL daemon is running.
+If the output contains "Active: active (running)" then the PostgreSQL daemon is running.
 
 ### Step 5 - SSL
 
@@ -142,7 +143,8 @@ sudo vim /etc/postgresql/10/main/pg_hba.conf
 Add the following
 
 ```
-hostssl apxr_io_prod    apxr_io         0.0.0.0/0               md5 clientcert=1
+hostssl all             apxr_io         public-ip/32          md5 clientcert=1
+hostssl all             apxr_io         private-ip/32          md5 clientcert=1
 ```
 
 To finish configurations, you need to apply some more changes to the postgresql.conf file. 
