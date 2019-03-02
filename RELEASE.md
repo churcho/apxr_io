@@ -70,7 +70,7 @@ ssh -A rob@apxr-io
 Set the environment variables here:
 
 ```
-sudo vim "/home/deploy/build/apxr-io/prod.exs"
+sudo vim "/home/deploy/build/apxr-io/config/prod.exs"
 ```
 
 Exit.
