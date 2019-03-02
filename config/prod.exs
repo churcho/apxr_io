@@ -9,7 +9,7 @@ config :apxr_io,
   private_key: "${APXR_IO_SIGNING_KEY}",
   s3_bucket: "${APXR_IO_S3_BUCKET}",
   email_host: "${APXR_IO_EMAIL_HOST}",
-  ses_rate: "${APXR_IO_SES_RATE}",
+  ses_rate: 10,
   billing_key: "${APXR_IO_BILLING_KEY}",
   billing_url: "${APXR_IO_BILLING_URL}"
 
