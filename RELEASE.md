@@ -54,13 +54,31 @@ Check out project from git to build directory that was created at the end of the
 git clone git@github.com:Rober-t/apxr_io.git "/home/deploy/build/apxr-io"
 ```
 
+Exit.
+
 ### 3. Build the app
 
 Make sure you have added the necessary environment variables before running the commands
-below. Set them here:
+below.
+
+Log as an admin:
 
 ```
-vim "/etc/apxr-io/environment/config.prod.exs"
+ssh -A rob@apxr-io
+```
+
+Set the environment variables here:
+
+```
+sudo vim "/home/deploy/build/apxr-io/prod.exs"
+```
+
+Exit.
+
+Log back into the build machine:
+
+```
+ssh -A deploy@apxr-io
 ```
 
 Build the production release:
