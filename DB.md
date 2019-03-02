@@ -23,11 +23,13 @@ sudo vim /etc/default/ufw
 
 And make sure the value of IPV6 is yes.
 
+Then set the following:
+
 ```
 sudo ufw default deny incoming
 sudo ufw default allow outgoing
 sudo ufw allow 22
-sudo ufw allow from apxr-io-private-ip to any port 5432
+sudo ufw allow 5432
 sudo ufw enable
 sudo ufw status verbose
 ```
@@ -75,19 +77,19 @@ sudo vim /etc/postgresql/10/main/postgresql.conf
 Find the listen_addresses line and below it, define your listen addresses, being sure to substitute the hostname or IP address of your database host. You may want to double-check that you're using the public or private IP of the database server, not the connecting client:
 
 ```
-listen_addresses = 'localhost, apxr-io-db-private-ip'
+listen_addresses = 'localhost, 51.15.111.161'
 ```
 
 ### Step 4 — Restarting PostgreSQL
 
 ```
-sudo systemctl restart postgresql
+sudo systemctl restart postgresql@10-main
 ```
 
 Since systemctl doesn't provide feedback, we'll check the status to make sure the daemon restarted successfully:
 
 ```
-sudo systemctl status postgresql
+sudo systemctl status postgresql@10-main
 ```
 
 If the output contains "Active: active" then the PostgreSQL daemon is running.
@@ -102,41 +104,33 @@ You need to add the following three files to the
 
 server directory 
 
-- server.key – private key.
-- server.crt – server certificate.
-- root.crt – trusted root certificate.
+- key.pem – private key.
+- cert.pem – server certificate.
+- root.pem – trusted root certificate.
 
 Let’s create the first file — private key:
 
 ```
-sudo openssl genrsa -des3 -out /var/lib/postgresql/10/main/server.key 1024
+sudo openssl genrsa -out /var/lib/postgresql/10/main/key.pem 1024
 ```
 
-During the server.key generation, you’ll be asked for a passphrase — specify any and confirm it to finish creation.
-
-Now, in order to work with this key further, it’s required remove the passphrase you’ve added previously. Execute the following command for this:
+Set the appropriate permission and ownership rights for your private key:
 
 ```
-sudo openssl rsa -in /var/lib/postgresql/10/main/server.key -out /var/lib/postgresql/10/main/server.key
+sudo chmod 400 /var/lib/postgresql/10/main/key.pem
+sudo chown postgres:postgres /var/lib/postgresql/10/main/key.pem
 ```
 
-Set the appropriate permission and ownership rights for your private key file with the next commands:
+Create server certificate based on your key.pem file
 
 ```
-sudo chmod 400 /var/lib/postgresql/10/main/server.key
-sudo chown postgres.postgres /var/lib/postgresql/10/main/server.key
-```
-
-Create server certificate based on your server.key file
-
-```
-sudo openssl req -new -key /var/lib/postgresql/10/main/server.key -days 3650 -out /var/lib/postgresql/10/main/server.crt -x509 -subj '/C=FR/ST=Paris/L=Paris/O=APXR/CN=approximatereality.com/emailAddress=approximatereality@gmail.com'
+sudo openssl req -new -key /var/lib/postgresql/10/main/key.pem -days 3650 -out /var/lib/postgresql/10/main/cert.pem -x509 -subj '/C=FR/ST=Paris/L=Paris/O=APXR/CN=approximatereality.com/emailAddress=approximatereality@gmail.com'
 ```
 
 Since we are going to sign certs by ourselves, the generated server certificate can be used as a trusted root certificate as well, so just make its copy with the appropriate name:
 
 ```
-sudo cp /var/lib/postgresql/10/main/server.crt /var/lib/postgresql/10/main/root.crt
+sudo cp /var/lib/postgresql/10/main/cert.pem /var/lib/postgresql/10/main/root.pem
 ```
 
 Open the pg_hba.conf file:
@@ -161,47 +155,44 @@ Navigate to its Security and Authentication section (approximately at the 80th l
 
 ```
 ssl = on
-ssl_ca_file = '/var/lib/postgresql/10/main/root.crt'
+ssl_ca_file = '/var/lib/postgresql/10/main/root.pem'
 ```
 
 Lastly, restart PostgreSQL in order to apply new settings.
 
 ```
-sudo systemctl restart postgresql
-sudo systemctl status postgresql
+sudo systemctl restart postgresql@10-main
+sudo systemctl status postgresql@10-main
 ```
 
-Copy the root.crt and server.key files to your local machine as you will need them in the next step.
+Copy the root.pem and key.pem files to your local machine as you will need them in the next step.
 
 ```
-sudo cat '/var/lib/postgresql/10/main/server.key'
-sudo cat '/var/lib/postgresql/10/main/root.crt'
+sudo cat '/var/lib/postgresql/10/main/key.pem'
+sudo cat '/var/lib/postgresql/10/main/root.pem'
 ```
 
-Place them under ansible/files e.g. apxr-io-db_server.key and apxr-io-db_root.crt
+Place them under (temporarily) under priv/cert/prod/ e.g. db_server.pem and db_root.pem
 
 Exit the server.
 
 ---
 
-Now, on your local machine, in the ansible/files directory let’s create one more set of SSL certificate files for client instance, in order to support secure connection on both sides.
+Now, on your local machine, in the priv/cert/prod/ directory let’s create one more set of SSL certificate files for client instance, in order to support secure connection on both sides.
 
-1. Generate a private key for the client (also without a passphrase, just as it was done in the previous section):
-
-```
-openssl genrsa -des3 -out postgresql.key 1024
-openssl rsa -in postgresql.key -out postgresql.key
-```
-
-2. Next, create SSL certificate for your PostgreSQL database user (apxr_io by default) and sign it with our trusted root.crt file on server.
+1. Generate a private key for the client:
 
 ```
-openssl req -new -key postgresql.key -out postgresql.csr -subj '/C=FR/ST=Paris/L=Paris/O=APXR/CN=apxr_io'
-openssl x509 -req -in postgresql.csr -days 365 -CA apxr-io-db_root.crt -CAkey apxr-io-db_server.key -out postgresql.crt -CAcreateserial
+openssl genrsa -out db_key.pem 1024
 ```
 
-Note: 
+2. Next, create SSL certificate for your PostgreSQL database user and sign it with our trusted root.pem file on server.
 
-The Common Name (/CN=) must be equal to database user name you’ve set during the first certificate generation in server configuration file (apxr_io in our case)
+```
+openssl req -new -key db_key.pem -out cert.csr -subj '/C=FR/ST=Paris/L=Paris/O=APXR/CN=approximatereality.com'
+openssl x509 -req -in cert.csr -days 365 -CA db_root.pem -CAkey db_server.pem -out db_cert.pem -CAcreateserial
+```
 
-3. The postgresql.key, postgresql.crt, apxr-io-db_root.crt files are now now ready for use by the client.
+The Common Name (/CN=) must be equal to database user name you’ve set during the first certificate generation in server configuration file
+
+3. The db_key.pem, db_cert.pem, db_root.pem files are now now ready for use by the client.

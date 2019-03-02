@@ -72,23 +72,6 @@ defmodule ApxrIoWeb.Endpoint do
   plug ApxrIoWeb.Router
 
   def init(_key, config) do
-    if Mix.env() == :prod do
-      port = System.get_env("APXR_IO_PORT")
-
-      case Integer.parse(port) do
-        {_int, ""} ->
-          host = System.get_env("APXR_IO_HOST")
-          secret_key_base = System.get_env("APXR_IO_SECRET_KEY_BASE")
-          config = put_in(config[:http][:port], port)
-          config = put_in(config[:url][:host], host)
-          config = put_in(config[:secret_key_base], secret_key_base)
-          {:ok, config}
-
-        :error ->
-          {:ok, config}
-      end
-    else
-      {:ok, config}
-    end
+    {:ok, config}
   end
 end

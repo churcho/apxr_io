@@ -60,7 +60,7 @@ Make sure you have added the necessary environment variables before running the 
 below. You can set them here:
 
 ```
-vim ~/.bash_profile
+vim ~/.env
 ```
 
 Build the production release:

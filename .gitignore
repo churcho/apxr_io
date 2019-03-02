@@ -32,3 +32,5 @@ npm-debug.log
 .DS_Store
 
 ansible/files
+priv/cert/prod/
+/.env

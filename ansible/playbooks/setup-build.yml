@@ -35,28 +35,13 @@
     asdf_plugins:
       - name: erlang
       - name: elixir
-      - name: nodejs
   vars_files:
     - "../vars/build-{{ ansible_os_family }}.yml"
     - "../vars/build-{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
   roles:
     - tools-other
     - asdf
-  post_tasks:
-    - name: Set vars
-      set_fact:
-        asdf_nodejs_keyring: "/home/{{ elixir_release_deploy_user }}/.asdf/keyrings/nodejs"
-
-    - name: create keyring for Node.js keys
-      file: path={{ asdf_nodejs_keyring }} state=directory owner={{ asdf_user }} group={{ asdf_user }} mode=0700
-
-    - name: import Node.js keys to keyring
-      command: "bash -lc '/home/{{ elixir_release_deploy_user }}/.asdf/plugins/nodejs/bin/import-release-team-keyring'"
-      args:
-        creates: "{{ asdf_nodejs_keyring }}/{{ gpg_pubring_file }}"
-      become_user: "{{ asdf_user }}"
-      environment:
-        GNUPGHOME: "{{ asdf_nodejs_keyring }}"
+    - ocha.yarn
 
 - name: Set up app
   hosts: '*'

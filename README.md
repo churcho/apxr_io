@@ -166,15 +166,6 @@ iex(1)> :observer_cli.start
 Files should be generated with the following library `https://github.com/tsloughter/grpcbox`.
 
 --------------------
-### Note
-
-You need a CLOAK_KEY environment variable containing a key in Base64 encoding.
-
-For example:
-
-`export APXR_IO_CLOAK_KEY="A7x+qcFD9yeRfl3GohiOFZM5bNCdHNu27B0Ozv8X4dE="`
-
---------------------
 ### License
 
    Copyright 2015 Six Colors AB

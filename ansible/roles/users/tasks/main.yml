@@ -200,9 +200,11 @@
 
 - name: Create systemd unit
   template: src=lib/systemd/system/app.service.j2 dest=/etc/systemd/system/{{ elixir_release_name }}.service owner=root group=root mode=0644
+  when: incl_systemd is defined
 
 - name: Enable systemd service
   command: sudo /bin/systemctl enable {{ elixir_release_name }}
+  when: incl_systemd is defined
 
 - name: Create sudoers config for deploy user
   template: src=etc/sudoers.d/app.j2 dest=/etc/sudoers.d/{{ elixir_release_deploy_user }}-{{ elixir_release_name }} owner=root group=root mode=0600

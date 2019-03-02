@@ -5,6 +5,9 @@
 - name: Manage users
   hosts: '*'
   become: true
+  gather_facts: true
+  vars:
+    incl_systemd: true
   roles:
     - users
 

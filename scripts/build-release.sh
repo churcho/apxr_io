@@ -32,10 +32,11 @@ mix local.rebar --if-missing --force
 mix deps.get --only "$MIX_ENV"
 
 echo "Compiling"
-mix compile
+MIX_ENV=prod mix compile
 
 echo "Updating node libraries"
-(cd assets && npm install)
+(cd assets && yarn install && yarn run deploy && cd ..)
 
 echo "Building release"
-mix do phx.digest, release
+MIX_ENV=prod mix phx.digest
+MIX_ENV=prod mix release

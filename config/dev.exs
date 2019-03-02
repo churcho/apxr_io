@@ -14,8 +14,8 @@ config :apxr_io, ApxrIoWeb.Endpoint,
   https: [
     port: 4001,
     cipher_suite: :strong,
-    certfile: "priv/cert/selfsigned.pem",
-    keyfile: "priv/cert/selfsigned_key.pem"
+    certfile: "priv/cert/dev/selfsigned.pem",
+    keyfile: "priv/cert/dev/selfsigned_key.pem"
   ],
   secret_key_base: "prV6O0adm3lgdpuFLXXZORelFyse/8+xjzObP6uCRnx",
   debug_errors: true,

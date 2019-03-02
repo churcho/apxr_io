@@ -16,6 +16,13 @@ config :apxr_io, ApxrIoWeb.Endpoint,
   root: Path.dirname(__DIR__),
   render_errors: [view: ApxrIoWeb.ErrorView, accepts: ~w(html json elixir erlang)]
 
+config :apxr_io, ApxrIo.Vault,
+  ciphers: [
+    default:
+      {Cloak.Ciphers.AES.GCM,
+       tag: "AES.GCM.V1", key: Base.decode64!("7vizSLH7AO4BbIn04Zgut+Ba35KUZIElfz8C2qvLmG0=")}
+  ]
+
 config :apxr_io, ApxrIo.RepoBase,
   priv: "priv/repo",
   migration_timestamps: [type: :utc_datetime_usec]
