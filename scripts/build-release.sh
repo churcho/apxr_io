@@ -3,6 +3,7 @@
 # Build production release
 
 export MIX_ENV=prod
+export REPLACE_OS_VARS=true
 
 # Exit on errors
 set -e

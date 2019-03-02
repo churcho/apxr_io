@@ -2,7 +2,7 @@ defmodule ApxrIo.Emails.Mailer do
   use Bamboo.Mailer, otp_app: :apxr_io
 
   def deliver_now_throttled(email) do
-    ses_rate = ApxrIo.Application.ses_rate()
+    ses_rate = ses_rate()
 
     email
     |> recipients()
@@ -28,5 +28,13 @@ defmodule ApxrIo.Emails.Mailer do
     email
     |> Bamboo.Mailer.normalize_addresses()
     |> Bamboo.Email.all_recipients()
+  end
+
+  defp ses_rate() do
+    if rate = Application.get_env(:apxr_io, :ses_rate) do
+      rate
+    else
+      :infinity
+    end
   end
 end
