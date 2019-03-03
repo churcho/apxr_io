@@ -53,45 +53,7 @@ We can check with the systemd init system to make sure the service is running by
 systemctl status nginx
 ```
 
-### Step 4 – Managing the Nginx Process
-
-To stop your web server, type:
-
-```
-sudo systemctl stop nginx
-```
-
-To start the web server when it is stopped, type:
-
-```
-sudo systemctl start nginx
-```
-
-To stop and then start the service again, type:
-
-```
-sudo systemctl restart nginx
-```
-
-If you are simply making configuration changes, Nginx can often reload without dropping connections. To do this, type:
-
-```
-sudo systemctl reload nginx
-```
-
-By default, Nginx is configured to start automatically when the server boots. If this is not what you want, you can disable this behavior by typing:
-
-```
-sudo systemctl disable nginx
-```
-
-To re-enable the service to start up at boot, you can type:
-
-```
-sudo systemctl enable nginx
-```
-
-### Step 5 – Setting Up Server Blocks
+### Step 4 – Setting Up Server Blocks
 
 Create the directory for approximatereality.com as follows, using the -p flag to create any necessary parent directories:
 
@@ -201,7 +163,7 @@ If there aren't any problems, restart Nginx to enable your changes:
 sudo systemctl restart nginx
 ```
 
-### Step 6 – Important Nginx Files and Directories
+### Step 5 – Important Nginx Files and Directories
 
 Content
 - /var/www/html: The actual web content, which by default only consists of the default Nginx page you saw earlier, is served out of the /var/www/html directory. This can be changed by altering Nginx configuration files.
@@ -316,11 +278,7 @@ If you see no errors, you're all set. When necessary, Certbot will renew your ce
 
 ## Hardening Nginx
 
-By default, Nginx shows its name and version in the HTTP headers. You can check this information with curl like this:
-
-```
-curl -I http://localhost
-```
+By default, Nginx shows its name and version in the HTTP headers.
 
 We'll hide this information by opening Nginx's main configuration file /etc/nginx/nginx.conf
 
@@ -328,7 +286,7 @@ We'll hide this information by opening Nginx's main configuration file /etc/ngin
 sudo vim /etc/nginx/nginx.conf
 ```
 
-Then, inside the http configuration part add the line server_tokens off; like this:
+Inside the http configuration part add the line server_tokens off:
 
 ```
 http {
@@ -346,14 +304,6 @@ After that, save and exit the file, and reload Nginx for the change to take effe
 sudo service nginx reload
 ```
 
-Now, if you try again the same curl command:
-
-```
-curl -I http://localhost
-```
-
-You should see less information
-
 ## Nginx with HTTP/2
 
 ### Step 1 — Enabling HTTP/2 Support
@@ -366,8 +316,8 @@ In the file, locate the listen variables associated with port 443:
 
 ```
 ...
-    listen [::]:443 ssl ipv6only=on; 
-    listen 443 ssl; 
+    listen [::]:443 ssl ipv6only=on;
+    listen 443 ssl;
 ...
 ```
 
@@ -386,7 +336,7 @@ this tells Nginx to use HTTP/2 with supported browsers.
 
 Save the configuration file and edit the text editor.
 
-Whenever you make changes to Nginx configuration files, you should check the configuration for syntax errors, like this:
+Check the configuration for syntax errors:
 
 ```
 sudo nginx -t
@@ -509,7 +459,7 @@ Replace the previous location block with the following:
       proxy_set_header Upgrade $http_upgrade;
       proxy_set_header Connection "upgrade";
     
-      proxy_pass https://10.22.8.9:4001;
+      proxy_pass https://127.0.0.1:4001;
     }
 
 ```
