@@ -1,6 +1,8 @@
 defmodule LoggerErrorMail do
   @behaviour :gen_event
 
+  require Logger
+
   alias ApxrIo.Emails
 
   @default_format "$time $metadata[$level] $message\n"
@@ -37,6 +39,10 @@ defmodule LoggerErrorMail do
 
     Emails.error_notification(msg)
     |> Emails.Mailer.deliver_later()
+  catch
+    _exception ->
+      Logger.error("LoggerErrorMail failed to send")
+      :ok
   end
 
   defp format_event(msg, ts, _md, %{format: format}) do
