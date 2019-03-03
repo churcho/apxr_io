@@ -465,7 +465,7 @@ Replace the previous location block with the following:
       proxy_set_header Upgrade $http_upgrade;
       proxy_set_header Connection "upgrade";
     
-      proxy_pass https://127.0.0.1:4000;
+      proxy_pass http://127.0.0.1:4000;
     }
 
 ```
