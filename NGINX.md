@@ -276,7 +276,7 @@ sudo certbot renew --dry-run
 
 If you see no errors, you're all set. When necessary, Certbot will renew your certificates and reload Nginx to pick up the changes. If the automated renewal process ever fails, Let’s Encrypt will send a message to the email you specified, warning you when your certificate is about to expire.
 
-## Hardening Nginx
+## Tweaking Nginx
 
 By default, Nginx shows its name and version in the HTTP headers.
 
@@ -286,16 +286,19 @@ We'll hide this information by opening Nginx's main configuration file /etc/ngin
 sudo vim /etc/nginx/nginx.conf
 ```
 
-Inside the http configuration part add the line server_tokens off:
+Make the following changes:
 
 ```
-http {
+worker_rlimit_nofile 65536;
 
-        ##
-        # Basic Settings
-        ##
-        server_tokens off;
-...
+events {
+  worker_connections 65536;
+  use epoll;
+  multi_accept on;
+}
+
+http {
+  server_tokens off;
 ```
 
 After that, save and exit the file, and reload Nginx for the change to take effect:
@@ -399,6 +402,7 @@ http {
 
     include /etc/nginx/conf.d/*.conf;
     include /etc/nginx/sites-enabled/*;
+    
     add_header Strict-Transport-Security "max-age=15768000" always;
 }
 ...
@@ -449,12 +453,14 @@ Replace the previous location block with the following:
 
 ```
     location / {
-      # Proxy Headers
-      proxy_set_header Host $host;
-      proxy_set_header X-Real-IP $remote_addr;
-      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-      proxy_set_header X-Forwarded-Proto $scheme;
-    
+      # Proxy Headers 
+      proxy_set_header Host               $host;
+      proxy_set_header X-Real-IP          $remote_addr;
+      proxy_set_header X-Forwarded-For    $proxy_add_x_forwarded_for;
+      proxy_set_header X-Forwarded-Proto  $scheme;
+      proxy_set_header Refrerer           $http_referer;
+      proxy_set_header User-Agent         $http_user_agent;
+
       # WebSockets
       proxy_set_header Upgrade $http_upgrade;
       proxy_set_header Connection "upgrade";

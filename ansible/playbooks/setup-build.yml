@@ -23,7 +23,7 @@
   roles:
     - common-minimal
     - tools-other
-    - iptables
+#    - iptables
 
 - name: Install asdf
   hosts: '*'

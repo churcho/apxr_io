@@ -5,14 +5,13 @@ apxr-io
 apxr-io
 
 [nginx-servers]
-apxr-io-nginx
+apxr-io
 
 [db-servers]
 apxr-io-db
 
 [py3-hosts]
 apxr-io
-apxr-io-nginx
 apxr-io-db
 
 [py3-hosts:vars]

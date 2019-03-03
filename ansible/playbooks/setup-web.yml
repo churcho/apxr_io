@@ -25,8 +25,8 @@
   become: true
   roles:
     - common-minimal
-    - iptables
-    - iptables-http
+#    - iptables
+#    - iptables-http
 
 - name: Set up web app
   hosts: '*'
