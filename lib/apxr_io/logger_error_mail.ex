@@ -35,8 +35,8 @@ defmodule LoggerErrorMail do
   defp log_event(msg, ts, md, state) do
     msg = format_event(msg, ts, md, state)
 
-    Emails.error_notification(msg)
-    |> Emails.Mailer.deliver_later()
+    # Emails.error_notification(msg)
+    # |> Emails.Mailer.deliver_later()
   rescue
     _ ->
       :ok

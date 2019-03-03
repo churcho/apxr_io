@@ -1,12 +1,16 @@
 <%= render(ApxrIoWeb.LayoutView, "simple_header.html", assigns) %>
-  <div class="box">
-    <article class="message is-danger">
-      <div class="message-header">
-        <p>Oops!</p>
+  <div class="columns">
+    <div class="column is-half is-offset-one-quarter has-text-centered">
+      <div>
+        <article class="message is-danger">
+          <div class="message-header">
+            <p>Oops!</p>
+          </div>
+          <div class="message-body">
+            <p><strong><%= @status %></strong></p>
+            <p><%= @message %></p>
+          </div>
+        </article>
       </div>
-      <div class="message-body">
-        <p><strong><%= @status %></strong></p>
-        <p><%= @message %></p>
-      </div>
-    </article>
+    </div>
   </div>

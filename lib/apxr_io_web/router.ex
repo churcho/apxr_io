@@ -5,11 +5,15 @@ defmodule ApxrIoWeb.Router do
   @accepted_formats ~w(json elixir erlang)
 
   @csp "default-src 'self';\
-        connect-src 'self' wss://localhost:8443 wss://apxr.io;\
+        connect-src 'self';\
         script-src 'self' 'unsafe-inline' 'unsafe-eval';\
         style-src 'self' 'unsafe-inline' 'unsafe-eval';\
         img-src 'self' 'unsafe-inline' 'unsafe-eval';\
         font-src 'self' 'unsafe-inline' 'unsafe-eval';"
+
+  @checks [%PlugCheckup.Check{name: "DB", module: ApxrIoWeb.HealthChecks, function: :check_db}]
+
+  forward("/health", PlugCheckup, PlugCheckup.Options.new(json_encoder: Jason, checks: @checks))
 
   pipeline :browser do
     plug :accepts, ["html"]

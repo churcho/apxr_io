@@ -1,7 +1,7 @@
 defmodule ApxrIoWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :apxr_io
 
-  plug ApxrIoWeb.Plugs.Forwarded
+  plug RemoteIp
 
   # Serve at "/" the static files from "priv/static" directory.
   #

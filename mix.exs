@@ -68,9 +68,9 @@ defmodule ApxrIo.MixProject do
       # AWS client - MIT
       {:ex_aws, "~> 2.0"},
       # Coverage report tool for Elixir - MIT
-      {:excoveralls, "~> 0.10", only: :test},
+      {:excoveralls, "~> 0.10.6", only: :test},
       # Factory library - MIT
-      {:ex_machina, "~> 2.0"},
+      {:ex_machina, "~> 2.3.0"},
       # SQL-based adapters for Ecto and database migrations - Apache 2.0
       {:ecto_sql, "~> 3.0.5"},
       # Simple HTTP client - Apache 2.0
@@ -95,6 +95,8 @@ defmodule ApxrIo.MixProject do
       {:phoenix, "~> 1.4.0"},
       # Plug building toolkit for blocking and throttling - Apache 2.0
       {:plug_attack, "~> 0.3"},
+      # PlugCheckup provides a Plug for adding simple health checks to your app - MIT
+      {:plug_checkup, "~> 0.5.0"},
       # A Plug adapter for Cowboy - Apache 2.0
       {:plug_cowboy, "~> 2.0"},
       # Specification and conveniences for composable modules between web applications - Apache 2.0
@@ -103,6 +105,8 @@ defmodule ApxrIo.MixProject do
       {:poison, "~> 3.0"},
       # PostgreSQL driver - Apache 2.0
       {:postgrex, "~> 0.14"},
+      # A plug to overwrite the Conn's remote_ip based on headers such as X-Forwarded-For - MIT
+      {:remote_ip, "~> 0.1.4"},
       # Wrapper of :xmerl to help query xml docs - Apache 2.0
       {:sweet_xml, "~> 0.6.6"}
     ]
