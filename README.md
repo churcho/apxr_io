@@ -5,7 +5,11 @@ API server and website
 --------------------
 ### Requirements
 
+  - [asdf](https://asdf-vm.com/#/)
   - [Erlang/OTP 21](https://github.com/erlang)
+  - [Elixir](https://elixir-lang.org/)
+  - [PostgreSQL](https://www.postgresql.org/)
+  - [Yarn](https://yarnpkg.com/)
 
 --------------------
 ### Quick start

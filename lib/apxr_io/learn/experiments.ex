@@ -150,13 +150,13 @@ defmodule ApxrIo.Learn.Experiments do
     {:ok, %{decrement: :ok}}
   end
 
-  defp maybe_send_notification_email(experiment, project, release) do
-    if experiment.meta.progress == "completed" do
-      owners = Enum.map(Owners.all(project, user: :emails), & &1.user)
+  defp maybe_send_notification_email(_experiment, _project, _release) do
+    # if experiment.meta.progress == "completed" do
+    #   owners = Enum.map(Owners.all(project, user: :emails), & &1.user)
 
-      Emails.experiment_complete(project, release, experiment, owners)
-      |> Mailer.deliver_now_throttled()
-    end
+    #   Emails.experiment_complete(project, release, experiment, owners)
+    #   |> Mailer.deliver_now_throttled()
+    # end
 
     {:ok, %{notify: :ok}}
   end

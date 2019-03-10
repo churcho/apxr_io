@@ -198,3 +198,94 @@ openssl x509 -req -in cert.csr -days 365 -CA db_root.pem -CAkey db_server.pem -o
 The Common Name (/CN=) must be equal to database user name you’ve set during the first certificate generation in server configuration file
 
 3. The db_key.pem, db_cert.pem, db_root.pem files are now now ready for use by the client.
+
+### Step 6 - Log management
+
+```
+sudo vim /etc/systemd/journald.conf
+```
+
+```
+[Journal]
+Storage=persistent
+Compress=yes
+Seal=yes
+
+SystemMaxUse=10%
+SystemKeepFree=15%
+
+MaxRetentionSec=1month
+MaxFileSec=1month
+```
+
+```
+sudo systemctl restart systemd-journald
+sudo systemctl restart postgresql@10-main
+```
+
+Verify:
+
+```
+sudo journalctl -f -u postgresql@10-main
+```
+
+### Step 7 - DB backups
+
+Install the necessary packages:
+
+```
+sudo apt install python-pip
+sudo pip install awscli
+```
+
+Set your credentials:
+
+```
+aws configure
+```
+
+Create the backup script:
+
+```
+sudo vim backup.sh
+```
+
+```
+#!/bin/bash
+
+export PGPASSWORD=
+BUCKET=apxr-io-db-backups
+
+DB_USER=apxr_io
+DB_HOST=localhost
+
+PGSSLMODE=allow pg_dump -U $DB_USER \
+                        -h $DB_HOST \
+                        -p 5432 \
+                        -Fc --file=postgres_db.custom apxr_io_prod
+
+S3_KEY=$BUCKET/backups/$(date "+%Y-%m-%d")-postgres_db.custom
+/usr/local/bin/aws s3 cp postgres_db.custom s3://$S3_KEY --sse AES256
+
+rm -f postgres_db.custom
+```
+
+Set the correct permissions on the file:
+
+```
+sudo chmod +x backup.sh
+```
+
+Verify it works:
+
+```
+/home/rob/backup.sh
+```
+
+Add a cron entry:
+
+```
+crontab -e
+
+00 00 * * * /home/rob/backup.sh
+```

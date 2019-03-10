@@ -13,4 +13,4 @@ cd "$BASEDIR"
 
 source "$HOME/.asdf/asdf.sh"
 
-goaccess -f /var/log/nginx/access.log -a -m
+sudo goaccess -f /var/log/nginx/access.log -a -m

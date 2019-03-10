@@ -89,9 +89,9 @@ Deploy the release:
 scripts/deploy-local.sh
 ```
 
-The build is being done under the deploy user, who owns the files under `/srv/apxr-io`.
+The build is done under the deploy user, who owns the files under `/srv/apxr-io`.
 
-### Verify it works
+Verify it works
 
 Check status:
 
@@ -117,4 +117,34 @@ You can get a console on the running app by logging in (via ssh) as the `apxr-io
 
 ```
 scripts/remote-console.sh
+```
+
+### Step 5 - Log management
+
+```
+sudo vim /etc/systemd/journald.conf
+```
+
+```
+[Journal]
+Storage=persistent
+Compress=yes
+Seal=yes
+
+SystemMaxUse=10%
+SystemKeepFree=15%
+
+MaxRetentionSec=1month
+MaxFileSec=1month
+```
+
+```
+sudo systemctl restart systemd-journald
+sudo systemctl restart apxr-io.service
+```
+
+Verify:
+
+```
+sudo journalctl -f -u apxr-io.service
 ```
