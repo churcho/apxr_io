@@ -62,6 +62,7 @@ defmodule ApxrIo.TestHelpers do
       %{
         description: "Experiment description goes here.",
         machine_type: 2,
+        status: "completed",
         release_id: release_id,
         meta: %{
           started: nil,
