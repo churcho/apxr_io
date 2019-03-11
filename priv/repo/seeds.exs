@@ -327,4 +327,32 @@ ApxrIo.Repo.transaction(fn ->
     project: ecto,
     status: "offline"
   )
+
+  insert(
+    :host,
+    team: myrepo,
+    experiment: nil,
+    busy: false,
+    ip: "0.0.0.0")
+  
+  insert(
+    :host,
+    team: myrepo,
+    experiment: nil,
+    busy: false,
+    ip: "0.0.0.1")
+  
+  insert(
+    :host,
+    team: myrepo,
+    experiment: nil,
+    busy: false,
+    ip: "0.0.0.2")
+
+  insert(
+    :host,
+    team: myrepo,
+    experiment: nil,
+    busy: false,
+    ip: "0.0.0.3")
 end)
