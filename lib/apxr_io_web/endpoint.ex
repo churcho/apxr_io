@@ -22,6 +22,7 @@ defmodule ApxrIoWeb.Endpoint do
     plug Phoenix.CodeReloader
   end
 
+  plug ApxrIoWeb.Plugs.Status
   plug Plug.RequestId
 
   plug Logster.Plugs.Logger,
@@ -60,14 +61,11 @@ defmodule ApxrIoWeb.Endpoint do
   plug Plug.Session,
     store: ApxrIoWeb.Session,
     key: "_apxr_io_key",
-    max_age: 60 * 60 * 12,
-    secure: true
+    max_age: 60 * 60 * 24
 
   if Mix.env() == :prod do
     plug Plug.SSL, rewrite_on: [:x_forwarded_proto]
   end
-
-  plug ApxrIoWeb.Plugs.Status
 
   plug ApxrIoWeb.Router
 

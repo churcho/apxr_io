@@ -19,7 +19,7 @@ IO.inspect(host)
 answer = IO.gets("Update host IP for team? [Yn] ")
 
 if answer =~ ~r/^(Y(es)?)?$/i do
-  host = ApxrIo.Account.Hosts.update(host, %{ip: ip})
+  host = ApxrIo.Accounts.Hosts.update(host, %{ip: ip})
   IO.inspect(host)
 else
   IO.puts("Host not updated")

@@ -19,7 +19,7 @@ IO.inspect(host)
 answer = IO.gets("Delete host for team? [Yn] ")
 
 if answer =~ ~r/^(Y(es)?)?$/i do
-  host = ApxrIo.Account.Hosts.delete(host)
+  host = ApxrIo.Accounts.Hosts.delete(host)
   IO.inspect(host)
 else
   IO.puts("Host not deleted")

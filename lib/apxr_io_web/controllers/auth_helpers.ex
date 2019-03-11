@@ -15,7 +15,7 @@ defmodule ApxrIoWeb.AuthHelpers do
           is_nil(experiment) ->
             error(conn, {:error, :invalid})
 
-          not valid_token?(token, experiment) ->
+          not valid_token?(token) ->
             error(conn, {:error, :invalid})
 
           true ->
@@ -72,10 +72,10 @@ defmodule ApxrIoWeb.AuthHelpers do
     end
   end
 
-  defp valid_token?(token, experiment) do
+  defp valid_token?(token) do
     case ApxrIo.Token.verify_and_validate(token) do
-      {:ok, %{"iss" => "apxr_run", "aud" => "apxr_io", "exp_id" => eid}} ->
-        if eid == experiment.id, do: true, else: false
+      {:ok, _Claims} ->
+        true
 
       _ ->
         false

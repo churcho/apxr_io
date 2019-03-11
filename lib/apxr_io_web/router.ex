@@ -20,7 +20,7 @@ defmodule ApxrIoWeb.Router do
     plug :fetch_session
     plug :fetch_flash
     plug :protect_from_forgery
-    plug :put_secure_browser_headers, %{"content-security-policy" => @csp}
+    plug :put_secure_browser_headers
     plug :web_user_agent
     plug :validate_url
     plug :login

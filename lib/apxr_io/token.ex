@@ -4,7 +4,6 @@ defmodule ApxrIo.Token do
   @impl true
   def token_config do
     default_claims(
-      # 1 hour
       default_exp: 60 * 60,
       skip: [:iss, :aud]
     )

@@ -9,18 +9,12 @@ config :apxr_io,
 config :joken, default_signer: "0adm3lg3uLZTQSD23QSFsaFKjydfqFGR3sd7ZZp"
 
 config :apxr_io, ApxrIoWeb.Endpoint,
-  https: [
-    port: 4001,
-    cipher_suite: :strong,
-    certfile: "priv/cert/dev/selfsigned.pem",
-    keyfile: "priv/cert/dev/selfsigned_key.pem"
-  ],
+  http: [port: 4000],
   secret_key_base: "prV6O0adm3lgdpuFLXXZORelFyse/8+xjzObP6uCRnx",
   debug_errors: true,
   code_reloader: true,
   cache_static_lookup: false,
   check_origin: false,
-  pubsub: [name: ApxrIo.PubSub],
   watchers: [
     node: [
       "node_modules/webpack/bin/webpack.js",

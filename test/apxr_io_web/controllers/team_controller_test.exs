@@ -111,8 +111,6 @@ defmodule ApxrIoWeb.TeamControllerTest do
 
     response(conn, 302)
     assert get_resp_header(conn, "location") == ["/teams"]
-
-    assert get_flash(conn, :info) == "Team created."
   end
 
   test "create team validates name", %{user: user} do

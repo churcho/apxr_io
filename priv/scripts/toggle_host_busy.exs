@@ -19,7 +19,7 @@ IO.inspect(host)
 answer = IO.gets("Toggle busy for host? [Yn] ")
 
 if answer =~ ~r/^(Y(es)?)?$/i do
-  host = ApxrIo.Account.Hosts.update(host, %{busy: !host.busy})
+  host = ApxrIo.Accounts.Hosts.update(host, %{busy: !host.busy})
   IO.inspect(host)
 else
   IO.puts("Host not updated")

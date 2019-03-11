@@ -117,7 +117,7 @@ defmodule ApxrIo.MixProject do
     [
       "ecto.setup": ["ecto.create", "ecto.migrate"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      setup: ["deps.get", "ecto.setup", "run priv/repo/seeds.ex", &setup_yarn/1],
+      setup: ["deps.get", "ecto.setup", &setup_yarn/1],
       test: ["ecto.reset", "test"],
       check: [
         "deps.get",

@@ -328,31 +328,31 @@ ApxrIo.Repo.transaction(fn ->
     status: "offline"
   )
 
-  insert(
-    :host,
+  insert(:host,
     team: myrepo,
     experiment: nil,
     busy: false,
-    ip: "0.0.0.0")
-  
-  insert(
-    :host,
-    team: myrepo,
-    experiment: nil,
-    busy: false,
-    ip: "0.0.0.1")
-  
-  insert(
-    :host,
-    team: myrepo,
-    experiment: nil,
-    busy: false,
-    ip: "0.0.0.2")
+    ip: "0.0.0.0"
+  )
 
-  insert(
-    :host,
+  insert(:host,
     team: myrepo,
     experiment: nil,
     busy: false,
-    ip: "0.0.0.3")
+    ip: "0.0.0.1"
+  )
+
+  insert(:host,
+    team: myrepo,
+    experiment: nil,
+    busy: false,
+    ip: "0.0.0.2"
+  )
+
+  insert(:host,
+    team: myrepo,
+    experiment: nil,
+    busy: false,
+    ip: "0.0.0.3"
+  )
 end)

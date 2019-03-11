@@ -10,7 +10,7 @@ defmodule ApxrIo.Learn.Experiment do
     has_one :host, Host
     has_one :artifact, Artifact
     embeds_one :meta, ExperimentMetadata, on_replace: :update
-    embeds_one :trace, ExperimentTrace, on_replace: :update
+    embeds_one :trace, ExperimentTrace, on_replace: :delete
     embeds_one :graph_data, ExperimentGraphData, on_replace: :delete
     embeds_one :system_metrics, ExperimentSystemMetrics, on_replace: :delete
   end
@@ -29,7 +29,7 @@ defmodule ApxrIo.Learn.Experiment do
   end
 
   defp changeset(experiment, :update, params) do
-    cast(experiment, params, ~w(description)a)
+    cast(experiment, params, ~w(description status)a)
     |> validate_length(:description, max: 280)
     |> validate_inclusion(:status, ~w(paused in_progress completed failed))
     |> cast_embed(:meta)

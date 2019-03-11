@@ -29,7 +29,6 @@ defmodule ApxrIoWeb.TeamController do
     case do_create(conn.assigns.current_user, params, audit_data(conn)) do
       {:ok, _team} ->
         conn
-        |> put_flash(:info, "Team created.")
         |> redirect(to: Routes.team_path(conn, :index))
 
       {:error, {:team, changeset}} ->

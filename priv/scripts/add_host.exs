@@ -12,7 +12,7 @@ IO.inspect(team)
 answer = IO.gets("Create new host for team? [Yn] ")
 
 if answer =~ ~r/^(Y(es)?)?$/i do
-  host = ApxrIo.Account.Hosts.new(team, %{ip: ip})
+  host = ApxrIo.Accounts.Hosts.new(team, %{ip: ip})
   IO.inspect(host)
 else
   IO.puts("Host not created")

@@ -6,14 +6,15 @@ config :apxr_io,
   user_agent_req: true,
   store_impl: ApxrIo.Store.Local,
   learn_impl: ApxrIo.Learn.Local,
-  apxr_run_url: "https://localhost:8443"
+  apxr_run_url: "http://localhost:8080"
 
 config :apxr_io, ecto_repos: [ApxrIo.RepoBase]
 
 config :apxr_io, ApxrIoWeb.Endpoint,
   url: [host: "localhost"],
   root: Path.dirname(__DIR__),
-  render_errors: [view: ApxrIoWeb.ErrorView, accepts: ~w(html json elixir erlang)]
+  render_errors: [view: ApxrIoWeb.ErrorView, accepts: ~w(html json elixir erlang)],
+  pubsub: [name: ApxrIo.PubSub, adapter: Phoenix.PubSub.PG2]
 
 config :apxr_io, ApxrIo.Vault,
   ciphers: [

@@ -124,7 +124,7 @@ defmodule ApxrIoWeb.ViewHelpers do
     if Enum.at(conn.path_info, 1) == team.name do
       [
         members: {"Members", Routes.team_path(Endpoint, :members, team)},
-        keys: {"Keys", Routes.teams_key_path(Endpoint, :index, team)},
+        # keys: {"Keys", Routes.teams_key_path(Endpoint, :index, team)},
         audit_log: {"Audit log", Routes.team_path(Endpoint, :audit_log, team)}
       ]
     else

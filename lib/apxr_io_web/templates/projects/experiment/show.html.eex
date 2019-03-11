@@ -2,7 +2,7 @@
   <div class="column is-1"></div>
   <div class="column is-10">
       <a class="button is-link is-small" href="<%= Routes.experiment_path(Endpoint, :index, @project) %>">
-        Back to experiments
+        < Back to experiments
       </a>
   </div>
   <div class="column is-1"></div>
@@ -169,7 +169,6 @@ pm_parameters: <%= Poison.encode_to_iodata!(@experiment.meta.pm_parameters, pret
             </div>
           </div>
         </div>
-        <p class="help has-text-grey has-text-centered">Values are NOT real time. They are updated at the end of every run.</p>
       </div>
     </div>
   </div>
