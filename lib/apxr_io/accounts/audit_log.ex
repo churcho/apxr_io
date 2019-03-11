@@ -238,34 +238,6 @@ defmodule ApxrIo.Accounts.AuditLog do
     %{project: serialize(project), artifact: serialize(artifact)}
   end
 
-  defp extract_params("team.billing.create", {team, user}) do
-    %{team: serialize(team), user: serialize(user)}
-  end
-
-  defp extract_params("team.billing.update", {team, user}) do
-    %{team: serialize(team), user: serialize(user)}
-  end
-
-  defp extract_params("team.billing.cancel", {team, user}) do
-    %{team: serialize(team), user: serialize(user)}
-  end
-
-  defp extract_params("team.billing.change_plan", {team, user}) do
-    %{team: serialize(team), user: serialize(user)}
-  end
-
-  defp extract_params("team.billing.add_seats", {team, user}) do
-    %{team: serialize(team), user: serialize(user)}
-  end
-
-  defp extract_params("team.billing.remove_seats", {team, user}) do
-    %{team: serialize(team), user: serialize(user)}
-  end
-
-  defp extract_params("team.billing.pay_invoice", {team, user}) do
-    %{team: serialize(team), user: serialize(user)}
-  end
-
   defp serialize(%Key{} = key) do
     key
     |> do_serialize()

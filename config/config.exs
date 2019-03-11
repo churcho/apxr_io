@@ -5,7 +5,6 @@ config :apxr_io,
   user_confirm: true,
   user_agent_req: true,
   store_impl: ApxrIo.Store.Local,
-  billing_impl: ApxrIo.Billing.Local,
   learn_impl: ApxrIo.Learn.Local,
   apxr_run_url: "https://localhost:8443"
 

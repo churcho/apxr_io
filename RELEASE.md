@@ -66,7 +66,7 @@ vim "config/prod.exs"
 Build the production release:
 
 ```
-scripts/build-release.sh
+bin/build-release
 ```
 
 Note: `asdf install` builds Erlang from source, so the first time it runs it can take a long time. If it fails due to a lost connection, delete /home/deploy/.asdf/installs/erlang/[version] and try again. You may want to run it under `tmux`.
@@ -78,15 +78,15 @@ Whenever you change the db schema, you need to run migrations on the server.
 After building the release, but before deploying the code, update the db to match the code:
 
 ```
-scripts/db-setup.sh
+bin/db-setup
 # or
-scripts/db-migrate.sh
+bin/db-migrate
 ```
 
 Deploy the release:
 
 ```
-scripts/deploy-local.sh
+bin/deploy-local
 ```
 
 The build is done under the deploy user, who owns the files under `/srv/apxr-io`.
@@ -116,7 +116,7 @@ sudo systemctl stop apxr-io
 You can get a console on the running app by logging in (via ssh) as the `apxr-io` user the app runs under and executing:
 
 ```
-scripts/remote-console.sh
+bin/remote-console
 ```
 
 ### Step 5 - Log management

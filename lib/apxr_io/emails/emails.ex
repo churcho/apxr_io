@@ -60,8 +60,8 @@ defmodule ApxrIo.Emails do
   def error_notification(msg) do
     new_email()
     |> to("approximatereality@gmail.com")
-    |> from(source())
-    |> subject("ApxrIoError")
+    |> from({"APXR", "errors@approximatereality.com"})
+    |> subject("apxr_io_error")
     |> text_body(msg)
   end
 
@@ -78,6 +78,6 @@ defmodule ApxrIo.Emails do
 
   defp source() do
     host = Application.get_env(:apxr_io, :email_host) || "approximatereality.com"
-    {"APXR", "noreply@#{host}"}
+    {"APXR", "no-reply@#{host}"}
   end
 end

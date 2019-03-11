@@ -10,12 +10,13 @@ defmodule ApxrIo.Learn.ApxrRun do
     tarball = tarball(release)
     config = config(experiment, release)
     identifiers = {project, release, experiment}
+    host = experiment.host.ip
 
-    with {:ok, 204, _h, _b} <- post("/actions/polis/prep", tarball, identifiers),
+    with {:ok, 204, _h, _b} <- post("/actions/polis/prep", tarball, identifiers, host),
          :ok <- :timer.sleep(100),
-         {:ok, 204, _h, _b} <- post("/actions/polis/setup", config, identifiers),
+         {:ok, 204, _h, _b} <- post("/actions/polis/setup", config, identifiers, host),
          :ok <- :timer.sleep(100),
-         {:ok, 204, _h, _b} <- post("/actions/experiment/start", <<>>, identifiers) do
+         {:ok, 204, _h, _b} <- post("/actions/experiment/start", <<>>, identifiers, host) do
       {:ok, %{learn_start: :ok}}
     else
       {:ok, error, _headers, _body} ->
@@ -23,8 +24,11 @@ defmodule ApxrIo.Learn.ApxrRun do
     end
   end
 
-  def pause(project, version, identifier, audit: audit_data) do
-    case post("/actions/experiment/pause", <<>>, {project, version, identifier}) do
+  def pause(project, version, experiment, audit: audit_data) do
+    identifier = experiment.meta.exp_parameters["identifier"]
+    host = experiment.host.ip
+
+    case post("/actions/experiment/pause", <<>>, {project, version, identifier}, host) do
       {:ok, 204, _headers, _body} ->
         AuditLog.audit(
           Multi.new(),
@@ -40,8 +44,11 @@ defmodule ApxrIo.Learn.ApxrRun do
     end
   end
 
-  def continue(project, version, identifier, audit: audit_data) do
-    case post("/actions/experiment/continue", <<>>, {project, version, identifier}) do
+  def continue(project, version, experiment, audit: audit_data) do
+    identifier = experiment.meta.exp_parameters["identifier"]
+    host = experiment.host.ip
+
+    case post("/actions/experiment/continue", <<>>, {project, version, identifier}, host) do
       {:ok, 204, _headers, _body} ->
         AuditLog.audit(
           Multi.new(),
@@ -57,8 +64,11 @@ defmodule ApxrIo.Learn.ApxrRun do
     end
   end
 
-  def stop(project, version, identifier) do
-    case post("/actions/polis/stop", <<>>, {project, version, identifier}) do
+  def stop(project, version, experiment) do
+    identifier = experiment.meta.exp_parameters["identifier"]
+    host = experiment.host.ip
+
+    case post("/actions/polis/stop", <<>>, {project, version, identifier}, host) do
       {:ok, 204, _headers, _body} ->
         {:ok, %{learn_stop: :ok}}
 
@@ -67,12 +77,12 @@ defmodule ApxrIo.Learn.ApxrRun do
     end
   end
 
-  def delete(_project, _version, _identifier) do
+  def delete(_project, _version, _experiment) do
     {:ok, %{learn_delete: :ok}}
   end
 
-  defp post(path, body, identifiers) do
-    url = "TODO" <> path
+  defp post(path, body, identifiers, host) do
+    url = "http://" <> host <> path
 
     headers = [
       {"token", token(identifiers)},

@@ -1,7 +1,7 @@
 defmodule ApxrIoWeb.API.ExperimentControllerTest do
   use ApxrIoWeb.ConnCase, async: true
 
-  alias ApxrIo.Accounts.{AuditLog, Teams}
+  alias ApxrIo.Accounts.{AuditLog, Hosts}
   alias ApxrIo.Learn.Experiment
   alias ApxrIo.Learn.Experiments
   alias ApxrIoWeb.ErlangFormat
@@ -10,7 +10,7 @@ defmodule ApxrIoWeb.API.ExperimentControllerTest do
     user = insert(:user)
     unauthorized_user = insert(:user)
 
-    team = insert(:team, experiments_in_progress: 2)
+    team = insert(:team)
     nbteam = insert(:team, billing_active: false)
     other_team = insert(:team)
 
@@ -214,67 +214,32 @@ defmodule ApxrIoWeb.API.ExperimentControllerTest do
       assert experiment_count == Experiments.count(project3)
     end
 
-    test "team needs to have correct plan", %{
-      team: team,
-      project: project,
-      release2: release2
-    } do
-      Mox.stub(ApxrIo.Billing.Mock, :teams, fn _ ->
-        %{
-          "checkout_html" => "",
-          "invoices" => [],
-          "quantity" => 4,
-          "plan_id" => "team-monthly-ss1"
-        }
-      end)
-
-      experiment = build_experiment(release2.id, %{machine_type: 5})
-
-      user = insert(:user)
-
-      insert(:team_user, team: team, user: user, role: "write")
-
-      experiment_count = Experiments.count(project)
-
-      build_conn()
-      |> put_req_header("authorization", key_for(user))
-      |> json_post(
-        "api/repos/#{team.name}/projects/#{project.name}/releases/#{release2.version}/experiments",
-        %{"experiment" => experiment}
-      )
-      |> json_response(400)
-
-      assert experiment_count == Experiments.count(project)
-    end
-
-    test "team needs to have seats available", %{
+    test "team needs to have hosts available", %{
       team: team,
       project: project,
       experiment2: experiment2,
+      experiment: experiment,
       release2: release2
     } do
-      Mox.stub(ApxrIo.Billing.Mock, :teams, fn _ ->
-        %{
-          "checkout_html" => "",
-          "invoices" => [],
-          "quantity" => 2,
-          "plan_id" => "team-monthly-ss1"
-        }
-      end)
-
       user = insert(:user)
 
       insert(:team_user, team: team, user: user, role: "write")
 
+      insert(:host, experiment: experiment, team: team, busy: true)
+
       experiment_count = Experiments.count(project)
 
-      build_conn()
-      |> put_req_header("authorization", key_for(user))
-      |> json_post(
-        "api/repos/#{team.name}/projects/#{project.name}/releases/#{release2.version}/experiments",
-        %{"experiment" => experiment2}
-      )
-      |> json_response(400)
+      conn =
+        build_conn()
+        |> put_req_header("authorization", key_for(user))
+        |> json_post(
+          "api/repos/#{team.name}/projects/#{project.name}/releases/#{release2.version}/experiments",
+          %{"experiment" => experiment2}
+        )
+
+      result = json_response(conn, 400)
+      assert result["message"] =~ "Bad request"
+      assert result["errors"] == "no hosts available"
 
       assert experiment_count == Experiments.count(project)
     end
@@ -285,15 +250,6 @@ defmodule ApxrIoWeb.API.ExperimentControllerTest do
       invalid_experiment: invalid_experiment,
       release2: release2
     } do
-      Mox.stub(ApxrIo.Billing.Mock, :teams, fn _ ->
-        %{
-          "checkout_html" => "",
-          "invoices" => [],
-          "quantity" => 4,
-          "plan_id" => "team-monthly-ss1"
-        }
-      end)
-
       invalid_experiment1 =
         put_in(invalid_experiment, [:meta, :exp_parameters, :runs], "wrong value")
 
@@ -329,19 +285,14 @@ defmodule ApxrIoWeb.API.ExperimentControllerTest do
         {:ok, %{learn_start: :ok}}
       end)
 
-      Mox.stub(ApxrIo.Billing.Mock, :teams, fn _ ->
-        %{
-          "checkout_html" => "",
-          "invoices" => [],
-          "quantity" => 4,
-          "plan_id" => "team-monthly-ss1"
-        }
-      end)
-
       experiment_count = Experiments.count(project)
-      experiments_in_progress_count = Teams.get_by_id(team.id).experiments_in_progress
+      experiments_in_progress_count = length(Hosts.get_busy(team))
 
       user = insert(:user)
+
+      insert(:host, team: team, busy: false, experiment: nil, ip: "1")
+      insert(:host, team: team, busy: false, experiment: nil, ip: "2")
+      insert(:host, team: team, busy: false, experiment: nil, ip: "3")
 
       insert(:team_user, team: team, user: user, role: "write")
 
@@ -354,7 +305,7 @@ defmodule ApxrIoWeb.API.ExperimentControllerTest do
       |> json_response(201)
 
       assert experiment_count + 1 == Experiments.count(project)
-      assert experiments_in_progress_count + 1 == Teams.get_by_id(team.id).experiments_in_progress
+      assert experiments_in_progress_count + 1 == length(Hosts.get_busy(team))
 
       logs = ApxrIo.Repo.all(AuditLog)
       assert length(logs) == 2
@@ -418,9 +369,11 @@ defmodule ApxrIoWeb.API.ExperimentControllerTest do
           release: release
         )
 
+      insert(:host, experiment: experiment, team: team, busy: true)
+
       uexperiment = build_experiment(release.id)
 
-      experiments_in_progress_count = Teams.get_by_id(team.id).experiments_in_progress
+      experiments_in_progress_count = length(Hosts.get_busy(team))
 
       token =
         ApxrIo.Token.generate_and_sign!(%{
@@ -444,7 +397,7 @@ defmodule ApxrIoWeb.API.ExperimentControllerTest do
       )
       |> response(204)
 
-      assert experiments_in_progress_count - 1 == Teams.get_by_id(team.id).experiments_in_progress
+      assert experiments_in_progress_count - 1 == length(Hosts.get_busy(team))
     end
   end
 
@@ -569,9 +522,11 @@ defmodule ApxrIoWeb.API.ExperimentControllerTest do
 
       user = insert(:user)
 
+      insert(:host, experiment: experiment, team: team, busy: true)
+
       insert(:team_user, team: team, user: user, role: "write")
 
-      experiments_in_progress_count = Teams.get_by_id(team.id).experiments_in_progress
+      experiments_in_progress_count = length(Hosts.get_busy(team))
 
       build_conn()
       |> put_req_header("authorization", key_for(user))
@@ -583,7 +538,7 @@ defmodule ApxrIoWeb.API.ExperimentControllerTest do
       )
       |> response(204)
 
-      assert experiments_in_progress_count - 1 == Teams.get_by_id(team.id).experiments_in_progress
+      assert experiments_in_progress_count - 1 == length(Hosts.get_busy(team))
     end
   end
 

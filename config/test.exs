@@ -5,7 +5,6 @@ config :apxr_io,
   tmp_dir: Path.expand("tmp/test"),
   private_key: File.read!("test/fixtures/private.pem"),
   public_key: File.read!("test/fixtures/public.pem"),
-  billing_impl: ApxrIo.Billing.Mock,
   learn_impl: ApxrIo.Learn.Mock,
   secret: "qSsR0LzzK+3uLZTF7P/DjwHaFKjyiKbQGjExcI7ZZp"
 

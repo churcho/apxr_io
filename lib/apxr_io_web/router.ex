@@ -117,18 +117,7 @@ defmodule ApxrIoWeb.Router do
 
     get "/:team/keys", KeyController, :index, as: :teams_key
     post "/:team/keys", KeyController, :create, as: :teams_key
-    delete("/:team/keys/:name", KeyController, :delete, as: :teams_key)
-
-    get "/:team/billing", BillingController, :index
-    post "/:team/billing-token", BillingController, :billing_token
-    post "/:team/cancel-billing", BillingController, :cancel_billing
-    post "/:team/update-billing", BillingController, :update_billing
-    post "/:team/create-billing", BillingController, :create_billing
-    post "/:team/add-seats", BillingController, :add_seats
-    post "/:team/remove-seats", BillingController, :remove_seats
-    post "/:team/change-plan", BillingController, :change_plan
-    get "/:team/invoices/:id", BillingController, :show_invoice
-    post "/:team/invoices/:id/pay", BillingController, :pay_invoice
+    delete "/:team/keys/:name", KeyController, :delete, as: :teams_key
   end
 
   scope "/projects", ApxrIoWeb.Projects do

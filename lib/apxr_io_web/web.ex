@@ -118,6 +118,8 @@ defmodule ApxrIoWeb do
         Accounts.Session,
         Accounts.User,
         Accounts.Users,
+        Accounts.Host,
+        Accounts.Hosts,
         CMS.Post,
         CMS.Blog,
         Emails,

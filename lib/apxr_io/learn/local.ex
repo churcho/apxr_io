@@ -23,7 +23,9 @@ defmodule ApxrIo.Learn.Local do
     end
   end
 
-  def pause(project, version, identifier, audit: audit_data) do
+  def pause(project, version, experiment, audit: audit_data) do
+    identifier = experiment.meta.exp_parameters["identifier"]
+
     case post("/actions/experiment/pause", <<>>, {project, version, identifier}) do
       {:ok, 204, _headers, _body} ->
         AuditLog.audit(
@@ -40,7 +42,9 @@ defmodule ApxrIo.Learn.Local do
     end
   end
 
-  def continue(project, version, identifier, audit: audit_data) do
+  def continue(project, version, experiment, audit: audit_data) do
+    identifier = experiment.meta.exp_parameters["identifier"]
+
     case post("/actions/experiment/continue", <<>>, {project, version, identifier}) do
       {:ok, 204, _headers, _body} ->
         AuditLog.audit(
@@ -57,7 +61,9 @@ defmodule ApxrIo.Learn.Local do
     end
   end
 
-  def stop(project, version, identifier) do
+  def stop(project, version, experiment) do
+    identifier = experiment.meta.exp_parameters["identifier"]
+
     case post("/actions/polis/stop", <<>>, {project, version, identifier}) do
       {:ok, 204, _headers, _body} ->
         {:ok, %{learn_stop: :ok}}
@@ -67,7 +73,7 @@ defmodule ApxrIo.Learn.Local do
     end
   end
 
-  def delete(_project, _version, _identifier) do
+  def delete(_project, _version, _experiment) do
     {:ok, %{learn_delete: :ok}}
   end
 

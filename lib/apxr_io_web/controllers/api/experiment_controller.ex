@@ -41,16 +41,8 @@ defmodule ApxrIoWeb.API.ExperimentController do
     project = conn.assigns.project
     release = conn.assigns.release
 
-    if Teams.can_start_experiment?(project.team, experiment) do
-      Experiments.start(project, release, experiment, audit: audit_data(conn))
-      |> handle_result(conn)
-    else
-      error_msg = %{
-        "Denied" => "Not enough seats and/or machine type not available on your current plan."
-      }
-
-      handle_result({:error, error_msg}, conn)
-    end
+    Experiments.start(project, release, experiment, audit: audit_data(conn))
+    |> handle_result(conn)
   end
 
   def update(conn, %{"experiment" => experiment_body}) do

@@ -3,8 +3,6 @@ use Mix.Config
 config :apxr_io,
   tmp_dir: Path.expand("tmp/dev"),
   private_key: File.read!("test/fixtures/private.pem"),
-  billing_url: "https://localhost:4002",
-  billing_key: "apxr_io_billing_key",
   tmp_dir: Path.expand("tmp/dev"),
   secret: "qSsR0LzzK+3uLZTF7P/DjwHaFKjyiKbQGjExcI7ZZp"
 

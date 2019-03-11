@@ -1,14 +1,13 @@
 defmodule ApxrIo.Learn.Experiment do
   use ApxrIoWeb, :schema
 
-  @valid_machine_types [1, 2, 3, 4]
-
   schema "experiments" do
     field :description, :string
-    field :machine_type, :integer, default: 1
+    field :status, :string, default: "in_progress"
     timestamps()
 
     belongs_to :release, Release
+    has_one :host, Host
     has_one :artifact, Artifact
     embeds_one :meta, ExperimentMetadata, on_replace: :update
     embeds_one :trace, ExperimentTrace, on_replace: :update
@@ -30,10 +29,9 @@ defmodule ApxrIo.Learn.Experiment do
   end
 
   defp changeset(experiment, :update, params) do
-    cast(experiment, params, ~w(description machine_type)a)
+    cast(experiment, params, ~w(description)a)
     |> validate_length(:description, max: 280)
-    |> validate_required(:machine_type)
-    |> validate_inclusion(:machine_type, @valid_machine_types)
+    |> validate_inclusion(:status, ~w(paused in_progress completed failed))
     |> cast_embed(:meta)
     |> cast_embed(:trace)
     |> cast_embed(:graph_data)
@@ -41,7 +39,7 @@ defmodule ApxrIo.Learn.Experiment do
   end
 
   defp changeset(experiment, :create, params) do
-    cast(experiment, params, ~w(description machine_type)a)
+    cast(experiment, params, ~w(description)a)
     |> validate_length(:description, max: 280)
     |> cast_embed(:meta, required: true)
     |> cast_embed(:trace, required: false)

@@ -19,7 +19,7 @@ defmodule ApxrIo.Learn.ExperimentMetadata do
 
   def changeset(meta, params) do
     cast(meta, params, @params)
-    |> validate_inclusion(:progress, ~w(paused, in_progress completed))
+    |> validate_inclusion(:progress, ~w(paused in_progress completed))
     |> validate_parameters(:exp_parameters)
     |> validate_parameters(:pm_parameters)
     |> validate_parameters(:init_constraints)

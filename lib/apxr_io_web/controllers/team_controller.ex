@@ -29,25 +29,13 @@ defmodule ApxrIoWeb.TeamController do
     case do_create(conn.assigns.current_user, params, audit_data(conn)) do
       {:ok, _team} ->
         conn
-        |> put_flash(:info, "Team created with one month free trial period active.")
+        |> put_flash(:info, "Team created.")
         |> redirect(to: Routes.team_path(conn, :index))
 
       {:error, {:team, changeset}} ->
         conn
         |> put_status(400)
         |> render_new(changeset: changeset, params: params)
-
-      {:error, {:billing, reason}} ->
-        changeset = Team.changeset(%Team{}, params["team"])
-
-        conn
-        |> put_status(400)
-        |> put_flash(:error, "Oops, something went wrong! Please check the errors below.")
-        |> render_new(
-          changeset: changeset,
-          params: params,
-          errors: reason["errors"]
-        )
     end
   end
 
@@ -55,32 +43,22 @@ defmodule ApxrIoWeb.TeamController do
     username = params["username"]
 
     access_team(conn, team, "admin", fn team ->
-      members_count = Teams.members_count(team)
-      billing = ApxrIo.Billing.teams(team.name)
+      case Teams.add_member(team, username, params, audit: audit_data(conn)) do
+        {:ok, _} ->
+          conn
+          |> put_flash(:info, "User #{username} has been added to the team.")
+          |> redirect(to: Routes.team_path(conn, :members, team))
 
-      if billing["quantity"] > members_count do
-        case Teams.add_member(team, username, params, audit: audit_data(conn)) do
-          {:ok, _} ->
-            conn
-            |> put_flash(:info, "User #{username} has been added to the team.")
-            |> redirect(to: Routes.team_path(conn, :members, team))
+        {:error, :unknown_user} ->
+          conn
+          |> put_status(400)
+          |> put_flash(:error, "Unknown user #{username}.")
+          |> render_members(team)
 
-          {:error, :unknown_user} ->
-            conn
-            |> put_status(400)
-            |> put_flash(:error, "Unknown user #{username}.")
-            |> render_members(team)
-
-          {:error, changeset} ->
-            conn
-            |> put_status(400)
-            |> render_members(team, add_member: changeset)
-        end
-      else
-        conn
-        |> put_status(400)
-        |> put_flash(:error, "Not enough seats in team to add member.")
-        |> render_members(team)
+        {:error, changeset} ->
+          conn
+          |> put_status(400)
+          |> render_members(team, add_member: changeset)
       end
     end)
   end
@@ -161,20 +139,7 @@ defmodule ApxrIoWeb.TeamController do
     ApxrIo.Repo.transaction(fn ->
       case Teams.create(user, params["team"], audit: audit_data) do
         {:ok, team} ->
-          billing_params =
-            Map.take(params, ["email", "person", "company"])
-            |> Map.put_new("person", nil)
-            |> Map.put_new("company", nil)
-            |> Map.put("token", params["team"]["name"])
-            |> Map.put("quantity", 1)
-
-          case ApxrIo.Billing.create(team, user, billing_params, audit: audit_data) do
-            {:ok, _} ->
-              team
-
-            {:error, reason} ->
-              ApxrIo.Repo.rollback({:billing, reason})
-          end
+          team
 
         {:error, changeset} ->
           ApxrIo.Repo.rollback({:team, changeset})
@@ -206,7 +171,6 @@ defmodule ApxrIoWeb.TeamController do
   defp render_members(conn, team, opts \\ []) do
     user = conn.assigns.current_user
     teams = Teams.all_by_user(user)
-    billing = ApxrIo.Billing.teams(team.name)
 
     render(
       conn,
@@ -216,7 +180,6 @@ defmodule ApxrIoWeb.TeamController do
       title: "Members",
       container: "container teams",
       team: team,
-      quantity: billing["billing"],
       params: opts[:params],
       errors: opts[:errors],
       add_member_changeset: opts[:add_member_changeset] || add_member_changeset(),
@@ -259,7 +222,6 @@ defmodule ApxrIoWeb.TeamController do
       view_name: :new,
       title: "New team",
       container: "container teams",
-      billing_email: nil,
       person: nil,
       company: nil,
       params: opts[:params],

@@ -16,21 +16,8 @@ defmodule ApxrIoWeb.TeamControllerTest do
     }
   end
 
-  defp mock_billing_teams(team) do
-    Mox.stub(ApxrIo.Billing.Mock, :teams, fn token ->
-      assert team.name == token
-
-      %{
-        "checkout_html" => "",
-        "invoices" => []
-      }
-    end)
-  end
-
   test "team members", %{user: user, team: team} do
     insert(:team_user, team: team, user: user)
-
-    mock_billing_teams(team)
 
     conn =
       build_conn()
@@ -53,16 +40,6 @@ defmodule ApxrIoWeb.TeamControllerTest do
   end
 
   test "add member to team", %{user: user, team: team} do
-    Mox.stub(ApxrIo.Billing.Mock, :teams, fn token ->
-      assert team.name == token
-
-      %{
-        "checkout_html" => "",
-        "invoices" => [],
-        "quantity" => 2
-      }
-    end)
-
     insert(:team_user, team: team, user: user, role: "admin")
     new_user = insert(:user)
     add_email(new_user, "new@mail.com")
@@ -81,37 +58,6 @@ defmodule ApxrIoWeb.TeamControllerTest do
     assert repo_user.role == "write"
 
     assert_delivered_email(ApxrIo.Emails.team_invite(team, new_user))
-  end
-
-  test "add member to team without enough seats", %{
-    user: user,
-    team: team
-  } do
-    Mox.stub(ApxrIo.Billing.Mock, :teams, fn token ->
-      assert team.name == token
-
-      %{
-        "checkout_html" => "",
-        "invoices" => [],
-        "quantity" => 1
-      }
-    end)
-
-    insert(:team_user, team: team, user: user, role: "admin")
-    new_user = insert(:user)
-    add_email(new_user, "new@mail.com")
-    params = %{"username" => new_user.username, role: "write"}
-
-    conn =
-      build_conn()
-      |> test_login(user)
-      |> post("/teams/#{team.name}", %{
-        "action" => "add_member",
-        "team_user" => params
-      })
-
-    response(conn, 400)
-    assert get_flash(conn, :error) == "Not enough seats in team to add member."
   end
 
   test "remove member from team", %{user: user, team: team} do
@@ -152,18 +98,6 @@ defmodule ApxrIoWeb.TeamControllerTest do
   end
 
   test "create team", %{user: user} do
-    Mox.stub(ApxrIo.Billing.Mock, :create, fn _team, _user, params, _audit_data ->
-      assert params == %{
-               "person" => %{"country" => "SE"},
-               "token" => "createrepo",
-               "company" => nil,
-               "email" => "eric@mail.com",
-               "quantity" => 1
-             }
-
-      {:ok, %{}}
-    end)
-
     params = %{
       "team" => %{"name" => "createrepo"},
       "person" => %{"country" => "SE"},
@@ -178,7 +112,7 @@ defmodule ApxrIoWeb.TeamControllerTest do
     response(conn, 302)
     assert get_resp_header(conn, "location") == ["/teams"]
 
-    assert get_flash(conn, :info) == "Team created with one month free trial period active."
+    assert get_flash(conn, :info) == "Team created."
   end
 
   test "create team validates name", %{user: user} do

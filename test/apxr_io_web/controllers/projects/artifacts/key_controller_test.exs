@@ -38,17 +38,6 @@ defmodule ApxrIoWeb.Projects.Artifacts.KeyControllerTest do
     }
   end
 
-  defp mock_billing_settings(team) do
-    Mox.stub(ApxrIo.Billing.Mock, :teams, fn token ->
-      assert team.name == token
-
-      %{
-        "checkout_html" => "",
-        "invoices" => []
-      }
-    end)
-  end
-
   describe "POST /projects/:project/artifacts/:artifact/keys" do
     test "generate a new key", c do
       insert(:team_user, team: c.team, user: c.user, role: "admin")
@@ -73,8 +62,6 @@ defmodule ApxrIoWeb.Projects.Artifacts.KeyControllerTest do
       insert(:team_user, team: c.team, user: c.user, role: "admin")
       key = insert(:key, artifact: c.artifact, name: "computer")
 
-      mock_billing_settings(c.team)
-
       conn =
         build_conn()
         |> test_login(c.user)
@@ -95,8 +82,6 @@ defmodule ApxrIoWeb.Projects.Artifacts.KeyControllerTest do
           name: "computer",
           revoked_at: ~N"2017-01-01 00:00:00"
         )
-
-      mock_billing_settings(c.team)
 
       conn =
         build_conn()

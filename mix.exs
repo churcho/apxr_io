@@ -56,7 +56,7 @@ defmodule ApxrIo.MixProject do
       # Plug-based swiss-army knife for CORS requests - MIT
       {:corsica, "~> 1.0"},
       # static code analysis tool - MIT
-      {:credo, "~> 1.0", only: [:dev, :test], runtime: false},
+      {:credo, "~> 1.0.3", only: [:dev, :test], runtime: false},
       # Mix tasks to simplify use of Dialyzer in Elixir projects - Apache 2.0
       {:dialyxir, "~> 1.0.0-rc.4", only: [:dev, :test], runtime: false},
       # Build releases tool - MIT

@@ -127,11 +127,20 @@ source part will be the billing service."
     }
   end
 
+  def host_factory() do
+    %ApxrIo.Accounts.Host{
+      ip: "0.0.0.0",
+      busy: false,
+      team: build(:team),
+      experiment: build(:experiment)
+    }
+  end
+
   def experiment_factory do
     %ApxrIo.Learn.Experiment{
       description: "Experiment description goes here.",
-      machine_type: 2,
       release: build(:release),
+      status: "completed",
       meta: build(:experiment_metadata),
       trace: build(:experiment_trace),
       graph_data: build(:experiment_graph_data),

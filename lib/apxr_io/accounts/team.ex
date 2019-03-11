@@ -6,10 +6,10 @@ defmodule ApxrIo.Accounts.Team do
   schema "teams" do
     field :name, :string
     field :billing_active, :boolean, default: false
-    field :experiments_in_progress, :integer, default: 0
     timestamps()
 
     has_many :projects, Project
+    has_many :hosts, Host
     has_many :team_users, TeamUser
     has_many :users, through: [:team_users, :user]
     has_many :keys, Key
@@ -56,14 +56,6 @@ defmodule ApxrIo.Accounts.Team do
       where: ro.role in ^role_or_higher(role),
       select: count(ro.id) >= 1
     )
-  end
-
-  def increment_experiments_in_progress(team) do
-    change(team, experiments_in_progress: team.experiments_in_progress + 1)
-  end
-
-  def decrement_experiments_in_progress(team) do
-    change(team, experiments_in_progress: team.experiments_in_progress - 1)
   end
 
   def role_or_higher("read"), do: ["read", "write", "admin"]

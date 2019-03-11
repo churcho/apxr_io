@@ -5,7 +5,7 @@ defmodule ApxrIo.RepoBase.Migrations.AddExperimentsTable do
     create table(:experiments) do
       add(:release_id, references(:releases), null: false)
       add(:description, :string)
-      add(:machine_type, :integer, default: 1, null: false)
+      add(:status, :string, null: false)
 
       add(:meta, :jsonb,
         null: false,

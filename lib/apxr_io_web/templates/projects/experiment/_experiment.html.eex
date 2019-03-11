@@ -1,7 +1,7 @@
 <tr>
   <td><%= @experiment.release.version %></td>
   <td><%= text_length(@experiment.description, 50) %></td>
-  <td><%= if @experiment.meta.progress, do: @experiment.meta.progress, else: "in_progress" %></td>
+  <td><%= @experiment.status %></td>
   <td><%= if is_nil(@experiment.meta.started), do: pretty_datetime(@experiment.inserted_at), else: inspect Jason.decode!(@experiment.meta.started) %></td>
   <td><%= if @experiment.meta.completed, do: inspect Jason.decode!(@experiment.meta.completed) %></td>
   <td><%= @experiment.meta.duration %></td>

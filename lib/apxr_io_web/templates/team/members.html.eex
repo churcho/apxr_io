@@ -75,16 +75,3 @@
     <% end %>
   </div>
 </div>
-<br />
-<div>
-  <h4 class="title is-4">Add seats</h4>
-</div>
-<br />
-<div>
-  <%= length(@team.team_users) %> of <%= @quantity %> seats are in use.
-    You can add more seats
-      <%= link to: Routes.billing_path(Endpoint, :index, @team), method: :get do %>
-        here.
-      <% end %>
-  </div>  
-</div>

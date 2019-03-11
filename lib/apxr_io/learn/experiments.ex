@@ -2,6 +2,7 @@ defmodule ApxrIo.Learn.Experiments do
   use ApxrIoWeb, :context
 
   alias ApxrIo.Learn
+  alias ApxrIo.Accounts.Host
 
   @timeout 60_000
 
@@ -16,7 +17,7 @@ defmodule ApxrIo.Learn.Experiments do
 
   def get(release, id) do
     Repo.get_by(assoc(release, :experiment), id: id)
-    |> Repo.preload([:release])
+    |> Repo.preload([:release, :host])
   end
 
   def get(project, version, id) do
@@ -25,7 +26,7 @@ defmodule ApxrIo.Learn.Experiments do
 
   def get_by_id(id) do
     Repo.get_by(Experiment, id: id)
-    |> Repo.preload(:release)
+    |> Repo.preload([:release, :host])
   end
 
   def start(project, release, params, audit: audit_data) do
@@ -33,10 +34,12 @@ defmodule ApxrIo.Learn.Experiments do
       Multi.new()
       |> Multi.insert(:experiment, Experiment.build(release, params))
       |> audit_create(audit_data, project, release)
-      |> Ecto.Multi.run(:learn_start, fn _repo, %{experiment: experiment1} ->
-        Learn.start(project, release, experiment1)
+      |> Ecto.Multi.run(:host, fn _repo, %{experiment: experiment1} ->
+        assign_host(project.team, experiment1)
       end)
-      |> Multi.update(:team, Team.increment_experiments_in_progress(project.team))
+      |> Ecto.Multi.run(:learn_start, fn _repo, %{experiment: experiment2} ->
+        Learn.start(project, release, experiment2)
+      end)
       |> audit_start(audit_data, project, release)
       |> Repo.transaction(timeout: @timeout)
 
@@ -53,8 +56,8 @@ defmodule ApxrIo.Learn.Experiments do
     result =
       Multi.new()
       |> Multi.update(:experiment, Experiment.update(experiment, params))
-      |> Ecto.Multi.run(:decrement, fn _repo, %{experiment: experiment1} ->
-        maybe_decrement_experiment_in_progress(experiment1, project)
+      |> Ecto.Multi.run(:host_unassign, fn _repo, %{experiment: experiment1} ->
+        maybe_unassign_host(experiment1)
       end)
       |> Ecto.Multi.run(:notify, fn _repo, %{experiment: experiment1} ->
         maybe_send_notification_email(experiment1, project, release)
@@ -71,22 +74,20 @@ defmodule ApxrIo.Learn.Experiments do
   end
 
   def pause(project, version, experiment, audit: audit_data) do
-    Learn.pause(project, version, experiment.meta.exp_parameters["identifier"], audit: audit_data)
+    Learn.pause(project, version, experiment, audit: audit_data)
   end
 
   def continue(project, version, experiment, audit: audit_data) do
-    Learn.continue(project, version, experiment.meta.exp_parameters["identifier"],
-      audit: audit_data
-    )
+    Learn.continue(project, version, experiment, audit: audit_data)
   end
 
   def stop(project, release, experiment, audit: audit_data) do
     result =
       Multi.new()
       |> Ecto.Multi.run(:learn_stop, fn _repo, _other ->
-        Learn.stop(project, release.version, experiment.meta.exp_parameters["identifier"])
+        Learn.stop(project, release.version, experiment)
       end)
-      |> Multi.update(:team, Team.decrement_experiments_in_progress(project.team))
+      |> Multi.update(:team, Host.update(experiment.host, %{busy: false}))
       |> audit_stop(audit_data, project, release, experiment)
       |> Repo.transaction(timeout: @timeout)
 
@@ -104,7 +105,7 @@ defmodule ApxrIo.Learn.Experiments do
       Multi.new()
       |> Multi.delete(:experiment, Experiment.delete(experiment))
       |> Ecto.Multi.run(:learn_delete, fn _repo, %{experiment: experiment1} ->
-        Learn.delete(project, release.version, experiment1.meta.exp_parameters["identifier"])
+        Learn.delete(project, release.version, experiment1)
       end)
       |> audit_delete(audit_data, project, release)
       |> Repo.transaction(timeout: @timeout)
@@ -142,16 +143,24 @@ defmodule ApxrIo.Learn.Experiments do
     end)
   end
 
-  defp maybe_decrement_experiment_in_progress(experiment, project) do
-    if experiment.meta.progress == "completed" do
-      Repo.update(Team.decrement_experiments_in_progress(project.team))
+  defp assign_host(team, experiment) do
+    if host = Repo.one(Host.get_and_lock(team)) do
+      Repo.update(Host.update(host, %{experiment_id: experiment.id, busy: true}))
+    else
+      {:error, "no hosts available"}
+    end
+  end
+
+  defp maybe_unassign_host(experiment) do
+    if experiment.meta.progress == "completed" or experiment.status == "failed" do
+      Repo.update(Host.update(experiment.host, %{busy: false}))
     end
 
-    {:ok, %{decrement: :ok}}
+    {:ok, %{host_unassign: :ok}}
   end
 
   defp maybe_send_notification_email(_experiment, _project, _release) do
-    # if experiment.meta.progress == "completed" do
+    # if experiment.meta.progress == "completed" or experiment.status == "failed" do
     #   owners = Enum.map(Owners.all(project, user: :emails), & &1.user)
 
     #   Emails.experiment_complete(project, release, experiment, owners)

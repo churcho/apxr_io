@@ -32,11 +32,12 @@ defmodule LoggerErrorMail do
 
   # helpers
 
-  defp log_event(_msg, _ts, _md, _state) do
-    # msg = format_event(msg, ts, md, state)
+  defp log_event(msg, ts, md, state) do
+    msg = format_event(msg, ts, md, state)
 
-    # Emails.error_notification(msg)
-    # |> Emails.Mailer.deliver_later()
+    Emails.error_notification(msg)
+    |> Emails.Mailer.deliver_later()
+
     :ok
   rescue
     _ ->
