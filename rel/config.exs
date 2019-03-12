@@ -16,6 +16,9 @@ release :apxr_io do
     rollback: "rel/commands/rollback.sh",
     seed: "rel/commands/seed.sh"
   ]
+  set overlays: [
+    {:mkdir, "tmp/tarballs"}
+  ]
   set cookie: (:crypto.strong_rand_bytes(32) |> Base.encode64 |> binary_part(0, 32) |> String.to_atom())
   set vm_args: "rel/vm.args"
 end

@@ -106,7 +106,6 @@ defmodule ApxrIoWeb.API.ReleaseController do
 
     case :apxr_tarball.unpack(tarball, tmp_dir) do
       {:ok, %{checksum: checksum, metadata: metadata}} ->
-        File.rm_rf(tmp_dir)
         {:ok, metadata, checksum}
 
       {:error, reason} ->
