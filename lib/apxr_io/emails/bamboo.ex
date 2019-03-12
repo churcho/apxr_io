@@ -28,7 +28,7 @@ defmodule ApxrIo.Emails.Bamboo.SESAdapter do
 
   defp send_email(request, email, times) do
     request
-    |> ExAws.request()
+    |> ExAws.request(region: "eu-west-1")
     |> maybe_retry(request, email, times)
   end
 

@@ -96,7 +96,7 @@ Verify it works
 Check status:
 
 ```
-systemctl status apxr-io
+sudo systemctl status apxr-io
 ```
 
 Have a look at the logs:
