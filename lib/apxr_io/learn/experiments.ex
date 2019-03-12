@@ -6,6 +6,10 @@ defmodule ApxrIo.Learn.Experiments do
 
   @timeout 60_000
 
+  def preload(experiment) do
+    Repo.preload(experiment, :host)
+  end
+
   def all(project, page, count, sort) do
     Experiment.all(project, page, count, sort)
     |> Repo.all()

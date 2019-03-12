@@ -1,6 +1,7 @@
 defmodule ApxrIo.Learn.ApxrRun do
   alias ApxrIo.Accounts.AuditLog
   alias ApxrIo.Repository.Assets
+  alias ApxrIo.Learn.Experiments
   alias ApxrIoWeb.ErlangFormat
   alias Ecto.Multi
 
@@ -10,6 +11,7 @@ defmodule ApxrIo.Learn.ApxrRun do
     tarball = tarball(release)
     config = config(experiment, release)
     identifiers = {project, release, experiment}
+    experiment = Experiments.preload(experiment)
     host = experiment.host.ip
 
     with {:ok, 204, _h, _b} <- post("/actions/polis/prep", tarball, identifiers, host),
@@ -26,6 +28,7 @@ defmodule ApxrIo.Learn.ApxrRun do
 
   def pause(project, version, experiment, audit: audit_data) do
     identifier = experiment.meta.exp_parameters["identifier"]
+    experiment = Experiments.preload(experiment)
     host = experiment.host.ip
 
     case post("/actions/experiment/pause", <<>>, {project, version, identifier}, host) do
@@ -46,6 +49,7 @@ defmodule ApxrIo.Learn.ApxrRun do
 
   def continue(project, version, experiment, audit: audit_data) do
     identifier = experiment.meta.exp_parameters["identifier"]
+    experiment = Experiments.preload(experiment)
     host = experiment.host.ip
 
     case post("/actions/experiment/continue", <<>>, {project, version, identifier}, host) do
@@ -66,6 +70,7 @@ defmodule ApxrIo.Learn.ApxrRun do
 
   def stop(project, version, experiment) do
     identifier = experiment.meta.exp_parameters["identifier"]
+    experiment = Experiments.preload(experiment)
     host = experiment.host.ip
 
     case post("/actions/polis/stop", <<>>, {project, version, identifier}, host) do
