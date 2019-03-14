@@ -51,8 +51,7 @@ defmodule ApxrIoWeb.Router do
 
   scope "/", ApxrIoWeb do
     pipe_through :browser
-    get "/", LoginController, :new
-
+    get "/", PageController, :index
     get "/about", PageController, :about
 
     get "/login/:auth_token", LoginController, :login

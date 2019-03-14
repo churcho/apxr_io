@@ -16,8 +16,8 @@
     <nav class="navbar is-spaced is-white has-shadow" role="navigation" aria-label="main navigation">
       <div class="container">
         <div class="navbar-brand">
-          <a class="navbar-item has-background-black  is-radiusless" href="/">
-            <img src="<%= Routes.static_path(Endpoint, "/images/apxr_io.png") %>"
+          <a class="navbar-item is-radiusless" href="/">
+            <img style="max-height: 2.75rem;"> src="<%= Routes.static_path(Endpoint, "/images/apxr_io.png") %>"
             srcset="<%= Routes.static_path(Endpoint, "/images/apxr_io.png") %> 1x,
             <%= Routes.static_path(Endpoint, "/images/apxr_io@2.png") %> 2x,
             <%= Routes.static_path(Endpoint, "/images/apxr_io@3.png") %> 3x"

@@ -4,7 +4,7 @@ defmodule ApxrIo.RepoBase.Migrations.AddHostsTable do
   def change() do
     create table(:hosts) do
       add(:experiment_id, references(:experiments, on_delete: :delete_all))
-      add(:team_id, references(:teams, on_delete: :delete_all), null: false)
+      add(:team_id, references(:teams, on_delete: :nilify_all), null: false)
       add(:ip, :string)
       add(:busy, :boolean, default: false, null: false)
       timestamps()

@@ -30,6 +30,7 @@ defmodule ApxrIo.Accounts.Key do
   def changeset(key, user_or_team_or_af, params) do
     cast(key, params, ~w(name)a)
     |> validate_required(~w(name)a)
+    |> unique_constraint(:name, name: "keys_user_id_name_index", message: "previously used")
     |> add_keys()
     |> prepare_changes(&unique_name/1)
     |> cast_embed(:permissions, with: &KeyPermission.changeset(&1, user_or_team_or_af, &2))
