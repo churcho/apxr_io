@@ -1,6 +1,8 @@
 defmodule ApxrIoWeb.DocsController do
   use ApxrIoWeb, :controller
 
+  plug :requires_login
+
   def index(conn, _params) do
     redirect(conn, to: Routes.docs_path(conn, :faq))
   end

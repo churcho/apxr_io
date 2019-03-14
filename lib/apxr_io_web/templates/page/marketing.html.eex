@@ -1,0 +1,58 @@
+<section class="hero">
+  <div class="container has-text-centered">
+    <div class="hero-body">
+      <h1 class="title is-1 is-spaced has-text-weight-normal">
+        <span class="has-text-weight-bold">ApproximateReality</span><span class="is-size-2 is-hidden-mobile"> — BESS Simulations</span>
+      </h1>
+      <br />
+      <h2 class="subtitle is-6" style="margin-bottom: 0.5rem;">
+        <span class="has-text-weight-bold">APXR</span> makes simulations of <span class="has-text-weight-bold">business, economic and social systems</span> easy.
+      </h2>
+      <h2 class="subtitle is-6">
+        <span class="has-text-weight-bold">Don't predict the future, simulate it</span> with our scalable self-learning adaptive agents.
+      </h2>
+    </div>
+    <div class="buttons is-centered">
+      <a class="button is-link heading is-normal">Learn more</a>
+      <a class="button heading is-normal">Talk to sales</a>
+    </div>
+  </div>
+</section>
+<br />
+<br />
+<section class="section">
+  <nav class="level">
+    <div class="level-item has-text-centered">
+      <div>
+        <h5 class="title is-5"><span>&#10004; </span>Secure</h5>
+        <br />
+        <p class="has-text-weight-light">MFA, encryption, audit-logs, granular</p>
+        <p class="has-text-weight-light">permissions, on-premise or cloud.</p>
+      </div>
+    </div>
+    <div class="level-item has-text-centered">
+      <div>
+        <h5 class="title is-5"><span>&#10004; </span>Flexible</h5>
+        <br />
+        <p class="has-text-weight-light">Sharable, repeatable, editable</p>
+        <p class="has-text-weight-light">and scalable experiments.</p>
+      </div>
+    </div>
+    <div class="level-item has-text-centered">
+      <div>
+        <h5 class="title is-5"><span>&#10004; </span>ABMs</h5>
+        <br />
+        <p class="has-text-weight-light">Autonomous, self-learning, adaptive</p>
+        <p class="has-text-weight-light">agents straight out of the box.</p>
+      </div>
+    </div>
+    <div class="level-item has-text-centered">
+      <div>
+        <h5 class="title is-5"><span>&#10004; </span>Calibration</h5>
+        <br />
+        <p class="has-text-weight-light">Auto select best parameter values</p>
+        <p class="has-text-weight-light">via built-in evolutionary strategies.</p>
+      </div>
+    </div>
+  </nav>
+</section>

@@ -7,7 +7,10 @@
     <meta name="description" content="<%= description(assigns) %>">
     <title><%= title(assigns) %></title>
     <link rel="stylesheet" href="<%= Routes.static_path(Endpoint, "/css/app.css") %>">
-    <link rel="shortcut icon" href="<%= Routes.static_path(Endpoint, "/favicon.png") %>">
+    <link rel="apple-touch-icon" sizes="180x180" href="<%= Routes.static_path(Endpoint, "/images/apple-touch-icon.png") %>">
+    <link rel="icon" type="image/png" sizes="32x32" href="<%= Routes.static_path(Endpoint, "/images/favicon-32x32.png") %>">
+    <link rel="icon" type="image/png" sizes="16x16" href="<%= Routes.static_path(Endpoint, "/images/favicon-16x16.png") %>">
+    <link rel="manifest" href="/images/site.webmanifest">
   </head>
   <body class="site">
     <!--[if lt IE 10]>
@@ -18,9 +21,7 @@
         <div class="navbar-brand">
           <a class="navbar-item has-background-black is-radiusless" href="/">
             <img src="<%= Routes.static_path(Endpoint, "/images/apxr_io.png") %>"
-            srcset="<%= Routes.static_path(Endpoint, "/images/apxr_io.png") %> 1x,
-            <%= Routes.static_path(Endpoint, "/images/apxr_io@2.png") %> 2x,
-            <%= Routes.static_path(Endpoint, "/images/apxr_io@3.png") %> 3x"
+            srcset="<%= Routes.static_path(Endpoint, "/images/apxr_io.png") %>,
             alt="approximatereality"
           </a>
           <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">

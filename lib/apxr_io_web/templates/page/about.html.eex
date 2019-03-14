@@ -1,12 +1,16 @@
 <div class="columns">
   <div class="column is-half is-offset-one-quarter has-text-centered">
     <div class="about">
-      <h2 class="title is-2">APXR</h2>
-      <p>
-        ApxrIo is a project manager for the BEAM ecosystem, any language that compiles to run on the BEAM VM, such as <a href="https://elixir-lang.org/">Elixir</a> and <a href="http://www.erlang.org/">Erlang</a>, can be used to build ApxrIo projects.
-        ApxrIo consists of the <a href="https://github.com/apxr_io/specifications/blob/master/http_api.md">HTTP API</a>, <a href="/">this website</a>, the repository serving projects and indexes, <a href="https://hexdocs.pm">hexdocs</a>, the <a href="https://github.com/apxr_io/apxr_io">Mix build-tool integration</a>, and <a href="https://github.com/apxr_io">other services</a>.
-        Many build tools support ApxrIo projects including <a href="https://hexdocs.pm/mix">Mix</a> for Elixir projects, <a href="https://www.rebar3.org/">Rebar</a> and <a href="https://erlang.mk/">erlang.mk</a> for Erlang projects.
-      </p>  
+      <h2 class="title is-2">
+        <figure class="image is-5x4">
+          <img src="/images/logo_transparent.png">
+        </figure>
+      </h2>
+      <div>
+        <p>
+          ApproximateReality (APXR) believes that the best way to understand the complex world of financial markets is to apply simulations. The generation of virtual worlds offering previously unachievable vision and better decision-making. To enable market practitioners, academics and regulators to understand the consequences of their choices, ApproximateReality places large-scale simulation at the heart of their decision-making process.
+        </p>
+      </div>
     </div>
   </div>
 </div>
