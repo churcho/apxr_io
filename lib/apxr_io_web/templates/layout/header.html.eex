@@ -67,9 +67,14 @@
               </a>
               <a class="navbar-item" href="<%= Routes.docs_path(Endpoint, :index) %>">
                 <span>
-                  Features
+                  Use cases
                 </span>
-              </a>         
+              </a>
+              <a class="navbar-item" href="<%= Routes.docs_path(Endpoint, :index) %>">
+                <span>
+                  FAQ
+                </span>
+              </a>                       
             <% end %>
           </div>
           <div class="navbar-end">
