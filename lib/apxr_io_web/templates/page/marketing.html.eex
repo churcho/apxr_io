@@ -2,7 +2,7 @@
   <div class="container has-text-centered">
     <div class="hero-body">
       <h1 class="title is-1 is-spaced has-text-weight-normal">
-        <span class="has-text-weight-bold">Approximate<wbr>Reality</span><span class="is-size-2 is-hidden-mobile"> — BESS Simulations</span>
+        <span class="has-text-weight-bold">Approximate<wbr>Reality</span>
       </h1>
       <br />
       <h2 class="subtitle is-6" style="margin-bottom: 0.5rem;">
@@ -22,7 +22,7 @@
 <br />
 <section class="section">
   <nav class="level">
-    <div class="level-item has-text-centered">
+    <div class="level-item has-text-centered" style="flex-shrink: 1;">
       <div>
         <h5 class="title is-5"><span>&#10004; </span>Secure</h5>
         <br />
@@ -30,7 +30,7 @@
         <p class="has-text-weight-light">audit-logs & granular permissions.</p>
       </div>
     </div>
-    <div class="level-item has-text-centered">
+    <div class="level-item has-text-centered" style="flex-shrink: 1;">
       <div>
         <h5 class="title is-5"><span>&#10004; </span>Flexible</h5>
         <br />
@@ -38,7 +38,7 @@
         <p class="has-text-weight-light">experiments on-premise or cloud.</p>
       </div>
     </div>
-    <div class="level-item has-text-centered">
+    <div class="level-item has-text-centered" style="flex-shrink: 1;">
       <div>
         <h5 class="title is-5"><span>&#10004; </span>ABMs</h5>
         <br />
@@ -46,7 +46,7 @@
         <p class="has-text-weight-light">agents straight out of the box.</p>
       </div>
     </div>
-    <div class="level-item has-text-centered">
+    <div class="level-item has-text-centered" style="flex-shrink: 1;">
       <div>
         <h5 class="title is-5"><span>&#10004; </span>Calibration</h5>
         <br />
@@ -57,10 +57,17 @@
   </nav>
 </section>
 <br />
+<div class="columns is-vcentered">
+  <div class="column is-three-fifths is-offset-one-fifth">
+      <figure class="image" style="max-width: 800px;">
+        <img src="/images/apxr_io_overview.png">
+      </figure>
+  </div>
+</div>
 <br />
 <section class="section">
   <nav class="level">
-    <div class="level-item has-text-centered">
+    <div class="level-item has-text-centered" style="flex-shrink: 1;">
       <div>
         <h5 class="title is-5"><span>&#10004; </span>Track</h5>
         <br />
@@ -68,15 +75,15 @@
         <p class="has-text-weight-light">& quick results with version control.</p>
       </div>
     </div>
-    <div class="level-item has-text-centered">
+    <div class="level-item has-text-centered" style="flex-shrink: 1;">
       <div>
         <h5 class="title is-5"><span>&#10004; </span>Integrate</h5>
         <br />
         <p class="has-text-weight-light">Integrate with real-time data</p>
-        <p class="has-text-weight-light">sources to stay ahead of the curve.</p>
+        <p class="has-text-weight-light">feeds to stay ahead of the curve.</p>
       </div>
     </div>
-    <div class="level-item has-text-centered">
+    <div class="level-item has-text-centered" style="flex-shrink: 1;">
       <div>
         <h5 class="title is-5"><span>&#10004; </span>Transparent</h5>
         <br />
@@ -84,7 +91,7 @@
         <p class="has-text-weight-light">every experiment via the UI.</p>
       </div>
     </div>
-    <div class="level-item has-text-centered">
+    <div class="level-item has-text-centered" style="flex-shrink: 1;">
       <div>
         <h5 class="title is-5"><span>&#10004; </span>Deploy</h5>
         <br />
@@ -95,35 +102,95 @@
   </nav>
 </section>
 <br />
+<div class="columns is-vcentered has-background-light">
+  <div class="column is-half has-text-centered">
+    <h1 class="title is-1">Scale to Zillions</h1>
+    <p>
+      ApproximateReality supports massive scale
+    </p>
+    <p>
+      concurrency on top of the battle tested
+      BEAM VM.
+    </p>
+  </div>
+  <div class="column is-half has-text-centered">
+    <figure class="image" style="max-width: 720px;">
+      <img src="/images/cloud_circle.png">
+    </figure>
+  </div>
+</div>
+<br />
+<section class="section">
+  <div class="container has-text-centered">
+    <h2 class="title is-2" id="use-cases">Use Cases</h2>
+    <br />
+    <br />
+  </div>
+  <nav class="level">
+    <div class="level-item has-text-centered" style="flex-shrink: 1;">
+      <div>
+        <h5 class="title is-5">Policy Analysis</h5>
+        <br />
+        <p class="has-text-weight-light">MFA, TLS 1.3 & AES256 encryption,</p>
+        <p class="has-text-weight-light">audit-logs & granular permissions.</p>
+      </div>
+    </div>
+    <div class="level-item has-text-centered" style="flex-shrink: 1;">
+      <div>
+        <h5 class="title is-5">Order book dynamics</h5>
+        <br />
+        <p class="has-text-weight-light">Sharable, repeatable, editable & scalable</p>
+        <p class="has-text-weight-light">experiments on-premise or cloud.</p>
+      </div>
+    </div>
+    <div class="level-item has-text-centered" style="flex-shrink: 1;">
+      <div>
+        <h5 class="title is-5">Credit risk modeling</h5>
+        <br />
+        <p class="has-text-weight-light">Autonomous, self-learning, adaptive</p>
+        <p class="has-text-weight-light">agents straight out of the box.</p>
+      </div>
+    </div>
+    <div class="level-item has-text-centered" style="flex-shrink: 1;">
+      <div>
+        <h5 class="title is-5">Contagion risk</h5>
+        <br />
+        <p class="has-text-weight-light">Auto select best parameter values</p>
+        <p class="has-text-weight-light">via built-in evolutionary strategies.</p>
+      </div>
+    </div>
+  </nav>
+</section>
+<br />
 <br />
 <section class="section has-background-light">
-    <div class="columns is-vcentered">
-      <div class="column is-half is-vcentered has-text-centered">
-          <p>
-            ApproximateReality (APXR) believes that the best way to understand the complex world of financial markets is to apply simulations. The generation of virtual worlds offering previously unachievable vision and better decision-making. To enable market practitioners, academics and regulators to understand the consequences of their choices, ApproximateReality places large-scale simulation at the heart of their decision-making process.
-          </p>
-      </div>
-      <div class="column is-half has-text-centered">
-        <div>
-          <h1 class="title is-1">What ?</h1>
-        </div>
-      </div>
-    </div>
-    <hr class="has-background-white">
-    <div class="columns is-vcentered">
-      <div class="column is-half has-text-centered">
-        <div>
-          <h1 class="title is-1">Why ?</h1>
-        </div>
-      </div>      
-      <div class="column is-half is-vcentered has-text-centered">
+  <div class="columns is-vcentered">
+    <div class="column is-half has-text-centered" style="border-right: 1px solid white;">
         <p>
-          While machine learning has had some spectacular success recently, there are a lot of problems that it can never solve alone. To test a policy proposal, for example, it is often necessary to understand a factual scenario that has never existed in the past and that can fundamentally change the statistical properties of the data in the future.
-          Simulation models offer an alternative in which much more robust prior knowledge of structure and causal interaction is incorporated.
-          Simulation in complex real-world systems leads to ABMs.
+          ApproximateReality (APXR) believes that the best way to understand the complex world of financial markets is to apply simulations. The generation of virtual worlds offering previously unachievable vision and better decision-making. To enable market practitioners, academics and regulators to understand the consequences of their choices, ApproximateReality places large-scale simulation at the heart of their decision-making process.
         </p>
+    </div>
+    <div class="column is-half has-text-centered is-hidden-mobile">
+      <div>
+        <h1 class="title is-1">What ?</h1>
       </div>
     </div>
+  </div>
+  <hr class="has-background-white">
+  <div class="columns is-vcentered">
+    <div class="column is-half has-text-centered is-hidden-mobile">
+      <div>
+        <h1 class="title is-1">Why ?</h1>
+      </div>
+    </div>      
+    <div class="column is-half has-text-centered" style="border-left: 1px solid white;">
+      <p>
+        While machine learning has had some spectacular success recently, there are a lot of problems that it can never solve alone. To test a policy proposal, for example, it is often necessary to understand a factual scenario that has never existed in the past and that can fundamentally change the statistical properties of the data in the future.
+        Simulation models offer an alternative in which much more robust prior knowledge of structure and causal interaction is incorporated.
+        Simulation in complex real-world systems leads to ABMs.
+      </p>
+    </div>
+  </div>
 </section>
 <br />
 <br />
