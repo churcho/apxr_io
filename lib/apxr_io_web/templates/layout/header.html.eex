@@ -70,7 +70,7 @@
                   Use cases
                 </span>
               </a>
-              <a class="navbar-item" href="<%= Routes.docs_path(Endpoint, :index) %>">
+              <a class="navbar-item" href="/#faq">
                 <span>
                   FAQ
                 </span>

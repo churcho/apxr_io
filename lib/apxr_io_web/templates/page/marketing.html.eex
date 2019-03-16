@@ -13,8 +13,8 @@
       </h2>
     </div>
     <div class="buttons is-centered">
-      <a class="button is-link heading is-normal">Learn more</a>
-      <a class="button heading is-normal">Talk to sales</a>
+      <a class="button is-link heading is-normal" href="/#what-why">Learn more</a>
+      <a class="button heading is-normal" href="mailto:sales@approximatereality.com">Talk to sales</a>
     </div>
   </div>
 </section>
@@ -40,7 +40,7 @@
     </div>
     <div class="level-item has-text-centered" style="flex-shrink: 1;">
       <div>
-        <h5 class="title is-5"><span>&#10004; </span>ABMs</h5>
+        <h5 class="title is-5"><span>&#10004; </span>ABM</h5>
         <br />
         <p class="has-text-weight-light">Autonomous, self-learning, adaptive</p>
         <p class="has-text-weight-light">agents straight out of the box.</p>
@@ -48,7 +48,7 @@
     </div>
     <div class="level-item has-text-centered" style="flex-shrink: 1;">
       <div>
-        <h5 class="title is-5"><span>&#10004; </span>Calibration</h5>
+        <h5 class="title is-5"><span>&#10004; </span>Calibrate</h5>
         <br />
         <p class="has-text-weight-light">Auto select best parameter values</p>
         <p class="has-text-weight-light">via built-in evolutionary strategies.</p>
@@ -105,13 +105,10 @@
 <div class="columns is-vcentered has-background-light">
   <div class="column is-half has-text-centered">
     <h1 class="title is-1">Scale to Zillions</h1>
-    <p>
-      ApproximateReality supports massive scale
-    </p>
-    <p>
-      concurrency on top of the battle tested
-      BEAM VM.
-    </p>
+    <p>ApproximateReality supports massive scale</p>
+    <p>concurrency on top of the battle tested BEAM VM.</p>
+    <p>Our platform makes it easy to perform long-running</p>
+    <p>massive scale experiments connected to real-time data feeds.</p>
   </div>
   <div class="column is-half has-text-centered">
     <figure class="image" style="max-width: 720px;">
@@ -131,39 +128,48 @@
       <div>
         <h5 class="title is-5">Policy Analysis</h5>
         <br />
-        <p class="has-text-weight-light">MFA, TLS 1.3 & AES256 encryption,</p>
-        <p class="has-text-weight-light">audit-logs & granular permissions.</p>
+        <p class="has-text-weight-light">Determine which of various</p>
+        <p class="has-text-weight-light">policies will best achieve your goals</p>
+        <p class="has-text-weight-light">without guesswork or implementing</p>
+        <p class="has-text-weight-light">expensive real-world experiments.</p>
       </div>
     </div>
     <div class="level-item has-text-centered" style="flex-shrink: 1;">
       <div>
-        <h5 class="title is-5">Order book dynamics</h5>
+        <h5 class="title is-5">Order Book Dynamics</h5>
         <br />
-        <p class="has-text-weight-light">Sharable, repeatable, editable & scalable</p>
-        <p class="has-text-weight-light">experiments on-premise or cloud.</p>
+        <p class="has-text-weight-light">Use high-quality, high-frequency</p>
+        <p class="has-text-weight-light">data to simulate market participants'</p>
+        <p class="has-text-weight-light">actions and interactions to achieve</p>
+        <p class="has-text-weight-light">new insights into the financial markets.</p>
+      </div>
+
+    </div>
+    <div class="level-item has-text-centered" style="flex-shrink: 1;">
+      <div>
+        <h5 class="title is-5">Contagion Risk</h5>
+        <br />
+        <p class="has-text-weight-light">Use ABMs to better understand liquidity</p>
+        <p class="has-text-weight-light">dynamics, how unpredictably liquidity can</p>
+        <p class="has-text-weight-light">dry out and the underlying interactions</p>
+        <p class="has-text-weight-light">between participants’ balance sheets.</p>
       </div>
     </div>
     <div class="level-item has-text-centered" style="flex-shrink: 1;">
       <div>
-        <h5 class="title is-5">Credit risk modeling</h5>
+        <h5 class="title is-5">BESS</h5>
         <br />
-        <p class="has-text-weight-light">Autonomous, self-learning, adaptive</p>
-        <p class="has-text-weight-light">agents straight out of the box.</p>
-      </div>
-    </div>
-    <div class="level-item has-text-centered" style="flex-shrink: 1;">
-      <div>
-        <h5 class="title is-5">Contagion risk</h5>
-        <br />
-        <p class="has-text-weight-light">Auto select best parameter values</p>
-        <p class="has-text-weight-light">via built-in evolutionary strategies.</p>
+        <p class="has-text-weight-light">Our expertise lies within the domains of</p>
+        <p class="has-text-weight-light">business, economic and social systems.</p>
+        <p class="has-text-weight-light">If you have any custom projects, please</p>
+        <p class="has-text-weight-light">get in touch. We will be happy to help :)</p>
       </div>
     </div>
   </nav>
 </section>
 <br />
 <br />
-<section class="section has-background-light">
+<section class="section has-background-light" id="what-why">
   <div class="columns is-vcentered">
     <div class="column is-half has-text-centered" style="border-right: 1px solid white;">
         <p>
@@ -194,3 +200,43 @@
 </section>
 <br />
 <br />
+<div class="columns" id="faq">
+  <div class="column is-three-fifths is-offset-one-fifth has-text-centered">
+    <h2 class="title is-2" id="use-cases">FAQ</h2>
+  </div>
+</div>
+<div class="columns">
+  <div class="column is-three-fifths is-offset-one-fifth">
+    <hr />
+    <div>
+      <h4 class="title is-4 is-spaced">Security</h4>
+      <p>Answer</p>
+    </div>
+    <hr />
+    <div>
+      <h4 class="title is-4 is-spaced">On-premise</h4>
+      <p>Answer</p>
+    </div>
+    <hr />    
+    <div>
+      <h4 class="title is-4 is-spaced">Billing</h4>
+      <p>Answer</p>
+    </div>
+    <hr />
+    <div>
+      <h4 class="title is-4 is-spaced">Simulation SDK</h4>
+      <p>Answer</p>
+    </div>
+    <hr />
+    <div>
+      <h4 class="title is-4 is-spaced">Artifacts</h4>
+      <p>Answer</p>
+    </div>
+    <hr />
+    <div>
+      <h4 class="title is-4 is-spaced">Spatial Representation</h4>
+      <p>Answer</p>
+    </div>
+    <hr />
+  </div>
+</div>
