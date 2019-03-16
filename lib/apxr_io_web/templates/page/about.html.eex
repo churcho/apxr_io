@@ -1,16 +1,29 @@
 <div class="columns">
-  <div class="column is-half is-offset-one-quarter has-text-centered">
-    <div class="about">
-      <h2 class="title is-2">
-        <figure class="image is-5x4">
-          <img src="/images/logo_transparent.png">
-        </figure>
-      </h2>
-      <div>
-        <p>
-          ApproximateReality (APXR) believes that the best way to understand the complex world of financial markets is to apply simulations. The generation of virtual worlds offering previously unachievable vision and better decision-making. To enable market practitioners, academics and regulators to understand the consequences of their choices, ApproximateReality places large-scale simulation at the heart of their decision-making process.
-        </p>
-      </div>
-    </div>
+  <div class="column is-three-fifths is-offset-one-fifth">
+    <figure class="image" style="display: block; margin-left: auto; margin-right: auto; width: 50%;">
+      <img src="/images/logo_transparent.png">
+    </figure>
+  </div>
+</div>
+<div class="columns">
+  <div class="column is-three-fifths is-offset-one-fifth">
+    <p>
+      Our goal is build simulations of the economy at a much finer level that
+      take advantage of all the data provided by modern computer and Internet
+      technologies.
+    </p>
+    <br />
+    <p>
+      We should not have to rely on delayed survey results and other outdated
+      2Oth century "National Accounting" procedures and their associated models.
+      Instead, we can connect to real-time data sources and simulate what a few
+      hundred million agents do, what each company does and what each bank does.
+    </p>
+    <br />
+    <p>
+      We plan to build a system that breaks down the economy into its parts,
+      models the mechanisms of causality and allows us to pose important
+      "what if" questions.
+    </p>
   </div>
 </div>

@@ -1,10 +1,13 @@
+<div class="columns">
+  <div class="column is-three-fifths is-offset-one-fifth">
+    <figure class="image" style="display: block; margin-left: auto; margin-right: auto; width: 55%;">
+      <img src="/images/logo_transparent2.png">
+    </figure>
+  </div>
+</div>
 <section class="hero">
   <div class="container has-text-centered">
-    <div class="hero-body">
-      <h1 class="title is-1 is-spaced has-text-weight-normal">
-        <span class="has-text-weight-bold">Approximate<wbr>Reality</span>
-      </h1>
-      <br />
+    <div class="hero-body" style="padding-top: 0.5rem;">
       <h2 class="subtitle is-6" style="margin-bottom: 0.5rem;">
         <span class="has-text-weight-bold">APXR</span> makes simulations of <span class="has-text-weight-bold">business, economic and social systems</span> easy.
       </h2>
@@ -57,14 +60,13 @@
   </nav>
 </section>
 <br />
-<div class="columns is-vcentered">
+<div class="columns is-vcentered is-hidden-mobile">
   <div class="column is-three-fifths is-offset-one-fifth">
       <figure class="image" style="max-width: 800px;">
         <img src="/images/apxr_io_overview.png">
       </figure>
   </div>
 </div>
-<br />
 <section class="section">
   <nav class="level">
     <div class="level-item has-text-centered" style="flex-shrink: 1;">
@@ -101,8 +103,7 @@
     </div>
   </nav>
 </section>
-<br />
-<div class="columns is-vcentered has-background-light">
+<div class="columns is-vcentered has-background-light is-hidden-mobile">
   <div class="column is-half has-text-centered">
     <h1 class="title is-1">Scale to Zillions</h1>
     <p>ApproximateReality supports massive scale</p>
@@ -111,12 +112,11 @@
     <p>massive scale experiments connected to real-time data feeds.</p>
   </div>
   <div class="column is-half has-text-centered">
-    <figure class="image" style="max-width: 720px;">
+    <figure class="image" style="max-width: 640px;">
       <img src="/images/cloud_circle.png">
     </figure>
   </div>
 </div>
-<br />
 <section class="section">
   <div class="container has-text-centered">
     <h2 class="title is-2" id="use-cases">Use Cases</h2>
@@ -143,7 +143,6 @@
         <p class="has-text-weight-light">actions and interactions to achieve</p>
         <p class="has-text-weight-light">new insights into the financial markets.</p>
       </div>
-
     </div>
     <div class="level-item has-text-centered" style="flex-shrink: 1;">
       <div>
@@ -167,7 +166,6 @@
     </div>
   </nav>
 </section>
-<br />
 <br />
 <section class="section has-background-light" id="what-why">
   <div class="columns is-vcentered">
@@ -209,34 +207,65 @@
   <div class="column is-three-fifths is-offset-one-fifth">
     <hr />
     <div>
-      <h4 class="title is-4 is-spaced">Security</h4>
-      <p>Answer</p>
-    </div>
-    <hr />
-    <div>
-      <h4 class="title is-4 is-spaced">On-premise</h4>
-      <p>Answer</p>
-    </div>
-    <hr />    
-    <div>
       <h4 class="title is-4 is-spaced">Billing</h4>
-      <p>Answer</p>
+      <p>
+        Billing is based on contracts that are negotiated on a per project basis.
+        Ongoing maintenance and support is available, if required.
+        Contact our <a href="mailto:sales@approximatereality.com">sales team</a> for further information.
+        We work closely with all our clients to build experiments that are tailored to their needs.
+      </p>
     </div>
     <hr />
     <div>
       <h4 class="title is-4 is-spaced">Simulation SDK</h4>
-      <p>Answer</p>
+      <p>
+        If you would prefer to build and run experiments on your own, feel free to contact us
+        to request access to our simulation SDK.
+        Please note, it is still in BETA but we are happy to resolve any issues that may arise.
+        Access to the simulation SDK requires an enterprise license.
+        Contact our <a href="mailto:sales@approximatereality.com">sales team</a> for further information.
+      </p>
     </div>
-    <hr />
+    <hr />   
     <div>
       <h4 class="title is-4 is-spaced">Artifacts</h4>
-      <p>Answer</p>
+      <p>
+        Experiment artifacts can be extracted and deployed upon completion of an experiment.
+        These operate similarly to Lambda functions (event-driven, serverless computing).
+        Billing is based on a basic fee that includes a set number of invocations.
+        Additional requests are charged on a per invocation basis.
+        High availability setups, edge locations, etc. can be facilitated.
+        Contact our <a href="mailto:sales@approximatereality.com">sales team</a> for further information.
+      </p>
     </div>
     <hr />
     <div>
-      <h4 class="title is-4 is-spaced">Spatial Representation</h4>
-      <p>Answer</p>
+      <h4 class="title is-4 is-spaced">Add-ons</h4>
+      <p>
+        Features such as spatial representation are  not included out of the box but we are happy to work with our clients
+        to build any add-ons that they require e.g. forward logs, integrate internal data feeds, manage secrets, etc.
+        Contact our <a href="mailto:sales@approximatereality.com">sales team</a> for further information.
+      </p>
+    </div>
+    <hr />    
+    <div>
+      <h4 class="title is-4 is-spaced">On-premise</h4>
+      <p>
+        Standard experiments are run on our servers located in European data-centers.
+        We are happy to accommodate clients that require an on-premise solution or that
+        have any other strict regulatory requirements.
+        Contact our <a href="mailto:sales@approximatereality.com">sales team</a> for further information.
+      </p>
     </div>
     <hr />
+    <div>
+      <h4 class="title is-4 is-spaced">Academia / Students</h4>
+      <p>
+        Reduced rates are available for students and members of academia.
+        This applies especially to our simulation SDK.
+        Contact our <a href="mailto:sales@approximatereality.com">sales team</a> for further information.
+      </p>
+    </div>
+    <hr />    
   </div>
 </div>

@@ -65,16 +65,16 @@
                   Blog
                 </span>
               </a>
-              <a class="navbar-item" href="/#use-cases">
-                <span>
-                  Use cases
-                </span>
-              </a>
               <a class="navbar-item" href="/#faq">
                 <span>
                   FAQ
                 </span>
-              </a>                       
+              </a>
+              <a class="navbar-item" href="/#use-cases">
+                <span>
+                  Use cases
+                </span>
+              </a>                                     
             <% end %>
           </div>
           <div class="navbar-end">
