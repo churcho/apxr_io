@@ -60,11 +60,11 @@
   </nav>
 </section>
 <br />
-<div class="columns is-vcentered is-hidden-mobile">
+<div class="columns">
   <div class="column is-three-fifths is-offset-one-fifth">
-      <figure class="image" style="max-width: 800px;">
-        <img src="/images/apxr_io_overview.png">
-      </figure>
+    <figure class="image" style="display: block; margin-left: auto; margin-right: auto; width: 85%;">
+      <img src="/images/apxr_io_overview.png">
+    </figure>
   </div>
 </div>
 <section class="section">

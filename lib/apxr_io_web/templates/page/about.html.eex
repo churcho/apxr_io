@@ -6,18 +6,11 @@
   </div>
 </div>
 <div class="columns">
-  <div class="column is-three-fifths is-offset-one-fifth">
+  <div class="column is-three-fifths is-offset-one-fifth has-text-centered">
     <p>
       Our goal is build simulations of the economy at a much finer level that
       take advantage of all the data provided by modern computer and Internet
       technologies.
-    </p>
-    <br />
-    <p>
-      We should not have to rely on delayed survey results and other outdated
-      2Oth century "National Accounting" procedures and their associated models.
-      Instead, we can connect to real-time data sources and simulate what a few
-      hundred million agents do, what each company does and what each bank does.
     </p>
     <br />
     <p>

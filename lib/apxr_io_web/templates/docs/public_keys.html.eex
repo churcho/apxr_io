@@ -2,15 +2,12 @@
   <h2 class="title is-2">
     Active keys
   </h2>
-  <h4 class="title is-4">
-    Why is my project documentation returning "page not found"?
-  </h4>
   <p>
-This page lists the public keys used by approximatereality.com. APXR uses those public keys to
+This page lists the public keys used by approximatereality.com. APXR uses these public keys to
 guarantee developers can safely fetch the registry hosted by approximatereality.com. If you
 have been linked to this page from an error message, it means the public key that ships with
-your ApxrIo client has been revoked. Below you can find up to date keys and instructions on
-how to install it for your client.
+your APXR client has been revoked. Below, you can find up to date keys and installation
+instructions.
   </p>
   <br />
   <p>

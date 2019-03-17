@@ -31,7 +31,7 @@
           <div class="control">
             <label class="checkbox">
               <input type="checkbox" id="checkboxSuccess" required value="consent">
-              I confirm that I have read and agree to ApproximateReality's <a href="<%= Routes.policy_path(Endpoint, :tos) %>">Terms of Service</a> and <a href="<%= Routes.policy_path(Endpoint, :privacy) %>">Privacy Policy</a>.
+              I confirm that I have read and agree to ApproximateReality's <a href="<%= Routes.policy_path(Endpoint, :tou) %>">Terms of Use</a> and <a href="<%= Routes.policy_path(Endpoint, :privacy) %>">Privacy Policy</a>.
           </label>
           </div>
         </div>

@@ -5,5 +5,7 @@
   </head>
   <body>
     <%= render @view_module, @view_template, assigns %>
+    <br>
+    <small>If you'd like to talk to a support team member, please contact support@approximatereality.com</small>
   </body>
 </html>

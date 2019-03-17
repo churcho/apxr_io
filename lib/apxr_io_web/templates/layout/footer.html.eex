@@ -3,7 +3,7 @@
       <div class="container">
         <div class="columns">
           <div class="column">
-            <h6 class="subtitle is-6 has-text-black-ter">Info</h6>
+            <h6 class="subtitle is-6 has-text-black-ter has-text-underlined">Info</h6>
             <ul>
               <li><a class="has-text-grey-light" href="<%= Routes.page_path(Endpoint, :about) %>">About</a></li>
               <li><a class="has-text-grey-light" href="https://twitter.com/ApproxReality">Twitter</a></li>
@@ -19,7 +19,7 @@
           <div class="column">
             <h6 class="subtitle is-6 has-text-black-ter">Policies and Terms</h6>
             <ul>
-              <li><a class="has-text-grey-light" href="<%= Routes.policy_path(Endpoint, :tos) %>">Terms of Service</a></li>
+              <li><a class="has-text-grey-light" href="<%= Routes.policy_path(Endpoint, :tou) %>">Terms of Use</a></li>
               <li><a class="has-text-grey-light" href="<%= Routes.policy_path(Endpoint, :privacy) %>">Privacy Policy</a></li>
             </ul>
           </div>

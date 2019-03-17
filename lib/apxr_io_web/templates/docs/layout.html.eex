@@ -5,7 +5,6 @@
         APXR
       </p>
       <ul class="menu-list">
-        <li class="sidebar-item"><a href="<%= Routes.docs_path(Endpoint, :faq) %>" class="<%= selected_docs(@conn, :faq) %>">FAQ</a></li>
         <li class="sidebar-item"><a href="<%= Routes.docs_path(Endpoint, :public_keys) %>" class="<%= selected_docs(@conn, :public_keys) %>">Public Keys</a></li>
       </ul>
     </aside>

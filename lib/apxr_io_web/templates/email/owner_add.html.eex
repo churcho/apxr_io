@@ -1,6 +1,6 @@
 <p><%= @username %> has been added as an owner to project <%= @project %>.</p>
 
 <p>
-  --_<br>
+  ---<br>
   ApproximateReality
 </p>

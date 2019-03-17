@@ -49,11 +49,6 @@
                   Account
                 </span>
               </a>
-              <a class="navbar-item" href="<%= Routes.docs_path(Endpoint, :index) %>">
-                <span>
-                  Docs
-                </span>
-              </a>
             <% else %>
               <a class="navbar-item" href="<%= Routes.page_path(Endpoint, :about) %>">
                 <span>

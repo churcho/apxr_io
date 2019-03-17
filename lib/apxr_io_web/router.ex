@@ -78,11 +78,10 @@ defmodule ApxrIoWeb.Router do
     delete "/users/:username", UserController, :delete
 
     get "/docs", DocsController, :index
-    get "/docs/faq", DocsController, :faq
     get "/docs/public_keys", DocsController, :public_keys
 
     get "/policies/privacy", PolicyController, :privacy
-    get "/policies/termsofservice", PolicyController, :tos
+    get "/policies/terms-of-use", PolicyController, :tou
 
     get "/projects", ProjectController, :index
     get "/projects/:name", ProjectController, :show

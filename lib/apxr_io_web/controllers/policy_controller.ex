@@ -10,11 +10,11 @@ defmodule ApxrIoWeb.PolicyController do
     )
   end
 
-  def tos(conn, _params) do
+  def tou(conn, _params) do
     render(
       conn,
-      "tos.html",
-      title: "Terms of Service",
+      "tou.html",
+      title: "Terms of Use",
       container: "container policies"
     )
   end
