@@ -1,27 +1,45 @@
     </div>
-    <footer class="footer has-text-centered">
+    <footer class="footer has-text-centered" style="padding: 3rem 1.5rem 3rem">
       <div class="container">
         <div class="columns">
           <div class="column">
-            <h6 class="subtitle is-6 has-text-black-ter has-text-underlined">Info</h6>
+            <h6 class="subtitle is-6 has-text-black-ter">Info</h6>
             <ul>
-              <li><a class="has-text-grey-light" href="<%= Routes.page_path(Endpoint, :about) %>">About</a></li>
-              <li><a class="has-text-grey-light" href="https://twitter.com/ApproxReality">Twitter</a></li>
+              <li><a class="has-text-grey" href="<%= Routes.page_path(Endpoint, :about) %>">About</a></li>
+              <li><a class="has-text-grey" href="https://twitter.com/APXRHQ">Twitter</a></li>
             </ul>
           </div>
           <div class="column">
             <h6 class="subtitle is-6 has-text-black-ter">Help</h6>
             <ul>
-              <li><a class="has-text-grey-light" href="mailto:approximatereality@gmail.com">Contact</a></li>
-              <li><a class="has-text-grey-light" href="https://twitter.com/ApproxReality">Support</a></li>
+              <li><a class="has-text-grey" href="mailto:info@approximatereality.com">Contact</a></li>
+              <li><a class="has-text-grey" href="mailto:support@approximatereality.com">Support</a></li>
             </ul>
           </div>
           <div class="column">
             <h6 class="subtitle is-6 has-text-black-ter">Policies and Terms</h6>
             <ul>
-              <li><a class="has-text-grey-light" href="<%= Routes.policy_path(Endpoint, :tou) %>">Terms of Use</a></li>
-              <li><a class="has-text-grey-light" href="<%= Routes.policy_path(Endpoint, :privacy) %>">Privacy Policy</a></li>
+              <li><a class="has-text-grey" href="<%= Routes.policy_path(Endpoint, :tou) %>">Terms of Use</a></li>
+              <li><a class="has-text-grey" href="<%= Routes.policy_path(Endpoint, :privacy) %>">Privacy Policy</a></li>
             </ul>
+          </div>
+        </div>
+        <br />
+        <div class="columns">
+          <div class="column">
+            <figure class="image" style="display: block; margin-left: auto; margin-right: auto; width: 50%;">
+              <img src="/images/logo_transparent.png">
+            </figure>
+          </div>
+          <div class="column">
+            <div class="has-text-centered">
+              <small><a href="mailto:hello@approximatereality.com" class="has-text-grey-dark">hello@approximatereality.com</a></small>
+            </div>
+          </div>
+          <div class="column">
+            <div class="has-text-grey-dark">
+              <small>Copyright © 2019 ApproximateReality SAS</small>
+            </div>
           </div>
         </div>
       </div>

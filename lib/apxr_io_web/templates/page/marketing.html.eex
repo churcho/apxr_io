@@ -1,6 +1,6 @@
 <div class="columns">
   <div class="column is-three-fifths is-offset-one-fifth">
-    <figure class="image" style="display: block; margin-left: auto; margin-right: auto; width: 55%;">
+    <figure class="image" style="display: block; margin-left: auto; margin-right: auto; width: 50%;">
       <img src="/images/logo_transparent2.png">
     </figure>
   </div>
@@ -9,10 +9,10 @@
   <div class="container has-text-centered">
     <div class="hero-body" style="padding-top: 0.5rem;">
       <h2 class="subtitle is-6" style="margin-bottom: 0.5rem;">
-        <span class="has-text-weight-bold">APXR</span> makes simulations of <span class="has-text-weight-bold">business, economic and social systems</span> easy.
+        <span class="has-text-weight-bold">What if</span> the best way to predict the future is to simulate it?
       </h2>
       <h2 class="subtitle is-6">
-        <span class="has-text-weight-bold">Don't predict the future, simulate it</span> with our scalable self-learning adaptive agents.
+        We make simulations of <span class="has-text-weight-bold">business, economic and social systems</span> easy.
       </h2>
     </div>
     <div class="buttons is-centered">
