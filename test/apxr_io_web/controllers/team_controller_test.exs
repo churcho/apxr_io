@@ -36,7 +36,7 @@ defmodule ApxrIoWeb.TeamControllerTest do
 
   test "requires login" do
     conn = get(build_conn(), "/teams")
-    assert redirected_to(conn) == "/?return=%2Fteams"
+    assert redirected_to(conn) == "/login?return=%2Fteams"
   end
 
   test "add member to team", %{user: user, team: team} do

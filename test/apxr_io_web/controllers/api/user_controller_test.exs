@@ -56,7 +56,7 @@ defmodule ApxrIoWeb.API.UserControllerTest do
           }"
         )
 
-      assert redirected_to(conn) == "/"
+      assert redirected_to(conn) == "/login"
       assert get_flash(conn, :info) =~ "verified"
 
       conn = publish_project(user, myrepo)

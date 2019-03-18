@@ -29,7 +29,7 @@ defmodule ApxrIoWeb.Settings.EmailControllerTest do
 
   test "requires login" do
     conn = get(build_conn(), "settings/email")
-    assert redirected_to(conn) == "/?return=settings%2Femail"
+    assert redirected_to(conn) == "/login?return=settings%2Femail"
   end
 
   test "add email", c do

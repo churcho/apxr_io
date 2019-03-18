@@ -4,18 +4,7 @@ defmodule ApxrIoWeb.DocsController do
   plug :requires_login
 
   def index(conn, _params) do
-    redirect(conn, to: Routes.docs_path(conn, :faq))
-  end
-
-  def faq(conn, _params) do
-    render(
-      conn,
-      "layout.html",
-      view: "faq.html",
-      view_name: :faq,
-      title: "FAQ",
-      container: "container docs"
-    )
+    redirect(conn, to: Routes.docs_path(conn, :public_keys))
   end
 
   def public_keys(conn, _params) do

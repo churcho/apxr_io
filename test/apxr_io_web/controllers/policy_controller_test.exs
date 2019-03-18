@@ -12,8 +12,8 @@ defmodule ApxrIoWeb.PolicyControllerTest do
   test "show policy terms of services" do
     conn =
       build_conn()
-      |> get("policies/termsofservice")
+      |> get("policies/terms-of-use")
 
-    assert response(conn, 200) =~ "Terms of Service"
+    assert response(conn, 200) =~ "Terms of Use"
   end
 end
