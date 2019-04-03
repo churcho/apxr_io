@@ -8,15 +8,10 @@
 <div class="columns">
   <div class="column is-three-fifths is-offset-one-fifth has-text-centered">
     <p>
-      Our goal is build simulations of the economy at a much finer level that
-      take advantage of all the data provided by modern computer and Internet
-      technologies.
-    </p>
-    <br />
-    <p>
-      We plan to build a system that breaks down the economy into its parts,
-      models the mechanisms of causality and allows us to pose important
-      "what if" questions.
-    </p>
+      We believe large scale simulations of real-world complex systems will be the next fundamental technology of our age.
+      The core idea is that many, if not most, phenomena in the world can be effectively modeled with agents, an environment, and a description of agent-agent and agent-environment interactions.
+      Our solution appeals to organizations of all types that deal with these real-word complex systems.
+      Initially, our platform will be used to power simulations of financial markets.
+    </p>            
   </div>
 </div>

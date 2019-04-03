@@ -9,7 +9,7 @@ defmodule ApxrIoWeb.SignupControllerTest do
 
   test "show create user page" do
     conn = get(build_conn(), "signup")
-    assert response(conn, 200) =~ "Sign up"
+    assert response(conn, 200) =~ "Request access"
   end
 
   test "create user" do
@@ -35,7 +35,7 @@ defmodule ApxrIoWeb.SignupControllerTest do
         }
       })
 
-    assert response(conn, 400) =~ "Sign up"
+    assert response(conn, 400) =~ "Request access"
     assert conn.resp_body =~ "Oops, something went wrong!"
   end
 end

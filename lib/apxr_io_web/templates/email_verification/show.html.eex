@@ -7,19 +7,10 @@
           <div class="control">
             <input class="input" autofocus name="email" type="email" placeholder="e.g. alexsmith@gmail.com">
           </div>
-        </div>
-        
+        </div>      
         <div class="field">
           <div class="control is-expanded">
             <button type="submit" class="button is-fullwidth is-black">VERIFY</button>
-          </div>
-        </div>
-        <hr />
-        <div class="field is-grouped is-grouped-centered is-grouped-multiline">
-          <div class="control">
-            <button class="button is-text">
-              <a href="<%= Routes.signup_path(Endpoint, :show) %>">Don't have an account?</a>
-            </button>
           </div>
         </div>
       <% end %>

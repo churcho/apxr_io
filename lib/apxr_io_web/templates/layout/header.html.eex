@@ -55,11 +55,6 @@
                   About
                 </span>
               </a>
-              <a class="navbar-item" href="<%= Routes.blog_path(Endpoint, :index) %>">
-                <span>
-                  Blog
-                </span>
-              </a>
               <a class="navbar-item" href="/#faq">
                 <span>
                   FAQ
@@ -83,8 +78,8 @@
                     <button type="submit" class="button is-black is-outlined">Log out</button>
                   <% end %>
                 <% else %>
-                  <a href="<%= Routes.signup_path(Endpoint, :show) %>" id="apxr-hover" class="button is-black">
-                    <strong>Sign up</strong>
+                  <a href="mailto:sales@approximatereality.com"" id="apxr-hover" class="button is-black">
+                    <strong>Request access</strong>
                   </a>
                   <a href="<%= Routes.login_path(Endpoint, :new) %>" class="button is-black is-outlined">
                     Log in

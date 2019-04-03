@@ -15,8 +15,6 @@ defmodule ApxrIoWeb.PageControllerTest do
       |> get("about")
 
     assert response(conn, 200) =~
-             "Our goal is build simulations of the economy at a much finer level that
-      take advantage of all the data provided by modern computer and Internet
-      technologies."
+             "We believe large scale simulations of real-world complex systems will be the next fundamental technology of our age."
   end
 end
