@@ -222,6 +222,17 @@
   <div class="column is-three-fifths is-offset-one-fifth">
     <hr />
     <div>
+      <h4 class="title is-4 is-spaced">What are agent-based models (ABMs)?<a href="#" onclick="return false;" class="is-pulled-right is-right abm-toggle" style="text-decoration: none;">+</a></h4>
+      <p class="abm" style="display: none;">
+        They are models (i.e., abstract representations of the reality) in which (i) a multitude of objects interact with each other and with the environment, (ii) the objects are autonomous (i.e., there is no central, or top-down, control over their behavior and, more generally, on the dynamics of the system, and (iii) the outcome of their interaction is numerically computed. Since the objects are autonomous, they are called agents. 
+
+        Agents are goal seekers and they can be forward looking and adapt to their environment, but their ability to infer the rules of the game in order to form expectations is constrained by the what they know about the model they inhabit, which is typically limited and may change over time. Moreover, their computing ability is also constrained. They therefore have to use simple rules based on local information. 
+
+        From a general point of view, in order to build an agent-based model, four main issues need to be addressed: (i) the nature of the agents; (ii) the list of variables describing their state, (iii) the list of the actions the agents can perform; (iv) the structure of their interaction with other agents. (Agent-Based Models in Economics A Toolkit 2018).
+      </p>
+    </div>
+    <hr />
+    <div>
       <h4 class="title is-4 is-spaced">How does pricing work?<a href="#" onclick="return false;" class="is-pulled-right is-right faq-billing-toggle" style="text-decoration: none;">+</a></h4>
       <p class="faq-billing" style="display: none;">
         Pricing is based on contracts that are negotiated on a per project basis.

@@ -187,6 +187,9 @@ export default class App {
     addCopyButtonToCode();
 
     // FAQ
+    $(".abm-toggle").click(function(){
+      $(".abm").toggle(100);
+    });
     $(".faq-billing-toggle").click(function(){
       $(".faq-billing").toggle(100);
     });
