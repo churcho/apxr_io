@@ -9,9 +9,8 @@
   <div class="column is-three-fifths is-offset-one-fifth has-text-centered">
     <p>
       We believe large scale simulations of real-world complex systems will be the next fundamental technology of our age.
-      The core idea is that many, if not most, phenomena in the world can be effectively modeled with agents, an environment, and a description of agent-agent and agent-environment interactions.
+      The core idea is that many, if not most, complex phenomena in the world can be effectively modeled with agents, an environment, and a description of agent-agent and agent-environment interactions.
       Our solution appeals to organizations of all types that deal with these real-word complex systems.
-      Initially, our platform will be used to power simulations of financial markets.
     </p>            
   </div>
 </div>

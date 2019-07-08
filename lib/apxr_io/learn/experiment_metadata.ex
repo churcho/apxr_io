@@ -92,9 +92,6 @@ defmodule ApxrIo.Learn.ExperimentMetadata do
         "population_mgr_efficiency" ->
           validate_population_mgr_efficiency(v, acc)
 
-        "interactive_selection" ->
-          validate_interactive_selection(v, acc)
-
         "re_entry_probability" ->
           validate_re_entry_probability(v, acc)
 
@@ -228,8 +225,8 @@ defmodule ApxrIo.Learn.ExperimentMetadata do
 
   defp validate_public_scape(v, acc) when is_list(v) do
     case v do
-      [x, y, w, h, scape] ->
-        if is_float(x) && is_float(y) && is_float(w) && is_float(h) && is_atom(scape) do
+      [x, y, w, h, _scape] ->
+        if is_float(x) && is_float(y) && is_float(w) && is_float(h) do
           acc
         else
           ["public_scape invalid" | acc]
@@ -306,14 +303,6 @@ defmodule ApxrIo.Learn.ExperimentMetadata do
 
   defp validate_population_mgr_efficiency(_v, acc) do
     ["population_mgr_efficiency invalid" | acc]
-  end
-
-  defp validate_interactive_selection(v, acc) when is_boolean(v) do
-    acc
-  end
-
-  defp validate_interactive_selection(_v, acc) do
-    ["interactive_selection invalid" | acc]
   end
 
   defp validate_re_entry_probability(v, acc) when is_float(v) do

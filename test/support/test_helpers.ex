@@ -82,7 +82,6 @@ defmodule ApxrIo.TestHelpers do
             ro_signal: [0.0],
             fitness_stagnation: false,
             population_mgr_efficiency: 1,
-            interactive_selection: false,
             re_entry_probability: 0.0,
             shof_ratio: 1,
             selection_algorithm_efficiency: 1

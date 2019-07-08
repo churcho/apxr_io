@@ -21,7 +21,7 @@ defmodule ApxrIoWeb.SignupControllerTest do
         }
       })
 
-    assert redirected_to(conn) == "/login"
+    assert redirected_to(conn) == "/"
     user = Users.get_by_username("jose")
     assert user.username == "jose"
   end

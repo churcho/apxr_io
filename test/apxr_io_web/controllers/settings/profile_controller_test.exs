@@ -19,7 +19,7 @@ defmodule ApxrIoWeb.Settings.ProfileControllerTest do
 
   test "requires login" do
     conn = get(build_conn(), "settings/profile")
-    assert redirected_to(conn) == "/login?return=settings%2Fprofile"
+    assert redirected_to(conn) == "/?return=settings%2Fprofile"
   end
 
   test "update profile", c do

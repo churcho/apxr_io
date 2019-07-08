@@ -3,7 +3,7 @@ experiment_url = Routes.experiment_url(Endpoint, :show, @project, @release, @exp
 %>
 
 <p>
-  <a href="<%= raw experiment_url %>">Inspect here</a> or copy and paste the following link into your web browser: <%= raw experiment_url %>
+  <a href="<%= raw experiment_url %>">Inspect experiment here</a> or copy and paste the following link into your web browser: <%= raw experiment_url %>
 </p>
 
 <p>

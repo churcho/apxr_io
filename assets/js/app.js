@@ -184,27 +184,7 @@ export default class App {
     };
 
     // Once the DOM is loaded for the page, attach clipboard buttons
-    addCopyButtonToCode();
-
-    // FAQ
-    $(".abm-toggle").click(function(){
-      $(".abm").toggle(100);
-    });
-    $(".faq-billing-toggle").click(function(){
-      $(".faq-billing").toggle(100);
-    });
-    $(".faq-sdk-toggle").click(function(){
-      $(".faq-sdk").toggle(100);
-    });
-    $(".faq-artifacts-toggle").click(function(){
-      $(".faq-artifacts").toggle(100);
-    });
-    $(".faq-onpremise-toggle").click(function(){
-      $(".faq-onpremise").toggle(100);
-    });
-    $(".faq-students-toggle").click(function(){
-      $(".faq-students").toggle(100);
-    });      
+    addCopyButtonToCode();    
   }
 }
 

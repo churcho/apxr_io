@@ -25,7 +25,7 @@ defmodule ApxrIoWeb.LoginControllerTest do
     email = User.email(user, :primary)
 
     conn = post(build_conn(), "login", %{"email" => email})
-    assert redirected_to(conn) == "/login"
+    assert redirected_to(conn) == "/"
     assert get_flash(conn, :info) =~ "We have sent you a link to login via email."
 
     user = Users.get_by_username(user.username, [:emails])
@@ -38,7 +38,7 @@ defmodule ApxrIoWeb.LoginControllerTest do
     email = User.email(user, :primary)
 
     conn = post(build_conn(), "login", %{"email" => email})
-    assert redirected_to(conn) == "/login"
+    assert redirected_to(conn) == "/"
 
     assert get_flash(conn, :info) =~
              "We have sent you a login link if there is a verified account associated with this email."
@@ -73,14 +73,14 @@ defmodule ApxrIoWeb.LoginControllerTest do
 
   test "log out", c do
     conn = post(build_conn(), "logout", %{email: User.email(c.user, :primary)})
-    assert redirected_to(conn) == "/login"
+    assert redirected_to(conn) == "/"
 
     conn =
       conn
       |> recycle()
       |> post("logout")
 
-    assert redirected_to(conn) == "/login"
+    assert redirected_to(conn) == "/"
     refute get_session(conn, "user_id")
     refute last_session()
   end

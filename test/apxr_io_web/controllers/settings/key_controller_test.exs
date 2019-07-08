@@ -17,7 +17,7 @@ defmodule ApxrIoWeb.Settings.KeyControllerTest do
 
     test "requires login" do
       conn = get(build_conn(), "settings/keys")
-      assert redirected_to(conn) == "/login?return=settings%2Fkeys"
+      assert redirected_to(conn) == "/?return=settings%2Fkeys"
     end
   end
 

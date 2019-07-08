@@ -19,6 +19,6 @@ defmodule ApxrIoWeb.SettingsControllerTest do
 
   test "requires login" do
     conn = get(build_conn(), "settings")
-    assert redirected_to(conn) == "/login?return=settings"
+    assert redirected_to(conn) == "/?return=settings"
   end
 end

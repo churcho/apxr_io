@@ -63,8 +63,8 @@ defmodule ApxrIo.Learn.Experiments do
       |> Ecto.Multi.run(:host_unassign, fn _repo, %{experiment: experiment1} ->
         maybe_unassign_host(experiment1)
       end)
-      |> Ecto.Multi.run(:notify, fn _repo, %{experiment: experiment1} ->
-        maybe_send_notification_email(experiment1, project, release)
+      |> Ecto.Multi.run(:notify, fn _repo, %{experiment: experiment} ->
+        maybe_send_notification_email(experiment, project, release)
       end)
       |> Repo.transaction(timeout: @timeout)
 
@@ -163,13 +163,13 @@ defmodule ApxrIo.Learn.Experiments do
     {:ok, %{host_unassign: :ok}}
   end
 
-  defp maybe_send_notification_email(_experiment, _project, _release) do
-    # if experiment.meta.progress == "completed" or experiment.status == "failed" do
-    #   owners = Enum.map(Owners.all(project, user: :emails), & &1.user)
+  defp maybe_send_notification_email(experiment, project, release) do
+    if experiment.meta.progress == "completed" do
+      owners = Enum.map(Owners.all(project, user: :emails), & &1.user)
 
-    #   Emails.experiment_complete(project, release, experiment, owners)
-    #   |> Mailer.deliver_now_throttled()
-    # end
+      Emails.experiment_complete(project, release, experiment, owners)
+      |> Mailer.deliver_now_throttled()
+    end
 
     {:ok, %{notify: :ok}}
   end

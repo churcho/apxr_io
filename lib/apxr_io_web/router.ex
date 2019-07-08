@@ -51,7 +51,7 @@ defmodule ApxrIoWeb.Router do
 
   scope "/", ApxrIoWeb do
     pipe_through :browser
-    get "/", PageController, :index
+    get "/", LoginController, :new
     get "/about", PageController, :about
 
     get "/login/:auth_token", LoginController, :login
@@ -86,9 +86,6 @@ defmodule ApxrIoWeb.Router do
     get "/projects", ProjectController, :index
     get "/projects/:name", ProjectController, :show
     get "/projects/:name/:version", ProjectController, :show
-
-    get "/blog", BlogController, :index
-    get "/blog/:id", BlogController, :show
   end
 
   scope "/settings", ApxrIoWeb.Settings do

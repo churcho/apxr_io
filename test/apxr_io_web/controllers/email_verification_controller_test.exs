@@ -28,7 +28,7 @@ defmodule ApxrIoWeb.EmailVerificationControllerTest do
           key: "invalid"
         })
 
-      assert redirected_to(conn) == "/login"
+      assert redirected_to(conn) == "/"
       assert get_flash(conn, :error) =~ "failed to verify"
 
       user = Users.get_by_username(c.user.username, [:emails])
@@ -39,7 +39,7 @@ defmodule ApxrIoWeb.EmailVerificationControllerTest do
       conn =
         get(build_conn(), "email/verify", %{username: "invalid", email: "invalid", key: "invalid"})
 
-      assert redirected_to(conn) == "/login"
+      assert redirected_to(conn) == "/"
       assert get_flash(conn, :error) =~ "failed to verify"
     end
 
@@ -53,7 +53,7 @@ defmodule ApxrIoWeb.EmailVerificationControllerTest do
           key: email.verification_key
         })
 
-      assert redirected_to(conn) == "/login"
+      assert redirected_to(conn) == "/"
       assert get_flash(conn, :info) =~ "has been verified"
 
       user = Users.get_by_username(c.user.username, [:emails])
@@ -74,7 +74,7 @@ defmodule ApxrIoWeb.EmailVerificationControllerTest do
       email = User.email(user, :primary)
 
       conn = post(build_conn(), "email/verification", %{"email" => email})
-      assert redirected_to(conn) == "/login"
+      assert redirected_to(conn) == "/"
       assert get_flash(conn, :info) =~ "A verification email has been sent"
 
       user = Users.get_by_username(user.username, [:emails])
@@ -87,7 +87,7 @@ defmodule ApxrIoWeb.EmailVerificationControllerTest do
       email = User.email(user, :primary)
 
       conn = post(build_conn(), "email/verification", %{"email" => email})
-      assert redirected_to(conn) == "/login"
+      assert redirected_to(conn) == "/"
       assert get_flash(conn, :info) =~ "A verification email has been sent"
 
       user = Users.get_by_username(user.username, [:emails])
@@ -97,7 +97,7 @@ defmodule ApxrIoWeb.EmailVerificationControllerTest do
 
     test "dont send verification email for non-existant email" do
       conn = post(build_conn(), "email/verification", %{"email" => "foo@example.com"})
-      assert redirected_to(conn) == "/login"
+      assert redirected_to(conn) == "/"
       assert get_flash(conn, :info) =~ "A verification email has been sent"
     end
   end
